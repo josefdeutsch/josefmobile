@@ -1,26 +1,35 @@
 package com.josef.mobile;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import android.os.AsyncTask;
+
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 import com.josef.josefmobile.R;
+
+import static com.josef.mobile.Config.HOME_ACTIVITY;
 
 public class MainActivity extends AppCompatActivity {
 
     private final Echo echo = new Echo();
-    private TextView textView;
+
+    private TextView buttonView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        textView = findViewById(R.id.textview);
-        new EndPointsAsync().execute();
+        buttonView = findViewById(R.id.buttonview);
+        buttonView.setText(HOME_ACTIVITY);
     }
 
-    private class EndPointsAsync extends AsyncTask<Void, Void, Message> {
+    public void performPresenterActivity(View view) {
+        Intent intent = new Intent(this, PresenterActivity.class);
+        startActivity(intent);
+    }
+
+    /** private class EndPointsAsync extends AsyncTask<Void, Void, Message> {
         @Override
         protected Message doInBackground(Void... voids) {
             Message message = new Message();
@@ -30,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(@Nullable Message result) {
-            textView.setText(result.getMessage());
+            buttonView.setText(result.getMessage());
         }
-    }
+    }**/
 }

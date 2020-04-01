@@ -9,6 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name="com.josef.mobile.PresenterActivity"
+            android:parentActivityName="com.josef.mobile.MainActivity">
+        </activity>
         <activity android:name="com.josef.mobile.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
