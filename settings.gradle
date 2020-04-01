@@ -1,0 +1,2 @@
+include ':app', ':backend-api'
+rootProject.name='josefmobile'
