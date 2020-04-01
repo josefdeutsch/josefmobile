@@ -69,7 +69,6 @@ android {
         implementation 'com.google.http-client:google-http-client-android:1.23.0'
 
         implementation "androidx.viewpager2:viewpager2:1.0.0"
-
     }
 
 }

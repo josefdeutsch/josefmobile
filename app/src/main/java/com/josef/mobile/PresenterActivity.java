@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-
 import com.josef.josefmobile.R;
 import com.josef.mobile.free.DetailActivity;
 
@@ -19,7 +18,7 @@ public class PresenterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_portfolio);
+        setContentView(R.layout.activity_presenter);
         buttonView = findViewById(R.id.buttonview);
         buttonView.setText(PRESENTER_ACTVITY);
     }
