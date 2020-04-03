@@ -11,9 +11,9 @@
         android:theme="@style/AppTheme">
         <activity
             android:name="com.josef.mobile.PresenterActivity"
-            android:parentActivityName="com.josef.mobile.MainActivity">
+            android:parentActivityName="com.josef.mobile.SplashActivity">
         </activity>
-        <activity android:name="com.josef.mobile.MainActivity">
+        <activity android:name="com.josef.mobile.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -1,30 +1,38 @@
 package com.josef.mobile;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
+import androidx.appcompat.widget.Toolbar;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
-import android.widget.TextView;
 import com.josef.josefmobile.R;
-import com.josef.mobile.free.DetailActivity;
-
-import static com.josef.mobile.Config.PRESENTER_ACTVITY;
 
 public class PresenterActivity extends AppCompatActivity {
 
-    private TextView buttonView;
+    private static final String TAG = "PresenterActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_presenter);
-        buttonView = findViewById(R.id.buttonview);
-        buttonView.setText(PRESENTER_ACTVITY);
-    }
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-    public void performDetailActivity(View view) {
-        Intent intent = new Intent(this, DetailActivity.class);
-        startActivity(intent);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+
+
+    }
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 }
