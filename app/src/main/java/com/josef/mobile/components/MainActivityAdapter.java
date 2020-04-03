@@ -3,13 +3,9 @@ package com.josef.mobile.components;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.josef.josefmobile.R;
 import com.josef.mobile.model.MainActivityAdapterBody;
-import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,9 +34,7 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
-        holder.mTextView.setText(mValues.get(position).getName());
         holder.itemView.setTag(mValues.get(position));
-        holder.itemView.setOnClickListener(mOnClickListener);
 
        // Picasso.get().load(R.drawable.ic_folder_black_24dp).into(holder.imageButton);
     }
@@ -56,13 +50,9 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        public final TextView mTextView;
-        public final ImageView imageButton;
 
         ViewHolder(View view) {
             super(view);
-            mTextView = (TextView) view.findViewById(R.id.main_text);
-            imageButton = itemView.findViewById(R.id.imageButton);
         }
     }
 }
