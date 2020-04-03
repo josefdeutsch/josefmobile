@@ -1,14 +1,15 @@
-package com.josef.mobile.free;
+package com.josef.mobile;
 
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Lifecycle;
 
 import com.josef.josefmobile.R;
 
@@ -16,12 +17,12 @@ import com.josef.josefmobile.R;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link DetailFragment.OnFragmentInteractionListener} interface
+ * {@link MainActivityViewPagerFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link DetailFragment#newInstance} factory method to
+ * Use the {@link MainActivityViewPagerFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DetailFragment extends Fragment {
+public class MainActivityViewPagerFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -33,7 +34,7 @@ public class DetailFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public DetailFragment() {
+    public MainActivityViewPagerFragment() {
         // Required empty public constructor
     }
 
@@ -46,8 +47,8 @@ public class DetailFragment extends Fragment {
      * @return A new instance of fragment MainActivityViewPagerFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static DetailFragment newInstance(String param1, String param2) {
-        DetailFragment fragment = new DetailFragment();
+    public static MainActivityViewPagerFragment newInstance(String param1, String param2) {
+        MainActivityViewPagerFragment fragment = new MainActivityViewPagerFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -68,7 +69,7 @@ public class DetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_detail, container, false);
+        return inflater.inflate(R.layout.mainactiviy_viewpagerfragment, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

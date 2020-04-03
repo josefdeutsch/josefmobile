@@ -21,13 +21,13 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_splash);
         //btn = findViewById(R.id.btn);
         setTransparentStatusBarLollipop();
     }
 
     public void performPresenterActivity(View view) {
-        Intent intent = new Intent(this, PresenterActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
