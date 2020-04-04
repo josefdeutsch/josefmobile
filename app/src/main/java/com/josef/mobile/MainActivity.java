@@ -72,9 +72,7 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
         final MainActivityAdapter simpleAdapter = new MainActivityAdapter(getApplicationContext(),getList(new ArrayList()));
         mRecyclerView.setAdapter(simpleAdapter);
-        DividerItemDecoration itemDecorator = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
-        itemDecorator.setDrawable(ContextCompat.getDrawable(this, R.drawable.divider));
-        mRecyclerView.addItemDecoration(itemDecorator);
+
     }
 
 
@@ -90,6 +88,17 @@ public class MainActivity extends AppCompatActivity {
         arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/0008.png");
         arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/0009.png");
         arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/0010.png");
+
+        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00010621.png");
+        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00020621.png");
+        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00030621.png");
+        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00040621.png");
+        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00050621.png");
+        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00060621.png");
+        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00070621.png");
+        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00080621.png");
+        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00090621.png");
+        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00100621.png");
 
 
         return arrayList;
