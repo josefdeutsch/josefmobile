@@ -48,7 +48,7 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
                 .load(mValues.get(position).getDescription())
                 .centerCrop()
                 .into(holder.imageButton);**/
-        Picasso.get().load(mValues.get(position)).config(Bitmap.Config.RGB_565)
+        Picasso.get().load(mValues.get(position)).config(Bitmap.Config.ARGB_8888)
                 .fit().centerCrop().into(holder.imageView);
     }
 

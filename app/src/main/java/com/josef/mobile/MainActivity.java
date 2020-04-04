@@ -8,8 +8,13 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
+
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.josef.josefmobile.R;
 import com.josef.mobile.components.MainActivityAdapter;
@@ -32,12 +37,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         setContentView(R.layout.activity_main);
         setupRecyclerView();
 
         myViewPager2 = findViewById(R.id.viewPager2);
-        myAdapter = new MainActivityViewPagerAdapter(this,getList(new ArrayList()));
+        myAdapter = new MainActivityViewPagerAdapter(this, getList(new ArrayList()));
         myViewPager2.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         myViewPager2.setAdapter(myAdapter);
         myViewPager2.setOffscreenPageLimit(3);
@@ -45,18 +49,35 @@ public class MainActivity extends AppCompatActivity {
         final float pageMargin = getResources().getDimensionPixelOffset(R.dimen.pageMargin);
         final float pageOffset = getResources().getDimensionPixelOffset(R.dimen.offset);
 
+        /** myViewPager2.setPageTransformer(new ViewPager2.PageTransformer() {
+        @Override public void transformPage(@NonNull View page, float position) {
+        float myOffset = position * -(2 * pageOffset + pageMargin);
+        if (myViewPager2.getOrientation() == ViewPager2.ORIENTATION_HORIZONTAL) {
+        if (ViewCompat.getLayoutDirection(myViewPager2) == ViewCompat.LAYOUT_DIRECTION_RTL) {
+        page.setTranslationX(-myOffset);
+        } else {
+        page.setTranslationX(myOffset);
+        }
+        } else {
+        page.setTranslationY(myOffset);
+        }
+        }
+        });**/
         myViewPager2.setPageTransformer(new ViewPager2.PageTransformer() {
             @Override
             public void transformPage(@NonNull View page, float position) {
                 float myOffset = position * -(2 * pageOffset + pageMargin);
-                if (myViewPager2.getOrientation() == ViewPager2.ORIENTATION_HORIZONTAL) {
-                    if (ViewCompat.getLayoutDirection(myViewPager2) == ViewCompat.LAYOUT_DIRECTION_RTL) {
-                        page.setTranslationX(-myOffset);
-                    } else {
-                        page.setTranslationX(myOffset);
-                    }
+                float scaleFactor = Math.max(0.7f, 1 - Math.abs(position - 0.14285715f));
+                if (position < -1) {
+                    page.setTranslationX(-myOffset);
+                    //page.setAlpha(scaleFactor);
+                } else if (position <= 1) {
+                    page.setTranslationX(myOffset);
+                    page.setScaleY(scaleFactor);
+
                 } else {
-                    page.setTranslationY(myOffset);
+                    //page.setAlpha(scaleFactor);
+                    page.setTranslationX(myOffset);
                 }
             }
         });
@@ -64,13 +85,12 @@ public class MainActivity extends AppCompatActivity {
         myViewPager2.setCurrentItem(1);
     }
 
-
     private void setupRecyclerView() {
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
-        final MainActivityAdapter simpleAdapter = new MainActivityAdapter(getApplicationContext(),getList(new ArrayList()));
+        final MainActivityAdapter simpleAdapter = new MainActivityAdapter(getApplicationContext(), getList(new ArrayList()));
         mRecyclerView.setAdapter(simpleAdapter);
 
     }
