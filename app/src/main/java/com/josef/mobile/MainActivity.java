@@ -2,7 +2,9 @@ package com.josef.mobile;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
@@ -14,6 +16,7 @@ import com.josef.mobile.components.MainActivityAdapter;
 import com.josef.mobile.components.MainActivityViewPagerAdapter;
 import com.josef.mobile.model.MainActivityAdapterBody;
 
+import java.io.File;
 import java.util.ArrayList;
 
 
@@ -34,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         setupRecyclerView();
 
         myViewPager2 = findViewById(R.id.viewPager2);
-        myAdapter = new MainActivityViewPagerAdapter(this);
+        myAdapter = new MainActivityViewPagerAdapter(this,getList(new ArrayList()));
         myViewPager2.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         myViewPager2.setAdapter(myAdapter);
         myViewPager2.setOffscreenPageLimit(3);
@@ -67,15 +70,28 @@ public class MainActivity extends AppCompatActivity {
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
-        final MainActivityAdapter simpleAdapter = new MainActivityAdapter(getList(new ArrayList()));
+        final MainActivityAdapter simpleAdapter = new MainActivityAdapter(getApplicationContext(),getList(new ArrayList()));
         mRecyclerView.setAdapter(simpleAdapter);
+        DividerItemDecoration itemDecorator = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        itemDecorator.setDrawable(ContextCompat.getDrawable(this, R.drawable.divider));
+        mRecyclerView.addItemDecoration(itemDecorator);
     }
 
 
-    private ArrayList<MainActivityAdapterBody> getList(ArrayList<MainActivityAdapterBody> arrayList) {
-        for (int i = 0; i <= 10 - 1; i++) {
-            arrayList.add(new MainActivityAdapterBody("name :" + i, "description :" + i));
-        }
+    private ArrayList<String> getList(ArrayList<String> arrayList) {
+
+        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/0001.png");
+        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/0002.png");
+        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/0003.png");
+        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/0004.png");
+        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/0005.png");
+        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/0006.png");
+        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/0007.png");
+        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/0008.png");
+        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/0009.png");
+        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/0010.png");
+
+
         return arrayList;
     }
 
