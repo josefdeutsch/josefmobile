@@ -10,12 +10,14 @@
     android:orientation="vertical"
     card_view:cardMaxElevation="1dp"
     card_view:cardElevation="1dp"
-    card_view:cardUseCompatPadding="true">
+    card_view:cardUseCompatPadding="true"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground">
 
     <ImageView
         android:id="@+id/imgBanner"
         android:src="@drawable/ic_webdesignsvg_02"
-
+        android:scaleType="centerCrop"
         android:layout_width="match_parent"
         android:layout_height="256dp"
         android:contentDescription="@string/app_name"/>
@@ -30,6 +32,6 @@
         android:textColor="@android:color/white"
         android:textSize="20sp"
         android:textStyle="bold"
-        tools:text="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."/>
+        tools:text="Hello"/>
 
 </RelativeLayout>

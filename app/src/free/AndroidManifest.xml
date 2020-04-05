@@ -2,7 +2,7 @@
 
     <application>
         <activity android:name="com.josef.mobile.free.DetailActivity"
-            android:parentActivityName="com.josef.mobile.PresenterActivity"
+            android:parentActivityName="com.josef.mobile.free.PresenterActivity"
             >
         </activity>
     </application>

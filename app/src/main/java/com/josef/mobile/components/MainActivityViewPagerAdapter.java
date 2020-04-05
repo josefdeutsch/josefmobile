@@ -2,6 +2,7 @@ package com.josef.mobile.components;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +11,15 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.josef.josefmobile.R;
 import com.squareup.picasso.Picasso;
 
 import java.sql.SQLTransactionRollbackException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.content.ContentValues.TAG;
 
 public class MainActivityViewPagerAdapter extends RecyclerView.Adapter<MainActivityViewPagerAdapter.MyViewHolder> {
 
@@ -36,8 +40,8 @@ public class MainActivityViewPagerAdapter extends RecyclerView.Adapter<MainActiv
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-       // Picasso.get().load(mValues.get(position)).config(Bitmap.Config.RGB_565)
-           //     .fit().centerCrop().into(holder.imageView);
+        Picasso.get().load(mValues.get(position)).config(Bitmap.Config.RGB_565)
+                .fit().centerCrop().into(holder.imageView);
     }
 
     @Override
@@ -45,16 +49,22 @@ public class MainActivityViewPagerAdapter extends RecyclerView.Adapter<MainActiv
         return mValues.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private ImageView imageView;
 
-         TextView textView;
+        TextView textView;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-        imageView = itemView.findViewById(R.id.imgBanner);
-        textView = itemView.findViewById(R.id.tvName);
+            itemView.setOnClickListener(this);
+            imageView = itemView.findViewById(R.id.imgBanner);
+            textView = itemView.findViewById(R.id.tvName);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Log.d(TAG, "onClick: hello");
         }
     }
 }

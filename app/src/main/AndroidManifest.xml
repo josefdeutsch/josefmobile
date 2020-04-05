@@ -15,7 +15,7 @@
             >
         </activity>
         <activity
-            android:name="com.josef.mobile.PresenterActivity"
+            android:name="com.josef.mobile.free.PresenterActivity"
            ></activity>
         <activity android:name="com.josef.mobile.SplashActivity">
             <intent-filter>

@@ -2,6 +2,7 @@ package com.josef.mobile.components;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,12 +47,12 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
-        holder.itemView.setTag(mValues.get(position));
+      holder.itemView.setTag(position);
        /** GlideApp.with(mContext)
                 .load(mValues.get(position).getDescription())
                 .centerCrop()
                 .into(holder.imageButton);**/
-    //    Picasso.get().load(mValues.get(position)).config(Bitmap.Config.ARGB_8888)
+//       Picasso.get().load(mValues.get(position)).config(Bitmap.Config.ARGB_8888)
             //    .fit().centerCrop().into(holder.imageView);
     }
 
@@ -65,15 +66,16 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
         notifyDataSetChanged();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder{
         ViewPager2 myViewPager2;
         private MainActivityViewPagerAdapter myAdapter;
         public ImageView imageView;
 
         ViewHolder(View view) {
             super(view);
+
             myViewPager2 = view.findViewById(R.id.viewPager);
-            myAdapter = new MainActivityViewPagerAdapter(mContext, getList(new ArrayList()));
+            myAdapter = new MainActivityViewPagerAdapter(mContext, getLists(new ArrayList()));
             myViewPager2.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
             myViewPager2.setAdapter(myAdapter);
             myViewPager2.setOffscreenPageLimit(3);
@@ -101,7 +103,34 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
                 }
             });
         }
-    } private ArrayList<String> getList(ArrayList<String> arrayList) {
+
+
+    }
+
+    private ArrayList<String> getLists(ArrayList<String> arrayList) {
+
+            arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/0001.png");
+            arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/0002.png");
+            arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/0003.png");
+            arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00010621.png");
+            arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00020621.png");
+            arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00030621.png");
+            arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00010622.png");
+            arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00020622.png");
+            arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00030622.png");
+
+
+        return arrayList;
+    }
+
+
+
+
+
+
+
+
+    private ArrayList<String> getList(ArrayList<String> arrayList) {
 
         arrayList.add("https://ya-webdesign.com/images250_/128x128-png-logos-2.png");
         arrayList.add("https://ya-webdesign.com/images250_/128x128-png-logos-2.png");
