@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:app="http://schemas.android.com/tools"
     android:layout_gravity="center"
     android:layout_margin="1dp"
     android:background="#ffffff"
@@ -12,11 +11,11 @@
     card_view:cardMaxElevation="1dp"
     card_view:cardElevation="1dp"
     card_view:cardUseCompatPadding="true">
-
-        <ImageView
-            android:id="@+id/imageButton"
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="256dp"
             />
+
 
 </RelativeLayout>

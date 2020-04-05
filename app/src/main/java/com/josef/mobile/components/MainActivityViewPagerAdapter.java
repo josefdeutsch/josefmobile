@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,22 +36,25 @@ public class MainActivityViewPagerAdapter extends RecyclerView.Adapter<MainActiv
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        Picasso.get().load(mValues.get(position)).config(Bitmap.Config.RGB_565)
-                .fit().centerCrop().into(holder.imageView);
+       // Picasso.get().load(mValues.get(position)).config(Bitmap.Config.RGB_565)
+           //     .fit().centerCrop().into(holder.imageView);
     }
 
     @Override
     public int getItemCount() {
-        return 15;
+        return mValues.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView imageView;
 
+         TextView textView;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
         imageView = itemView.findViewById(R.id.imgBanner);
+        textView = itemView.findViewById(R.id.tvName);
         }
     }
 }

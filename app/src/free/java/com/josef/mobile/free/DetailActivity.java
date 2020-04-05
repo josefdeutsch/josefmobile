@@ -36,7 +36,7 @@ public class DetailActivity extends AppCompatActivity implements DetailFragment.
     }
 
     private void setupAdapter() {
-        mViewPager2 = findViewById(R.id.viewPager2);
+        mViewPager2 = findViewById(R.id.viewPager);
         mAdapter = new ViewPagerFragmentAdapter(getSupportFragmentManager(), getLifecycle());
         mViewPager2.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         mViewPager2.setAdapter(mAdapter);

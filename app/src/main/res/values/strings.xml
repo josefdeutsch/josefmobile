@@ -1,4 +1,14 @@
 <resources>
     <string name="app_name">josefmobile</string>
     <string name="action_settings">settings</string>
+    <string name="action_mail">Mail</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_archieve">Archieve</string>
+    <string name="action_archive">Archive</string>
+    <string name="action_share">Share</string>
+    <string name="action_upload">Upload</string>
+    <string name="action_copy">Copy</string>
+    <string name="action_print">Print</string>
+    <string name="bottom_sheet_name">name</string>
+    <string name="bottom_sheet_email">email</string>
 </resources>
