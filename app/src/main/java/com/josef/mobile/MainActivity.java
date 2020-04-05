@@ -8,6 +8,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.josef.josefmobile.R;
 import com.josef.mobile.components.MainActivityAdapter;
 import com.josef.mobile.components.MainActivityViewPagerAdapter;
 import com.josef.mobile.free.PresenterActivity;
+import com.josef.mobile.free.ShareActivity;
 
 import java.util.ArrayList;
 
@@ -47,8 +49,7 @@ public class MainActivity extends AppCompatActivity {
         bar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
 
         setupRecyclerView();
-        final NestedScrollView scrollView = findViewById(R.id.nested_scrollview);
-
+       final NestedScrollView scrollView = findViewById(R.id.nested_scrollview);
         scrollView.getViewTreeObserver()
                 .addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
                     @Override
@@ -85,6 +86,9 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
 
         } else if (item.getItemId() == R.id.app_bar_share) {
+            Log.d(TAG, "onOptionsItemSelected: ");
+            Intent intent = new Intent(this, ShareActivity.class);
+            startActivity(intent);
 
         } else if (item.getItemId() == R.id.app_bar_archieve) {
 

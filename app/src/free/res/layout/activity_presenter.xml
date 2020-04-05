@@ -1,5 +1,4 @@
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_content"
@@ -65,26 +64,25 @@
                     android:id="@+id/meta_bar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:background="@color/colorBlack"
-                    >
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/article_title"
                         style="?android:attr/textAppearanceLarge"
-                        android:text="HEADER"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:text="HEADER"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
                         android:textColor="#fff"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/article_byline"
-                        android:text="SUBHEADERS"
                         style="?android:attr/textAppearanceMedium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="SUBHEADERS"
                         android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                         android:textColor="#8fff" />
                 </LinearLayout>
@@ -94,8 +92,12 @@
                     style="?android:attr/textAppearanceSmall"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."
-                    />
+                    android:textSize="22dp"
+                    android:text="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+
+                Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+
+                Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse" />
 
             </com.josef.mobile.components.MaxWidthLinearLayout>
 
@@ -103,6 +105,7 @@
 
 
     </androidx.core.widget.NestedScrollView>
+
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottom_app_bar"
         android:layout_width="match_parent"
@@ -111,14 +114,13 @@
         app:backgroundTint="@color/colorBlack"
         app:fabAlignmentMode="center"
         app:hideOnScroll="true"
-        app:layout_scrollFlags="scroll|enterAlways"
-        />
+        app:layout_scrollFlags="scroll|enterAlways" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/baseline_archive_white_24"
-        app:layout_anchor="@id/bottom_app_bar"
-        app:backgroundTint="@color/colorRed"/>
+        android:src="@drawable/ic_info_white_24dp"
+        app:backgroundTint="@color/colorRed"
+        app:layout_anchor="@id/bottom_app_bar" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -3,6 +3,9 @@ package com.josef.mobile.free;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,15 +17,19 @@ import android.view.ViewTreeObserver;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.josef.josefmobile.R;
+import com.josef.mobile.components.MainActivityAdapter;
+import com.josef.mobile.free.components.ShareActivityAdapter;
 
-public class PresenterActivity extends AppCompatActivity {
+import java.util.ArrayList;
+
+public class ShareActivity extends AppCompatActivity {
 
     private static final String TAG = "PresenterActivity";
     BottomAppBar bar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_presenter);
+        setContentView(R.layout.activity_share);
         bar = (BottomAppBar) findViewById(R.id.bottom_app_bar);
         setSupportActionBar(bar);
         bar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -49,6 +56,7 @@ public class PresenterActivity extends AppCompatActivity {
                         }
                     }
                 });
+        setupRecyclerView();
     }
 
     @Override
@@ -71,6 +79,29 @@ public class PresenterActivity extends AppCompatActivity {
 
         }
         return super.onOptionsItemSelected(item);
+    }
+    private void setupRecyclerView() {
+        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        GridLayoutManager layoutManager = new GridLayoutManager(this,2);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setHasFixedSize(true);
+        final ShareActivityAdapter simpleAdapter = new ShareActivityAdapter(getApplicationContext(), getLists(new ArrayList<String>()));
+        mRecyclerView.setAdapter(simpleAdapter);
+    }
+    private ArrayList<String> getLists(ArrayList<String> arrayList) {
+
+        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/0001.png");
+        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/0002.png");
+        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/0003.png");
+        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00010621.png");
+        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00020621.png");
+        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00030621.png");
+        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00010622.png");
+        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00020622.png");
+        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00030622.png");
+
+
+        return arrayList;
     }
 
 
