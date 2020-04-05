@@ -70,46 +70,6 @@ public class ShareActivityAdapter extends RecyclerView.Adapter<ShareActivityAdap
             super(view);
             imageView = view.findViewById(R.id.imageView);
         }
-
-
-    }
-
-    private ArrayList<String> getLists(ArrayList<String> arrayList) {
-
-            arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/0001.png");
-            arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/0002.png");
-            arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/0003.png");
-            arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00010621.png");
-            arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00020621.png");
-            arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00030621.png");
-            arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00010622.png");
-            arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00020622.png");
-            arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00030622.png");
-
-
-        return arrayList;
-    }
-
-
-
-
-
-
-
-
-    private ArrayList<String> getList(ArrayList<String> arrayList) {
-
-        arrayList.add("https://ya-webdesign.com/images250_/128x128-png-logos-2.png");
-        arrayList.add("https://ya-webdesign.com/images250_/128x128-png-logos-2.png");
-        arrayList.add("https://ya-webdesign.com/images250_/128x128-png-logos-2.png");
-
-
-       // arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00010621.png");
-       // arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00020621.png");
-       // arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00030621.png");
-
-
-        return arrayList;
     }
 }
 

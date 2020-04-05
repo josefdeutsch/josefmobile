@@ -99,7 +99,7 @@ public class ShareActivity extends AppCompatActivity {
         arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00010622.png");
         arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00020622.png");
         arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00030622.png");
-
+        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00030622.png");
 
         return arrayList;
     }
