@@ -1,6 +1,7 @@
 package com.josef.mobile.components;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.josef.josefmobile.R;
+import com.josef.mobile.free.DetailActivity;
 import com.squareup.picasso.Picasso;
 
 import java.sql.SQLTransactionRollbackException;
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.content.ContentValues.TAG;
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class MainActivityViewPagerAdapter extends RecyclerView.Adapter<MainActivityViewPagerAdapter.MyViewHolder> {
 
@@ -64,7 +67,9 @@ public class MainActivityViewPagerAdapter extends RecyclerView.Adapter<MainActiv
 
         @Override
         public void onClick(View v) {
-            Log.d(TAG, "onClick: hello");
+            Intent intent = new Intent(context, DetailActivity.class);
+            intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
         }
     }
 }

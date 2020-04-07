@@ -1,29 +1,31 @@
 package com.josef.mobile;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ShareCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
-
 import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.josef.josefmobile.R;
 import com.josef.mobile.components.MainActivityAdapter;
 import com.josef.mobile.components.MainActivityViewPagerAdapter;
 import com.josef.mobile.free.ArchiveActivity;
 import com.josef.mobile.free.PresenterActivity;
 import com.josef.mobile.free.ShareActivity;
-
 import java.util.ArrayList;
 
+import static com.josef.mobile.Config.SAMPLETEXT;
+import static com.josef.mobile.Config.TEXTTYPE;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -50,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         bar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
 
         setupRecyclerView();
-       final NestedScrollView scrollView = findViewById(R.id.nested_scrollview);
+        final NestedScrollView scrollView = findViewById(R.id.nested_scrollview);
         scrollView.getViewTreeObserver()
                 .addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
                     @Override
@@ -65,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
+
     }
 
 
@@ -81,19 +84,15 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == android.R.id.home) {
-
         } else if (item.getItemId() == R.id.app_bar_info) {
             Intent intent = new Intent(this, PresenterActivity.class);
             startActivity(intent);
-
         } else if (item.getItemId() == R.id.app_bar_share) {
             Intent intent = new Intent(this, ShareActivity.class);
             startActivity(intent);
-
         } else if (item.getItemId() == R.id.app_bar_archieve) {
             Intent intent = new Intent(this, ArchiveActivity.class);
             startActivity(intent);
-
         }
         return super.onOptionsItemSelected(item);
     }
@@ -106,5 +105,6 @@ public class MainActivity extends AppCompatActivity {
         final MainActivityAdapter simpleAdapter = new MainActivityAdapter(getApplicationContext(), null);
         mRecyclerView.setAdapter(simpleAdapter);
     }
+
 
 }

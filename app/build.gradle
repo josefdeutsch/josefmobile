@@ -53,6 +53,10 @@ android {
     lintOptions {
         abortOnError false
     }
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
 
 
     dependencies {
@@ -73,6 +77,11 @@ android {
         implementation 'com.squareup.picasso:picasso:2.71828'
         implementation "androidx.cardview:cardview:1.0.0"
         implementation "androidx.coordinatorlayout:coordinatorlayout:1.1.0"
+
+        implementation 'com.google.android.exoplayer:exoplayer-core:2.7.3'
+        implementation 'com.google.android.exoplayer:exoplayer-dash:2.7.3'
+        implementation 'com.google.android.exoplayer:exoplayer-ui:2.7.3'
+
     }
 
 }

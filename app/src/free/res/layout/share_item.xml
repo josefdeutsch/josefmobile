@@ -1,4 +1,4 @@
-<androidx.cardview.widget.CardView
+<com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -9,7 +9,9 @@
     android:background="@color/colorBlack"
     card_view:cardMaxElevation="1dp"
     card_view:cardElevation="1dp"
-    card_view:cardUseCompatPadding="true">
+    card_view:cardUseCompatPadding="true"
+
+    android:id="@+id/material_card">
     <ImageView
         android:id="@+id/imageView"
         android:src="@drawable/ic_webdesignsvg_02"
@@ -18,4 +20,4 @@
         android:layout_height="128dp"
         android:contentDescription="@string/app_name"/>
 
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

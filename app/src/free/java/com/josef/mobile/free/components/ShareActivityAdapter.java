@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.google.android.material.card.MaterialCardView;
 import com.josef.josefmobile.R;
 import com.josef.mobile.components.MainActivityViewPagerAdapter;
 import com.squareup.picasso.Picasso;
@@ -43,7 +44,6 @@ public class ShareActivityAdapter extends RecyclerView.Adapter<ShareActivityAdap
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-
       holder.itemView.setTag(position);
        /** GlideApp.with(mContext)
                 .load(mValues.get(position).getDescription())

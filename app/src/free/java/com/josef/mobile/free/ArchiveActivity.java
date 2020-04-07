@@ -2,6 +2,7 @@ package com.josef.mobile.free;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.app.ShareCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -21,6 +22,8 @@ import android.widget.TextView;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.josef.josefmobile.R;
+import com.josef.mobile.Echo;
+import com.josef.mobile.Message;
 import com.josef.mobile.free.components.DeleteCallBack;
 import com.josef.mobile.free.components.ArchiveActivityAdapter;
 
@@ -62,14 +65,6 @@ public class ArchiveActivity extends AppCompatActivity {
                         }
                     }
                 });
-
-
-
-
-
-        int marginSide = 0;
-        int marginBottom = 550;
-
         setupRecyclerView();
     }
 
@@ -125,7 +120,6 @@ public class ArchiveActivity extends AppCompatActivity {
                         View view = snackbar.getView();
                         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) view.getLayoutParams();
                         params.gravity = Gravity.TOP;
-                        //params.setMargins(0,0,0,550);
                         view.setLayoutParams(params);
                         view.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorWhite));
                         TextView snackBarText =  snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text);
@@ -134,9 +128,6 @@ public class ArchiveActivity extends AppCompatActivity {
                     }
                 }));
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
-
-        // DeleteCallBack deleteCallBack = new DeleteCallBack(simpleAdapter);
-
     }
 
     private ArrayList<String> getLists(ArrayList<String> arrayList) {
@@ -154,6 +145,25 @@ public class ArchiveActivity extends AppCompatActivity {
 
         return arrayList;
     }
+    public void performFloatingAction(View view) {
+        CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.bottom_app_bar_coord);
+        final Snackbar snackbar = Snackbar.make(coordinatorLayout, "NOT AVAILABLE..", Snackbar.LENGTH_LONG)
+                .setAction("DISMISS", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
 
+                    }
+                }).setActionTextColor(getResources().getColor(android.R.color.holo_red_light));
+
+        View view1 = snackbar.getView();
+        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) view1.getLayoutParams();
+        params.gravity = Gravity.TOP;
+        view1.setLayoutParams(params);
+        view1.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorWhite));
+        TextView snackBarText =  snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text);
+        snackBarText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorBlack));
+        snackbar.show();
+
+    }
 
 }

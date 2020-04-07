@@ -121,9 +121,9 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
+            android:onClick="performFloatingAction"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/baseline_archive_white_24"
             app:backgroundTint="@color/colorRed"
             app:layout_anchor="@id/bottom_app_bar" />
 

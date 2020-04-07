@@ -1,17 +1,13 @@
 package com.josef.mobile.free;
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ShareCompat;
 import androidx.core.widget.NestedScrollView;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
-
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.josef.josefmobile.R;
 
@@ -28,7 +24,6 @@ public class PresenterActivity extends AppCompatActivity {
         bar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Handle the navigation click by showing a BottomDrawer etc.
             }
         });
         bar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
@@ -49,6 +44,17 @@ public class PresenterActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+    public void performFloatingAction(View view) {
+        String mimeType = "text/plain";
+
+        Intent shareIntent =   ShareCompat.IntentBuilder.from(this)
+                .setType(mimeType)
+                .setText("share your selection..")
+                .getIntent();
+        if (shareIntent.resolveActivity(getPackageManager()) != null){
+            startActivity(shareIntent);
+        }
     }
 
     @Override
