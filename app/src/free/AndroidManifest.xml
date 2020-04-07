@@ -9,10 +9,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name="com.josef.mobile.free.ShareActivity"></activity>
+        <activity android:name="com.josef.mobile.free.ArchiveActivity"></activity>
+        <activity android:name="com.josef.mobile.free.ShareActivity" />
         <activity
             android:name="com.josef.mobile.free.DetailActivity"
-            android:parentActivityName="com.josef.mobile.free.PresenterActivity"></activity>
+            android:parentActivityName="com.josef.mobile.free.PresenterActivity" />
     </application>
 
 </manifest>

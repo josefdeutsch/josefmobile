@@ -64,10 +64,16 @@ public class PresenterActivity extends AppCompatActivity {
         if (item.getItemId() == android.R.id.home) {
 
         } else if (item.getItemId() == R.id.app_bar_info) {
+            Intent intent = new Intent(this, PresenterActivity.class);
+            startActivity(intent);
 
         } else if (item.getItemId() == R.id.app_bar_share) {
+            Intent intent = new Intent(this, ShareActivity.class);
+            startActivity(intent);
 
         } else if (item.getItemId() == R.id.app_bar_archieve) {
+            Intent intent = new Intent(this, ArchiveActivity.class);
+            startActivity(intent);
 
         }
         return super.onOptionsItemSelected(item);

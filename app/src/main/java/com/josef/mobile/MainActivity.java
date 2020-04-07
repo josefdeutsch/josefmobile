@@ -18,6 +18,7 @@ import com.google.android.material.bottomappbar.BottomAppBar;
 import com.josef.josefmobile.R;
 import com.josef.mobile.components.MainActivityAdapter;
 import com.josef.mobile.components.MainActivityViewPagerAdapter;
+import com.josef.mobile.free.ArchiveActivity;
 import com.josef.mobile.free.PresenterActivity;
 import com.josef.mobile.free.ShareActivity;
 
@@ -86,11 +87,12 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
 
         } else if (item.getItemId() == R.id.app_bar_share) {
-            Log.d(TAG, "onOptionsItemSelected: ");
             Intent intent = new Intent(this, ShareActivity.class);
             startActivity(intent);
 
         } else if (item.getItemId() == R.id.app_bar_archieve) {
+            Intent intent = new Intent(this, ArchiveActivity.class);
+            startActivity(intent);
 
         }
         return super.onOptionsItemSelected(item);

@@ -1,35 +1,41 @@
 package com.josef.mobile.free;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.TextView;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.josef.josefmobile.R;
-import com.josef.mobile.components.MainActivityAdapter;
-import com.josef.mobile.free.components.ShareActivityAdapter;
+import com.josef.mobile.free.components.DeleteCallBack;
+import com.josef.mobile.free.components.ArchiveActivityAdapter;
 
 import java.util.ArrayList;
 
-public class ShareActivity extends AppCompatActivity {
+public class ArchiveActivity extends AppCompatActivity {
 
     private static final String TAG = "PresenterActivity";
     BottomAppBar bar;
+    ArrayList mArraylist;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_share);
+        setContentView(R.layout.activity_archive);
         bar = (BottomAppBar) findViewById(R.id.bottom_app_bar);
         setSupportActionBar(bar);
         bar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -56,6 +62,14 @@ public class ShareActivity extends AppCompatActivity {
                         }
                     }
                 });
+
+
+
+
+
+        int marginSide = 0;
+        int marginBottom = 550;
+
         setupRecyclerView();
     }
 
@@ -86,14 +100,45 @@ public class ShareActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
     private void setupRecyclerView() {
+        mArraylist = getLists(new ArrayList<String>());
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        GridLayoutManager layoutManager = new GridLayoutManager(this,2);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
-        final ShareActivityAdapter simpleAdapter = new ShareActivityAdapter(getApplicationContext(), getLists(new ArrayList<String>()));
+        final ArchiveActivityAdapter simpleAdapter = new ArchiveActivityAdapter(getApplicationContext(), mArraylist);
         mRecyclerView.setAdapter(simpleAdapter);
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new DeleteCallBack(simpleAdapter,
+                new DeleteCallBack.SnackBarListener() {
+                    @Override
+                    public void listenToAction(final int position) {
+                        CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.bottom_app_bar_coord);
+                        final Snackbar snackbar = Snackbar.make(coordinatorLayout, "DELETE ITEM..?", Snackbar.LENGTH_LONG)
+                                .setAction("OK", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        simpleAdapter.deleteTask(position);
+                                    }
+                                }).setActionTextColor(getResources().getColor(android.R.color.holo_red_light));
+                        View view = snackbar.getView();
+                        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) view.getLayoutParams();
+                        params.gravity = Gravity.TOP;
+                        //params.setMargins(0,0,0,550);
+                        view.setLayoutParams(params);
+                        view.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorWhite));
+                        TextView snackBarText =  snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text);
+                        snackBarText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorBlack));
+                        snackbar.show();
+                    }
+                }));
+        itemTouchHelper.attachToRecyclerView(mRecyclerView);
+
+        // DeleteCallBack deleteCallBack = new DeleteCallBack(simpleAdapter);
+
     }
+
     private ArrayList<String> getLists(ArrayList<String> arrayList) {
 
         arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/0001.png");
