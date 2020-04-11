@@ -82,17 +82,6 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
             arrayList.get(7).setName("http://joseph3d.com/wp-content/uploads/2019/06/00020622.png");
             arrayList.get(8).setName("http://joseph3d.com/wp-content/uploads/2019/06/00030622.png");
 
-            /** arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/0001.png");
-             arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/0002.png");
-             arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/0002.png");
-             arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/0002.png");
-             arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00020621.png");
-             arrayList.add(("http://joseph3d.com/wp-content/uploads/2019/06/00020621.png");
-             arrayList.add(("http://joseph3d.com/wp-content/uploads/2019/06/00020621.png");
-             arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00020621.png");
-             arrayList.add(("http://joseph3d.com/wp-content/uploads/2019/06/00020621.png");**/
-
-
             myViewPager2 = view.findViewById(R.id.viewPager);
             myAdapter = new MainActivityViewPagerAdapter(mContext, arrayList);
             myViewPager2.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);

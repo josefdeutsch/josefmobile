@@ -23,7 +23,6 @@ import com.josef.mobile.components.MainActivityAdapter;
 import com.josef.mobile.components.MainActivityViewPagerAdapter;
 import com.josef.mobile.free.ArchiveActivity;
 import com.josef.mobile.free.PresenterActivity;
-import com.josef.mobile.free.ShareActivity;
 
 import java.util.ArrayList;
 
@@ -89,9 +88,6 @@ public class MainActivity extends AppCompatActivity {
         if (item.getItemId() == android.R.id.home) {
         } else if (item.getItemId() == R.id.app_bar_info) {
             Intent intent = new Intent(this, PresenterActivity.class);
-            startActivity(intent);
-        } else if (item.getItemId() == R.id.app_bar_share) {
-            Intent intent = new Intent(this, ShareActivity.class);
             startActivity(intent);
         } else if (item.getItemId() == R.id.app_bar_archieve) {
             Intent intent = new Intent(this, ArchiveActivity.class);

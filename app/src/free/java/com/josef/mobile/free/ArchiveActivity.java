@@ -84,10 +84,6 @@ public class ArchiveActivity extends AppCompatActivity {
             Intent intent = new Intent(this, PresenterActivity.class);
             startActivity(intent);
 
-        } else if (item.getItemId() == R.id.app_bar_share) {
-            Intent intent = new Intent(this, ShareActivity.class);
-            startActivity(intent);
-
         } else if (item.getItemId() == R.id.app_bar_archieve) {
             Intent intent = new Intent(this, ArchiveActivity.class);
             startActivity(intent);

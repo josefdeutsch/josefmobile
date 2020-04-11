@@ -10,12 +10,6 @@
         app:showAsAction="ifRoom"/>
 
     <item
-        android:id="@+id/app_bar_share"
-        android:icon="@drawable/ic_share_white_24dp"
-        android:title="@string/action_delete"
-        app:showAsAction="ifRoom"/>
-
-    <item
         android:id="@+id/app_bar_archieve"
         android:icon="@drawable/baseline_archive_white_24"
         android:title="@string/action_archive"
