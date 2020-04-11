@@ -1,12 +1,9 @@
 package com.josef.mobile.components;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -14,10 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.josef.josefmobile.R;
-import com.josef.mobile.model.MainActivityAdapterBody;
-import com.squareup.picasso.Picasso;
+import com.josef.mobile.model.MetaData;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,8 +69,18 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
         ViewHolder(View view) {
             super(view);
 
+            ArrayList arrayList = new ArrayList();
+
+            for (int i = 0; i <=10 ; i++) {
+                MetaData employee = new MetaData();
+                employee.setName("http://joseph3d.com/wp-content/uploads/2019/06/0001.png");
+                arrayList.add(employee);
+            }
+
+
+
             myViewPager2 = view.findViewById(R.id.viewPager);
-            myAdapter = new MainActivityViewPagerAdapter(mContext, getLists(new ArrayList()));
+            myAdapter = new MainActivityViewPagerAdapter(mContext,arrayList);
             myViewPager2.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
             myViewPager2.setAdapter(myAdapter);
             myViewPager2.setOffscreenPageLimit(3);
@@ -105,44 +110,6 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
         }
 
 
-    }
-
-    private ArrayList<String> getLists(ArrayList<String> arrayList) {
-
-            arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/0001.png");
-            arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/0002.png");
-            arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/0003.png");
-            arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00010621.png");
-            arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00020621.png");
-            arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00030621.png");
-            arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00010622.png");
-            arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00020622.png");
-            arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00030622.png");
-
-
-        return arrayList;
-    }
-
-
-
-
-
-
-
-
-    private ArrayList<String> getList(ArrayList<String> arrayList) {
-
-        arrayList.add("https://ya-webdesign.com/images250_/128x128-png-logos-2.png");
-        arrayList.add("https://ya-webdesign.com/images250_/128x128-png-logos-2.png");
-        arrayList.add("https://ya-webdesign.com/images250_/128x128-png-logos-2.png");
-
-
-       // arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00010621.png");
-       // arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00020621.png");
-       // arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00030621.png");
-
-
-        return arrayList;
     }
 }
 
