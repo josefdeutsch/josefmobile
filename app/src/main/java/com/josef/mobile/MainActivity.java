@@ -10,10 +10,12 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
+
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.josef.josefmobile.R;
@@ -22,6 +24,7 @@ import com.josef.mobile.components.MainActivityViewPagerAdapter;
 import com.josef.mobile.free.ArchiveActivity;
 import com.josef.mobile.free.PresenterActivity;
 import com.josef.mobile.free.ShareActivity;
+
 import java.util.ArrayList;
 
 import static com.josef.mobile.Config.SAMPLETEXT;
@@ -107,4 +110,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void performFloatingAction(View view) {
+        String mimeType = "text/plain";
+
+        Intent shareIntent = ShareCompat.IntentBuilder.from(this)
+                .setType(mimeType)
+                .setText("share your selection..")
+                .getIntent();
+        if (shareIntent.resolveActivity(getPackageManager()) != null) {
+            startActivity(shareIntent);
+        }
+        ArrayList<String> mShareValues = new ArrayList<String>(AppPreferences.getName(this));
+
+        Log.d(TAG, "performFloatingAction: "+mShareValues.size());
+    }
 }

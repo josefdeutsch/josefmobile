@@ -41,14 +41,7 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-
-      holder.itemView.setTag(position);
-       /** GlideApp.with(mContext)
-                .load(mValues.get(position).getDescription())
-                .centerCrop()
-                .into(holder.imageButton);**/
-//       Picasso.get().load(mValues.get(position)).config(Bitmap.Config.ARGB_8888)
-            //    .fit().centerCrop().into(holder.imageView);
+        holder.itemView.setTag(position);
     }
 
     @Override
@@ -61,7 +54,7 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
         notifyDataSetChanged();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder {
         ViewPager2 myViewPager2;
         private MainActivityViewPagerAdapter myAdapter;
         public ImageView imageView;
@@ -69,18 +62,39 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
         ViewHolder(View view) {
             super(view);
 
-            ArrayList arrayList = new ArrayList();
+            ArrayList<MetaData> arrayList = new ArrayList();
 
-            for (int i = 0; i <=10 ; i++) {
+            for (int i = 0; i <= 10; i++) {
                 MetaData employee = new MetaData();
-                employee.setName("http://joseph3d.com/wp-content/uploads/2019/06/0001.png");
                 arrayList.add(employee);
             }
 
+            arrayList.get(0).setName("http://joseph3d.com/wp-content/uploads/2019/06/00010621.png");
+            arrayList.get(1).setName("http://joseph3d.com/wp-content/uploads/2019/06/00020621.png");
+            arrayList.get(2).setName("http://joseph3d.com/wp-content/uploads/2019/06/00030621.png");
+
+
+            arrayList.get(3).setName("http://joseph3d.com/wp-content/uploads/2019/06/0001.png");
+            arrayList.get(4).setName("http://joseph3d.com/wp-content/uploads/2019/06/0002.png");
+            arrayList.get(5).setName("http://joseph3d.com/wp-content/uploads/2019/06/0003.png");
+
+            arrayList.get(6).setName("http://joseph3d.com/wp-content/uploads/2019/06/00010622.png");
+            arrayList.get(7).setName("http://joseph3d.com/wp-content/uploads/2019/06/00020622.png");
+            arrayList.get(8).setName("http://joseph3d.com/wp-content/uploads/2019/06/00030622.png");
+
+            /** arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/0001.png");
+             arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/0002.png");
+             arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/0002.png");
+             arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/0002.png");
+             arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00020621.png");
+             arrayList.add(("http://joseph3d.com/wp-content/uploads/2019/06/00020621.png");
+             arrayList.add(("http://joseph3d.com/wp-content/uploads/2019/06/00020621.png");
+             arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00020621.png");
+             arrayList.add(("http://joseph3d.com/wp-content/uploads/2019/06/00020621.png");**/
 
 
             myViewPager2 = view.findViewById(R.id.viewPager);
-            myAdapter = new MainActivityViewPagerAdapter(mContext,arrayList);
+            myAdapter = new MainActivityViewPagerAdapter(mContext, arrayList);
             myViewPager2.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
             myViewPager2.setAdapter(myAdapter);
             myViewPager2.setOffscreenPageLimit(3);
