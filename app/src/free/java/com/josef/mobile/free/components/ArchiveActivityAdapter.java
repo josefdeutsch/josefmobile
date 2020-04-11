@@ -66,6 +66,7 @@ public class ArchiveActivityAdapter extends RecyclerView.Adapter<ArchiveActivity
     public void deleteTask(int position){
         mValues.remove(position);
         notifyDataSetChanged();
+
     }
     public Context getContext(){
         return mContext;

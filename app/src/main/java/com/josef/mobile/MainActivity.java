@@ -1,7 +1,9 @@
 package com.josef.mobile;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ShareCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,13 +13,16 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.TextView;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.josef.josefmobile.R;
 import com.josef.mobile.components.MainActivityAdapter;
 import com.josef.mobile.components.MainActivityViewPagerAdapter;
@@ -107,17 +112,34 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void performFloatingAction(View view) {
-        String mimeType = "text/plain";
 
-        Intent shareIntent = ShareCompat.IntentBuilder.from(this)
-                .setType(mimeType)
-                .setText("share your selection..")
-                .getIntent();
-        if (shareIntent.resolveActivity(getPackageManager()) != null) {
-            startActivity(shareIntent);
-        }
-        ArrayList<String> mShareValues = new ArrayList<String>(AppPreferences.getName(this));
+        CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.bottom_app_bar_coord);
+        final Snackbar snackbar = Snackbar.make(coordinatorLayout, "share items.. ?", Snackbar.LENGTH_LONG)
+                .setAction("OK", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String mimeType = "text/plain";
 
-        Log.d(TAG, "performFloatingAction: "+mShareValues.size());
+                        Intent shareIntent = ShareCompat.IntentBuilder.from(MainActivity.this)
+                                .setType(mimeType)
+                                .setText("share your selection..")
+                                .getIntent();
+                        if (shareIntent.resolveActivity(getPackageManager()) != null) {
+                            startActivity(shareIntent);
+                        }
+                        ArrayList<String> mShareValues = new ArrayList<String>(AppPreferences.getName(MainActivity.this));
+                    }
+                }).setActionTextColor(getResources().getColor(android.R.color.holo_red_light));
+
+        View view1 = snackbar.getView();
+        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) view1.getLayoutParams();
+        params.gravity = Gravity.TOP;
+        view1.setLayoutParams(params);
+        view1.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorWhite));
+        TextView snackBarText =  snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text);
+        snackBarText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorBlack));
+        snackbar.show();
+
+
     }
 }

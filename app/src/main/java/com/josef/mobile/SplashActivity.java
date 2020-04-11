@@ -26,7 +26,7 @@ public class SplashActivity extends AppCompatActivity {
         setTransparentStatusBarLollipop();
     }
 
-    public void performPresenterActivity(View view) {
+    public void performMainActivity(View view) {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }

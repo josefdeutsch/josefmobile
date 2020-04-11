@@ -98,6 +98,7 @@ public class DetailFragment extends Fragment {
 
 
     private void initializePlayer() {
+      //  https://medium.com/google-exoplayer/playing-ads-with-exoplayer-and-ima-868dfd767ea
         SimpleExoPlayer player = ExoPlayerFactory.newSimpleInstance(
                 new DefaultRenderersFactory(getActivity()),
                 new DefaultTrackSelector(), new DefaultLoadControl());

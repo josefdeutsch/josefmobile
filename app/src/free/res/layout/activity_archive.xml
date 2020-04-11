@@ -123,7 +123,7 @@
             android:onClick="performFloatingAction"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_sync_white_24dp"
+            android:src="@drawable/ic_add_circle_black_24dp"
             app:backgroundTint="@color/colorRed"
             app:layout_anchor="@id/bottom_app_bar" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

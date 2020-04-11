@@ -9,26 +9,11 @@
 
     <ImageView
         android:id="@+id/logo"
+        android:onClick="performMainActivity"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/ic_webdesignsvg_02">
 
     </ImageView>
-
-    <ImageButton
-        android:id="@+id/buttonPanel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="64dp"
-        android:cropToPadding="false"
-        android:scaleType="centerCrop"
-        android:background="@color/colorWhite"
-        android:onClick="performPresenterActivity"
-        android:src="@drawable/ic_webdesignsvg_03"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-    </ImageButton>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

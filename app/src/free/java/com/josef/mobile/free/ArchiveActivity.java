@@ -23,6 +23,7 @@ import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.josef.josefmobile.R;
 import com.josef.mobile.Echo;
+import com.josef.mobile.MainActivity;
 import com.josef.mobile.Message;
 import com.josef.mobile.free.components.DeleteCallBack;
 import com.josef.mobile.free.components.ArchiveActivityAdapter;
@@ -143,11 +144,12 @@ public class ArchiveActivity extends AppCompatActivity {
     }
     public void performFloatingAction(View view) {
         CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.bottom_app_bar_coord);
-        final Snackbar snackbar = Snackbar.make(coordinatorLayout, "NOT AVAILABLE..", Snackbar.LENGTH_LONG)
-                .setAction("DISMISS", new View.OnClickListener() {
+        final Snackbar snackbar = Snackbar.make(coordinatorLayout, "add more items.. ?", Snackbar.LENGTH_LONG)
+                .setAction("OK", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
+                        Intent intent = new Intent(ArchiveActivity.this, MainActivity.class);
+                        startActivity(intent);
                     }
                 }).setActionTextColor(getResources().getColor(android.R.color.holo_red_light));
 
