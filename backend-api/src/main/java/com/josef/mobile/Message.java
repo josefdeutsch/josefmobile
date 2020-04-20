@@ -17,12 +17,23 @@
 
 package com.josef.mobile;
 
+import java.util.ArrayList;
+
 /**
  * The message bean that will be used in the echo request and response.
  */
 public class Message {
 
+    private ArrayList mArraylist;
     private String message;
+
+    public ArrayList getmArraylist() {
+        return mArraylist;
+    }
+
+    public void setmArraylist(ArrayList mArraylist) {
+        this.mArraylist = mArraylist;
+    }
 
     public String getMessage() {
         return this.message;

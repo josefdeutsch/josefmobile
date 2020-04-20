@@ -1,7 +1,6 @@
 package com.josef.mobile.components;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,35 +11,30 @@ import android.view.animation.ScaleAnimation;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ToggleButton;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.josef.josefmobile.R;
 import com.josef.mobile.AppPreferences;
-import com.josef.mobile.free.DetailActivity;
-import com.josef.mobile.model.MetaData;
 import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static com.josef.mobile.Config.APPPREFERENCE_DEFAULTVALUE;
 
 public class MainActivityViewPagerAdapter extends RecyclerView.Adapter<MainActivityViewPagerAdapter.MyViewHolder> {
 
     private Context context;
-    private List<MetaData> mValues;
+    private List<String> mValues;
     private ArrayList mShareValues;
 
-    public MainActivityViewPagerAdapter(Context context, ArrayList<MetaData> arrayList) {
+    public MainActivityViewPagerAdapter(Context context, List<String> arrayList) {
         mValues = arrayList;
         if (AppPreferences.getName(context)==null) {
             mShareValues = new ArrayList();
+            mShareValues.add(APPPREFERENCE_DEFAULTVALUE);
         } else {
             mShareValues = new ArrayList<String>(AppPreferences.getName(context));
         }
-
         this.context = context;
     }
 
@@ -53,13 +47,18 @@ public class MainActivityViewPagerAdapter extends RecyclerView.Adapter<MainActiv
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        Picasso.get().load(mValues.get(position).getName()).config(Bitmap.Config.RGB_565)
+        Picasso.get().load(mValues.get(position)).config(Bitmap.Config.RGB_565)
                 .fit().centerCrop().into(holder.imageView);
         holder.bind(mValues.get(position), position);
+    }
+    public void setmValues(List<String> strings){
+        mValues = strings;
+        notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
+        if(mValues==null)  return 0;
         return mValues.size();
     }
 
@@ -78,12 +77,12 @@ public class MainActivityViewPagerAdapter extends RecyclerView.Adapter<MainActiv
 
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(context, DetailActivity.class);
-            intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
+            //Intent intent = new Intent(context, DetailActivity.class);
+            //intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+            //context.startActivity(intent);
         }
 
-        void bind(final MetaData metaData, final int position) {
+        void bind(final String metaData, final int position) {
             final ScaleAnimation scaleAnimation = new ScaleAnimation(0.7f, 1.0f, 0.7f, 1.0f, Animation.RELATIVE_TO_SELF, 0.7f, Animation.RELATIVE_TO_SELF, 0.7f);
             scaleAnimation.setDuration(500);
             BounceInterpolator bounceInterpolator = new BounceInterpolator();
@@ -95,7 +94,7 @@ public class MainActivityViewPagerAdapter extends RecyclerView.Adapter<MainActiv
                     compoundButton.startAnimation(scaleAnimation);
                     if (isChecked) {
                         AppPreferences.clearNameList(context);
-                        mShareValues.add(metaData.getName());
+                        mShareValues.add(metaData);
                         AppPreferences.setName(context, mShareValues);
                     } else {
                         AppPreferences.clearNameList(context);

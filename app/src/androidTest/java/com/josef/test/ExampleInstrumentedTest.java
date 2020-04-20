@@ -1,4 +1,4 @@
-package com.josef.josefmobile;
+package com.josef.test;
 
 import android.content.Context;
 

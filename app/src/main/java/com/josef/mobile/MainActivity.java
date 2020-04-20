@@ -7,10 +7,8 @@ import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
-
-import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -19,34 +17,43 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.TextView;
-
 import com.google.android.material.bottomappbar.BottomAppBar;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.josef.josefmobile.R;
-import com.josef.mobile.components.MainActivityAdapter;
-import com.josef.mobile.components.MainActivityViewPagerAdapter;
 import com.josef.mobile.free.ArchiveActivity;
 import com.josef.mobile.free.PresenterActivity;
+import com.josef.mobile.idlingres.EspressoIdlingResource;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
-import static com.josef.mobile.Config.SAMPLETEXT;
-import static com.josef.mobile.Config.TEXTTYPE;
+import static com.josef.mobile.Config.VIEWPAGER_AMOUNT;
 
 public class MainActivity extends AppCompatActivity {
 
-    private MainActivityViewPagerAdapter mAdapter;
-    private ViewPager2 mViewPager2;
-    ViewPager2 myViewPager2;
-    private MainActivityViewPagerAdapter myAdapter;
-    private ArrayList<String> arrayList = new ArrayList<>();
     BottomAppBar bar;
-
+    public int index;
+    private static final String TAG = "MainActivity";
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (savedInstanceState == null) {
+            index = getIntent().getIntExtra(VIEWPAGER_AMOUNT,0);
+            MainFragment fragment = MainFragment.newInstance(index);
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragment_main, fragment)
+                    .commit();
+        }
+        if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+            EspressoIdlingResource.decrement();
+        }
 
         bar = (BottomAppBar) findViewById(R.id.bottom_app_bar);
         setSupportActionBar(bar);
@@ -58,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         });
         bar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
 
-        setupRecyclerView();
+
         final NestedScrollView scrollView = findViewById(R.id.nested_scrollview);
         scrollView.getViewTreeObserver()
                 .addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
@@ -75,17 +82,25 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+        AsyncTask asyncTask = new AsyncTask<Object, Message, Message>() {
+            @Override
+            protected Message doInBackground(Object... voids) {
+                Echo echo = new Echo();
+                Message message1 = echo.echo(new Message(),null);
+                Log.d(TAG, "doInBackground: "+message1.getMessage());
+                return message1;
+            }
+        };
+
+        
+
     }
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
-
-    private static final String TAG = "MainActivity";
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -99,15 +114,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void setupRecyclerView() {
-        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setHasFixedSize(true);
-        final MainActivityAdapter simpleAdapter = new MainActivityAdapter(getApplicationContext(), null);
-        mRecyclerView.setAdapter(simpleAdapter);
     }
 
 
@@ -139,7 +145,5 @@ public class MainActivity extends AppCompatActivity {
         TextView snackBarText =  snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text);
         snackBarText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorBlack));
         snackbar.show();
-
-
     }
 }

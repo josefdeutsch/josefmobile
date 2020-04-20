@@ -28,6 +28,8 @@ import com.google.api.server.spi.config.Named;
 import com.google.api.server.spi.config.Nullable;
 import com.google.api.server.spi.response.UnauthorizedException;
 
+import java.util.ArrayList;
+
 /**
  * The Echo API which Endpoints will be exposing.
  */
@@ -109,7 +111,8 @@ public class Echo {
     // [END echo_api_key]
 
     private Message doEcho(Message message, Integer n) {
-        if (n != null && n >= 0) {
+
+       /** if (n != null && n >= 0) {
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < n; i++) {
                 if (i > 0) {
@@ -117,10 +120,14 @@ public class Echo {
                 }
                 sb.append(message.getMessage());
             }
-            message.setMessage(sb.toString());
-        }
+           // message.setMessage(sb.toString());
+
+        }**/
+        message.setMessage("hello OGER");
         return message;
     }
+
+
 
     /**
      * Gets the authenticated user's email. If the user is not authenticated, this will return an HTTP

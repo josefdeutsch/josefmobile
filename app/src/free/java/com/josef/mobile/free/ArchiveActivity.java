@@ -107,7 +107,7 @@ public class ArchiveActivity extends AppCompatActivity {
                     @Override
                     public void listenToAction(final int position) {
                         CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.bottom_app_bar_coord);
-                        final Snackbar snackbar = Snackbar.make(coordinatorLayout, "DELETE ITEM..?", Snackbar.LENGTH_LONG)
+                        final Snackbar snackbar = Snackbar.make(coordinatorLayout, "delete item..?", Snackbar.LENGTH_LONG)
                                 .setAction("OK", new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {

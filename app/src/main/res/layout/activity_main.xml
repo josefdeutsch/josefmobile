@@ -94,12 +94,10 @@
 
             </com.josef.mobile.components.MaxWidthLinearLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view"
+            <FrameLayout
+                android:id="@+id/fragment_main"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            </androidx.recyclerview.widget.RecyclerView>
+                android:layout_height="wrap_content"/>
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

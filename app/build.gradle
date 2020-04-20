@@ -82,6 +82,17 @@ android {
         implementation 'com.google.android.exoplayer:exoplayer-dash:2.7.3'
         implementation 'com.google.android.exoplayer:exoplayer-ui:2.7.3'
 
+
+
+        implementation 'androidx.test.espresso:espresso-idling-resource:3.2.0'
+        androidTestImplementation 'androidx.test.espresso:espresso-idling-resource:3.2.0'
+
+        implementation 'androidx.work:work-runtime:2.3.4'
+        implementation "androidx.concurrent:concurrent-futures:1.0.0"
+
+        implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+
+
     }
 
 }
