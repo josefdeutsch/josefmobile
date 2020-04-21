@@ -123,7 +123,7 @@ public class Echo {
            // message.setMessage(sb.toString());
 
         }**/
-        message.setMessage("hello OGER");
+        message.setMessage("[{\"metadata\":{\"name\":\"object0\",\"png\":\"http:\\/\\/joseph3d.com\\/wp-content\\/uploads\\/2019\\/06\\/00010621.png\",\"url\":\"http:\\/\\/joseph3d.com\\/wp-content\\/uploads\\/2019\\/06\\/g0001.mp4\"}},{\"metadata\":{\"name\":\"object1\",\"png\":\"http:\\/\\/joseph3d.com\\/wp-content\\/uploads\\/2019\\/06\\/00020621.png\",\"url\":\"http:\\/\\/joseph3d.com\\/wp-content\\/uploads\\/2019\\/06\\/g0002.mp4\"}},{\"metadata\":{\"name\":\"object2\",\"png\":\"http:\\/\\/joseph3d.com\\/wp-content\\/uploads\\/2019\\/06\\/00030621.png\",\"url\":\"http:\\/\\/joseph3d.com\\/wp-content\\/uploads\\/2019\\/06\\/g0003.mp4\"}}]");
         return message;
     }
 

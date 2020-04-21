@@ -1,6 +1,7 @@
 package com.josef.mobile.net;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,6 +12,12 @@ import androidx.work.WorkerParameters;
 
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.gson.Gson;
+import com.josef.mobile.Echo;
+import com.josef.mobile.Message;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -55,9 +62,23 @@ public class CallBackWorker extends ListenableWorker {
 
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
-                          String output = mGson.toJson(input(index));
-                          final Data data = buildData(output);
-                            completer.set(Result.success(data));
+                          //String output = mGson.toJson(input(index));
+
+                        Echo echo = new Echo();
+                        Message message1 = echo.echo(new Message(),null);
+                        ArrayList input = new ArrayList();
+                        try {
+                            JSONArray employeeList = new JSONArray(message1.getMessage());
+                            for (int i = 0; i < employeeList.length(); ++i) {
+                                String str = parseEmployeeObject(employeeList.getJSONObject(i));
+                                input.add(str);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        String output = mGson.toJson(input(index,input));
+                        final Data data = buildData(output);
+                        completer.set(Result.success(data));
                     }
                 };
 
@@ -72,15 +93,12 @@ public class CallBackWorker extends ListenableWorker {
             }
         });
     }
-    private ArrayList<String> input(int index){
+    private ArrayList<String> input(int index, ArrayList input){
 
-        ArrayList<String> nestedList = new ArrayList();
         ArrayList<ArrayList<String>> dataSet = new ArrayList<>();
-        for (int i = 0; i <= 50-1; i++) {
-            nestedList.add("http://joseph3d.com/wp-content/uploads/2019/06/00010621.png");
-        }
+
         for (int i = 0; i <= 10-1 ; i++) {
-            dataSet.add(nestedList);
+            dataSet.add(input);
         }
         return dataSet.get(index);
     }
@@ -90,5 +108,13 @@ public class CallBackWorker extends ListenableWorker {
         return new Data.Builder()
                 .putString(KEY_TASK_OUTPUT,strings)
                 .build();
+    }
+    private String parseEmployeeObject(JSONObject employee) throws JSONException {
+        JSONObject employeeObject = (JSONObject) employee.get("metadata");
+        //String firstName = (String) employeeObject.get("name");
+
+        String png = (String) employeeObject.get("png");
+        return png;
+
     }
 }

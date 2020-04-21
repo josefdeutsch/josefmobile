@@ -5,8 +5,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ShareCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -23,13 +22,7 @@ import com.josef.josefmobile.R;
 import com.josef.mobile.free.ArchiveActivity;
 import com.josef.mobile.free.PresenterActivity;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 import static com.josef.mobile.Config.VIEWPAGER_AMOUNT;
 
@@ -92,7 +85,9 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        
+        asyncTask.execute();
+
+
 
     }
     @Override

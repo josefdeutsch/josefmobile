@@ -110,6 +110,7 @@ public class MainFragment extends Fragment {
             child.setAdapter(myAdapter);
             child.setOffscreenPageLimit(3);
             mLayout.addView(child);
+
             final float pageMargin = getActivity().getResources().getDimensionPixelOffset(R.dimen.pageMargin);
             final float pageOffset = getActivity().getResources().getDimensionPixelOffset(R.dimen.offset);
 

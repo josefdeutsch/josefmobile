@@ -51,7 +51,7 @@ public class CallBackWorkerSplashActivity extends ListenableWorker {
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        intent.putExtra(VIEWPAGER_AMOUNT,5);
+                        intent.putExtra(VIEWPAGER_AMOUNT,3-1);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         getApplicationContext().startActivity(intent);
                         completer.set(Result.success(data));
