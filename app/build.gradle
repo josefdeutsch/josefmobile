@@ -58,6 +58,11 @@ android {
     }
 
 
+    configurations {
+        cleanedAnnotations
+        compile.exclude group: 'org.jetbrains', module: 'annotations'
+    }
+
 
     dependencies {
         implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -83,7 +88,6 @@ android {
         implementation 'com.google.android.exoplayer:exoplayer-ui:2.7.3'
 
 
-
         implementation 'androidx.test.espresso:espresso-idling-resource:3.2.0'
         androidTestImplementation 'androidx.test.espresso:espresso-idling-resource:3.2.0'
 
@@ -91,6 +95,14 @@ android {
         implementation "androidx.concurrent:concurrent-futures:1.0.0"
 
         implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+
+        androidTestImplementation("com.squareup.okhttp3:mockwebserver:3.7.0")
+        debugImplementation 'androidx.fragment:fragment-testing:1.1.0'
+        debugImplementation 'androidx.test:core:1.2.0'
+
+        androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
+        androidTestImplementation 'androidx.test:runner:1.1.0'
+        androidTestImplementation 'androidx.test:rules:1.1.0'
 
 
     }

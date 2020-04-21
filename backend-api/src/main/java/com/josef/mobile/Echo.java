@@ -74,6 +74,7 @@ public class Echo {
     public Message echo(Message message, @Named("n") @Nullable Integer n) {
         return doEcho(message, n);
     }
+
     // [END echo_method]
 
     /**
@@ -111,21 +112,13 @@ public class Echo {
     // [END echo_api_key]
 
     private Message doEcho(Message message, Integer n) {
-
-       /** if (n != null && n >= 0) {
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < n; i++) {
-                if (i > 0) {
-                    sb.append(" ");
-                }
-                sb.append(message.getMessage());
-            }
-           // message.setMessage(sb.toString());
-
-        }**/
-        message.setMessage("[{\"metadata\":{\"name\":\"object0\",\"png\":\"http:\\/\\/joseph3d.com\\/wp-content\\/uploads\\/2019\\/06\\/00010621.png\",\"url\":\"http:\\/\\/joseph3d.com\\/wp-content\\/uploads\\/2019\\/06\\/g0001.mp4\"}},{\"metadata\":{\"name\":\"object1\",\"png\":\"http:\\/\\/joseph3d.com\\/wp-content\\/uploads\\/2019\\/06\\/00020621.png\",\"url\":\"http:\\/\\/joseph3d.com\\/wp-content\\/uploads\\/2019\\/06\\/g0002.mp4\"}},{\"metadata\":{\"name\":\"object2\",\"png\":\"http:\\/\\/joseph3d.com\\/wp-content\\/uploads\\/2019\\/06\\/00030621.png\",\"url\":\"http:\\/\\/joseph3d.com\\/wp-content\\/uploads\\/2019\\/06\\/g0003.mp4\"}}]");
+        if(n == 0){message.setMessage("3");}
+        else if(n == 1){message.setMessage(Data.project3gold);}
+        else if(n == 2){message.setMessage(Data.project2silver);}
+        else if(n == 3){message.setMessage(Data.project1bronze);}
         return message;
     }
+
 
 
 

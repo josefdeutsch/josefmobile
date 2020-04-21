@@ -9,6 +9,7 @@ public class Config {
 
 
     public static final String KEY_TASK_OUTPUT = "service_request";
+    public static final String KEY_TASK_ERROR = "error_request";
     public static final String WORKREQUEST_VIEWPAGER = "viewpager_request";
     public static final String WORKREQUEST_AMOUNT = "workrequest_amount";
 

@@ -2,6 +2,7 @@ package com.josef.mobile.components;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.josef.josefmobile.R;
 import com.josef.mobile.AppPreferences;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,10 +30,10 @@ import static com.josef.mobile.Config.APPPREFERENCE_DEFAULTVALUE;
 public class MainActivityViewPagerAdapter extends RecyclerView.Adapter<MainActivityViewPagerAdapter.MyViewHolder> {
 
     private Context context;
-    private List<String> mValues;
+    private JSONArray mValues;
     private ArrayList mShareValues;
 
-    public MainActivityViewPagerAdapter(Context context, List<String> arrayList) {
+    public MainActivityViewPagerAdapter(Context context, JSONArray arrayList) {
         mValues = arrayList;
         if (AppPreferences.getName(context)==null) {
             mShareValues = new ArrayList();
@@ -47,19 +53,30 @@ public class MainActivityViewPagerAdapter extends RecyclerView.Adapter<MainActiv
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        Picasso.get().load(mValues.get(position)).config(Bitmap.Config.RGB_565)
-                .fit().centerCrop().into(holder.imageView);
-        holder.bind(mValues.get(position), position);
+
+        try {
+            JSONObject container = mValues.getJSONObject(position);
+            JSONObject metadata = (JSONObject) container.get("metadata");
+            String name = (String) metadata.get("name");
+            String png = (String) metadata.get("png");
+            Picasso.get().load(png).config(Bitmap.Config.RGB_565)
+                    .fit().centerCrop().into(holder.imageView);
+            String url = (String) metadata.get("url");
+            holder.bind(url, position);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
-    public void setmValues(List<String> strings){
-        mValues = strings;
+    public void setmValues(JSONArray arrayList){
+        mValues = arrayList;
         notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
         if(mValues==null)  return 0;
-        return mValues.size();
+        return mValues.length();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

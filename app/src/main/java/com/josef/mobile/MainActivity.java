@@ -75,17 +75,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-        AsyncTask asyncTask = new AsyncTask<Object, Message, Message>() {
-            @Override
-            protected Message doInBackground(Object... voids) {
-                Echo echo = new Echo();
-                Message message1 = echo.echo(new Message(),null);
-                Log.d(TAG, "doInBackground: "+message1.getMessage());
-                return message1;
-            }
-        };
 
-        asyncTask.execute();
 
 
 

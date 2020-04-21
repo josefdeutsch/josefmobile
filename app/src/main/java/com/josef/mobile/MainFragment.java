@@ -2,6 +2,7 @@ package com.josef.mobile;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,11 +32,15 @@ import com.josef.mobile.idlingres.EspressoIdlingResource;
 import com.josef.mobile.net.CallBackWorker;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 
+import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.josef.mobile.Config.KEY_TASK_OUTPUT;
 import static com.josef.mobile.Config.VIEWPAGER_AMOUNT;
 import static com.josef.mobile.Config.WORKREQUEST_AMOUNT;
@@ -92,6 +97,7 @@ public class MainFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             amountOfViewpager = getArguments().getInt(VIEWPAGER_AMOUNT,0);
+            Log.d(TAG, "onCreate: "+amountOfViewpager);
         }
     }
 
@@ -101,9 +107,10 @@ public class MainFragment extends Fragment {
         View layoutInflater = inflater.inflate(R.layout.fragment_main, container, false);
         mLayoutInflater = LayoutInflater.from(getActivity());
         mLayout = layoutInflater.findViewById(R.id.container);
-        EspressoIdlingResource.increment();
 
-        for (int index = 0; index <= amountOfViewpager; index++) {
+
+        for (int index = 1; index <= amountOfViewpager; index++) {
+            EspressoIdlingResource.increment();
             ViewPager2 child = (ViewPager2) mLayoutInflater.inflate(R.layout.viewpager, null);
             final MainActivityViewPagerAdapter myAdapter= new MainActivityViewPagerAdapter(getActivity(), null);
             child.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
@@ -166,9 +173,14 @@ public class MainFragment extends Fragment {
                     public void onChanged(@Nullable WorkInfo workInfo) {
                         if (workInfo != null) {
                             if (workInfo.getState().isFinished()) {
-                                ArrayList<String> arrayList = getViewPagerContent(workInfo);
-                                myAdapter.setmValues(arrayList);
-
+                                String output = getViewPagerContent(workInfo);
+                                try {
+                                    JSONArray input = new JSONArray(output);
+                                    myAdapter.setmValues(input);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                Log.d(TAG, "onChanged: ");
                                 if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
                                      EspressoIdlingResource.decrement();
                                 }
@@ -179,13 +191,10 @@ public class MainFragment extends Fragment {
     }
 
     @Nullable
-    private ArrayList<String> getViewPagerContent(@NotNull WorkInfo workInfo) {
-        Gson gson = new Gson();
+    private String getViewPagerContent(@NotNull WorkInfo workInfo) {
         Data data = workInfo.getOutputData();
         String output = data.getString(KEY_TASK_OUTPUT);
-        Type token = new TypeToken<ArrayList<String>>() {
-        }.getType();
-        return gson.fromJson(output, token);
+        return output;
     }
 
     @NotNull
