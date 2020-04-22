@@ -12,7 +12,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name="com.josef.mobile.Error2Activity"></activity>
         <activity
             android:name="com.josef.mobile.ErrorActivity"
             android:parentActivityName="com.josef.mobile.MainActivity"></activity>
