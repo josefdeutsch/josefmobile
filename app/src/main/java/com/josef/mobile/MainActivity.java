@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -31,7 +32,7 @@ import java.util.ArrayList;
 import static com.josef.mobile.Config.ONVIEWPAGERINITLISTENER;
 import static com.josef.mobile.Config.VIEWPAGER_AMOUNT;
 
-public class MainActivity extends AppCompatActivity implements MainFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity {
     private AlertDialog mDialog;
     BottomAppBar bar;
     public int index;
@@ -53,8 +54,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
         bar = (BottomAppBar) findViewById(R.id.bottom_app_bar);
         setSupportActionBar(bar);
         bar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
-
-
+        
         final NestedScrollView scrollView = findViewById(R.id.nested_scrollview);
         scrollView.getViewTreeObserver()
                 .addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
@@ -79,7 +79,12 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
         builder.setView(R.layout.progressdialog);
         mDialog = builder.create();
         mDialog.show();
-
+        (new Handler()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+             mDialog.hide();
+            }
+        }, 5000);
 
     }
 
@@ -135,12 +140,4 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
         snackbar.show();
     }
 
-    @Override
-    public void onFragmentInteraction(String key, String value) {
-
-        if(key == ONVIEWPAGERINITLISTENER){
-            mDialog.hide();
-        }
-
-    }
 }

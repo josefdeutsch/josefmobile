@@ -52,7 +52,7 @@ public class MainFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private OnFragmentInteractionListener mListener;
+
 
     private View mRootView;
     private Data mData;
@@ -71,14 +71,7 @@ public class MainFragment extends Fragment {
     public MainFragment() {
         // Required empty public constructor
     }
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param amount Parameter 1
-     * @return A new instance of fragment MainFragment.
-     */
-    // TODO: Rename and change types and number of parameters
+
     public static MainFragment newInstance(int amount) {
         MainFragment fragment = new MainFragment();
         Bundle args = new Bundle();
@@ -140,13 +133,6 @@ public class MainFragment extends Fragment {
             setupWorkRequest(index);
             executeWorkRequest();
             setupViewPager(myAdapter);
-
-            (new Handler()).postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mListener.onFragmentInteraction(ONVIEWPAGERINITLISTENER,"true");
-                }
-            }, 5000);
         }
 
         return layoutInflater;
@@ -214,26 +200,6 @@ public class MainFragment extends Fragment {
         return new Data.Builder()
                 .putInt(WORKREQUEST_AMOUNT, index)
                 .build();
-    }
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(String key, String value);
     }
 
 
