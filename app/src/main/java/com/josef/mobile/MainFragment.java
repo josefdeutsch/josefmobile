@@ -1,5 +1,7 @@
 package com.josef.mobile;
 
+import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -7,10 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.test.espresso.IdlingResource;
@@ -23,25 +25,16 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.Operation;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.josef.josefmobile.R;
 import com.josef.mobile.components.MainActivityViewPagerAdapter;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
 import com.josef.mobile.net.CallBackWorker;
-
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-
-
 import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.josef.mobile.Config.KEY_TASK_OUTPUT;
+import static com.josef.mobile.Config.ONVIEWPAGERINITLISTENER;
 import static com.josef.mobile.Config.VIEWPAGER_AMOUNT;
 import static com.josef.mobile.Config.WORKREQUEST_AMOUNT;
 import static com.josef.mobile.Config.WORKREQUEST_VIEWPAGER;
@@ -59,6 +52,7 @@ public class MainFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private OnFragmentInteractionListener mListener;
 
     private View mRootView;
     private Data mData;
@@ -71,6 +65,7 @@ public class MainFragment extends Fragment {
     private LinearLayout mLayout;
     // TODO: Rename and change types of parameters
     private int amountOfViewpager;
+
 
 
     public MainFragment() {
@@ -129,7 +124,7 @@ public class MainFragment extends Fragment {
                     float scaleFactor = Math.max(0.7f, 1 - Math.abs(position - 0.14285715f));
                     if (position < -1) {
                         page.setTranslationX(-myOffset);
-                       // page.setAlpha(scaleFactor);
+                        // page.setAlpha(scaleFactor);
 
                     } else if (position <= 1) {
                         page.setTranslationX(myOffset);
@@ -145,7 +140,15 @@ public class MainFragment extends Fragment {
             setupWorkRequest(index);
             executeWorkRequest();
             setupViewPager(myAdapter);
+
+            (new Handler()).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mListener.onFragmentInteraction(ONVIEWPAGERINITLISTENER,"true");
+                }
+            }, 5000);
         }
+
         return layoutInflater;
     }
 
@@ -154,7 +157,6 @@ public class MainFragment extends Fragment {
         mConstraints = buildConstraints();
         mDownload = buildOneTimeWorkRequest(mData, mConstraints);
     }
-
     private void executeWorkRequest() {
         WorkManager.getInstance(getActivity()).beginUniqueWork(WORKREQUEST_VIEWPAGER + mDownload.getId(),
                 ExistingWorkPolicy.KEEP, mDownload).enqueue().getState().observe(this, new Observer<Operation.State>() {
@@ -165,7 +167,6 @@ public class MainFragment extends Fragment {
             }
         });
     }
-
     private void setupViewPager(final MainActivityViewPagerAdapter myAdapter) {
         WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(mDownload.getId())
                 .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
@@ -180,16 +181,14 @@ public class MainFragment extends Fragment {
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
-                                Log.d(TAG, "onChanged: ");
                                 if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
-                                     EspressoIdlingResource.decrement();
+                                    EspressoIdlingResource.decrement();
                                 }
                             }
                         }
                     }
                 });
     }
-
     @Nullable
     private String getViewPagerContent(@NotNull WorkInfo workInfo) {
         Data data = workInfo.getOutputData();
@@ -204,19 +203,37 @@ public class MainFragment extends Fragment {
                 .setInputData(data)
                 .build();
     }
-
     @NotNull
     private Constraints buildConstraints() {
         return new Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .build();
     }
-
     @NotNull
     private Data buildData(int index) {
         return new Data.Builder()
                 .putInt(WORKREQUEST_AMOUNT, index)
                 .build();
+    }
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+    public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        void onFragmentInteraction(String key, String value);
     }
 
 

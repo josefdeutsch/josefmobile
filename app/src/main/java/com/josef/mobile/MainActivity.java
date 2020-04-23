@@ -1,12 +1,16 @@
 package com.josef.mobile;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ShareCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,14 +28,15 @@ import com.josef.mobile.free.PresenterActivity;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
 import java.util.ArrayList;
 
+import static com.josef.mobile.Config.ONVIEWPAGERINITLISTENER;
 import static com.josef.mobile.Config.VIEWPAGER_AMOUNT;
 
-public class MainActivity extends AppCompatActivity {
-
+public class MainActivity extends AppCompatActivity implements MainFragment.OnFragmentInteractionListener {
+    private AlertDialog mDialog;
     BottomAppBar bar;
     public int index;
     private static final String TAG = "MainActivity";
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,18 +49,9 @@ public class MainActivity extends AppCompatActivity {
                     .add(R.id.fragment_main, fragment)
                     .commit();
         }
-        if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
-            EspressoIdlingResource.decrement();
-        }
 
         bar = (BottomAppBar) findViewById(R.id.bottom_app_bar);
         setSupportActionBar(bar);
-        bar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Handle the navigation click by showing a BottomDrawer etc.
-            }
-        });
         bar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
 
 
@@ -75,11 +71,18 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-
-
+        if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+            EspressoIdlingResource.decrement();
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
+        builder.setView(R.layout.progressdialog);
+        mDialog = builder.create();
+        mDialog.show();
 
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -130,5 +133,14 @@ public class MainActivity extends AppCompatActivity {
         TextView snackBarText =  snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text);
         snackBarText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorBlack));
         snackbar.show();
+    }
+
+    @Override
+    public void onFragmentInteraction(String key, String value) {
+
+        if(key == ONVIEWPAGERINITLISTENER){
+            mDialog.hide();
+        }
+
     }
 }

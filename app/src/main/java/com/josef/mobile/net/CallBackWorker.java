@@ -22,6 +22,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 
+import static androidx.test.internal.runner.InstrumentationConnection.BROADCAST_FILTER;
 import static com.josef.mobile.Config.KEY_TASK_ERROR;
 import static com.josef.mobile.Config.KEY_TASK_OUTPUT;
 import static com.josef.mobile.Config.VIEWPAGER_AMOUNT;
@@ -32,9 +33,12 @@ import static com.josef.mobile.Config.WORKREQUEST_AMOUNT;
  Passwort: %(d2cIVsYKJdVNTZDhd@BR8d**/
 
 public class CallBackWorker extends ListenableWorker {
+    private Context mContext;
 
     public CallBackWorker(Context context, WorkerParameters params) {
         super(context, params);
+        mContext = context;
+
     }
 
     @NonNull
@@ -78,7 +82,6 @@ public class CallBackWorker extends ListenableWorker {
                         .build();
 
                 client.newCall(request).enqueue(callback);
-
                 return callback;
             }
         });

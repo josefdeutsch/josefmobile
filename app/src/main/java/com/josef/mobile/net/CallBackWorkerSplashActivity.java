@@ -2,30 +2,25 @@ package com.josef.mobile.net;
 
 import android.content.Context;
 import android.content.Intent;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.concurrent.futures.CallbackToFutureAdapter;
 import androidx.work.Data;
 import androidx.work.ListenableWorker;
 import androidx.work.WorkerParameters;
-
 import com.google.common.util.concurrent.ListenableFuture;
 import com.josef.mobile.Echo;
 import com.josef.mobile.ErrorActivity;
-import com.josef.mobile.MainActivity;
 import com.josef.mobile.Message;
-
 import java.io.IOException;
-
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-
 import static com.josef.mobile.Config.KEY_TASK_ERROR;
-import static com.josef.mobile.Config.VIEWPAGER_AMOUNT;
+import static com.josef.mobile.Config.KEY_TASK_OUTPUT;
+
 
 /**http://joseph3d.com/wp-admin/
  Benutzer: joseph
@@ -61,16 +56,15 @@ public class CallBackWorkerSplashActivity extends ListenableWorker {
                             getApplicationContext().startActivity(intent);
                             completer.set(Result.failure(data)); // nullpointer exception
                         }
+
                         Echo echo = new Echo();
                         Message message = echo.echo(new Message(),0);
                         String serialized = message.getMessage();
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        intent.putExtra(VIEWPAGER_AMOUNT,Integer.parseInt(serialized));
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        getApplicationContext().startActivity(intent);
+                        final Data data = buildData(KEY_TASK_OUTPUT,serialized);
                         completer.set(Result.success(data));
                     }
                 };
+
                 OkHttpClient client = new OkHttpClient();
                 Request request = new Request.Builder()
                         .url("http://joseph3d.com/wp-admin/")

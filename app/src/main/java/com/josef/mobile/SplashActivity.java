@@ -13,6 +13,7 @@ import androidx.work.ExistingWorkPolicy;
 import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.Operation;
+import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
 import android.annotation.TargetApi;
@@ -30,6 +31,10 @@ import com.josef.mobile.net.CallBackWorkerSplashActivity;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.UUID;
+
+import static com.josef.mobile.Config.KEY_TASK_OUTPUT;
+import static com.josef.mobile.Config.VIEWPAGER_AMOUNT;
 import static com.josef.mobile.Config.WORKREQUET_MAINACTIVITY;
 
 public class SplashActivity extends AppCompatActivity {
@@ -43,17 +48,35 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         setTransparentStatusBarLollipop();
-
         mData = buildData();
         mConstraints = buildConstraints();
         mDownload = buildOneTimeWorkRequest();
+
+        executeWorkRequest();
     }
 
     public void performMainActivity(View view) {
         //Intent intent = new Intent(this, MainActivity.class);
-       // startActivity(intent);
+        //startActivity(intent);
         EspressoIdlingResource.increment();
-        executeWorkRequest();
+        WorkManager.getInstance(this).getWorkInfoByIdLiveData(UUID.fromString(String.valueOf(mDownload.getId())))
+                .observe(this, new Observer<WorkInfo>() {
+                    @Override
+                    public void onChanged(@Nullable WorkInfo workInfo) {
+                        if (workInfo != null) {
+                            if (workInfo.getState().isFinished()) {
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                String amount = getAmountofViewpager(workInfo);
+                                intent.putExtra(VIEWPAGER_AMOUNT,Integer.parseInt(amount));
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+                                    EspressoIdlingResource.decrement();
+                                }
+                                getApplicationContext().startActivity(intent);
+                            }
+                        }
+                    }
+                });
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -105,7 +128,12 @@ public class SplashActivity extends AppCompatActivity {
                 .build();
     }
 
-
+    @Nullable
+    private String getAmountofViewpager(@NotNull WorkInfo workInfo) {
+        Data data = workInfo.getOutputData();
+        String output = data.getString(KEY_TASK_OUTPUT);
+        return output;
+    }
 
     @Nullable
     private IdlingResource mIdlingResource;

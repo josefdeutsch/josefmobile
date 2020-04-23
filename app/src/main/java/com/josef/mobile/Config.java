@@ -19,5 +19,7 @@ public class Config {
 
     public static final String APPPREFERENCE_DEFAULTVALUE = "appprefrence_defaultvalue";
 
+    public static final String ONVIEWPAGERINITLISTENER = "viewpagerinitlistener";
+
 
 }
