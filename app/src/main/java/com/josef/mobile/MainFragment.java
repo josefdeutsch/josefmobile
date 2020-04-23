@@ -66,8 +66,6 @@ public class MainFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private int amountOfViewpager;
 
-
-
     public MainFragment() {
         // Required empty public constructor
     }
@@ -143,6 +141,7 @@ public class MainFragment extends Fragment {
         mConstraints = buildConstraints();
         mDownload = buildOneTimeWorkRequest(mData, mConstraints);
     }
+
     private void executeWorkRequest() {
         WorkManager.getInstance(getActivity()).beginUniqueWork(WORKREQUEST_VIEWPAGER + mDownload.getId(),
                 ExistingWorkPolicy.KEEP, mDownload).enqueue().getState().observe(this, new Observer<Operation.State>() {
@@ -153,6 +152,7 @@ public class MainFragment extends Fragment {
             }
         });
     }
+
     private void setupViewPager(final MainActivityViewPagerAdapter myAdapter) {
         WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(mDownload.getId())
                 .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
@@ -175,6 +175,7 @@ public class MainFragment extends Fragment {
                     }
                 });
     }
+
     @Nullable
     private String getViewPagerContent(@NotNull WorkInfo workInfo) {
         Data data = workInfo.getOutputData();
@@ -189,12 +190,14 @@ public class MainFragment extends Fragment {
                 .setInputData(data)
                 .build();
     }
+
     @NotNull
     private Constraints buildConstraints() {
         return new Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .build();
     }
+
     @NotNull
     private Data buildData(int index) {
         return new Data.Builder()

@@ -1,6 +1,8 @@
 package com.josef.mobile.components;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +18,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.josef.josefmobile.R;
 import com.josef.mobile.AppPreferences;
+import com.josef.mobile.Example;
+import com.josef.mobile.MainActivity;
+import com.josef.mobile.free.DetailActivity;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -25,7 +30,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.josef.mobile.Config.APPPREFERENCE_DEFAULTVALUE;
+import static com.josef.mobile.Config.ONACTIVITYRESULTEXAMPLE;
 
 public class MainActivityViewPagerAdapter extends RecyclerView.Adapter<MainActivityViewPagerAdapter.MyViewHolder> {
 
@@ -94,6 +101,13 @@ public class MainActivityViewPagerAdapter extends RecyclerView.Adapter<MainActiv
 
         @Override
         public void onClick(View v) {
+
+
+
+            Intent intent = new Intent(context, DetailActivity.class);
+            MainActivity activity = (MainActivity) context;
+            activity.startActivityForResult(intent, ONACTIVITYRESULTEXAMPLE);
+
             //Intent intent = new Intent(context, DetailActivity.class);
             //intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
             //context.startActivity(intent);

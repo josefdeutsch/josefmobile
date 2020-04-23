@@ -2,11 +2,13 @@ package com.josef.mobile.free;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
@@ -36,13 +38,16 @@ public class DetailActivity extends AppCompatActivity implements DetailFragment.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        bar = (BottomAppBar) findViewById(R.id.bottom_app_bar);
-        setSupportActionBar(bar);
-        bar.setNavigationOnClickListener(new View.OnClickListener() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                onBackPressed();
             }
         });
+
+        bar = (BottomAppBar) findViewById(R.id.bottom_app_bar);
+        setSupportActionBar(bar);
         bar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
         //restart activity?
 
@@ -88,6 +93,15 @@ public class DetailActivity extends AppCompatActivity implements DetailFragment.
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("result","uff");
+        setResult(Activity.RESULT_OK,returnIntent);
+        finish();
+    }
+
+
 
     private void registerListener() {
         mViewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
@@ -109,6 +123,7 @@ public class DetailActivity extends AppCompatActivity implements DetailFragment.
     public void onFragmentInteraction(Uri uri) {
 
     }
+
 
 
     public class ViewPagerFragmentAdapter extends FragmentStateAdapter {

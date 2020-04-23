@@ -7,6 +7,7 @@ import androidx.core.app.ShareCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -21,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.josef.josefmobile.R;
@@ -28,14 +30,14 @@ import com.josef.mobile.free.ArchiveActivity;
 import com.josef.mobile.free.PresenterActivity;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
 import java.util.ArrayList;
-
-import static com.josef.mobile.Config.ONVIEWPAGERINITLISTENER;
+import static com.josef.mobile.Config.ONACTIVITYRESULTEXAMPLE;
 import static com.josef.mobile.Config.VIEWPAGER_AMOUNT;
 
 public class MainActivity extends AppCompatActivity {
     private AlertDialog mDialog;
     BottomAppBar bar;
     public int index;
+    String result;
     private static final String TAG = "MainActivity";
 
     @Override
@@ -43,18 +45,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         if (savedInstanceState == null) {
             index = getIntent().getIntExtra(VIEWPAGER_AMOUNT,0);
             MainFragment fragment = MainFragment.newInstance(index);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_main, fragment)
                     .commit();
+
         }
 
         bar = (BottomAppBar) findViewById(R.id.bottom_app_bar);
         setSupportActionBar(bar);
         bar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
-        
+
         final NestedScrollView scrollView = findViewById(R.id.nested_scrollview);
         scrollView.getViewTreeObserver()
                 .addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
@@ -74,7 +78,8 @@ public class MainActivity extends AppCompatActivity {
         if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
             EspressoIdlingResource.decrement();
         }
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        /**AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(false);
         builder.setView(R.layout.progressdialog);
         mDialog = builder.create();
@@ -84,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
              mDialog.hide();
             }
-        }, 5000);
+        }, 5000);**/
 
     }
 
@@ -109,6 +114,21 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == ONACTIVITYRESULTEXAMPLE) {
+            if(resultCode == Activity.RESULT_OK){
+
+                String result=data.getStringExtra("result");
+                Log.d(TAG, "onActivityResult: "+result);
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
+    }
 
     public void performFloatingAction(View view) {
 

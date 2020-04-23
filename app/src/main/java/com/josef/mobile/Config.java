@@ -22,4 +22,6 @@ public class Config {
     public static final String ONVIEWPAGERINITLISTENER = "viewpagerinitlistener";
 
 
+    public static final int ONACTIVITYRESULTEXAMPLE = 1;
+
 }
