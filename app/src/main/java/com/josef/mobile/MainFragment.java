@@ -9,6 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.SimpleAdapter;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
@@ -32,6 +35,8 @@ import com.josef.mobile.net.CallBackWorker;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
+
+import static android.view.ViewGroup.getChildMeasureSpec;
 import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.josef.mobile.Config.KEY_TASK_OUTPUT;
 import static com.josef.mobile.Config.ONVIEWPAGERINITLISTENER;
@@ -66,6 +71,8 @@ public class MainFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private int amountOfViewpager;
 
+    ViewPager2 child;
+
     public MainFragment() {
         // Required empty public constructor
     }
@@ -95,45 +102,32 @@ public class MainFragment extends Fragment {
         mLayout = layoutInflater.findViewById(R.id.container);
 
 
-        for (int index = 1; index <= amountOfViewpager; index++) {
+       for (int index = 1; index <= amountOfViewpager; index++) {
             EspressoIdlingResource.increment();
-            ViewPager2 child = (ViewPager2) mLayoutInflater.inflate(R.layout.viewpager, null);
+            child = (ViewPager2) mLayoutInflater.inflate(R.layout.viewpager, null);
+            new SimplePagerAdapter();
             final MainActivityViewPagerAdapter myAdapter= new MainActivityViewPagerAdapter(getActivity(), null);
             child.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
             child.setAdapter(myAdapter);
             child.setOffscreenPageLimit(3);
             mLayout.addView(child);
-
+            //https://proandroiddev.com/look-deep-into-viewpager2-13eb8e06e419
             final float pageMargin = getActivity().getResources().getDimensionPixelOffset(R.dimen.pageMargin);
             final float pageOffset = getActivity().getResources().getDimensionPixelOffset(R.dimen.offset);
+            transformCards(pageMargin, pageOffset);
 
-            //https://proandroiddev.com/look-deep-into-viewpager2-13eb8e06e419
-            child.setPageTransformer(new ViewPager2.PageTransformer() {
-                @Override
-                public void transformPage(@NonNull View page, float position) {
-                    float myOffset = position * -(2 * pageOffset + pageMargin);
-                    float scaleFactor = Math.max(0.7f, 1 - Math.abs(position - 0.14285715f));
-                    if (position < -1) {
-                        page.setTranslationX(-myOffset);
-                        // page.setAlpha(scaleFactor);
-
-                    } else if (position <= 1) {
-                        page.setTranslationX(myOffset);
-                        page.setScaleY(scaleFactor);
-
-                    } else {
-                        //page.setAlpha(scaleFactor);
-                        page.setTranslationX(myOffset);
-
-                    }
-                }
-            });
             setupWorkRequest(index);
             executeWorkRequest();
             setupViewPager(myAdapter);
         }
 
         return layoutInflater;
+    }
+
+    public void updateViewPagerPosition(int pos){
+        Toast.makeText(getActivity(),"3",
+                Toast.LENGTH_SHORT).show();
+        //child.setCurrentItem(pos);
     }
 
     private void setupWorkRequest(int index) {
@@ -205,7 +199,28 @@ public class MainFragment extends Fragment {
                 .build();
     }
 
+    private void transformCards(final float pageMargin, final float pageOffset) {
+        child.setPageTransformer(new ViewPager2.PageTransformer() {
+            @Override
+            public void transformPage(@NonNull View page, float position) {
+                float myOffset = position * -(2 * pageOffset + pageMargin);
+                float scaleFactor = Math.max(0.7f, 1 - Math.abs(position - 0.14285715f));
+                if (position < -1) {
+                    page.setTranslationX(-myOffset);
+                    // page.setAlpha(scaleFactor);
 
+                } else if (position <= 1) {
+                    page.setTranslationX(myOffset);
+                    page.setScaleY(scaleFactor);
+
+                } else {
+                    //page.setAlpha(scaleFactor);
+                    page.setTranslationX(myOffset);
+
+                }
+            }
+        });
+    }
 
 
 

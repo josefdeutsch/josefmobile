@@ -13,12 +13,12 @@ import android.view.animation.BounceInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.josef.josefmobile.R;
 import com.josef.mobile.AppPreferences;
-import com.josef.mobile.Example;
 import com.josef.mobile.MainActivity;
 import com.josef.mobile.free.DetailActivity;
 import com.squareup.picasso.Picasso;
@@ -60,7 +60,7 @@ public class MainActivityViewPagerAdapter extends RecyclerView.Adapter<MainActiv
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-
+        holder.textView.setText(String.valueOf(position));
         try {
             JSONObject container = mValues.getJSONObject(position);
             JSONObject metadata = (JSONObject) container.get("metadata");
@@ -90,12 +90,14 @@ public class MainActivityViewPagerAdapter extends RecyclerView.Adapter<MainActiv
 
         public ImageView imageView;
         public ToggleButton buttonFavorite;
+        public TextView textView;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             imageView = itemView.findViewById(R.id.imgBanner);
             buttonFavorite = itemView.findViewById(R.id.button_favorite);
+            textView = itemView.findViewById(R.id.number);
         }
 
 

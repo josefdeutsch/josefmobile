@@ -21,6 +21,16 @@
         android:scaleType="centerCrop"
         android:src="@drawable/ic_webdesignsvg_02" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/number"
+        android:textSize="22dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        >
+
+    </TextView>
     <ToggleButton
         android:id="@+id/button_favorite"
         android:layout_width="36dp"

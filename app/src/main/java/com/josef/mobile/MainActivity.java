@@ -6,6 +6,8 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ShareCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -48,9 +50,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             index = getIntent().getIntExtra(VIEWPAGER_AMOUNT,0);
-            MainFragment fragment = MainFragment.newInstance(index);
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_main, fragment)
+                    .add(R.id.fragment_main, MainFragment.newInstance(index))
                     .commit();
 
         }
@@ -123,6 +124,11 @@ public class MainActivity extends AppCompatActivity {
 
                 String result=data.getStringExtra("result");
                 Log.d(TAG, "onActivityResult: "+result);
+
+                Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragment_main);
+                if (f instanceof MainFragment) {
+                    ((MainFragment) f).updateViewPagerPosition(3);
+                }
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 //Write your code if there's no result
