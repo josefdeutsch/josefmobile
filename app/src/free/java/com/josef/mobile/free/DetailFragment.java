@@ -6,9 +6,12 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.test.espresso.IdlingResource;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.ExistingWorkPolicy;
@@ -123,6 +126,8 @@ public class DetailFragment extends Fragment {
         playerView = rooot.findViewById(R.id.video_view);
         mHeader = rooot.findViewById(R.id.article_title);
         mSubHeader = rooot.findViewById(R.id.article_byline);
+        //EspressoIdlingResource.increment();
+        mHeader.setText("uschi");
         setupWorkRequest(which);
         executeWorkRequest();
         setupViewPager(index);
@@ -160,6 +165,7 @@ public class DetailFragment extends Fragment {
                                     JSONObject container = input.getJSONObject(pos);
                                     JSONObject metadata = (JSONObject) container.get("metadata");
                                     String name = (String) metadata.get("name");
+                                    //mHeader.setText("uschi");
                                     mSubHeader.setText(name);
                                     Log.d(TAG, "onChanged: "+name);
                                     String url = (String) metadata.get("url");
@@ -223,6 +229,18 @@ public class DetailFragment extends Fragment {
         player.setPlayWhenReady(false);
         playerView.setPlayer(player);
 
+    }
+
+    @Nullable
+    private IdlingResource mIdlingResource;
+
+    @VisibleForTesting
+    @NonNull
+    public IdlingResource getIdlingResource() {
+        if (mIdlingResource == null) {
+            mIdlingResource = EspressoIdlingResource.getIdlingResource();
+        }
+        return mIdlingResource;
     }
 }
 

@@ -16,10 +16,9 @@
 
 package com.josef.mobile;
 
-import android.os.Bundle;
 import android.view.View;
 
-import androidx.fragment.app.testing.FragmentScenario;
+import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.IdlingRegistry;
 import androidx.test.espresso.IdlingResource;
 import androidx.test.espresso.ViewInteraction;
@@ -27,20 +26,17 @@ import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
-
 import com.josef.josefmobile.R;
-import com.josef.mobile.free.components.FragmentStatePagerSupport;
+import com.josef.mobile.free.DetailActivity;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
 
 import org.hamcrest.Matcher;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static com.josef.mobile.Config.VIEWPAGER_AMOUNT;
 import static com.josef.mobile.ViewPagerActions.scrollLeft;
 import static com.josef.mobile.ViewPagerActions.scrollRight;
 import static com.josef.mobile.ViewPagerActions.scrollToFirst;
@@ -51,9 +47,13 @@ import static com.josef.mobile.ViewPagerActions.scrollToLast;
 @RunWith(AndroidJUnit4.class)
 public final class ViewPagerActionsIntegrationTest {
 
-  @Rule
-  public ActivityScenarioRule<FragmentStatePagerSupport> activityTestRule =
-      new ActivityScenarioRule<>(FragmentStatePagerSupport.class);
+    /*+ Pitfalls : .................................... **/
+
+    @Rule
+  public ActivityScenarioRule<DetailActivity> activityTestRule =
+      new ActivityScenarioRule<>(DetailActivity.class);
+
+  private static IdlingResource mIdlingResource;
 
   @Test
   public void scrollRightThenLeft() {
@@ -76,7 +76,7 @@ public final class ViewPagerActionsIntegrationTest {
 
   @Test
   public void scrollToLastThenFirst() {
-    testScrollToLastThenFirst(false);
+     testScrollToLastThenFirst(false);
   }
 
   @Test
@@ -85,55 +85,56 @@ public final class ViewPagerActionsIntegrationTest {
   }
 
   private static void testScrollToLastThenFirst(boolean smoothScroll) {
-    onPager()
-        .check(matches(isShowingPage(0)))
-        .perform(scrollToLast(smoothScroll))
-        .check(matches(isShowingPage(2)))
-        .perform(scrollToFirst(smoothScroll))
-        .check(matches(isShowingPage(0)));
+
+      onPager()
+              .check(matches(isShowingPage(0)))
+              .perform(scrollToLast(true)).check(matches(isShowingPage(2)))
+              .perform(scrollToFirst(true)).check(matches(isShowingPage(0)));
   }
 
   @Test
-  public void scrollToPage() {
-    testScrollToPage(false);
-  }
+  public void scrollToPage_with_NetworkAccess() {
 
-  @Test
-  public void scrollToPage_smooth() {
-    testScrollToPage(true);
-  }
-
-  private static IdlingResource mIdlingResource;
-
-  private static void testScrollToPage(boolean smoothScroll) {
-
-    Bundle args = new Bundle();
-    args.putInt(VIEWPAGER_AMOUNT,1);
-    /**FragmentScenario<MainFragment> fragmentScenario =
-            FragmentScenario.launchInContainer(MainFragment.class, args);
-    fragmentScenario.onFragment(new FragmentScenario.FragmentAction<MainFragment>() {
-      @Override
-      public void perform(MainFragment fragment) {
-        mIdlingResource = fragment.getIdlingResource();
-        IdlingRegistry.getInstance().register(mIdlingResource);
+      for (int index = 1; index <= 3 ; index++) {
+          activityTestRule.getScenario().onActivity(new ActivityScenario.ActivityAction<DetailActivity>() {
+              @Override
+              public void perform(DetailActivity activity) {
+                  mIdlingResource =  activity.getIdlingResource();
+                  IdlingRegistry.getInstance().register(mIdlingResource);
+              }
+          });
+          testScrollToPage(index,false);
+          IdlingRegistry.getInstance().unregister(EspressoIdlingResource.getIdlingResource());
       }
-    });**/
+  }
 
-    onPager()
-        .check(matches(isShowingPage(0)))
-        .perform(ViewPagerActions.scrollToPage(2, smoothScroll))
-        .check(matches(isShowingPage(2)))
-        .perform(ViewPagerActions.scrollToPage(1, smoothScroll))
-        .check(matches(isShowingPage(1)));
-    IdlingRegistry.getInstance().unregister(EspressoIdlingResource.getIdlingResource());
+
+  @Test
+  public void scrollToPage_smooth_with_NetworkAccess() {
+
+      for (int index = 1; index <= 3 ; index++) {
+          activityTestRule.getScenario().onActivity(new ActivityScenario.ActivityAction<DetailActivity>() {
+              @Override
+              public void perform(DetailActivity activity) {
+                  mIdlingResource =  activity.getIdlingResource();
+                  IdlingRegistry.getInstance().register(mIdlingResource);
+              }
+          });
+          testScrollToPage(index,true);
+          IdlingRegistry.getInstance().unregister(EspressoIdlingResource.getIdlingResource());
+      }
+  }
+
+  private static void testScrollToPage(final int index, boolean smoothScroll) {
+    onPager().perform(ViewPagerActions.scrollToPage(index, smoothScroll));
   }
 
   private static ViewInteraction onPager() {
-    return onView(withId(R.id.pager));
+    return onView(withId(R.id.detailviewpager));
   }
 
   private static Matcher<? super View> isShowingPage(int index) {
                                 //material :gold, sculpture1 :abstract
-    return ViewMatchers.hasDescendant(ViewMatchers.withText("hello"));
+    return ViewMatchers.hasDescendant(ViewMatchers.withText("uschi"));
   }
 }

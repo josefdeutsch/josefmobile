@@ -1,5 +1,7 @@
 package com.josef.mobile.free;
 
+import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -16,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.lifecycle.Lifecycle;
+import androidx.test.espresso.IdlingResource;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
@@ -32,6 +35,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.josef.josefmobile.R;
 import com.josef.mobile.MainFragment;
 import com.josef.mobile.free.components.FragmentStatePagerSupport;
+import com.josef.mobile.idlingres.EspressoIdlingResource;
 
 public class DetailActivity extends AppCompatActivity  {
 
@@ -73,12 +77,13 @@ public class DetailActivity extends AppCompatActivity  {
                 });
         scrollView.setFillViewport (true);
 
+
+
         mViewPager = findViewById(R.id.detailviewpager);
+        //EspressoIdlingResource.increment();
         mAdapter = new ViewPagerFragmentAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mAdapter);
-        mViewPager.setOffscreenPageLimit(3);
-
-        setupAdapter();
+        mViewPager.setOffscreenPageLimit(1);
 
     }
     @Override
@@ -165,5 +170,18 @@ public class DetailActivity extends AppCompatActivity  {
         snackbar.show();
 
     }
+
+    @Nullable
+    private IdlingResource mIdlingResource;
+
+    @VisibleForTesting
+    @NonNull
+    public IdlingResource getIdlingResource() {
+        if (mIdlingResource == null) {
+            mIdlingResource = EspressoIdlingResource.getIdlingResource();
+        }
+        return mIdlingResource;
+    }
+
 }
 
