@@ -17,6 +17,8 @@
             android:parentActivityName="com.josef.mobile.MainActivity"></activity>
         <activity android:name="com.josef.mobile.free.ArchiveActivity" />
 
+        <activity android:name="com.josef.mobile.free.components.FragmentStatePagerSupport"
+            android:parentActivityName="com.josef.mobile.MainActivity"></activity>
     </application>
 
 </manifest>

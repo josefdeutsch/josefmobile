@@ -29,7 +29,7 @@ import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.josef.josefmobile.R;
 
-public class DetailActivity extends AppCompatActivity implements DetailFragment.OnFragmentInteractionListener {
+public class DetailActivity extends AppCompatActivity  {
 
     private ViewPagerFragmentAdapter mAdapter;
     private ViewPager2 mViewPager2;
@@ -119,10 +119,10 @@ public class DetailActivity extends AppCompatActivity implements DetailFragment.
         mViewPager2.setAdapter(mAdapter);
     }
 
-    @Override
+    /**@Override
     public void onFragmentInteraction(Uri uri) {
 
-    }
+    }**/
 
 
 
@@ -143,11 +143,11 @@ public class DetailActivity extends AppCompatActivity implements DetailFragment.
         public Fragment createFragment(int position) {
             switch (position) {
                 case 0:
-                    return DetailFragment.newInstance("fdfd", "dfdfdf");
+                  //  return DetailFragment.newInstance("fdfd", "dfdfdf");
                 case 1:
-                    return DetailFragment.newInstance("ddfaaadf", "dfdfdf");
+                  //  return DetailFragment.newInstance("ddfaaadf", "dfdfdf");
                 case 2:
-                    return DetailFragment.newInstance("ddfd7676f", "dfdfdf");
+                 //   return DetailFragment.newInstance("ddfd7676f", "dfdfdf");
 
             }
             return null;

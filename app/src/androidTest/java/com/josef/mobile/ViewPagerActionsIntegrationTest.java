@@ -29,6 +29,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
 import com.josef.josefmobile.R;
+import com.josef.mobile.free.components.FragmentStatePagerSupport;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
 
 import org.hamcrest.Matcher;
@@ -50,9 +51,9 @@ import static com.josef.mobile.ViewPagerActions.scrollToLast;
 @RunWith(AndroidJUnit4.class)
 public final class ViewPagerActionsIntegrationTest {
 
- /** @Rule
-  public ActivityScenarioRule<ViewPagerActivity> activityTestRule =
-      new ActivityScenarioRule<>(ViewPagerActivity.class);**/
+  @Rule
+  public ActivityScenarioRule<FragmentStatePagerSupport> activityTestRule =
+      new ActivityScenarioRule<>(FragmentStatePagerSupport.class);
 
   @Test
   public void scrollRightThenLeft() {
@@ -108,7 +109,7 @@ public final class ViewPagerActionsIntegrationTest {
 
     Bundle args = new Bundle();
     args.putInt(VIEWPAGER_AMOUNT,1);
-    FragmentScenario<MainFragment> fragmentScenario =
+    /**FragmentScenario<MainFragment> fragmentScenario =
             FragmentScenario.launchInContainer(MainFragment.class, args);
     fragmentScenario.onFragment(new FragmentScenario.FragmentAction<MainFragment>() {
       @Override
@@ -116,7 +117,7 @@ public final class ViewPagerActionsIntegrationTest {
         mIdlingResource = fragment.getIdlingResource();
         IdlingRegistry.getInstance().register(mIdlingResource);
       }
-    });
+    });**/
 
     onPager()
         .check(matches(isShowingPage(0)))
@@ -128,10 +129,10 @@ public final class ViewPagerActionsIntegrationTest {
   }
 
   private static ViewInteraction onPager() {
-    return onView(withId(R.id.viewPager));
+    return onView(withId(R.id.pager));
   }
 
   private static Matcher<? super View> isShowingPage(int index) {
-    return ViewMatchers.hasDescendant(ViewMatchers.withId(R.id.number));
+    return ViewMatchers.hasDescendant(ViewMatchers.withText("hello"));
   }
 }

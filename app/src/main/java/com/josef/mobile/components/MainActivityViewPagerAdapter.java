@@ -21,6 +21,7 @@ import com.josef.josefmobile.R;
 import com.josef.mobile.AppPreferences;
 import com.josef.mobile.MainActivity;
 import com.josef.mobile.free.DetailActivity;
+import com.josef.mobile.free.components.FragmentStatePagerSupport;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -106,7 +107,7 @@ public class MainActivityViewPagerAdapter extends RecyclerView.Adapter<MainActiv
 
 
 
-            Intent intent = new Intent(context, DetailActivity.class);
+            Intent intent = new Intent(context, FragmentStatePagerSupport.class);
             MainActivity activity = (MainActivity) context;
             activity.startActivityForResult(intent, ONACTIVITYRESULTEXAMPLE);
 

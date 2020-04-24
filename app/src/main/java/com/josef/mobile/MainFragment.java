@@ -105,7 +105,6 @@ public class MainFragment extends Fragment {
        for (int index = 1; index <= amountOfViewpager; index++) {
             EspressoIdlingResource.increment();
             child = (ViewPager2) mLayoutInflater.inflate(R.layout.viewpager, null);
-            new SimplePagerAdapter();
             final MainActivityViewPagerAdapter myAdapter= new MainActivityViewPagerAdapter(getActivity(), null);
             child.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
             child.setAdapter(myAdapter);
@@ -115,7 +114,6 @@ public class MainFragment extends Fragment {
             final float pageMargin = getActivity().getResources().getDimensionPixelOffset(R.dimen.pageMargin);
             final float pageOffset = getActivity().getResources().getDimensionPixelOffset(R.dimen.offset);
             transformCards(pageMargin, pageOffset);
-
             setupWorkRequest(index);
             executeWorkRequest();
             setupViewPager(myAdapter);
