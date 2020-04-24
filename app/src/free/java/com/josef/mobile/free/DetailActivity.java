@@ -14,7 +14,9 @@ import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.lifecycle.Lifecycle;
+import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 import android.net.Uri;
@@ -28,11 +30,14 @@ import android.widget.TextView;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.josef.josefmobile.R;
+import com.josef.mobile.MainFragment;
+import com.josef.mobile.free.components.FragmentStatePagerSupport;
 
 public class DetailActivity extends AppCompatActivity  {
 
-    private ViewPagerFragmentAdapter mAdapter;
-    private ViewPager2 mViewPager2;
+    ViewPagerFragmentAdapter mAdapter;
+    ViewPager mViewPager;
+
     BottomAppBar bar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +71,15 @@ public class DetailActivity extends AppCompatActivity  {
                         }
                     }
                 });
+        scrollView.setFillViewport (true);
+
+        mViewPager = findViewById(R.id.detailviewpager);
+        mAdapter = new ViewPagerFragmentAdapter(getSupportFragmentManager());
+        mViewPager.setAdapter(mAdapter);
+        mViewPager.setOffscreenPageLimit(3);
+
         setupAdapter();
-        registerListener();
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -103,20 +115,11 @@ public class DetailActivity extends AppCompatActivity  {
 
 
 
-    private void registerListener() {
-        mViewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                super.onPageScrolled(position, positionOffset, positionOffsetPixels);
-            }
-        });
-    }
+
 
     private void setupAdapter() {
-        mViewPager2 = findViewById(R.id.viewPager2);
-        mAdapter = new ViewPagerFragmentAdapter(getSupportFragmentManager(), getLifecycle());
-        mViewPager2.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
-        mViewPager2.setAdapter(mAdapter);
+
+
     }
 
     /**@Override
@@ -125,35 +128,23 @@ public class DetailActivity extends AppCompatActivity  {
     }**/
 
 
-
-    public class ViewPagerFragmentAdapter extends FragmentStateAdapter {
-
-
-        public ViewPagerFragmentAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
-            super(fragmentManager, lifecycle);
+    public static class ViewPagerFragmentAdapter extends FragmentStatePagerAdapter {
+        public ViewPagerFragmentAdapter(FragmentManager fm) {
+            super(fm,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         }
 
         @Override
-        public int getItemCount() {
+        public int getCount() {
             return 3;
         }
 
-        @NonNull
         @Override
-        public Fragment createFragment(int position) {
-            switch (position) {
-                case 0:
-                  //  return DetailFragment.newInstance("fdfd", "dfdfdf");
-                case 1:
-                  //  return DetailFragment.newInstance("ddfaaadf", "dfdfdf");
-                case 2:
-                 //   return DetailFragment.newInstance("ddfd7676f", "dfdfdf");
-
-            }
-            return null;
+        public Fragment getItem(int position) {
+            return DetailFragment.newInstance(1,position);
         }
-
     }
+
+
     public void performFloatingAction(View view) {
         CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.bottom_app_bar_coord);
         final Snackbar snackbar = Snackbar.make(coordinatorLayout, "add items..?", Snackbar.LENGTH_LONG)

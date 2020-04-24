@@ -105,15 +105,13 @@ public class MainActivityViewPagerAdapter extends RecyclerView.Adapter<MainActiv
         @Override
         public void onClick(View v) {
 
-
-
-            Intent intent = new Intent(context, FragmentStatePagerSupport.class);
+            Intent intent = new Intent(context, DetailActivity.class);
             MainActivity activity = (MainActivity) context;
             activity.startActivityForResult(intent, ONACTIVITYRESULTEXAMPLE);
 
-            //Intent intent = new Intent(context, DetailActivity.class);
-            //intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
-            //context.startActivity(intent);
+           // Intent intent = new Intent(context, DetailActivity.class);
+           // intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+           // context.startActivity(intent);
         }
 
         void bind(final String metaData, final int position) {

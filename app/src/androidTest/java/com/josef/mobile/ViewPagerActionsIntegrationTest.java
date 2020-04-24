@@ -133,6 +133,7 @@ public final class ViewPagerActionsIntegrationTest {
   }
 
   private static Matcher<? super View> isShowingPage(int index) {
+                                //material :gold, sculpture1 :abstract
     return ViewMatchers.hasDescendant(ViewMatchers.withText("hello"));
   }
 }
