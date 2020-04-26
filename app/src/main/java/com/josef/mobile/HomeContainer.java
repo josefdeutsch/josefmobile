@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.josef.josefmobile.R;
 
@@ -45,6 +46,8 @@ public class HomeContainer extends Fragment {
         HomeContainer fragment = new HomeContainer();
         Bundle args = new Bundle();
         args.putInt(ARG_PARAM1,which);
+
+        // APPPREFERENCE BETTER ??!?!?!?!?! TEST !?!?!?!
         if(mainkey!=null){ args.putInt(ARG_PARAM2,mainkey);}
         if(detailvalue!=null){args.putInt(ARG_PARAM3,detailvalue);}
         fragment.setArguments(args);
@@ -67,7 +70,8 @@ public class HomeContainer extends Fragment {
         View layoutInflater = inflater.inflate(R.layout.fragment_home_container, container, false);
 
        // textView = layoutInflater.findViewById(R.id.number);
-
+        Toast.makeText(getActivity(),String.valueOf(which),
+                Toast.LENGTH_SHORT).show();
         ViewPager viewPager = layoutInflater.findViewById(R.id.viewidpager);
         viewPager.setId(View.generateViewId());
         ViewPagerFragmentAdapters adapters = new ViewPagerFragmentAdapters(getChildFragmentManager(),which);

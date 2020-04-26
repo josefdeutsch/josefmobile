@@ -42,13 +42,15 @@ public class DetailActivity extends AppCompatActivity  {
 
     ViewPagerFragmentAdapter mAdapter;
     ViewPager mViewPager;
-    private int key;
+    private int which;
 
     BottomAppBar bar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +65,7 @@ public class DetailActivity extends AppCompatActivity  {
         //restart activity?
 
         if (savedInstanceState == null) {
-            key = getIntent().getIntExtra(VIEWPAGERMAINKEY,0);
+            which = getIntent().getIntExtra(VIEWPAGERMAINKEY,0);
             // fragContainer.addView(ll);
         }
 
@@ -73,7 +75,7 @@ public class DetailActivity extends AppCompatActivity  {
 
         mViewPager = findViewById(R.id.detailviewpager);
         //EspressoIdlingResource.increment();
-        mAdapter = new ViewPagerFragmentAdapter(getSupportFragmentManager());
+        mAdapter = new ViewPagerFragmentAdapter(getSupportFragmentManager(),which);
         mViewPager.setAdapter(mAdapter);
         mViewPager.setOffscreenPageLimit(3);
 
@@ -126,7 +128,7 @@ public class DetailActivity extends AppCompatActivity  {
     @Override
     public void onBackPressed() {
         Intent returnIntent = new Intent();
-        returnIntent.putExtra(VIEWPAGERMAINKEY, key);
+        returnIntent.putExtra(VIEWPAGERMAINKEY, which);
         returnIntent.putExtra(VIEWPAGERDETAILKEY, mViewPager.getCurrentItem());
         setResult(Activity.RESULT_OK,returnIntent);
         finish();
@@ -138,8 +140,11 @@ public class DetailActivity extends AppCompatActivity  {
     }**/
 
     public static class ViewPagerFragmentAdapter extends FragmentStatePagerAdapter {
-        public ViewPagerFragmentAdapter(FragmentManager fm) {
+
+        public int mWhich;
+        public ViewPagerFragmentAdapter(FragmentManager fm,int which) {
             super(fm,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+            mWhich=which;
         }
 
         @Override
@@ -149,7 +154,7 @@ public class DetailActivity extends AppCompatActivity  {
 
         @Override
         public Fragment getItem(int position) {
-            return DetailFragment.newInstance(1,position);
+            return DetailFragment.newInstance(mWhich,position);
         }
     }
 
