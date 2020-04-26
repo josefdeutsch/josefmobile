@@ -3,12 +3,9 @@ package com.josef.mobile.free;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -17,30 +14,35 @@ import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.lifecycle.Lifecycle;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.test.espresso.IdlingResource;
 import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
-import androidx.viewpager2.widget.ViewPager2;
-import android.net.Uri;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.TextView;
-
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.josef.josefmobile.R;
-import com.josef.mobile.MainFragment;
-import com.josef.mobile.free.components.FragmentStatePagerSupport;
+import com.josef.mobile.HomeContainer;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
+
+import static com.josef.mobile.Config.VIEWPAGERDETAILKEY;
+import static com.josef.mobile.Config.VIEWPAGERMAINKEY;
+import static com.josef.mobile.Config.VIEWPAGER_AMOUNT;
 
 public class DetailActivity extends AppCompatActivity  {
 
     ViewPagerFragmentAdapter mAdapter;
     ViewPager mViewPager;
+    private int key;
 
     BottomAppBar bar;
     @Override
@@ -60,6 +62,25 @@ public class DetailActivity extends AppCompatActivity  {
         bar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
         //restart activity?
 
+        if (savedInstanceState == null) {
+            key = getIntent().getIntExtra(VIEWPAGERMAINKEY,0);
+            // fragContainer.addView(ll);
+        }
+
+
+        setupScrollView();
+
+
+        mViewPager = findViewById(R.id.detailviewpager);
+        //EspressoIdlingResource.increment();
+        mAdapter = new ViewPagerFragmentAdapter(getSupportFragmentManager());
+        mViewPager.setAdapter(mAdapter);
+        mViewPager.setOffscreenPageLimit(3);
+
+
+    }
+
+    private void setupScrollView() {
         final NestedScrollView scrollView = findViewById(R.id.nested_scrollview);
         scrollView.getViewTreeObserver()
                 .addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
@@ -76,16 +97,8 @@ public class DetailActivity extends AppCompatActivity  {
                     }
                 });
         scrollView.setFillViewport (true);
-
-
-
-        mViewPager = findViewById(R.id.detailviewpager);
-        //EspressoIdlingResource.increment();
-        mAdapter = new ViewPagerFragmentAdapter(getSupportFragmentManager());
-        mViewPager.setAdapter(mAdapter);
-        mViewPager.setOffscreenPageLimit(1);
-
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -113,25 +126,16 @@ public class DetailActivity extends AppCompatActivity  {
     @Override
     public void onBackPressed() {
         Intent returnIntent = new Intent();
-        returnIntent.putExtra("result","uff");
+        returnIntent.putExtra(VIEWPAGERMAINKEY, key);
+        returnIntent.putExtra(VIEWPAGERDETAILKEY, mViewPager.getCurrentItem());
         setResult(Activity.RESULT_OK,returnIntent);
         finish();
-    }
-
-
-
-
-
-    private void setupAdapter() {
-
-
     }
 
     /**@Override
     public void onFragmentInteraction(Uri uri) {
 
     }**/
-
 
     public static class ViewPagerFragmentAdapter extends FragmentStatePagerAdapter {
         public ViewPagerFragmentAdapter(FragmentManager fm) {
@@ -140,7 +144,7 @@ public class DetailActivity extends AppCompatActivity  {
 
         @Override
         public int getCount() {
-            return 3;
+            return 50;
         }
 
         @Override

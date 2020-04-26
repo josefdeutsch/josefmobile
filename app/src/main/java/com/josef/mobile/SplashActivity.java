@@ -65,7 +65,7 @@ public class SplashActivity extends AppCompatActivity {
                     public void onChanged(@Nullable WorkInfo workInfo) {
                         if (workInfo != null) {
                             if (workInfo.getState().isFinished()) {
-                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                                 String amount = getAmountofViewpager(workInfo);
                                 intent.putExtra(VIEWPAGER_AMOUNT,Integer.parseInt(amount));
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

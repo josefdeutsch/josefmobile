@@ -1,0 +1,9 @@
+<TextView android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/number"
+    android:text="hello!"
+    android:textSize="22dp"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentLeft="true"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+</TextView>

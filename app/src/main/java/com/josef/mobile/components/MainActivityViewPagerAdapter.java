@@ -105,6 +105,9 @@ public class MainActivityViewPagerAdapter extends RecyclerView.Adapter<MainActiv
         @Override
         public void onClick(View v) {
 
+            // Idnentifier schreiben und position weitergeben diese in AppPreference schreiben.
+
+
             Intent intent = new Intent(context, DetailActivity.class);
             MainActivity activity = (MainActivity) context;
             activity.startActivityForResult(intent, ONACTIVITYRESULTEXAMPLE);

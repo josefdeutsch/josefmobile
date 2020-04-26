@@ -23,5 +23,6 @@ public class Config {
 
 
     public static final int ONACTIVITYRESULTEXAMPLE = 1;
-
+    public static final String VIEWPAGERMAINKEY = "viewpager_main_key";
+    public static final String VIEWPAGERDETAILKEY = "viewpager_detail_key";
 }

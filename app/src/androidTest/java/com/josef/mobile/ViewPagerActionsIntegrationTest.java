@@ -29,7 +29,6 @@ import androidx.test.filters.LargeTest;
 import com.josef.josefmobile.R;
 import com.josef.mobile.free.DetailActivity;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
-
 import org.hamcrest.Matcher;
 import org.junit.Rule;
 import org.junit.Test;
@@ -47,7 +46,7 @@ import static com.josef.mobile.ViewPagerActions.scrollToLast;
 @RunWith(AndroidJUnit4.class)
 public final class ViewPagerActionsIntegrationTest {
 
-    /*+ Pitfalls : .................................... **/
+    /*+ Pitfalls : ...........net ! ui - fragment -1!  ......................... **/
 
     @Rule
   public ActivityScenarioRule<DetailActivity> activityTestRule =

@@ -1,16 +1,30 @@
 package com.josef.mobile;
 
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.ScaleAnimation;
+import android.widget.CompoundButton;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.SimpleAdapter;
+import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.test.espresso.IdlingResource;
@@ -25,14 +39,24 @@ import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 import com.josef.josefmobile.R;
 import com.josef.mobile.components.MainActivityViewPagerAdapter;
+import com.josef.mobile.free.DetailActivity;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
 import com.josef.mobile.net.CallBackWorker;
+import com.squareup.picasso.Picasso;
+
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.util.ArrayList;
+
+import static android.view.ViewGroup.getChildMeasureSpec;
 import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.josef.mobile.Config.KEY_TASK_OUTPUT;
+import static com.josef.mobile.Config.ONACTIVITYRESULTEXAMPLE;
+import static com.josef.mobile.Config.ONVIEWPAGERINITLISTENER;
+import static com.josef.mobile.Config.VIEWPAGERMAINKEY;
 import static com.josef.mobile.Config.VIEWPAGER_AMOUNT;
 import static com.josef.mobile.Config.WORKREQUEST_AMOUNT;
 import static com.josef.mobile.Config.WORKREQUEST_VIEWPAGER;
@@ -42,38 +66,38 @@ import static com.josef.mobile.Config.WORKREQUEST_VIEWPAGER;
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * to handle interaction events.
- * Use the {@link MainFragment#newInstance} factory method to
+ * Use the {@link com.josef.mobile.MainFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MainFragment extends Fragment {
+public class HomeFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
 
-    private View mRootView;
     private Data mData;
     private Constraints mConstraints;
     private OneTimeWorkRequest mDownload;
+    public ImageView mImageButton;
+    private ToggleButton buttonFavorite;
+    View layoutInflater;
 
-    private Handler mainHandler;
-    private LayoutInflater mLayoutInflater;
-    private Integer mAdapterPosition;
-    private LinearLayout mLayout;
     // TODO: Rename and change types of parameters
-    private int amountOfViewpager;
 
-    ViewPager2 child;
+    private int which;
+    private int index;
 
-    public MainFragment() {
+
+    public HomeFragment() {
         // Required empty public constructor
     }
 
-    public static MainFragment newInstance(int amount) {
-        MainFragment fragment = new MainFragment();
+    public static HomeFragment newInstance(int which,int index) {
+        HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
-        args.putInt(VIEWPAGER_AMOUNT, amount);
+        args.putInt(ARG_PARAM1, which);
+        args.putInt(ARG_PARAM2, index);
         fragment.setArguments(args);
         return fragment;
     }
@@ -82,42 +106,58 @@ public class MainFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            amountOfViewpager = getArguments().getInt(VIEWPAGER_AMOUNT,0);
-            Log.d(TAG, "onCreate: "+amountOfViewpager);
+            which = getArguments().getInt(ARG_PARAM1);
+            index = getArguments().getInt(ARG_PARAM2);
         }
-      
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View layoutInflater = inflater.inflate(R.layout.fragment_home_container, container, false);
-        mLayoutInflater = LayoutInflater.from(getActivity());
-        mLayout = layoutInflater.findViewById(R.id.container);
+        layoutInflater = inflater.inflate(R.layout.fragment_home, container, false);
+        mImageButton = layoutInflater.findViewById(R.id.imgBanner);
+        pressImage();
 
-
-       for (int index = 1; index <= amountOfViewpager; index++) {
-            EspressoIdlingResource.increment();
-            child = (ViewPager2) mLayoutInflater.inflate(R.layout.viewpager, null);
-            final MainActivityViewPagerAdapter myAdapter = new MainActivityViewPagerAdapter(getActivity(), null);
-            child.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
-            child.setAdapter(myAdapter);
-            child.setOffscreenPageLimit(3);
-            mLayout.addView(child);
-            //https://proandroiddev.com/look-deep-into-viewpager2-13eb8e06e419
-            final float pageMargin = getActivity().getResources().getDimensionPixelOffset(R.dimen.pageMargin);
-            final float pageOffset = getActivity().getResources().getDimensionPixelOffset(R.dimen.offset);
-            transformCards(pageMargin, pageOffset);
-            setupWorkRequest(index);
+        setupToggleButton();
+            setupWorkRequest(which);
             executeWorkRequest();
-            setupViewPager(myAdapter);
-        }
+            setupViewPager(index);
 
         return layoutInflater;
     }
 
-    public void updateViewPagerPosition(int pos){
+    private void pressImage() {
+        mImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), DetailActivity.class);
+                intent.putExtra(VIEWPAGERMAINKEY,which);
+                HomeActivity activity = (HomeActivity) getContext();
+                activity.startActivityForResult(intent, ONACTIVITYRESULTEXAMPLE);
+            }
+        });
+    }
 
+    private void setupToggleButton() {
+        final ScaleAnimation scaleAnimation = new ScaleAnimation(0.7f, 1.0f, 0.7f, 1.0f, Animation.RELATIVE_TO_SELF, 0.7f, Animation.RELATIVE_TO_SELF, 0.7f);
+        scaleAnimation.setDuration(500);
+        BounceInterpolator bounceInterpolator = new BounceInterpolator();
+        scaleAnimation.setInterpolator(bounceInterpolator);
+        buttonFavorite = layoutInflater.findViewById(R.id.button_favorite);
+        buttonFavorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                compoundButton.startAnimation(scaleAnimation);
+                if (isChecked) {
+                    Toast.makeText(getActivity(), "This is my Toast message!",
+                            Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getActivity(), "This is my Toast message2!",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
     private void setupWorkRequest(int index) {
@@ -132,12 +172,12 @@ public class MainFragment extends Fragment {
             @Override
             public void onChanged(Operation.State state) {
                 //Toast.makeText(getActivity(), state.toString(),
-                       // Toast.LENGTH_LONG).show();
+                // Toast.LENGTH_LONG).show();
             }
         });
     }
 
-    private void setupViewPager(final MainActivityViewPagerAdapter myAdapter) {
+    private void setupViewPager(final int index ) {
         WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(mDownload.getId())
                 .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
                     @Override
@@ -147,7 +187,20 @@ public class MainFragment extends Fragment {
                                 String output = getViewPagerContent(workInfo);
                                 try {
                                     JSONArray input = new JSONArray(output);
-                                    myAdapter.setmValues(input);
+                                    JSONObject container = input.getJSONObject(index);
+                                    JSONObject metadata = (JSONObject) container.get("metadata");
+                                    String name = (String) metadata.get("name");
+                                    String png = (String) metadata.get("png");
+                                    String url = (String) metadata.get("url");
+
+
+
+                                    Picasso.get().load(png).config(Bitmap.Config.RGB_565)
+                                            .fit().centerCrop().into(mImageButton);
+
+                                    //mHeader.setText("uschi");
+                                    Log.d(TAG, "onChanged: "+name);
+
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -189,81 +242,5 @@ public class MainFragment extends Fragment {
                 .build();
     }
 
-    private void transformCards(final float pageMargin, final float pageOffset) {
-        child.setPageTransformer(new ViewPager2.PageTransformer() {
-            @Override
-            public void transformPage(@NonNull View page, float position) {
-                float myOffset = position * -(2 * pageOffset + pageMargin);
-                float scaleFactor = Math.max(0.7f, 1 - Math.abs(position - 0.14285715f));
-                if (position < -1) {
-                    page.setTranslationX(-myOffset);
-                    // page.setAlpha(scaleFactor);
-
-                } else if (position <= 1) {
-                    page.setTranslationX(myOffset);
-                    page.setScaleY(scaleFactor);
-
-                } else {
-                    //page.setAlpha(scaleFactor);
-                    page.setTranslationX(myOffset);
-
-                }
-            }
-        });
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    @Nullable
-    private IdlingResource mIdlingResource;
-
-    @VisibleForTesting
-    @NonNull
-    public IdlingResource getIdlingResource() {
-        if (mIdlingResource == null) {
-            mIdlingResource = EspressoIdlingResource.getIdlingResource();
-        }
-        return mIdlingResource;
-    }
-    // TODO: Rename method, update argument and hook method into UI event
-
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
 
 }

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/pageMarginAndOffset"
+    android:layout_marginRight="@dimen/pageMarginAndOffset"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    card_view:cardElevation="1dp"
+    card_view:cardMaxElevation="1dp"
+    card_view:cardUseCompatPadding="true">
+
+    <com.josef.mobile.components.MaxWidthLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:elevation="2dp"
+        android:orientation="vertical"
+        android:id="@+id/maxwidthlayout_container">
+
+        <LinearLayout
+            android:id="@+id/meta_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorBlack"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/article_title"
+                style="?android:attr/textAppearanceLarge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="HEADER"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="#fff"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/article_byline"
+                style="?android:attr/textAppearanceMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SUBHEADERS"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                android:textColor="#8fff" />
+        </LinearLayout>
+
+    </com.josef.mobile.components.MaxWidthLinearLayout>
+
+    <ImageView
+        android:id="@+id/imgBanner"
+        android:layout_width="match_parent"
+        android:layout_height="256dp"
+        android:contentDescription="@string/app_name"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_webdesignsvg_02"
+        android:layout_below="@+id/maxwidthlayout_container"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/number"
+        android:textSize="22dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/maxwidthlayout_container"
+        >
+
+    </TextView>
+    <ToggleButton
+        android:id="@+id/button_favorite"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:background="@drawable/ic_button_favourite"
+        android:checked="false"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:text=""
+        android:textOff=""
+        android:textOn=""
+        android:layout_below="@+id/maxwidthlayout_container"
+
+        />
+
+
+</RelativeLayout>
