@@ -14,7 +14,7 @@
         android:usesCleartextTraffic="true">
 
         <activity android:name="com.josef.mobile.free.DetailActivity"
-            android:parentActivityName="com.josef.mobile.MainActivity"></activity>
+            android:parentActivityName="com.josef.mobile.HomeActivity"></activity>
         <activity android:name="com.josef.mobile.free.ArchiveActivity" />
 
         <activity android:name="com.josef.mobile.free.components.FragmentStatePagerSupport"

@@ -14,7 +14,6 @@ import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.test.espresso.IdlingResource;
 import androidx.viewpager.widget.ViewPager;
 import android.view.Gravity;
@@ -26,9 +25,7 @@ import android.widget.TextView;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.josef.josefmobile.R;
-import com.josef.mobile.HomeContainer;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -128,8 +125,7 @@ public class DetailActivity extends AppCompatActivity  {
     @Override
     public void onBackPressed() {
         Intent returnIntent = new Intent();
-        returnIntent.putExtra(VIEWPAGERMAINKEY, which);
-        returnIntent.putExtra(VIEWPAGERDETAILKEY, mViewPager.getCurrentItem());
+       // returnIntent.putExtra(VIEWPAGERMAINKEY, which);
         setResult(Activity.RESULT_OK,returnIntent);
         finish();
     }

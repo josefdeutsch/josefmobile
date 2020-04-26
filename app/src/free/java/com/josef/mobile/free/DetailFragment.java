@@ -172,8 +172,7 @@ public class DetailFragment extends Fragment {
                                     initializePlayer(url);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
-                                }
-                                if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+                                }if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
                                     EspressoIdlingResource.decrement();
                                 }
                             }

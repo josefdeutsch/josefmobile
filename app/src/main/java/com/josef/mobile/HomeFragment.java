@@ -118,11 +118,10 @@ public class HomeFragment extends Fragment {
         layoutInflater = inflater.inflate(R.layout.fragment_home, container, false);
         mImageButton = layoutInflater.findViewById(R.id.imgBanner);
         pressImage();
-
         setupToggleButton();
-            setupWorkRequest(which);
-            executeWorkRequest();
-            setupViewPager(index);
+        setupWorkRequest(which);
+        executeWorkRequest();
+        setupViewPager(index);
 
         return layoutInflater;
     }
@@ -144,22 +143,31 @@ public class HomeFragment extends Fragment {
         scaleAnimation.setDuration(500);
         BounceInterpolator bounceInterpolator = new BounceInterpolator();
         scaleAnimation.setInterpolator(bounceInterpolator);
+
         buttonFavorite = layoutInflater.findViewById(R.id.button_favorite);
         buttonFavorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 compoundButton.startAnimation(scaleAnimation);
                 if (isChecked) {
-                    Toast.makeText(getActivity(), "This is my Toast message!",
-                            Toast.LENGTH_LONG).show();
+                    ArrayList<String> meta = new ArrayList<>(AppPreferences.getName(getContext()));
+                    meta.add(String.valueOf(which));
+                    meta.add(String.valueOf(index));
+                    AppPreferences.setName(getContext(),meta);
                 } else {
-                    Toast.makeText(getActivity(), "This is my Toast message2!",
-                            Toast.LENGTH_LONG).show();
+                    ArrayList<String> meta = new ArrayList<>(AppPreferences.getName(getContext()));
+                    for (String str:meta) {
+                        Log.d(TAG, "onCheckedChanged: "+str);
+                    }
+                    //meta.remove(meta.size());
+                    //AppPreferences.setName(getContext(),meta);
+
+                    Log.d(TAG, "onCheckedChanged: "+meta.size());
                 }
             }
         });
     }
-
+    
     private void setupWorkRequest(int index) {
         mData = buildData(index);
         mConstraints = buildConstraints();
@@ -192,8 +200,6 @@ public class HomeFragment extends Fragment {
                                     String name = (String) metadata.get("name");
                                     String png = (String) metadata.get("png");
                                     String url = (String) metadata.get("url");
-
-
 
                                     Picasso.get().load(png).config(Bitmap.Config.RGB_565)
                                             .fit().centerCrop().into(mImageButton);
@@ -242,5 +248,15 @@ public class HomeFragment extends Fragment {
                 .build();
     }
 
+    @Nullable
+    private IdlingResource mIdlingResource;
 
+    @VisibleForTesting
+    @NonNull
+    public IdlingResource getIdlingResource() {
+        if (mIdlingResource == null) {
+            mIdlingResource = EspressoIdlingResource.getIdlingResource();
+        }
+        return mIdlingResource;
+    }
 }

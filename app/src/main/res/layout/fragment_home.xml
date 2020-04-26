@@ -49,6 +49,10 @@
 
     </com.josef.mobile.components.MaxWidthLinearLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/maxwidthlayout_container">
     <ImageView
         android:id="@+id/imgBanner"
         android:layout_width="match_parent"
@@ -56,7 +60,6 @@
         android:contentDescription="@string/app_name"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_webdesignsvg_02"
-        android:layout_below="@+id/maxwidthlayout_container"
         />
 
     <TextView
@@ -66,9 +69,7 @@
         android:textSize="22dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/maxwidthlayout_container"
         >
-
     </TextView>
     <ToggleButton
         android:id="@+id/button_favorite"
@@ -81,9 +82,8 @@
         android:text=""
         android:textOff=""
         android:textOn=""
-        android:layout_below="@+id/maxwidthlayout_container"
 
         />
-
+    </RelativeLayout>
 
 </RelativeLayout>

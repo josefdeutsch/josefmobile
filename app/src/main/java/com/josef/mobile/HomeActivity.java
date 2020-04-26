@@ -42,13 +42,14 @@ import com.josef.mobile.idlingres.EspressoIdlingResource;
 import java.util.ArrayList;
 
 
+import static com.josef.mobile.Config.APPPREFERENCE_DEFAULTVALUE;
 import static com.josef.mobile.Config.ONACTIVITYRESULTEXAMPLE;
 import static com.josef.mobile.Config.VIEWPAGERDETAILKEY;
 import static com.josef.mobile.Config.VIEWPAGERMAINKEY;
 import static com.josef.mobile.Config.VIEWPAGER_AMOUNT;
 
 public class HomeActivity extends AppCompatActivity {
-    
+
     private AlertDialog mDialog;
     BottomAppBar bar;
     public int amount;
@@ -57,8 +58,8 @@ public class HomeActivity extends AppCompatActivity {
     private LayoutInflater mLayoutInflater;
     ViewPager mViewPager;
     LinearLayout mLinearLayout;
-
-//https://guides.codepath.com/android/ViewPager-with-FragmentPagerAdapter
+    private static final int CONTENT_VIEW_ID = 10101010;
+    //https://guides.codepath.com/android/ViewPager-with-FragmentPagerAdapter
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,25 +67,32 @@ public class HomeActivity extends AppCompatActivity {
         mLinearLayout = findViewById(R.id.container);
 
         if (savedInstanceState == null) {
-            amount = getIntent().getIntExtra(VIEWPAGER_AMOUNT,0);
+            amount = getIntent().getIntExtra(VIEWPAGER_AMOUNT, 0);
 
             FragmentTransaction fm = getSupportFragmentManager().beginTransaction();
-            for (int index = 1; index <= amount ; index++) {
+            for (int index = 1; index <= amount; index++) {
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.container, HomeContainer.newInstance(index,null,null))
+                        .add(R.id.container, HomeContainer.newInstance(index))
                         .commit();
             }
             fm.commit();
-           // fragContainer.addView(ll);
+            // fragContainer.addView(ll);
         }
         bar = (BottomAppBar) findViewById(R.id.bottom_app_bar);
         setSupportActionBar(bar);
         bar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
         setupNestedScrollView();
 
-            /** //https://proandroiddev.com/look-deep-into-viewpager2-13eb8e06e419
-            final float pageMargin = this.getResources().getDimensionPixelOffset(R.dimen.pageMargin);
-            final float pageOffset = this.getResources().getDimensionPixelOffset(R.dimen.offset);**/
+        if (AppPreferences.getName(getApplicationContext())==null) {
+           ArrayList<String> opener = new ArrayList<>();
+           opener.add("Hello this is joseph ...");
+           AppPreferences.setName(getApplicationContext(),opener);
+        }
+
+
+        /** //https://proandroiddev.com/look-deep-into-viewpager2-13eb8e06e419
+         final float pageMargin = this.getResources().getDimensionPixelOffset(R.dimen.pageMargin);
+         final float pageOffset = this.getResources().getDimensionPixelOffset(R.dimen.offset);**/
     }
 
     private void setupNestedScrollView() {
@@ -103,7 +111,7 @@ public class HomeActivity extends AppCompatActivity {
                         }
                     }
                 });
-        scrollView.setFillViewport (true);
+        scrollView.setFillViewport(true);
     }
 
     @Override
@@ -127,39 +135,28 @@ public class HomeActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    int key;
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == ONACTIVITYRESULTEXAMPLE) {
-            if(resultCode == Activity.RESULT_OK){
-
-                int mainkey =data.getIntExtra(VIEWPAGERMAINKEY,0);
-                int detailvalue =data.getIntExtra(VIEWPAGERDETAILKEY,0);
-
-                mLinearLayout.removeAllViews();
-                FragmentTransaction fm = getSupportFragmentManager().beginTransaction();
-                for (int index = 1; index <= amount ; index++) {
-                    getSupportFragmentManager().beginTransaction()
-                            .add(R.id.container, HomeContainer.newInstance(index,mainkey,detailvalue))
-                            .commit();
-                }
-                fm.commit();
-
-              /**  Fragment f = getSupportFragmentManager().findFragmentById(R.id.);
-                if (f instanceof MainFragment) {
-                    // Hier APPpreference query
-                    // hier sollten 2 Nummern stehen da man diese leicht testen kann..
-                    ((MainFragment) f).updateViewPagerPosition(3);
-                }**/
-
-
-
+            if (resultCode == Activity.RESULT_OK) {
+              //   key = data.getIntExtra(VIEWPAGERMAINKEY, 0);
             }
             if (resultCode == Activity.RESULT_CANCELED) {
-                //Write your code if there's no result
             }
         }
+    }
+    @Override
+    public void onRestart(){
+        super.onRestart();
+        //AppPreferences.clearNameList(this);
+        //ArrayList<String> meta = new ArrayList<>();
+        //meta.add(String.valueOf(mainkey));
+        //meta.add(String.valueOf(detailvalue));
+        //AppPreferences.setName(this,meta);
     }
 
     public void performFloatingAction(View view) {
@@ -170,7 +167,6 @@ public class HomeActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         String mimeType = "text/plain";
-
                         Intent shareIntent = ShareCompat.IntentBuilder.from(HomeActivity.this)
                                 .setType(mimeType)
                                 .setText("share your selection..")
@@ -187,7 +183,7 @@ public class HomeActivity extends AppCompatActivity {
         params.gravity = Gravity.TOP;
         view1.setLayoutParams(params);
         view1.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorWhite));
-        TextView snackBarText =  snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text);
+        TextView snackBarText = snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text);
         snackBarText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorBlack));
         snackbar.show();
     }
