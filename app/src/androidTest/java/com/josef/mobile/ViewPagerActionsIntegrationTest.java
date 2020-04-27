@@ -66,11 +66,6 @@ public final class ViewPagerActionsIntegrationTest {
     private static IdlingResource mIdlingResource;
 
     @Test
-    public void pressBack() {
-        onView(isRoot()).perform(ViewActions.pressBack());
-    }
-
-    @Test
     public void scrollRightThenLeft() {
         testScrollRightThenLeft(false);
     }

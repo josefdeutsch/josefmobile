@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static com.josef.mobile.Config.SHAREMETADATA;
+import static com.josef.mobile.Config.SHAREURL;
 
 public class AppPreferences {
     private static SharedPreferences mPrefs;
@@ -16,7 +17,7 @@ public class AppPreferences {
 
     public static Set<String> getName(Context ctx) {
         mPrefs = PreferenceManager.getDefaultSharedPreferences(ctx);
-        return mPrefs.getStringSet(SHAREMETADATA, null);
+        return mPrefs.getStringSet(SHAREURL, null);
     }
 
     public static void setName(Context ctx, ArrayList<String> value) {
@@ -24,7 +25,7 @@ public class AppPreferences {
         mPrefsEditor = mPrefs.edit();
         Set<String> set = new HashSet<>();
         set.addAll(value);
-        mPrefsEditor.putStringSet(SHAREMETADATA, set);
+        mPrefsEditor.putStringSet(SHAREURL, set);
         mPrefsEditor.commit();
     }
 
@@ -32,7 +33,7 @@ public class AppPreferences {
         mPrefs = PreferenceManager.getDefaultSharedPreferences(ctx);
         mPrefsEditor = mPrefs.edit();
         Set<String> set = new HashSet<>();
-        mPrefsEditor.putStringSet(SHAREMETADATA, set);
+        mPrefsEditor.putStringSet(SHAREURL, set);
         mPrefsEditor.commit();
     }
 }

@@ -9,18 +9,12 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ShareCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.test.espresso.IdlingResource;
 import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager2.widget.ViewPager2;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,23 +23,15 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.josef.josefmobile.R;
 import com.josef.mobile.free.ArchiveActivity;
-import com.josef.mobile.free.DetailActivity;
 import com.josef.mobile.free.PresenterActivity;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
-
-
 import java.util.ArrayList;
-
-
-import static com.josef.mobile.Config.APPPREFERENCE_DEFAULTVALUE;
+import static com.josef.mobile.Config.JOSEPHOPENINGSTATEMENT;
 import static com.josef.mobile.Config.ONACTIVITYRESULTEXAMPLE;
-import static com.josef.mobile.Config.VIEWPAGERDETAILKEY;
-import static com.josef.mobile.Config.VIEWPAGERMAINKEY;
 import static com.josef.mobile.Config.VIEWPAGER_AMOUNT;
 
 public class HomeActivity extends AppCompatActivity {
@@ -83,12 +69,11 @@ public class HomeActivity extends AppCompatActivity {
         bar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
         setupNestedScrollView();
 
-        if (AppPreferences.getName(getApplicationContext())==null) {
-           ArrayList<String> opener = new ArrayList<>();
-           opener.add("Hello this is joseph ...");
-           AppPreferences.setName(getApplicationContext(),opener);
+        if (AppPreferences.getName(this)==null) {
+            ArrayList<String> meta = new ArrayList<>();
+            meta.add(JOSEPHOPENINGSTATEMENT);
+            AppPreferences.setName(this,meta);
         }
-
 
         /** //https://proandroiddev.com/look-deep-into-viewpager2-13eb8e06e419
          final float pageMargin = this.getResources().getDimensionPixelOffset(R.dimen.pageMargin);
@@ -149,32 +134,26 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
     }
-    @Override
-    public void onRestart(){
-        super.onRestart();
-        //AppPreferences.clearNameList(this);
-        //ArrayList<String> meta = new ArrayList<>();
-        //meta.add(String.valueOf(mainkey));
-        //meta.add(String.valueOf(detailvalue));
-        //AppPreferences.setName(this,meta);
-    }
 
     public void performFloatingAction(View view) {
 
         CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.bottom_app_bar_coord);
-        final Snackbar snackbar = Snackbar.make(coordinatorLayout, "share items.. ?", Snackbar.LENGTH_LONG)
+        final Snackbar snackbar = Snackbar.make(coordinatorLayout, "data cached.. ", Snackbar.LENGTH_LONG)
                 .setAction("OK", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+
+                        ArrayList<String> metadata = new ArrayList<>(AppPreferences.getName(getApplicationContext()));
+                        String data = metadata.toString();
+
                         String mimeType = "text/plain";
                         Intent shareIntent = ShareCompat.IntentBuilder.from(HomeActivity.this)
                                 .setType(mimeType)
-                                .setText("share your selection..")
+                                .setText(data)
                                 .getIntent();
                         if (shareIntent.resolveActivity(getPackageManager()) != null) {
                             startActivity(shareIntent);
                         }
-                        ArrayList<String> mShareValues = new ArrayList<String>(AppPreferences.getName(HomeActivity.this));
                     }
                 }).setActionTextColor(getResources().getColor(android.R.color.holo_red_light));
 

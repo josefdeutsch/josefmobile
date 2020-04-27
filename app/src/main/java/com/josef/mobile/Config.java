@@ -4,6 +4,7 @@ public class Config {
     public static final String TEXTTYPE = "text/plain";
     public static final String SAMPLETEXT = "Some sample text";
     public static final String SHAREMETADATA = "sharemetadata";
+    public static final String SHAREURL = "shareurl";
 
 
 
@@ -25,4 +26,10 @@ public class Config {
     public static final int ONACTIVITYRESULTEXAMPLE = 1;
     public static final String VIEWPAGERMAINKEY = "viewpager_main_key";
     public static final String VIEWPAGERDETAILKEY = "viewpager_detail_key";
+
+    public static final String VIEWPAGERHOMEFRAGMENTMAINKEY = "homefragmentmainkey";
+    public static final String VIEWPAGERHOMEFRAGMENTDETAILVAULE = "homefragmentdetailvalue";
+
+    public static final String JOSEPHOPENINGSTATEMENT = "example text here :"+System.lineSeparator();
+
 }

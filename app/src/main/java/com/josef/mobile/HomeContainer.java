@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,7 +66,7 @@ public class HomeContainer extends Fragment {
         layoutInflater = inflater.inflate(R.layout.fragment_home_container, container, false);
         viewPager= layoutInflater.findViewById(R.id.viewidpager);
         viewPager.setId(View.generateViewId());
-        ViewPagerFragmentAdapters adapters = new ViewPagerFragmentAdapters(getChildFragmentManager(), which);
+        final ViewPagerFragmentAdapters adapters = new ViewPagerFragmentAdapters(getChildFragmentManager(), which);
         //EspressoIdlingResource.increment();
         viewPager.setAdapter(adapters);
         viewPager.setOffscreenPageLimit(3);
@@ -77,7 +78,9 @@ public class HomeContainer extends Fragment {
 
             @Override
             public void onPageSelected(int position) {
-                mPosition=position;
+                mPosition = position;
+                HomeFragment fragment = (HomeFragment)adapters.getRegisteredFragment(position);
+                fragment.shareMetaData(position);
             }
 
             @Override
@@ -97,12 +100,24 @@ public class HomeContainer extends Fragment {
 
     public class ViewPagerFragmentAdapters extends FragmentStatePagerAdapter {
 
+        //smartfragmentstatepager....
         public int mIndex;
+        SparseArray<Fragment> registeredFragments = new SparseArray<>();
 
         public ViewPagerFragmentAdapters(FragmentManager fm, int index) {
             super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
             mIndex = index;
 
+        }
+        public Fragment getRegisteredFragment(int position) {
+            return registeredFragments.get(position);
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            Fragment fragment = (Fragment) super.instantiateItem(container, position);
+            registeredFragments.put(position, fragment);
+            return fragment;
         }
 
         @Override

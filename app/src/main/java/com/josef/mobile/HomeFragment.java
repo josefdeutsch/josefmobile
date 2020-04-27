@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -56,6 +57,9 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.josef.mobile.Config.KEY_TASK_OUTPUT;
 import static com.josef.mobile.Config.ONACTIVITYRESULTEXAMPLE;
 import static com.josef.mobile.Config.ONVIEWPAGERINITLISTENER;
+import static com.josef.mobile.Config.VIEWPAGERDETAILKEY;
+import static com.josef.mobile.Config.VIEWPAGERHOMEFRAGMENTDETAILVAULE;
+import static com.josef.mobile.Config.VIEWPAGERHOMEFRAGMENTMAINKEY;
 import static com.josef.mobile.Config.VIEWPAGERMAINKEY;
 import static com.josef.mobile.Config.VIEWPAGER_AMOUNT;
 import static com.josef.mobile.Config.WORKREQUEST_AMOUNT;
@@ -72,15 +76,13 @@ import static com.josef.mobile.Config.WORKREQUEST_VIEWPAGER;
 public class HomeFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
 
     private Data mData;
     private Constraints mConstraints;
     private OneTimeWorkRequest mDownload;
     public ImageView mImageButton;
-    private ToggleButton buttonFavorite;
+    public ToggleButton buttonFavorite;
     View layoutInflater;
 
     // TODO: Rename and change types of parameters
@@ -96,8 +98,8 @@ public class HomeFragment extends Fragment {
     public static HomeFragment newInstance(int which,int index) {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_PARAM1, which);
-        args.putInt(ARG_PARAM2, index);
+        args.putInt(VIEWPAGERMAINKEY, which);
+        args.putInt(VIEWPAGERDETAILKEY, index);
         fragment.setArguments(args);
         return fragment;
     }
@@ -106,8 +108,8 @@ public class HomeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            which = getArguments().getInt(ARG_PARAM1);
-            index = getArguments().getInt(ARG_PARAM2);
+            which = getArguments().getInt(VIEWPAGERMAINKEY);
+            index = getArguments().getInt(VIEWPAGERDETAILKEY);
         }
 
     }
@@ -117,8 +119,15 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         layoutInflater = inflater.inflate(R.layout.fragment_home, container, false);
         mImageButton = layoutInflater.findViewById(R.id.imgBanner);
+        buttonFavorite = layoutInflater.findViewById(R.id.button_favorite);
         pressImage();
-        setupToggleButton();
+        TextView textView = (TextView)layoutInflater.findViewById(R.id.article_title);
+        textView.setText("hello");
+
+
+
+
+     //   setupToggleButton();
         setupWorkRequest(which);
         executeWorkRequest();
         setupViewPager(index);
@@ -138,36 +147,56 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void setupToggleButton() {
+    private void setupToggleButton(final String url,final int index) {
         final ScaleAnimation scaleAnimation = new ScaleAnimation(0.7f, 1.0f, 0.7f, 1.0f, Animation.RELATIVE_TO_SELF, 0.7f, Animation.RELATIVE_TO_SELF, 0.7f);
         scaleAnimation.setDuration(500);
         BounceInterpolator bounceInterpolator = new BounceInterpolator();
         scaleAnimation.setInterpolator(bounceInterpolator);
 
-        buttonFavorite = layoutInflater.findViewById(R.id.button_favorite);
         buttonFavorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 compoundButton.startAnimation(scaleAnimation);
                 if (isChecked) {
+                    Log.d(TAG, "onChanged: "+url);
                     ArrayList<String> meta = new ArrayList<>(AppPreferences.getName(getContext()));
-                    meta.add(String.valueOf(which));
-                    meta.add(String.valueOf(index));
+                    meta.add(url+System.lineSeparator());
                     AppPreferences.setName(getContext(),meta);
                 } else {
                     ArrayList<String> meta = new ArrayList<>(AppPreferences.getName(getContext()));
-                    for (String str:meta) {
-                        Log.d(TAG, "onCheckedChanged: "+str);
-                    }
-                    //meta.remove(meta.size());
-                    //AppPreferences.setName(getContext(),meta);
-
-                    Log.d(TAG, "onCheckedChanged: "+meta.size());
+                    meta.remove(index);
+                    AppPreferences.setName(getContext(),meta);
                 }
             }
         });
     }
-    
+    public void shareMetaData(final int index){
+        EspressoIdlingResource.increment();
+        WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(mDownload.getId())
+                .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
+                    @Override
+                    public void onChanged(@Nullable WorkInfo workInfo) {
+                        if (workInfo != null) {
+                            if (workInfo.getState().isFinished()) {
+                                String output = getViewPagerContent(workInfo);
+                                try {
+                                    JSONArray input = new JSONArray(output);
+                                    JSONObject container = input.getJSONObject(index);
+                                    JSONObject metadata = (JSONObject) container.get("metadata");
+                                    String url = (String) metadata.get("url");
+                                    setupToggleButton(url,index);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+                                    EspressoIdlingResource.decrement();
+                                }
+                            }
+                        }
+                    }
+                });
+    }
+
     private void setupWorkRequest(int index) {
         mData = buildData(index);
         mConstraints = buildConstraints();
@@ -186,6 +215,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void setupViewPager(final int index ) {
+
         WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(mDownload.getId())
                 .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
                     @Override
@@ -199,7 +229,6 @@ public class HomeFragment extends Fragment {
                                     JSONObject metadata = (JSONObject) container.get("metadata");
                                     String name = (String) metadata.get("name");
                                     String png = (String) metadata.get("png");
-                                    String url = (String) metadata.get("url");
 
                                     Picasso.get().load(png).config(Bitmap.Config.RGB_565)
                                             .fit().centerCrop().into(mImageButton);
