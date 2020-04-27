@@ -151,6 +151,7 @@ public class HomeActivity extends AppCompatActivity {
                                 .setType(mimeType)
                                 .setText(data)
                                 .getIntent();
+
                         if (shareIntent.resolveActivity(getPackageManager()) != null) {
                             startActivity(shareIntent);
                         }

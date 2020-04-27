@@ -141,8 +141,7 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), DetailActivity.class);
                 intent.putExtra(VIEWPAGERMAINKEY,which);
-                HomeActivity activity = (HomeActivity) getContext();
-                activity.startActivityForResult(intent, ONACTIVITYRESULTEXAMPLE);
+                getActivity().startActivityForResult(intent, ONACTIVITYRESULTEXAMPLE);
             }
         });
     }
