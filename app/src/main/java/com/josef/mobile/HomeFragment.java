@@ -83,7 +83,9 @@ public class HomeFragment extends Fragment {
     private OneTimeWorkRequest mDownload;
     public ImageView mImageButton;
     public ToggleButton buttonFavorite;
-    View layoutInflater;
+    public TextView article;
+    public TextView article_by_line;
+    public View layoutInflater;
 
     // TODO: Rename and change types of parameters
 
@@ -121,13 +123,10 @@ public class HomeFragment extends Fragment {
         mImageButton = layoutInflater.findViewById(R.id.imgBanner);
         buttonFavorite = layoutInflater.findViewById(R.id.button_favorite);
         pressImage();
-        TextView textView = (TextView)layoutInflater.findViewById(R.id.article_title);
-        textView.setText("hello");
+        article = (TextView)layoutInflater.findViewById(R.id.article_title);
+        article.setText("hello");
+        article_by_line = (TextView)layoutInflater.findViewById(R.id.article_byline);
 
-
-
-
-     //   setupToggleButton();
         setupWorkRequest(which);
         executeWorkRequest();
         setupViewPager(index);
@@ -214,7 +213,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void setupViewPager(final int index ) {
-
+        EspressoIdlingResource.increment();
         WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(mDownload.getId())
                 .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
                     @Override
@@ -231,7 +230,7 @@ public class HomeFragment extends Fragment {
 
                                     Picasso.get().load(png).config(Bitmap.Config.RGB_565)
                                             .fit().centerCrop().into(mImageButton);
-
+                                    article_by_line.setText(name);
                                     //mHeader.setText("uschi");
                                     Log.d(TAG, "onChanged: "+name);
 

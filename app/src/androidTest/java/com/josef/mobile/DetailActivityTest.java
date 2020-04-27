@@ -55,7 +55,7 @@ import static com.josef.mobile.ViewPagerActions.scrollToLast;
  */
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public final class ViewPagerActionsIntegrationTest {
+public final class DetailActivityTest {
 
     /*+ Pitfalls : ...........net ! ui - fragment -1!  ......................... **/
 
@@ -95,7 +95,6 @@ public final class ViewPagerActionsIntegrationTest {
     }
 
     private static void testScrollToLastThenFirst(boolean smoothScroll) {
-
         onPager()
                 .check(matches(isShowingPage(0)))
                 .perform(scrollToLast(true)).check(matches(isShowingPage(2)))
@@ -117,7 +116,6 @@ public final class ViewPagerActionsIntegrationTest {
             IdlingRegistry.getInstance().unregister(EspressoIdlingResource.getIdlingResource());
         }
     }
-
 
     @Test
     public void scrollToPage_smooth_with_NetworkAccess() {

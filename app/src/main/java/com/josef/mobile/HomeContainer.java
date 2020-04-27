@@ -3,11 +3,14 @@ package com.josef.mobile;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import androidx.constraintlayout.widget.Constraints;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.test.espresso.IdlingResource;
 import androidx.viewpager.widget.ViewPager;
 
 import android.util.Log;
@@ -17,7 +20,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ToggleButton;
 import com.josef.josefmobile.R;
+import com.josef.mobile.idlingres.EspressoIdlingResource;
+
 import static com.josef.mobile.Config.VIEWPAGERDETAILKEY;
+import static com.josef.mobile.Config.VIEWPAGERMAINKEY;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,7 +51,7 @@ public class HomeContainer extends Fragment {
     public static HomeContainer newInstance(int which) {
         HomeContainer fragment = new HomeContainer();
         Bundle args = new Bundle();
-        args.putInt(ARG_PARAM1, which);
+        args.putInt(VIEWPAGERMAINKEY, which);
         fragment.setArguments(args);
         return fragment;
     }
@@ -54,7 +60,7 @@ public class HomeContainer extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            which = getArguments().getInt(ARG_PARAM1);
+            which = getArguments().getInt(VIEWPAGERMAINKEY);
         }
         if(savedInstanceState!=null)mPosition = savedInstanceState.getInt(VIEWPAGERDETAILKEY,0);
     }
@@ -63,9 +69,9 @@ public class HomeContainer extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         layoutInflater = inflater.inflate(R.layout.fragment_home_container, container, false);
         viewPager= layoutInflater.findViewById(R.id.viewidpager);
-        viewPager.setId(View.generateViewId());
         final ViewPagerFragmentAdapters adapters = new ViewPagerFragmentAdapters(getChildFragmentManager(), which);
         //EspressoIdlingResource.increment();
         viewPager.setAdapter(adapters);
@@ -89,6 +95,7 @@ public class HomeContainer extends Fragment {
             }
         });
         viewPager.setCurrentItem(mPosition);
+
         return layoutInflater;
     }
 
@@ -129,6 +136,18 @@ public class HomeContainer extends Fragment {
         public Fragment getItem(int position) {
             return HomeFragment.newInstance(mIndex, position);
         }
+    }
+
+    @Nullable
+    private IdlingResource mIdlingResource;
+
+    @VisibleForTesting
+    @NonNull
+    public IdlingResource getIdlingResource() {
+        if (mIdlingResource == null) {
+            mIdlingResource = EspressoIdlingResource.getIdlingResource();
+        }
+        return mIdlingResource;
     }
 
 }

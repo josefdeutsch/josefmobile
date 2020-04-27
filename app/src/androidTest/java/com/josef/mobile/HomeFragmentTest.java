@@ -6,10 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.testing.FragmentScenario;
 import androidx.test.espresso.IdlingRegistry;
 import androidx.test.espresso.IdlingResource;
-import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.josef.josefmobile.R;
-import com.josef.mobile.free.DetailActivity;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,8 +15,6 @@ import java.util.ArrayList;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.intent.Intents.intended;
-import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.isChecked;
 import static androidx.test.espresso.matcher.ViewMatchers.isClickable;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -26,7 +22,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.isNotChecked;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.josef.mobile.Config.VIEWPAGERDETAILKEY;
-import static org.hamcrest.core.AllOf.allOf;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(AndroidJUnit4.class)
@@ -35,7 +30,7 @@ public class HomeFragmentTest {
         private IdlingResource mIdlingResource;
 
         @Test
-        public void verify_if_toggleButton_is_Visible(){
+        public void verify_if_article_is_Visible_matches_withText(){
             Bundle args = new Bundle();
             args.putInt(VIEWPAGERDETAILKEY,1);
             args.putInt(VIEWPAGERDETAILKEY,3);
@@ -48,10 +43,26 @@ public class HomeFragmentTest {
             });
             onView(withId(R.id.article_title)).check(matches(withText("hello")));
         }
+        @Test
+         public void verify_if_article_byline_is_Visible_matches_withText(){
+            Bundle args = new Bundle();
+            args.putInt(VIEWPAGERDETAILKEY,1);
+            args.putInt(VIEWPAGERDETAILKEY,3);
+            FragmentScenario<HomeFragment> scenario = FragmentScenario.launchInContainer(HomeFragment.class,args);
+            scenario.onFragment(new FragmentScenario.FragmentAction<HomeFragment>() {
+                 @Override
+                 public void perform(@NonNull HomeFragment fragment) {
+                     mIdlingResource = fragment.getIdlingResource();
+                     IdlingRegistry.getInstance().register(mIdlingResource);
+            }
+        });
+        onView(withId(R.id.article_byline)).check(matches(withText("material :gold, sculpture2 :abstract")));
+        IdlingRegistry.getInstance().unregister(EspressoIdlingResource.getIdlingResource());
+    }
 
 
         @Test
-        public void verify_if_toggleButton_is_Visible2(){
+        public void verify_if_toggleButton_is_clickable(){
             Bundle args = new Bundle();
             args.putInt(VIEWPAGERDETAILKEY,1);
             args.putInt(VIEWPAGERDETAILKEY,3);
@@ -67,7 +78,7 @@ public class HomeFragmentTest {
     }
 
     @Test
-    public void verify_if_toggleButton_is_Visible3(){
+    public void verify_if_toggleButton_is_clickable_unChecked(){
         Bundle args = new Bundle();
         args.putInt(VIEWPAGERDETAILKEY,1);
         args.putInt(VIEWPAGERDETAILKEY,3);
@@ -77,11 +88,12 @@ public class HomeFragmentTest {
             public void perform(@NonNull HomeFragment fragment) {
             }
         });
+        onView(withId(R.id.button_favorite)).check(matches(isClickable()));
         onView(withId(R.id.button_favorite)).check(matches(isNotChecked()));
     }
 
     @Test
-    public void verify_if_toggleButton_is_Visible4(){
+    public void verify_if_toggleButton_is_isChecked_after_click(){
         Bundle args = new Bundle();
         args.putInt(VIEWPAGERDETAILKEY,1);
         args.putInt(VIEWPAGERDETAILKEY,3);
@@ -97,7 +109,7 @@ public class HomeFragmentTest {
     }
 
     @Test
-    public void verify_if_toggleButton_is_Visible5(){
+    public void verify_if_toggleButton_is_unchecked_after_2xClick(){
         Bundle args = new Bundle();
         args.putInt(VIEWPAGERDETAILKEY,1);
         args.putInt(VIEWPAGERDETAILKEY,3);
@@ -113,7 +125,7 @@ public class HomeFragmentTest {
     }
 
     @Test
-    public void verify_if_toggleButton_is_Visible6(){
+    public void verify_if_toggleButton_button_produces_stringset(){
         Bundle args = new Bundle();
         args.putInt(VIEWPAGERDETAILKEY,1);
         args.putInt(VIEWPAGERDETAILKEY,3);
@@ -136,7 +148,36 @@ public class HomeFragmentTest {
     }
 
     @Test
-    public void verify_if_toggleButton_is_Visible7(){
+    public void verify_if_imagview_is_visible(){
+        Bundle args = new Bundle();
+        args.putInt(VIEWPAGERDETAILKEY,1);
+        args.putInt(VIEWPAGERDETAILKEY,3);
+        FragmentScenario<HomeFragment> scenario = FragmentScenario.launchInContainer(HomeFragment.class,args);
+        scenario.onFragment(new FragmentScenario.FragmentAction<HomeFragment>() {
+            @Override
+            public void perform(@NonNull HomeFragment fragment) {
+
+            }
+        });
+        onView(withId(R.id.imgBanner)).check(matches(isDisplayed()));
+    }
+    @Test
+    public void verify_if_imagview_is_clickable(){
+        Bundle args = new Bundle();
+        args.putInt(VIEWPAGERDETAILKEY,1);
+        args.putInt(VIEWPAGERDETAILKEY,3);
+        FragmentScenario<HomeFragment> scenario = FragmentScenario.launchInContainer(HomeFragment.class,args);
+        scenario.onFragment(new FragmentScenario.FragmentAction<HomeFragment>() {
+            @Override
+            public void perform(@NonNull HomeFragment fragment) {
+
+            }
+        });
+        onView(withId(R.id.imgBanner)).check(matches(isClickable()));
+    }
+
+    @Test
+    public void verify_if_imagview_is_lounches_detailactivity(){
         Bundle args = new Bundle();
         args.putInt(VIEWPAGERDETAILKEY,1);
         args.putInt(VIEWPAGERDETAILKEY,3);
