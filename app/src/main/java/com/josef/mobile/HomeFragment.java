@@ -129,7 +129,40 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 setupProgressBar();
-                loadIntersitialAds(getActivity(),DetailActivity.class,which,index);
+                loadIntersitialAds(new InterstitialAdsRequest() {
+                    @Override
+                    public void execute() {
+                        mInterstitialAd = new InterstitialAd(getContext());
+                        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+                        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                        mInterstitialAd.setAdListener(new AdListener() {
+                            @Override
+                            public void onAdLoaded() {
+                                if (mDialog != null) {
+                                    mDialog.hide();
+                                }
+                                mInterstitialAd.show();
+                            }
+                            @Override
+                            public void onAdFailedToLoad(int errorCode) {
+                                if (mDialog != null) {
+                                    mDialog.hide();
+                                }
+                                Intent intent = new Intent(getContext(),DetailActivity.class);
+                                intent.putExtra(VIEWPAGERMAINKEY,which);
+                                intent.putExtra(VIEWPAGERDETAILKEY,index);
+                                getActivity().startActivity(intent);
+                            }
+                            @Override
+                            public void onAdClosed() {
+                                Intent intent = new Intent(getContext(), DetailActivity.class);
+                                intent.putExtra(VIEWPAGERMAINKEY,which);
+                                intent.putExtra(VIEWPAGERDETAILKEY,index);
+                                getActivity().startActivity(intent);
+                            }
+                        });
+                    }
+                });
             }
         });
     }
@@ -143,37 +176,8 @@ public class HomeFragment extends Fragment {
         mDialog = builder.create();
         mDialog.show();
     }
-
-    private void loadIntersitialAds(final Context context, final Class clazz, final int which,final int index){
-        mInterstitialAd = new InterstitialAd(context);
-        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
-        mInterstitialAd.loadAd(new AdRequest.Builder().build());
-        mInterstitialAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                if (mDialog != null) {
-                    mDialog.hide();
-                }
-                mInterstitialAd.show();
-            }
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-                if (mDialog != null) {
-                    mDialog.hide();
-                }
-                Intent intent = new Intent(context,clazz);
-                intent.putExtra(VIEWPAGERMAINKEY,which);
-                intent.putExtra(VIEWPAGERDETAILKEY,index);
-                getActivity().startActivity(intent);
-            }
-            @Override
-            public void onAdClosed() {
-                Intent intent = new Intent(context, clazz);
-                intent.putExtra(VIEWPAGERMAINKEY,which);
-                intent.putExtra(VIEWPAGERDETAILKEY,index);
-                getActivity().startActivity(intent);
-            }
-        });
+    public void loadIntersitialAds(InterstitialAdsRequest request){
+        request.execute();
     }
 
     private void setupToggleButton(final String url,final int index) {

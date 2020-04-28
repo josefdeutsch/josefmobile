@@ -1,19 +1,25 @@
 package com.josef.mobile;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.testing.FragmentScenario;
+import androidx.test.core.app.ActivityScenario;
+import androidx.test.espresso.Espresso;
 import androidx.test.espresso.IdlingRegistry;
 import androidx.test.espresso.IdlingResource;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.josef.josefmobile.R;
+import com.josef.mobile.free.ArchiveActivity;
+import com.josef.mobile.free.DetailActivity;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import java.util.ArrayList;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isChecked;
 import static androidx.test.espresso.matcher.ViewMatchers.isClickable;
@@ -22,6 +28,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.isNotChecked;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.josef.mobile.Config.VIEWPAGERDETAILKEY;
+import static com.josef.mobile.Config.VIEWPAGERMAINKEY;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(AndroidJUnit4.class)
@@ -193,5 +200,32 @@ public class HomeFragmentTest {
         onView(withId(R.id.imgBanner)).perform(click());
         onView(withId(R.id.detailviewpager)).check(matches(isDisplayed()));
         IdlingRegistry.getInstance().unregister(EspressoIdlingResource.getIdlingResource());
+    }
+
+    @Test
+    public void verify_if_menuItem_app_bar_archieve_is_clickable_and_performs_action(){
+        Bundle args = new Bundle();
+        args.putInt(VIEWPAGERDETAILKEY,1);
+        args.putInt(VIEWPAGERDETAILKEY,3);
+        FragmentScenario<HomeFragment> scenario = FragmentScenario.launchInContainer(HomeFragment.class,args);
+        scenario.onFragment(new FragmentScenario.FragmentAction<HomeFragment>() {
+            @Override
+            public void perform(@NonNull final HomeFragment fragment) {
+                fragment.loadIntersitialAds(new InterstitialAdsRequest() {
+                    @Override
+                    public void execute() {
+                        Intent intent = new Intent(fragment.getContext(), DetailActivity.class);
+                        intent.putExtra(VIEWPAGERMAINKEY,1);
+                        intent.putExtra(VIEWPAGERDETAILKEY,3);
+                        fragment.startActivity(intent);
+                    }
+                });
+            }
+        });
+//Error performing 'single click - At Coordinates: 719, 887 and precision: 16, 16' on view 'Animations or transitions are enabled on the target device.
+        onView(withId(R.id.detailviewpager)).check(matches(isDisplayed()));
+        Espresso.pressBack();
+        onView(withId(R.id.imgBanner)).check(matches(isClickable()));
+        onView(withId(R.id.imgBanner)).perform(click());
     }
 }

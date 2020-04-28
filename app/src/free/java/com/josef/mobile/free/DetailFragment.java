@@ -143,6 +143,7 @@ public class DetailFragment extends Fragment {
     }
 
     private void setupViewPager(final int pos) {
+        EspressoIdlingResource.increment();
         WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(mDownload.getId())
                 .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
                     @Override

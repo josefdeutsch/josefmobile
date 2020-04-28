@@ -32,6 +32,7 @@ public class HomeActivityTest {
 
     //https://developer.android.com/training/testing/espresso/recipes
     private IdlingResource mIdlingResource;
+
     @Test
     public void verify_if_coordinatorlayout_is_displayed_and_child_of_parent(){
         ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(HomeActivity.class);

@@ -2,8 +2,10 @@ package com.josef.mobile.free;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -22,9 +24,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.TextView;
+
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.josef.josefmobile.R;
+import com.josef.mobile.InterstitialAdsRequest;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
 import java.util.Collection;
 import java.util.HashMap;
@@ -67,12 +74,10 @@ public class DetailActivity extends AppCompatActivity  {
             // fragContainer.addView(ll);
         }
 
-
         setupScrollView();
 
-
         mViewPager = findViewById(R.id.detailviewpager);
-        //EspressoIdlingResource.increment();
+        //
         mAdapter = new ViewPagerFragmentAdapter(getSupportFragmentManager(),which);
         mViewPager.setAdapter(mAdapter);
         mViewPager.setOffscreenPageLimit(3);
@@ -80,6 +85,27 @@ public class DetailActivity extends AppCompatActivity  {
 
 
     }
+
+    private InterstitialAd mInterstitialAd;
+    private AlertDialog mDialog;
+
+    private void setupProgressBar(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
+        builder.setView(R.layout.progressdialog);
+        mDialog = builder.create();
+        mDialog.show();
+    }
+
+    public void loadIntersitialAds(InterstitialAdsRequest request){
+        request.execute();
+    }
+
+    private void startActivity(Context conext, Class clazz){
+        Intent intent = new Intent(conext, clazz);
+        startActivity(intent);
+    }
+
 
     private void setupScrollView() {
         final NestedScrollView scrollView = findViewById(R.id.nested_scrollview);
@@ -111,15 +137,71 @@ public class DetailActivity extends AppCompatActivity  {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == android.R.id.home) {
-
         } else if (item.getItemId() == R.id.app_bar_info) {
-            Intent intent = new Intent(this, PresenterActivity.class);
-            startActivity(intent);
-
+            EspressoIdlingResource.increment();
+            setupProgressBar();
+            loadIntersitialAds(new InterstitialAdsRequest() {
+                @Override
+                public void execute() {
+                    mInterstitialAd = new InterstitialAd(getApplicationContext());
+                    mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+                    mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                    mInterstitialAd.setAdListener(new AdListener() {
+                        @Override
+                        public void onAdLoaded() {
+                            if (mDialog != null) {
+                                mDialog.hide();
+                            }
+                            mInterstitialAd.show();
+                        }
+                        @Override
+                        public void onAdFailedToLoad(int errorCode) {
+                            if (mDialog != null) {
+                                mDialog.hide();
+                            }
+                            EspressoIdlingResource.decrement();
+                            startActivity(getApplicationContext(),PresenterActivity.class);
+                        }
+                        @Override
+                        public void onAdClosed() {
+                            EspressoIdlingResource.decrement();
+                            startActivity(getApplicationContext(),PresenterActivity.class);
+                        }
+                    });
+                }
+            });
         } else if (item.getItemId() == R.id.app_bar_archieve) {
-            Intent intent = new Intent(this, ArchiveActivity.class);
-            startActivity(intent);
-
+            setupProgressBar();
+            loadIntersitialAds(new InterstitialAdsRequest() {
+                @Override
+                public void execute() {
+                    mInterstitialAd = new InterstitialAd(getApplicationContext());
+                    mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+                    mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                    mInterstitialAd.setAdListener(new AdListener() {
+                        @Override
+                        public void onAdLoaded() {
+                            if (mDialog != null) {
+                                mDialog.hide();
+                            }
+                            mInterstitialAd.show();
+                        }
+                        @Override
+                        public void onAdFailedToLoad(int errorCode) {
+                            if (mDialog != null) {
+                                mDialog.hide();
+                            }
+                            EspressoIdlingResource.decrement();
+                            startActivity(getApplicationContext(),ArchiveActivity.class);
+                        }
+                        @Override
+                        public void onAdClosed() {
+                            EspressoIdlingResource.decrement();
+                            startActivity(getApplicationContext(),ArchiveActivity.class);
+                        }
+                    });
+                }
+            });
         }
         return super.onOptionsItemSelected(item);
     }
