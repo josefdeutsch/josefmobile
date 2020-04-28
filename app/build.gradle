@@ -105,7 +105,7 @@ android {
         androidTestImplementation 'androidx.test:rules:1.2.0'
         androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
         androidTestImplementation 'androidx.test.espresso:espresso-intents:3.2.0'
-
+        freeImplementation 'com.google.android.gms:play-services-ads:11.0.4'
 
     }
 

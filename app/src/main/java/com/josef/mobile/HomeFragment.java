@@ -3,9 +3,7 @@ package com.josef.mobile;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,12 +12,8 @@ import android.view.animation.Animation;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.widget.CompoundButton;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
@@ -29,7 +23,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.test.espresso.IdlingResource;
-import androidx.viewpager2.widget.ViewPager2;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.ExistingWorkPolicy;
@@ -38,8 +31,11 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.Operation;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
+
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.josef.josefmobile.R;
-import com.josef.mobile.components.MainActivityViewPagerAdapter;
 import com.josef.mobile.free.DetailActivity;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
 import com.josef.mobile.net.CallBackWorker;
@@ -52,16 +48,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import static android.view.ViewGroup.getChildMeasureSpec;
 import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.josef.mobile.Config.KEY_TASK_OUTPUT;
-import static com.josef.mobile.Config.ONACTIVITYRESULTEXAMPLE;
-import static com.josef.mobile.Config.ONVIEWPAGERINITLISTENER;
 import static com.josef.mobile.Config.VIEWPAGERDETAILKEY;
-import static com.josef.mobile.Config.VIEWPAGERHOMEFRAGMENTDETAILVAULE;
-import static com.josef.mobile.Config.VIEWPAGERHOMEFRAGMENTMAINKEY;
 import static com.josef.mobile.Config.VIEWPAGERMAINKEY;
-import static com.josef.mobile.Config.VIEWPAGER_AMOUNT;
 import static com.josef.mobile.Config.WORKREQUEST_AMOUNT;
 import static com.josef.mobile.Config.WORKREQUEST_VIEWPAGER;
 
@@ -138,9 +128,50 @@ public class HomeFragment extends Fragment {
         mImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), DetailActivity.class);
+                setupProgressBar();
+                loadIntersitialAds(getActivity(),DetailActivity.class,which,index);
+            }
+        });
+    }
+    private InterstitialAd mInterstitialAd;
+    private AlertDialog mDialog;
+    private void setupProgressBar(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setCancelable(false);
+        builder.setView(R.layout.progressdialog);
+        mDialog = builder.create();
+        mDialog.show();
+    }
+
+    private void loadIntersitialAds(final Context context, final Class clazz, final int which,final int index){
+        mInterstitialAd = new InterstitialAd(context);
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                if (mDialog != null) {
+                    mDialog.hide();
+                }
+                mInterstitialAd.show();
+            }
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                if (mDialog != null) {
+                    mDialog.hide();
+                }
+                Intent intent = new Intent(context,clazz);
                 intent.putExtra(VIEWPAGERMAINKEY,which);
-                getActivity().startActivityForResult(intent, ONACTIVITYRESULTEXAMPLE);
+                intent.putExtra(VIEWPAGERDETAILKEY,index);
+                getActivity().startActivity(intent);
+            }
+            @Override
+            public void onAdClosed() {
+                Intent intent = new Intent(context, clazz);
+                intent.putExtra(VIEWPAGERMAINKEY,which);
+                intent.putExtra(VIEWPAGERDETAILKEY,index);
+                getActivity().startActivity(intent);
             }
         });
     }

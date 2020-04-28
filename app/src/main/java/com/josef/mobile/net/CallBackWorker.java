@@ -12,7 +12,6 @@ import androidx.work.WorkerParameters;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.josef.mobile.Echo;
 import com.josef.mobile.ErrorActivity;
-import com.josef.mobile.MainActivity;
 import com.josef.mobile.Message;
 import java.io.IOException;
 import okhttp3.Call;
@@ -22,10 +21,8 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 
-import static androidx.test.internal.runner.InstrumentationConnection.BROADCAST_FILTER;
 import static com.josef.mobile.Config.KEY_TASK_ERROR;
 import static com.josef.mobile.Config.KEY_TASK_OUTPUT;
-import static com.josef.mobile.Config.VIEWPAGER_AMOUNT;
 import static com.josef.mobile.Config.WORKREQUEST_AMOUNT;
 
 /**http://joseph3d.com/wp-admin/

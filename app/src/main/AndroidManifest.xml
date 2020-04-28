@@ -15,10 +15,7 @@
         <activity android:name="com.josef.mobile.HomeActivity"></activity>
         <activity
             android:name="com.josef.mobile.ErrorActivity"
-            android:parentActivityName="com.josef.mobile.MainActivity" />
-        <activity
-            android:name="com.josef.mobile.MainActivity"
-            android:parentActivityName="com.josef.mobile.SplashActivity" />
+            android:parentActivityName="com.josef.mobile.HomeActivity" />
         <activity android:name="com.josef.mobile.free.PresenterActivity" />
         <activity android:name="com.josef.mobile.SplashActivity">
             <intent-filter>
@@ -27,6 +24,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713"/>
+        <activity
+            android:name="com.google.android.gms.ads.AdActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
+            android:theme="@android:style/Theme.Translucent" />
     </application>
 
 </manifest>

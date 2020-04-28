@@ -1,8 +1,5 @@
 package com.josef.mobile.free;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -21,7 +18,6 @@ import androidx.work.Operation;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
-import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,18 +30,12 @@ import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.josef.josefmobile.R;
-import com.josef.mobile.components.MainActivityViewPagerAdapter;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
 import com.josef.mobile.net.CallBackWorker;
-import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -169,7 +159,7 @@ public class DetailFragment extends Fragment {
                                     mSubHeader.setText(name);
                                     Log.d(TAG, "onChanged: "+name);
                                     String url = (String) metadata.get("url");
-                                    initializePlayer(url);
+                                    //initializePlayer(url);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
@@ -224,8 +214,6 @@ public class DetailFragment extends Fragment {
                 null
         );
         player.prepare(mediaSource);
-        playerView.setPlayer(player);
-        player.setPlayWhenReady(false);
         playerView.setPlayer(player);
 
     }

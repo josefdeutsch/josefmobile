@@ -204,7 +204,6 @@ public class HomeContainerTest {
                 .check(matches(isShowingPage(index)));
     }
 
-
     private static ViewInteraction onPager() {
         return onView(withId(R.id.viewidpager));
     }

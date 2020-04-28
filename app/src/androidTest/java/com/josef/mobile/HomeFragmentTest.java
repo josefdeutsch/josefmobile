@@ -27,10 +27,10 @@ import static org.junit.Assert.assertEquals;
 @RunWith(AndroidJUnit4.class)
 public class HomeFragmentTest {
 
-        private IdlingResource mIdlingResource;
+    private IdlingResource mIdlingResource;
 
-        @Test
-        public void verify_if_article_is_Visible_matches_withText(){
+    @Test
+    public void verify_if_article_is_Visible_matches_withText(){
             Bundle args = new Bundle();
             args.putInt(VIEWPAGERDETAILKEY,1);
             args.putInt(VIEWPAGERDETAILKEY,3);
@@ -43,8 +43,9 @@ public class HomeFragmentTest {
             });
             onView(withId(R.id.article_title)).check(matches(withText("hello")));
         }
-        @Test
-         public void verify_if_article_byline_is_Visible_matches_withText(){
+
+    @Test
+    public void verify_if_article_byline_is_Visible_matches_withText(){
             Bundle args = new Bundle();
             args.putInt(VIEWPAGERDETAILKEY,1);
             args.putInt(VIEWPAGERDETAILKEY,3);
@@ -60,9 +61,8 @@ public class HomeFragmentTest {
         IdlingRegistry.getInstance().unregister(EspressoIdlingResource.getIdlingResource());
     }
 
-
-        @Test
-        public void verify_if_toggleButton_is_clickable(){
+    @Test
+    public void verify_if_toggleButton_is_clickable(){
             Bundle args = new Bundle();
             args.putInt(VIEWPAGERDETAILKEY,1);
             args.putInt(VIEWPAGERDETAILKEY,3);
@@ -161,6 +161,7 @@ public class HomeFragmentTest {
         });
         onView(withId(R.id.imgBanner)).check(matches(isDisplayed()));
     }
+
     @Test
     public void verify_if_imagview_is_clickable(){
         Bundle args = new Bundle();

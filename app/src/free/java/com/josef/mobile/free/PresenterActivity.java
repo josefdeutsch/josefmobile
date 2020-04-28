@@ -18,10 +18,6 @@ import android.widget.TextView;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.josef.josefmobile.R;
-import com.josef.mobile.HomeContainer;
-import com.josef.mobile.MainActivity;
-
-import static com.josef.mobile.Config.VIEWPAGER_AMOUNT;
 
 public class PresenterActivity extends AppCompatActivity {
 

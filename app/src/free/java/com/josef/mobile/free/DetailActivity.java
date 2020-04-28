@@ -40,7 +40,7 @@ public class DetailActivity extends AppCompatActivity  {
     ViewPagerFragmentAdapter mAdapter;
     ViewPager mViewPager;
     private int which;
-
+    private int index;
     BottomAppBar bar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +63,7 @@ public class DetailActivity extends AppCompatActivity  {
 
         if (savedInstanceState == null) {
             which = getIntent().getIntExtra(VIEWPAGERMAINKEY,0);
+            index = getIntent().getIntExtra(VIEWPAGERDETAILKEY,0);
             // fragContainer.addView(ll);
         }
 
@@ -75,6 +76,7 @@ public class DetailActivity extends AppCompatActivity  {
         mAdapter = new ViewPagerFragmentAdapter(getSupportFragmentManager(),which);
         mViewPager.setAdapter(mAdapter);
         mViewPager.setOffscreenPageLimit(3);
+        mViewPager.setCurrentItem(index);
 
 
     }
@@ -122,13 +124,6 @@ public class DetailActivity extends AppCompatActivity  {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onBackPressed() {
-        Intent returnIntent = new Intent();
-       // returnIntent.putExtra(VIEWPAGERMAINKEY, which);
-        setResult(Activity.RESULT_OK,returnIntent);
-        finish();
-    }
 
     /**@Override
     public void onFragmentInteraction(Uri uri) {

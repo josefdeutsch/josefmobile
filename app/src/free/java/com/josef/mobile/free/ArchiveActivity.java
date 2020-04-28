@@ -2,15 +2,10 @@ package com.josef.mobile.free;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.app.ShareCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -23,13 +18,7 @@ import android.widget.TextView;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.josef.josefmobile.R;
-import com.josef.mobile.Echo;
-import com.josef.mobile.MainActivity;
-import com.josef.mobile.Message;
-import com.josef.mobile.free.components.DeleteCallBack;
-import com.josef.mobile.free.components.ArchiveActivityAdapter;
-
-import java.util.ArrayList;
+import com.josef.mobile.HomeActivity;
 
 public class ArchiveActivity extends AppCompatActivity {
 
@@ -107,7 +96,7 @@ public class ArchiveActivity extends AppCompatActivity {
                 .setAction("OK", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent intent = new Intent(ArchiveActivity.this, MainActivity.class);
+                        Intent intent = new Intent(ArchiveActivity.this, HomeActivity.class);
                         startActivity(intent);
                     }
                 }).setActionTextColor(getResources().getColor(android.R.color.holo_red_light));

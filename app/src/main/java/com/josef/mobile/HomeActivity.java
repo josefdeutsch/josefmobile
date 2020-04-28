@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.test.espresso.IdlingResource;
 import androidx.viewpager.widget.ViewPager;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -23,6 +24,10 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.josef.josefmobile.R;
@@ -36,7 +41,6 @@ import static com.josef.mobile.Config.VIEWPAGER_AMOUNT;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private AlertDialog mDialog;
     BottomAppBar bar;
     public int amount;
     private static final String TAG = "HomeActivity";
@@ -98,6 +102,25 @@ public class HomeActivity extends AppCompatActivity {
                 });
         scrollView.setFillViewport(true);
     }
+    private InterstitialAd mInterstitialAd;
+    private AlertDialog mDialog;
+
+    private void setupProgressBar(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
+        builder.setView(R.layout.progressdialog);
+        mDialog = builder.create();
+        mDialog.show();
+    }
+
+    public void loadIntersitialAds(InterstitialAdsRequest request){
+        request.execute();
+    }
+
+    private void startActivity(Context conext, Class clazz){
+        Intent intent = new Intent(conext, clazz);
+        startActivity(intent);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -111,29 +134,74 @@ public class HomeActivity extends AppCompatActivity {
 
         if (item.getItemId() == android.R.id.home) {
         } else if (item.getItemId() == R.id.app_bar_info) {
-            Intent intent = new Intent(this, PresenterActivity.class);
-            startActivity(intent);
+            EspressoIdlingResource.increment();
+            setupProgressBar();
+            loadIntersitialAds(new InterstitialAdsRequest() {
+                @Override
+                public void execute() {
+                    mInterstitialAd = new InterstitialAd(getApplicationContext());
+                    mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+                    mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                    mInterstitialAd.setAdListener(new AdListener() {
+                        @Override
+                        public void onAdLoaded() {
+                            if (mDialog != null) {
+                                mDialog.hide();
+                            }
+                            mInterstitialAd.show();
+                        }
+                        @Override
+                        public void onAdFailedToLoad(int errorCode) {
+                            if (mDialog != null) {
+                                mDialog.hide();
+                            }
+                            EspressoIdlingResource.decrement();
+                            startActivity(getApplicationContext(),PresenterActivity.class);
+                        }
+                        @Override
+                        public void onAdClosed() {
+                            EspressoIdlingResource.decrement();
+                            startActivity(getApplicationContext(),PresenterActivity.class);
+                        }
+                    });
+                }
+            });
         } else if (item.getItemId() == R.id.app_bar_archieve) {
-            Intent intent = new Intent(this, ArchiveActivity.class);
-            startActivity(intent);
+            setupProgressBar();
+            loadIntersitialAds(new InterstitialAdsRequest() {
+                @Override
+                public void execute() {
+                    mInterstitialAd = new InterstitialAd(getApplicationContext());
+                    mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+                    mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                    mInterstitialAd.setAdListener(new AdListener() {
+                        @Override
+                        public void onAdLoaded() {
+                            if (mDialog != null) {
+                                mDialog.hide();
+                            }
+                            mInterstitialAd.show();
+                        }
+                        @Override
+                        public void onAdFailedToLoad(int errorCode) {
+                            if (mDialog != null) {
+                                mDialog.hide();
+                            }
+                            EspressoIdlingResource.decrement();
+                            startActivity(getApplicationContext(),ArchiveActivity.class);
+                        }
+                        @Override
+                        public void onAdClosed() {
+                            EspressoIdlingResource.decrement();
+                            startActivity(getApplicationContext(),ArchiveActivity.class);
+                        }
+                    });
+                }
+            });
         }
         return super.onOptionsItemSelected(item);
     }
 
-    int key;
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == ONACTIVITYRESULTEXAMPLE) {
-            if (resultCode == Activity.RESULT_OK) {
-              //   key = data.getIntExtra(VIEWPAGERMAINKEY, 0);
-            }
-            if (resultCode == Activity.RESULT_CANCELED) {
-            }
-        }
-    }
 
     public void performFloatingAction(View view) {
 
