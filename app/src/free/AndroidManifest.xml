@@ -15,10 +15,12 @@
 
         <activity android:name="com.josef.mobile.free.DetailActivity"
             android:parentActivityName="com.josef.mobile.HomeActivity"></activity>
-        <activity android:name="com.josef.mobile.free.ArchiveActivity" />
 
-        <activity android:name="com.josef.mobile.free.components.FragmentStatePagerSupport"
-            android:parentActivityName="com.josef.mobile.MainActivity"></activity>
+        <activity android:name="com.josef.mobile.free.PresenterActivity"
+            android:parentActivityName="com.josef.mobile.HomeActivity"></activity>
+
+        <activity android:name="com.josef.mobile.free.ArchiveActivity"
+            android:parentActivityName="com.josef.mobile.HomeActivity"></activity>
     </application>
 
 </manifest>

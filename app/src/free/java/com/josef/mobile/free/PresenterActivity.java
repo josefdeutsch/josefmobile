@@ -4,6 +4,8 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ShareCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -16,7 +18,10 @@ import android.widget.TextView;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.josef.josefmobile.R;
+import com.josef.mobile.HomeContainer;
 import com.josef.mobile.MainActivity;
+
+import static com.josef.mobile.Config.VIEWPAGER_AMOUNT;
 
 public class PresenterActivity extends AppCompatActivity {
 
@@ -51,6 +56,15 @@ public class PresenterActivity extends AppCompatActivity {
                         }
                     }
                 });
+
+        if (savedInstanceState == null) {
+            FragmentTransaction fm = getSupportFragmentManager().beginTransaction();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.presenter_container, PresenterFragment.newInstance("0","0"))
+                    .commit();
+                fm.commit();
+        }
+
     }
     public void performFloatingAction(View view) {
         CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.bottom_app_bar_coord);
@@ -77,7 +91,6 @@ public class PresenterActivity extends AppCompatActivity {
         TextView snackBarText =  snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text);
         snackBarText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorBlack));
         snackbar.show();
-
 
     }
 

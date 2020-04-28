@@ -48,56 +48,11 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <com.josef.mobile.components.MaxWidthLinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:elevation="2dp"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:id="@+id/meta_bar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorBlack"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/article_title"
-                        style="?android:attr/textAppearanceLarge"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="HEADER"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                        android:textColor="#fff"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/article_byline"
-                        style="?android:attr/textAppearanceMedium"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="SUBHEADERS"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                        android:textColor="#8fff" />
-                </LinearLayout>
-
-            </com.josef.mobile.components.MaxWidthLinearLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorBlack">
-
-            </androidx.recyclerview.widget.RecyclerView>
-
-        </LinearLayout>
+            android:id="@+id/archieve_container">
+        </FrameLayout>
 
     </androidx.core.widget.NestedScrollView>
 

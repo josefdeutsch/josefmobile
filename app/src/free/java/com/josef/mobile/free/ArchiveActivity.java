@@ -5,6 +5,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ShareCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,7 +35,7 @@ public class ArchiveActivity extends AppCompatActivity {
 
     private static final String TAG = "PresenterActivity";
     BottomAppBar bar;
-    ArrayList mArraylist;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +67,14 @@ public class ArchiveActivity extends AppCompatActivity {
                         }
                     }
                 });
-        setupRecyclerView();
+        if (savedInstanceState == null) {
+            FragmentTransaction fm = getSupportFragmentManager().beginTransaction();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.archieve_container, ArchiveFragment.newInstance("0","0"))
+                    .commit();
+            fm.commit();
+        }
+
     }
 
     @Override
@@ -93,55 +101,6 @@ public class ArchiveActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void setupRecyclerView() {
-        mArraylist = getLists(new ArrayList<String>());
-        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setHasFixedSize(true);
-        final ArchiveActivityAdapter simpleAdapter = new ArchiveActivityAdapter(getApplicationContext(), mArraylist);
-        mRecyclerView.setAdapter(simpleAdapter);
-
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new DeleteCallBack(simpleAdapter,
-                new DeleteCallBack.SnackBarListener() {
-                    @Override
-                    public void listenToAction(final int position) {
-                        CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.bottom_app_bar_coord);
-                        final Snackbar snackbar = Snackbar.make(coordinatorLayout, "delete item..?", Snackbar.LENGTH_LONG)
-                                .setAction("OK", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        simpleAdapter.deleteTask(position);
-                                    }
-                                }).setActionTextColor(getResources().getColor(android.R.color.holo_red_light));
-                        View view = snackbar.getView();
-                        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) view.getLayoutParams();
-                        params.gravity = Gravity.TOP;
-                        view.setLayoutParams(params);
-                        view.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorWhite));
-                        TextView snackBarText =  snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text);
-                        snackBarText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorBlack));
-                        snackbar.show();
-                    }
-                }));
-        itemTouchHelper.attachToRecyclerView(mRecyclerView);
-    }
-
-    private ArrayList<String> getLists(ArrayList<String> arrayList) {
-
-        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/0001.png");
-        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/0002.png");
-        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/0003.png");
-        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00010621.png");
-        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00020621.png");
-        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00030621.png");
-        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00010622.png");
-        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00020622.png");
-        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00030622.png");
-        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00030622.png");
-
-        return arrayList;
-    }
     public void performFloatingAction(View view) {
         CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.bottom_app_bar_coord);
         final Snackbar snackbar = Snackbar.make(coordinatorLayout, "add more items.. ?", Snackbar.LENGTH_LONG)
