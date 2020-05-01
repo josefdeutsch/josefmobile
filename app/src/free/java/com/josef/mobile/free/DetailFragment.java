@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.test.espresso.IdlingResource;
 import androidx.work.Constraints;
 import androidx.work.Data;
@@ -34,6 +35,8 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.josef.josefmobile.R;
+import com.josef.mobile.data.Favourite;
+import com.josef.mobile.data.FavouriteViewModel;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
 import com.josef.mobile.net.CallBackWorker;
 
@@ -61,7 +64,7 @@ public class DetailFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    private FavouriteViewModel favouriteViewModel;
     private Data mData;
     private Constraints mConstraints;
     private OneTimeWorkRequest mDownload;
@@ -73,8 +76,6 @@ public class DetailFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private int which;
     private int index;
-
-
 
     public DetailFragment() {
         // Required empty public constructor
@@ -113,25 +114,29 @@ public class DetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rooot = inflater.inflate(R.layout.fragment_detail, container, false);
+        favouriteViewModel = ViewModelProviders.of(this).get(FavouriteViewModel.class);
         playerView = rooot.findViewById(R.id.video_view);
         mHeader = rooot.findViewById(R.id.article_title);
         mSubHeader = rooot.findViewById(R.id.article_byline);
         //EspressoIdlingResource.increment();
-        mHeader.setText("uschi");
-        setupWorkRequest(which);
+        //mHeader.setText("uschi");
+
+        Log.d(TAG, "onCreateView: "+which);
+        Log.d(TAG, "onCreateView: "+index);
+        setupWorkRequest(1);
         executeWorkRequest();
         setupViewPager(index);
         return rooot;
 
     }
 
-    private void setupWorkRequest(final int index) {
+    public void setupWorkRequest(final int index) {
         mData = buildData(index);
         mConstraints = buildConstraints();
         mDownload = buildOneTimeWorkRequest(mData, mConstraints);
     }
 
-    private void executeWorkRequest() {
+    public void executeWorkRequest() {
         WorkManager.getInstance(getActivity()).beginUniqueWork(WORKREQUEST_VIEWPAGER + mDownload.getId(),
                 ExistingWorkPolicy.KEEP, mDownload).enqueue().getState().observe(this, new Observer<Operation.State>() {
             @Override
@@ -153,14 +158,46 @@ public class DetailFragment extends Fragment {
                                 String output = getViewPagerContent(workInfo);
                                 try {
                                     JSONArray input = new JSONArray(output);
-                                    JSONObject container = input.getJSONObject(pos);
+                                    JSONObject container = input.getJSONObject(index);
                                     JSONObject metadata = (JSONObject) container.get("metadata");
                                     String name = (String) metadata.get("name");
                                     //mHeader.setText("uschi");
+                                    mHeader.setText("uschi");
                                     mSubHeader.setText(name);
-                                    Log.d(TAG, "onChanged: "+name);
+                                    Log.d(TAG, "onChansged: "+name);
                                     String url = (String) metadata.get("url");
                                     //initializePlayer(url);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+                                    EspressoIdlingResource.decrement();
+                                }
+                            }
+                        }
+                    }
+                });
+    }
+    public void addItemtsToDataBase(final int pos){
+        WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(mDownload.getId())
+                .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
+                    @Override
+                    public void onChanged(@Nullable WorkInfo workInfo) {
+                        if (workInfo != null) {
+                            if (workInfo.getState().isFinished()) {
+                                String output = getViewPagerContent(workInfo);
+                                try {
+                                    JSONArray input = new JSONArray(output);
+                                    JSONObject container = input.getJSONObject(pos);
+                                    JSONObject metadata = (JSONObject) container.get("metadata");
+                                    String name = (String) metadata.get("name");
+                                    String png = (String) metadata.get("png");
+                                    String url = (String) metadata.get("url");
+                                    Log.d(TAG, "onChanged: "+png);
+                                    Log.d(TAG, "onChanged: "+url);
+                                    Favourite favourite = new Favourite(png,url,0);
+                                    favouriteViewModel.insert(favourite);
+
+
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {

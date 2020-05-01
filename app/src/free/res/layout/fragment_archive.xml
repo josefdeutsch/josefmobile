@@ -1,49 +1,59 @@
-<LinearLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_content"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <com.josef.mobile.components.MaxWidthLinearLayout
+    android:layout_height="wrap_content">
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:elevation="2dp"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:id="@+id/meta_bar"
+        android:orientation="vertical"
+        android:id="@+id/main_fragment_linear"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+        <com.josef.mobile.components.MaxWidthLinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorBlack"
+            android:layout_gravity="center_horizontal"
+            android:elevation="2dp"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/article_title"
-                style="?android:attr/textAppearanceLarge"
+            <LinearLayout
+                android:id="@+id/meta_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="HEADER"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textColor="#fff"
-                android:textStyle="bold" />
+                android:background="@color/colorBlack"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/article_byline"
-                style="?android:attr/textAppearanceMedium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="SUBHEADERS"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                android:textColor="#8fff" />
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/article_title"
+                    style="?android:attr/textAppearanceLarge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="HEADER"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textColor="#fff"
+                    android:textStyle="bold" />
 
-    </com.josef.mobile.components.MaxWidthLinearLayout>
+                <TextView
+                    android:id="@+id/article_byline"
+                    style="?android:attr/textAppearanceMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SUBHEADERS"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:textColor="#8fff" />
+            </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorBlack">
+        </com.josef.mobile.components.MaxWidthLinearLayout>
 
-    </androidx.recyclerview.widget.RecyclerView>
-</LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorBlack">
+
+        </androidx.recyclerview.widget.RecyclerView>
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+

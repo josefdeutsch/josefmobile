@@ -2,23 +2,39 @@ package com.josef.mobile.free.components;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.ScaleAnimation;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.ToggleButton;
 
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.josef.josefmobile.R;
+import com.josef.mobile.AppPreferences;
+import com.josef.mobile.data.Favourite;
+import com.josef.mobile.data.FavouriteViewModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static androidx.constraintlayout.widget.Constraints.TAG;
+
 
 public class ArchiveActivityAdapter extends RecyclerView.Adapter<ArchiveActivityAdapter.ViewHolder> {
     private Context mContext;
-    private List<String> mValues;
+    private List<Favourite> mValues;
+    FavouriteViewModel mDb;
+    private OnDeleteCallBack mDeleteCallBack;
+    public interface OnDeleteCallBack{
+        void delete(Favourite note);
+    }
 
     private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
@@ -26,9 +42,11 @@ public class ArchiveActivityAdapter extends RecyclerView.Adapter<ArchiveActivity
         }
     };
 
-    public ArchiveActivityAdapter(Context context, ArrayList<String> items) {
+    public ArchiveActivityAdapter(Context context, List<Favourite> items,OnDeleteCallBack deleteCallBack) {
         mContext = context;
         mValues = items;
+        mDeleteCallBack = deleteCallBack;
+
     }
 
     @Override
@@ -46,16 +64,18 @@ public class ArchiveActivityAdapter extends RecyclerView.Adapter<ArchiveActivity
          .load(mValues.get(position).getDescription())
          .centerCrop()
          .into(holder.imageButton);**/
-        Picasso.get().load(mValues.get(position)).config(Bitmap.Config.ARGB_8888)
+        holder.onDelete(mValues.get(position));
+        Picasso.get().load(mValues.get(position).getDescription()).config(Bitmap.Config.ARGB_8888)
                 .fit().centerCrop().into(holder.imageView);
     }
 
     @Override
     public int getItemCount() {
+        if(mValues==null)return 0;
         return mValues.size();
     }
 
-    public void setListItems(List<String> arrayList) {
+    public void setListItems(List<Favourite> arrayList) {
         this.mValues = arrayList;
         notifyDataSetChanged();
     }
@@ -70,10 +90,40 @@ public class ArchiveActivityAdapter extends RecyclerView.Adapter<ArchiveActivity
     }
     class ViewHolder extends RecyclerView.ViewHolder{
         public ImageView imageView;
+        public ToggleButton mDelete;
 
         ViewHolder(View view) {
             super(view);
             imageView = view.findViewById(R.id.imageView);
+            mDelete = view.findViewById(R.id.button_delete);
+
+        }
+        private void onDelete(final Favourite note) {
+            final ScaleAnimation scaleAnimation = new ScaleAnimation(0.7f, 1.0f, 0.7f, 1.0f, Animation.RELATIVE_TO_SELF, 0.7f, Animation.RELATIVE_TO_SELF, 0.7f);
+            scaleAnimation.setDuration(500);
+            BounceInterpolator bounceInterpolator = new BounceInterpolator();
+            scaleAnimation.setInterpolator(bounceInterpolator);
+
+            mDelete.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(final CompoundButton compoundButton, boolean isChecked) {
+                    compoundButton.startAnimation(scaleAnimation);
+                    if (isChecked) {
+                        mDeleteCallBack.delete(note);
+
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                compoundButton.setChecked(false);
+                            }
+                        }, 100);
+                       // compoundButton.setChecked(false);
+                    } else {
+
+                    }
+                }
+            });
         }
     }
 }

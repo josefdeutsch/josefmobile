@@ -4,7 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import android.app.Activity;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,12 +16,17 @@ import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.test.espresso.IdlingResource;
 import androidx.viewpager.widget.ViewPager;
+
+import android.util.Log;
+import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.TextView;
 
@@ -33,21 +38,18 @@ import com.google.android.material.snackbar.Snackbar;
 import com.josef.josefmobile.R;
 import com.josef.mobile.InterstitialAdsRequest;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Set;
 
 import static com.josef.mobile.Config.VIEWPAGERDETAILKEY;
 import static com.josef.mobile.Config.VIEWPAGERMAINKEY;
-import static com.josef.mobile.Config.VIEWPAGER_AMOUNT;
 
 public class DetailActivity extends AppCompatActivity  {
-
-    ViewPagerFragmentAdapter mAdapter;
+    private static final String TAG = "DetailActivity";
+    ViewPagerFragmentAdapters mAdapter;
     ViewPager mViewPager;
+    DetailFragment mDetailFragment;
     private int which;
-    private int index;
+    private int previousAdapterPosition;
+    private Integer currentAdapterPosition;
     BottomAppBar bar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,20 +72,39 @@ public class DetailActivity extends AppCompatActivity  {
 
         if (savedInstanceState == null) {
             which = getIntent().getIntExtra(VIEWPAGERMAINKEY,0);
-            index = getIntent().getIntExtra(VIEWPAGERDETAILKEY,0);
+            previousAdapterPosition = getIntent().getIntExtra(VIEWPAGERDETAILKEY,0);
             // fragContainer.addView(ll);
         }
 
+        Log.d(TAG, "onCreate: "+which);
+        Log.d(TAG, "onCreate: "+previousAdapterPosition);
         setupScrollView();
 
         mViewPager = findViewById(R.id.detailviewpager);
         //
-        mAdapter = new ViewPagerFragmentAdapter(getSupportFragmentManager(),which);
+        mAdapter = new ViewPagerFragmentAdapters(getSupportFragmentManager(),1);
         mViewPager.setAdapter(mAdapter);
         mViewPager.setOffscreenPageLimit(3);
-        mViewPager.setCurrentItem(index);
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+            }
 
+            @Override
+            public void onPageSelected(int position) {
+                currentAdapterPosition = position;
+                mDetailFragment = (DetailFragment)mAdapter.getRegisteredFragment(position);
+                Log.d(TAG, "onPageSelected: ");
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+        //mViewPager.setCurrentItem(5);
     }
 
     private InterstitialAd mInterstitialAd;
@@ -137,9 +158,10 @@ public class DetailActivity extends AppCompatActivity  {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == android.R.id.home) {
+
         } else if (item.getItemId() == R.id.app_bar_info) {
             EspressoIdlingResource.increment();
-            setupProgressBar();
+          /**  setupProgressBar();
             loadIntersitialAds(new InterstitialAdsRequest() {
                 @Override
                 public void execute() {
@@ -169,9 +191,10 @@ public class DetailActivity extends AppCompatActivity  {
                         }
                     });
                 }
-            });
+            });**/
+            startActivity(getApplicationContext(),PresenterActivity.class);
         } else if (item.getItemId() == R.id.app_bar_archieve) {
-            setupProgressBar();
+           /** setupProgressBar();
             loadIntersitialAds(new InterstitialAdsRequest() {
                 @Override
                 public void execute() {
@@ -201,9 +224,14 @@ public class DetailActivity extends AppCompatActivity  {
                         }
                     });
                 }
-            });
+            });**/
+            startActivity(getApplicationContext(),ArchiveActivity.class);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void withCommerials(){
+
     }
 
 
@@ -212,7 +240,7 @@ public class DetailActivity extends AppCompatActivity  {
 
     }**/
 
-    public static class ViewPagerFragmentAdapter extends FragmentStatePagerAdapter {
+    /**public static class ViewPagerFragmentAdapter extends FragmentStatePagerAdapter {
 
         public int mWhich;
         public ViewPagerFragmentAdapter(FragmentManager fm,int which) {
@@ -229,16 +257,60 @@ public class DetailActivity extends AppCompatActivity  {
         public Fragment getItem(int position) {
             return DetailFragment.newInstance(mWhich,position);
         }
+    }**/
+
+    public class ViewPagerFragmentAdapters extends FragmentStatePagerAdapter {
+
+        //smartfragmentstatepager....
+        public int mIndex;
+        SparseArray<Fragment> registeredFragments = new SparseArray<>();
+
+        public ViewPagerFragmentAdapters(FragmentManager fm, int index) {
+            super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+            mIndex = index;
+
+        }
+        public Fragment getRegisteredFragment(int position) {
+            return registeredFragments.get(position);
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            Fragment fragment = (Fragment) super.instantiateItem(container, position);
+            registeredFragments.put(position, fragment);
+            return fragment;
+        }
+
+        @Override
+        public int getCount() {
+            return 50;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+         //   if(registeredFragments.get(position)!=null)return registeredFragments.get(position);
+            return DetailFragment.newInstance(mIndex,position);
+        }
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            registeredFragments.remove(position);
+            super.destroyItem(container, position, object);
+        }
     }
 
-
     public void performFloatingAction(View view) {
-        CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.bottom_app_bar_coord);
+        final CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.bottom_app_bar_coord);
         final Snackbar snackbar = Snackbar.make(coordinatorLayout, "add items..?", Snackbar.LENGTH_LONG)
                 .setAction("OK", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
+                        if(currentAdapterPosition==null) {
+                            mViewPager.setCurrentItem(1);
+                            mViewPager.setCurrentItem(0);
+                            mDetailFragment.addItemtsToDataBase(currentAdapterPosition);
+                        }else {
+                            mDetailFragment.addItemtsToDataBase(currentAdapterPosition);
+                        }
                     }
                 }).setActionTextColor(getResources().getColor(android.R.color.holo_red_light));
 
@@ -250,7 +322,6 @@ public class DetailActivity extends AppCompatActivity  {
         TextView snackBarText =  snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text);
         snackBarText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorBlack));
         snackbar.show();
-
     }
 
     @Nullable

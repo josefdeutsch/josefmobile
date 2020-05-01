@@ -64,4 +64,5 @@ public class SplashActivityTest {
             IdlingRegistry.getInstance().unregister(EspressoIdlingResource.getIdlingResource());
         }
     }
+
 }

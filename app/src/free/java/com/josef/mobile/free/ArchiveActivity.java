@@ -25,7 +25,6 @@ public class ArchiveActivity extends AppCompatActivity {
     private static final String TAG = "PresenterActivity";
     BottomAppBar bar;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +34,7 @@ public class ArchiveActivity extends AppCompatActivity {
         bar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Handle the navigation click by showing a BottomDrawer etc.
+               // Handle the navigation click by showing a BottomDrawer etc.
             }
         });
         bar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);

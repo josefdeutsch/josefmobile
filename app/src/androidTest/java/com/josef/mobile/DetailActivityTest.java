@@ -58,18 +58,16 @@ import static com.josef.mobile.ViewPagerActions.scrollToLast;
 /**
  * Integration tests for {@link ViewPagerActions}.
  */
+
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public final class DetailActivityTest {
 
-    /*+ Pitfalls : ...........net ! ui - fragment -1!  ......................... **/
-
-
+    /*+ Pitfalls : ........... net.. ! ui - fragment -1!  ......................... **/
 
     @Rule
     public ActivityScenarioRule<DetailActivity> activityTestRule =
             new ActivityScenarioRule<>(DetailActivity.class);
-
 
     private static IdlingResource mIdlingResource;
 
@@ -228,6 +226,7 @@ public final class DetailActivityTest {
         testScrollRightThenLeft(true);
     }
 
+
     private static void testScrollRightThenLeft(boolean smoothScroll) {
         onPager()
                 .check(matches(isShowingPage(0)))
@@ -246,6 +245,7 @@ public final class DetailActivityTest {
     public void scrollToLastThenFirst_smooth() {
         testScrollToLastThenFirst(true);
     }
+
 
     private static void testScrollToLastThenFirst(boolean smoothScroll) {
         onPager()
@@ -305,10 +305,12 @@ public final class DetailActivityTest {
 
     }
 
+
     private static void testScrollToPage(final int index, boolean smoothScroll) {
         onPager().perform(ViewPagerActions.scrollToPage(index, smoothScroll))
                 .check(matches(isShowingPage(index)));
     }
+
 
     private static void testScrollToPage(boolean smoothScroll) {
         onPager()
@@ -319,20 +321,21 @@ public final class DetailActivityTest {
                 .check(matches(isShowingPage(1)));
     }
 
+
     private static ViewInteraction onPager() {
         return onView(withId(R.id.detailviewpager));
     }
+
 
     private static Matcher<? super View> isShowingPage(int index) {
         //material :gold, sculpture1 :abstract
         return ViewMatchers.hasDescendant(ViewMatchers.withText("uschi"));
     }
 
+
     private static Matcher<? super View> isShowingPageId(int index) {
         //material :gold, sculpture1 :abstract
         return ViewMatchers.hasDescendant(ViewMatchers.withId(R.id.imgBanner));
     }
-
-
 
 }

@@ -1,13 +1,13 @@
 package com.josef.mobile.free;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,13 +19,14 @@ import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.josef.josefmobile.R;
+import com.josef.mobile.data.Favourite;
+import com.josef.mobile.data.FavouriteViewModel;
 import com.josef.mobile.free.components.ArchiveActivityAdapter;
-import com.josef.mobile.free.components.DeleteCallBack;
 
-import java.util.ArrayList;
+import java.util.List;
 
 
-public class ArchiveFragment extends Fragment {
+public class ArchiveFragment extends Fragment{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -65,66 +66,54 @@ public class ArchiveFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+    private FavouriteViewModel favouriteViewModel;
+    private ArchiveActivityAdapter simpleAdapter;
+    private RecyclerView mRecyclerView;
+    private ArchiveActivityAdapter.OnDeleteCallBack onDeleteCallBack = new ArchiveActivityAdapter.OnDeleteCallBack() {
+        @Override
+        public void delete(final Favourite note) {
+            final Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.bottom_app_bar_coord), "delete item..?", Snackbar.LENGTH_LONG)
+                    .setAction("OK", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            favouriteViewModel.delete(note);
+                        }
+                    }).setActionTextColor(getResources().getColor(android.R.color.holo_red_light));
+            View view = snackbar.getView();
+            CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) view.getLayoutParams();
+            params.gravity = Gravity.TOP;
+            view.setLayoutParams(params);
+            view.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorWhite));
+            TextView snackBarText =  snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text);
+            snackBarText.setTextColor(ContextCompat.getColor(getContext(), R.color.colorBlack));
+            snackbar.show();
+        }
+    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        mLayoutInflater= inflater.inflate(R.layout.fragment_archive, container, false);
-        setupRecyclerView();
-        return mLayoutInflater;
 
+        mLayoutInflater = inflater.inflate(R.layout.fragment_archive, container, false);
+
+        setupRecyclerView();
+
+        favouriteViewModel = ViewModelProviders.of(this).get(FavouriteViewModel.class);
+        favouriteViewModel.getAllNotes().observe(this, new Observer<List<Favourite>>() {
+            @Override
+            public void onChanged(@Nullable List<Favourite> favourites) {
+                simpleAdapter.setListItems(favourites);
+            }
+        });
+        return mLayoutInflater;
     }
 
     private void setupRecyclerView() {
-        ArrayList arrayList = getLists(new ArrayList<String>());
-
-        RecyclerView mRecyclerView = (RecyclerView) mLayoutInflater.findViewById(R.id.recycler_view);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView = (RecyclerView) mLayoutInflater.findViewById(R.id.recycler_view);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
-        final ArchiveActivityAdapter simpleAdapter = new ArchiveActivityAdapter(getContext(), arrayList);
+        simpleAdapter = new ArchiveActivityAdapter(getContext(), null,onDeleteCallBack);
         mRecyclerView.setAdapter(simpleAdapter);
-
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new DeleteCallBack(simpleAdapter,
-                new DeleteCallBack.SnackBarListener() {
-                    @Override
-                    public void listenToAction(final int position) {
-                        CoordinatorLayout coordinatorLayout = (CoordinatorLayout) mLayoutInflater.findViewById(R.id.bottom_app_bar_coord);
-                        final Snackbar snackbar = Snackbar.make(coordinatorLayout, "delete item..?", Snackbar.LENGTH_LONG)
-                                .setAction("OK", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        simpleAdapter.deleteTask(position);
-                                    }
-                                }).setActionTextColor(getResources().getColor(android.R.color.holo_red_light));
-                        View view = snackbar.getView();
-                        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) view.getLayoutParams();
-                        params.gravity = Gravity.TOP;
-                        view.setLayoutParams(params);
-                        view.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorWhite));
-                        TextView snackBarText =  snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text);
-                        snackBarText.setTextColor(ContextCompat.getColor(getContext(), R.color.colorBlack));
-                        snackbar.show();
-                    }
-                }));
-        itemTouchHelper.attachToRecyclerView(mRecyclerView);
     }
-
-    private ArrayList<String> getLists(ArrayList<String> arrayList) {
-
-        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/0001.png");
-        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/0002.png");
-        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/0003.png");
-        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00010621.png");
-        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00020621.png");
-        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00030621.png");
-        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00010622.png");
-        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00020622.png");
-        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00030622.png");
-        arrayList.add("http://joseph3d.com/wp-content/uploads/2019/06/00030622.png");
-
-        return arrayList;
-    }
-
 }

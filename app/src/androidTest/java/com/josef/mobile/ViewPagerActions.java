@@ -42,7 +42,7 @@ public final class ViewPagerActions {
 
   private ViewPagerActions() {
     // forbid instantiation
-  }
+    }
 
   /** Moves <code>ViewPager</code> to the right be one page. */
   public static ViewAction scrollRight() {
@@ -205,7 +205,6 @@ public final class ViewPagerActions {
         0,
         0);
   }
-
   /**
    * View pager listener that serves as Espresso's {@link IdlingResource} and notifies the
    * registered callback when the view pager gets to STATE_IDLE state.
@@ -278,6 +277,7 @@ public final class ViewPagerActions {
       // is needed since some of the actions are going to throw (expected) exceptions. If that
       // happens, we still need to clean up after ourselves to leave the system (Espresso) in a good
       // state.
+
       try {
         // Register our listener as idling resource so that Espresso waits until the
         // wrapped action results in the view pager getting to the STATE_IDLE state
@@ -292,6 +292,7 @@ public final class ViewPagerActions {
         customListener.mNeedsIdle = true;
         uiController.loopMainThreadUntilIdle();
         customListener.mNeedsIdle = false;
+
       } finally {
         // Unregister our idling resource
         Espresso.unregisterIdlingResources(customListener);

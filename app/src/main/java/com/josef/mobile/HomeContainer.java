@@ -43,6 +43,7 @@ public class HomeContainer extends Fragment {
     private int mPosition;
     private ToggleButton buttonFavorite;
     View layoutInflater;
+    HomeFragment mHomeFragment;
     public HomeContainer() {
         // Required empty public constructor
     }
@@ -85,8 +86,8 @@ public class HomeContainer extends Fragment {
             @Override
             public void onPageSelected(int position) {
                 mPosition = position;
-                HomeFragment fragment = (HomeFragment)adapters.getRegisteredFragment(position);
-                fragment.shareMetaData(position);
+                mHomeFragment = (HomeFragment)adapters.getRegisteredFragment(position);
+                mHomeFragment.shareMetaData(position);
             }
 
             @Override
@@ -134,7 +135,13 @@ public class HomeContainer extends Fragment {
 
         @Override
         public Fragment getItem(int position) {
+            //if(registeredFragments.get(position)!=null)return registeredFragments.get(position);
             return HomeFragment.newInstance(mIndex, position);
+        }
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            registeredFragments.remove(position);
+            super.destroyItem(container, position, object);
         }
     }
 

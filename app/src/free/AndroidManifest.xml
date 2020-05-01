@@ -14,7 +14,13 @@
         android:usesCleartextTraffic="true">
 
         <activity android:name="com.josef.mobile.free.DetailActivity"
-            android:parentActivityName="com.josef.mobile.HomeActivity"></activity>
+            android:parentActivityName="com.josef.mobile.HomeActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <activity android:name="com.josef.mobile.free.PresenterActivity"
             android:parentActivityName="com.josef.mobile.HomeActivity"></activity>
