@@ -116,13 +116,13 @@ public class DetailFragment extends Fragment {
         setupWorkRequest(1);
         executeWorkRequest();
 
-
+        //Performance issue..
+        //https://github.com/google/ExoPlayer/blob/cdfe578/extensions/ima/README.md
         FragmentTransaction fm = getChildFragmentManager().beginTransaction();
         getChildFragmentManager().beginTransaction()
                 .add(R.id.nested_container, PlayerFragment.newInstance(mDownload.getId().toString(),index))
                 .commit();
         fm.commit();
-
 
         setupViewPager(index);
         return rooot;

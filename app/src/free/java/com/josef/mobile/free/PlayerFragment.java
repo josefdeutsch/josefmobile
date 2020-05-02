@@ -160,8 +160,6 @@ public class PlayerFragment extends Fragment implements Player.EventListener {
         initFullscreenButton();
         initExoPlayer();
         setupThumbNailSource();
-       // mExoPlayerView.setDefaultArtwork(BitmapFactory.decodeResource
-           //     (getResources(), R.drawable.question_mark));
 
         return mView;
     }
@@ -209,6 +207,13 @@ public class PlayerFragment extends Fragment implements Player.EventListener {
         }
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        if (mExoPlayerView.getPlayer() != null)
+            mExoPlayerView.getPlayer().release();
+    }
+
     private void setupMediaSource() {
         EspressoIdlingResource.increment();
         WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(UUID.fromString(mId))
@@ -235,6 +240,7 @@ public class PlayerFragment extends Fragment implements Player.EventListener {
                     }
                 });
     }
+
 
     private void setupThumbNailSource() {
         EspressoIdlingResource.increment();
@@ -270,8 +276,10 @@ public class PlayerFragment extends Fragment implements Player.EventListener {
         return output;
     }
 
+
     @Override
     public void onTimelineChanged(Timeline timeline, Object manifest) {
+
     }
 
     @Override
@@ -301,6 +309,7 @@ public class PlayerFragment extends Fragment implements Player.EventListener {
     public void onRepeatModeChanged(int repeatMode) {
     }
 
+
     @Override
     public void onPlayerError(ExoPlaybackException error) {
         getActivity().finish();
@@ -308,11 +317,13 @@ public class PlayerFragment extends Fragment implements Player.EventListener {
 
     @Override
     public void onPositionDiscontinuity() {
+
     }
 
     @Override
     public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
     }
+
 
     private void initFullscreenDialog() {
 
@@ -411,8 +422,6 @@ public class PlayerFragment extends Fragment implements Player.EventListener {
     }
 
     private void postThumbnailIntoExoplayer(String png) {
-
-         
          Picasso.get().load(png).into(target);
     }
 }

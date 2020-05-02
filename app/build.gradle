@@ -83,13 +83,15 @@ android {
         implementation "androidx.cardview:cardview:1.0.0"
         implementation "androidx.coordinatorlayout:coordinatorlayout:1.1.0"
 
-        implementation 'com.google.android.exoplayer:exoplayer:r2.4.0'
-        implementation 'com.google.android.exoplayer:exoplayer-core:r2.4.0'
-        implementation 'com.google.android.exoplayer:exoplayer-dash:r2.4.0'
-        implementation 'com.google.android.exoplayer:exoplayer-hls:r2.4.0'
-        implementation 'com.google.android.exoplayer:exoplayer-smoothstreaming:r2.4.0'
-        implementation 'com.google.android.exoplayer:exoplayer-ui:r2.4.0'
+        implementation 'com.google.android.exoplayer:exoplayer:r2.5.0'
+        implementation 'com.google.android.exoplayer:exoplayer-core:r2.5.0'
+        implementation 'com.google.android.exoplayer:exoplayer-dash:r2.5.0'
+        implementation 'com.google.android.exoplayer:exoplayer-hls:r2.5.0'
+        implementation 'com.google.android.exoplayer:exoplayer-smoothstreaming:r2.5.0'
+        implementation 'com.google.android.exoplayer:exoplayer-ui:r2.5.0'
         implementation 'com.google.android.exoplayer:exoplayer:r2.5.1'
+
+        implementation'com.google.android.exoplayer:extension-ima:r2.5.0'
 
         implementation 'androidx.test.espresso:espresso-idling-resource:3.2.0'
         androidTestImplementation 'androidx.test.espresso:espresso-idling-resource:3.2.0'
