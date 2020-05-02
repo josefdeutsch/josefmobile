@@ -77,6 +77,7 @@ public class SplashActivity extends AppCompatActivity {
                         }
                     }
                 });
+     //  Intent intent = new Intent(this,MainA)
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)

@@ -39,7 +39,6 @@ public class ArchiveFragment extends Fragment{
     public ArchiveFragment() {
         // Required empty public constructor
     }
-
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -69,6 +68,7 @@ public class ArchiveFragment extends Fragment{
     private FavouriteViewModel favouriteViewModel;
     private ArchiveActivityAdapter simpleAdapter;
     private RecyclerView mRecyclerView;
+
     private ArchiveActivityAdapter.OnDeleteCallBack onDeleteCallBack = new ArchiveActivityAdapter.OnDeleteCallBack() {
         @Override
         public void delete(final Favourite note) {
@@ -95,9 +95,7 @@ public class ArchiveFragment extends Fragment{
                              Bundle savedInstanceState) {
 
         mLayoutInflater = inflater.inflate(R.layout.fragment_archive, container, false);
-
         setupRecyclerView();
-
         favouriteViewModel = ViewModelProviders.of(this).get(FavouriteViewModel.class);
         favouriteViewModel.getAllNotes().observe(this, new Observer<List<Favourite>>() {
             @Override

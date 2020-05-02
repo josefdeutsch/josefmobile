@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.test.espresso.IdlingResource;
@@ -25,15 +26,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.android.exoplayer2.DefaultLoadControl;
-import com.google.android.exoplayer2.DefaultRenderersFactory;
-import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.josef.josefmobile.R;
 import com.josef.mobile.data.Favourite;
 import com.josef.mobile.data.FavouriteViewModel;
@@ -59,7 +51,7 @@ import static com.josef.mobile.Config.WORKREQUEST_VIEWPAGER;
 public class DetailFragment extends Fragment {
 
     private static final String TAG = "DetailFragment";
-    
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -69,7 +61,6 @@ public class DetailFragment extends Fragment {
     private Constraints mConstraints;
     private OneTimeWorkRequest mDownload;
 
-    public PlayerView playerView;
     public TextView mHeader;
     public TextView mSubHeader;
 
@@ -115,7 +106,6 @@ public class DetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rooot = inflater.inflate(R.layout.fragment_detail, container, false);
         favouriteViewModel = ViewModelProviders.of(this).get(FavouriteViewModel.class);
-        playerView = rooot.findViewById(R.id.video_view);
         mHeader = rooot.findViewById(R.id.article_title);
         mSubHeader = rooot.findViewById(R.id.article_byline);
         //EspressoIdlingResource.increment();
@@ -125,6 +115,15 @@ public class DetailFragment extends Fragment {
         Log.d(TAG, "onCreateView: "+index);
         setupWorkRequest(1);
         executeWorkRequest();
+
+
+        FragmentTransaction fm = getChildFragmentManager().beginTransaction();
+        getChildFragmentManager().beginTransaction()
+                .add(R.id.nested_container, PlayerFragment.newInstance(mDownload.getId().toString(),index))
+                .commit();
+        fm.commit();
+
+
         setupViewPager(index);
         return rooot;
 
@@ -238,23 +237,6 @@ public class DetailFragment extends Fragment {
                 .build();
     }
 
-    private void initializePlayer(final String url) {
-        //  https://medium.com/google-exoplayer/playing-ads-with-exoplayer-and-ima-868dfd767ea
-        SimpleExoPlayer player = ExoPlayerFactory.newSimpleInstance(
-                new DefaultRenderersFactory(getActivity()),
-                new DefaultTrackSelector(), new DefaultLoadControl());
-        Uri uri = Uri.parse(url);
-        ExtractorMediaSource mediaSource = new ExtractorMediaSource(
-                uri,
-                new DefaultDataSourceFactory(getActivity(), "MyExoplayer"),
-                new DefaultExtractorsFactory(),
-                null,
-                null
-        );
-        player.prepare(mediaSource);
-        playerView.setPlayer(player);
-
-    }
 
     @Nullable
     private IdlingResource mIdlingResource;
