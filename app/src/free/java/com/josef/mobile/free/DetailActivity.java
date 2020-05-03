@@ -4,7 +4,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,19 +26,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.josef.josefmobile.R;
 import com.josef.mobile.InterstitialAdsRequest;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
-
 import static com.josef.mobile.Config.VIEWPAGERDETAILKEY;
 import static com.josef.mobile.Config.VIEWPAGERMAINKEY;
-import static java.security.AccessController.getContext;
 
 public class DetailActivity extends AppCompatActivity  {
     private static final String TAG = "DetailActivity";
@@ -73,14 +69,16 @@ public class DetailActivity extends AppCompatActivity  {
             previousAdapterPosition = getIntent().getIntExtra(VIEWPAGERDETAILKEY,0);
             // fragContainer.addView(ll);
         }
+        Toast.makeText(this,"which :"+which+"index :"+previousAdapterPosition, Toast.LENGTH_SHORT).show();
 
         Log.d(TAG, "onCreate: "+which);
         Log.d(TAG, "onCreate: "+previousAdapterPosition);
+
         setupScrollView();
 
         mViewPager = findViewById(R.id.detailviewpager);
         //
-        mAdapter = new ViewPagerFragmentAdapters(getSupportFragmentManager(),1);
+        mAdapter = new ViewPagerFragmentAdapters(getSupportFragmentManager(),which);
         mViewPager.setAdapter(mAdapter);
         mViewPager.setOffscreenPageLimit(3);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -93,6 +91,13 @@ public class DetailActivity extends AppCompatActivity  {
             public void onPageSelected(int position) {
                 currentAdapterPosition = position;
                 mDetailFragment = (DetailFragment)mAdapter.getRegisteredFragment(position);
+                SparseArray<Fragment> array = mAdapter.getRegisteredFragments();
+                int len = array.size();
+                for (int i = 0; i <= len-1 ; i++) {
+                    DetailFragment detailFragment = (DetailFragment) array.get(i);
+                    if(i != position) detailFragment.onPlayBackState();
+                }
+
                 Log.d(TAG, "onPageSelected: ");
             }
 
@@ -102,7 +107,7 @@ public class DetailActivity extends AppCompatActivity  {
             }
         });
 
-        //mViewPager.setCurrentItem(5);
+        mViewPager.setCurrentItem(previousAdapterPosition);
     }
 
     private InterstitialAd mInterstitialAd;
@@ -232,31 +237,6 @@ public class DetailActivity extends AppCompatActivity  {
 
     }
 
-
-    /**@Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }**/
-
-    /**public static class ViewPagerFragmentAdapter extends FragmentStatePagerAdapter {
-
-        public int mWhich;
-        public ViewPagerFragmentAdapter(FragmentManager fm,int which) {
-            super(fm,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-            mWhich=which;
-        }
-
-        @Override
-        public int getCount() {
-            return 50;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return DetailFragment.newInstance(mWhich,position);
-        }
-    }**/
-
     public class ViewPagerFragmentAdapters extends FragmentStatePagerAdapter {
 
         //smartfragmentstatepager....
@@ -270,6 +250,9 @@ public class DetailActivity extends AppCompatActivity  {
         }
         public Fragment getRegisteredFragment(int position) {
             return registeredFragments.get(position);
+        }
+        public SparseArray<Fragment> getRegisteredFragments() {
+            return registeredFragments;
         }
 
         @Override
@@ -286,7 +269,7 @@ public class DetailActivity extends AppCompatActivity  {
 
         @Override
         public Fragment getItem(int position) {
-         //   if(registeredFragments.get(position)!=null)return registeredFragments.get(position);
+            if(registeredFragments.get(position)!=null)return registeredFragments.get(position);
             return DetailFragment.newInstance(mIndex,position);
         }
         @Override

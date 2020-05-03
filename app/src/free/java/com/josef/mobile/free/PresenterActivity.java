@@ -62,6 +62,7 @@ public class PresenterActivity extends AppCompatActivity {
         }
 
     }
+
     public void performFloatingAction(View view) {
         CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.bottom_app_bar_coord);
         final Snackbar snackbar = Snackbar.make(coordinatorLayout, "contact artist.. ?", Snackbar.LENGTH_LONG)

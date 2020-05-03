@@ -80,11 +80,8 @@ public class AppWidgetConfig extends AppCompatActivity {
         String buttonText = editTextButton.getText().toString();
 
         Intent serviceIntent = getServiceIntent();
-
         RemoteViews views = getRemoteViews(pendingIntent, buttonText, serviceIntent);
-
         appWidgetManager.updateAppWidget(appWidgetId, views);
-
         supplyKeyButtonSharedPreferences(buttonText);
 
         Intent resultValue = getResult();

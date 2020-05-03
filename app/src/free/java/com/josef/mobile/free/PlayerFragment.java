@@ -2,7 +2,6 @@ package com.josef.mobile.free;
 
 import android.app.Dialog;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -11,9 +10,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ToggleButton;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -34,6 +35,7 @@ import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.ext.ima.ImaAdsLoader;
+import com.google.android.exoplayer2.ext.ima.ImaAdsMediaSource;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.extractor.ExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
@@ -51,6 +53,7 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.josef.josefmobile.R;
+import com.josef.mobile.AppPreferences;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -60,8 +63,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
+import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.josef.mobile.Config.KEY_TASK_OUTPUT;
 import static com.josef.mobile.Config.STATE_PLAYER_FULLSCREEN;
 import static com.josef.mobile.Config.STATE_RESUME_POSITION;
@@ -80,7 +85,7 @@ import static com.josef.mobile.Config.WORKER_DOWNLOADID;
 public class PlayerFragment extends Fragment implements Player.EventListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-
+    // https://github.com/googleads/googleads-ima-android
     // TODO: Rename and change types of parameters
     private String mId;
     private int mIndex;
@@ -91,7 +96,8 @@ public class PlayerFragment extends Fragment implements Player.EventListener {
     private Dialog mFullScreenDialog;
     private int mResumeWindow;
     private long mResumePosition;
-    private ImageButton imageButton;
+    private ImageButton playButton;
+    private ImageButton pauseButton;
     private static final String TAG = "PlayerFragment";
     private View mView;
     private ImaAdsLoader imaAdsLoader;
@@ -147,18 +153,20 @@ public class PlayerFragment extends Fragment implements Player.EventListener {
         imaAdsLoader = new ImaAdsLoader(getContext(), getAdTagUri());
 
     }
+    private ToggleButton playpauseButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_player, container, false);
-        imageButton = mView.findViewById(R.id.exo_play);
-        imageButton.setOnClickListener(new View.OnClickListener() {
+        playButton = mView.findViewById(R.id.exo_play);
+        playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setupMediaSource();
             }
         });
+
         mExoPlayerView = (SimpleExoPlayerView) mView.findViewById(R.id.exoplayer);
         initFullscreenDialog();
         initFullscreenButton();
@@ -166,6 +174,10 @@ public class PlayerFragment extends Fragment implements Player.EventListener {
         setupThumbNailSource();
 
         return mView;
+    }
+
+    public void onPlayerBackState(){
+        mExoPlayerView.getPlayer().setPlayWhenReady(false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -193,6 +205,7 @@ public class PlayerFragment extends Fragment implements Player.EventListener {
         if (Util.SDK_INT <= Build.VERSION_CODES.M) {
             withdrawExoPlayer();
         }
+        Log.d(TAG, "onPause: ");
     }
 
     @Override
@@ -201,16 +214,6 @@ public class PlayerFragment extends Fragment implements Player.EventListener {
         if (Util.SDK_INT > Build.VERSION_CODES.M) {
             matchesExoPlayerFullScreenConfig();
         }
-      /**  SimpleExoPlayer simpleExoPlayer = ExoPlayerFactory.newSimpleInstance(this);
-        simpleExoPlayerView.setPlayer(simpleExoPlayer);
-        MediaSource mediaSourceWithAds = new AdsMediaSource(
-                getContentMediaSource(),
-                dataSourceFactory,
-                imaAdsLoader,
-                simpleExoPlayerView.getOverlayFrameLayout());
-        simpleExoPlayer.seekTo(contentPosition);
-        simpleExoPlayer.prepare(mediaSourceWithAds);
-        simpleExoPlayer.setPlayWhenReady(true);**/
     }
 
     @Override
@@ -219,13 +222,17 @@ public class PlayerFragment extends Fragment implements Player.EventListener {
         if (Util.SDK_INT > Build.VERSION_CODES.M) {
             withdrawExoPlayer();
         }
+        mExoPlayerView.getPlayer().release();
+
     }
+
 
     @Override
     public void onDetach() {
         super.onDetach();
         if (mExoPlayerView.getPlayer() != null)
             mExoPlayerView.getPlayer().release();
+        //imaAdsLoader.release();
     }
 
     private void setupMediaSource() {
@@ -323,7 +330,6 @@ public class PlayerFragment extends Fragment implements Player.EventListener {
     public void onRepeatModeChanged(int repeatMode) {
     }
 
-
     @Override
     public void onPlayerError(ExoPlaybackException error) {
         getActivity().finish();
@@ -333,9 +339,9 @@ public class PlayerFragment extends Fragment implements Player.EventListener {
     public void onPositionDiscontinuity() {
 
     }
-
     @Override
     public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
+
     }
 
 
@@ -402,8 +408,15 @@ public class PlayerFragment extends Fragment implements Player.EventListener {
 
     private void supplyExoPlayer(String videoURL) {
 
-        MediaSource videoSource = buildMediaSource(videoURL);
-        mExoPlayerView.getPlayer().prepare(videoSource);
+        DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(getContext(), Util.getUserAgent(getContext(), "ExoPlayer"));
+        final ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
+        MediaSource mediaSource = new ExtractorMediaSource(Uri.parse(videoURL), dataSourceFactory, extractorsFactory, null, null);
+
+        MediaSource mediaSourceWithAds = new ImaAdsMediaSource(
+                mediaSource,dataSourceFactory,
+                imaAdsLoader,
+                mExoPlayerView.getOverlayFrameLayout());
+        mExoPlayerView.getPlayer().prepare(mediaSourceWithAds);
         mExoPlayerView.getPlayer().setPlayWhenReady(true);
 
     }

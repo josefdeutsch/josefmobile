@@ -36,12 +36,12 @@
 
       <ImageButton android:id="@id/exo_repeat_toggle"
             style="@style/ExoMediaButton"/>
-
       <ImageButton android:id="@id/exo_play"
-            style="@style/ExoMediaButton.Play"/>
+          style="@style/ExoMediaButton.Play"/>
 
       <ImageButton android:id="@id/exo_pause"
-            style="@style/ExoMediaButton.Pause"/>
+          style="@style/ExoMediaButton.Pause"/>
+
 
       <ImageButton android:id="@id/exo_ffwd"
             style="@style/ExoMediaButton.FastForward"/>

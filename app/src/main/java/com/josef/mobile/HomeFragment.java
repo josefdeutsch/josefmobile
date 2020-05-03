@@ -14,6 +14,7 @@ import android.view.animation.ScaleAnimation;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
@@ -120,9 +121,13 @@ public class HomeFragment extends Fragment {
         setupWorkRequest(which);
         executeWorkRequest();
         setupViewPager(index);
+        intent = new Intent(getActivity(),DetailActivity.class);
+        intent.putExtra(VIEWPAGERMAINKEY,which);
+        intent.putExtra(VIEWPAGERDETAILKEY,index);
 
         return layoutInflater;
     }
+    Intent intent;
 
     private void pressImage() {
         mImageButton.setOnClickListener(new View.OnClickListener() {
@@ -148,16 +153,10 @@ public class HomeFragment extends Fragment {
                                 if (mDialog != null) {
                                     mDialog.hide();
                                 }
-                                Intent intent = new Intent(getContext(),DetailActivity.class);
-                                intent.putExtra(VIEWPAGERMAINKEY,which);
-                                intent.putExtra(VIEWPAGERDETAILKEY,index);
                                 getActivity().startActivity(intent);
                             }
                             @Override
                             public void onAdClosed() {
-                                Intent intent = new Intent(getContext(), DetailActivity.class);
-                                intent.putExtra(VIEWPAGERMAINKEY,which);
-                                intent.putExtra(VIEWPAGERDETAILKEY,index);
                                 getActivity().startActivity(intent);
                             }
                         });

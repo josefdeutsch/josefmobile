@@ -113,7 +113,7 @@ public class DetailFragment extends Fragment {
 
         Log.d(TAG, "onCreateView: "+which);
         Log.d(TAG, "onCreateView: "+index);
-        setupWorkRequest(1);
+        setupWorkRequest(which);
         executeWorkRequest();
 
         //Performance issue..
@@ -123,10 +123,17 @@ public class DetailFragment extends Fragment {
                 .add(R.id.nested_container, PlayerFragment.newInstance(mDownload.getId().toString(),index))
                 .commit();
         fm.commit();
-
         setupViewPager(index);
         return rooot;
 
+    }
+
+    public void onPlayBackState(){
+        Fragment fragment = getChildFragmentManager().findFragmentById(R.id.nested_container);
+        if(fragment instanceof PlayerFragment){
+            PlayerFragment playerFragment =(PlayerFragment)fragment;
+            playerFragment.onPlayerBackState();
+        }
     }
 
     public void setupWorkRequest(final int index) {
@@ -176,6 +183,7 @@ public class DetailFragment extends Fragment {
                     }
                 });
     }
+
     public void addItemtsToDataBase(final int pos){
         WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(mDownload.getId())
                 .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {

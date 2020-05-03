@@ -39,6 +39,7 @@ public class ArchiveFragment extends Fragment{
     public ArchiveFragment() {
         // Required empty public constructor
     }
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -48,6 +49,7 @@ public class ArchiveFragment extends Fragment{
      * @return A new instance of fragment ArchiveFragment.
      */
     // TODO: Rename and change types and number of parameters
+
     public static ArchiveFragment newInstance(String param1, String param2) {
         ArchiveFragment fragment = new ArchiveFragment();
         Bundle args = new Bundle();
@@ -65,6 +67,7 @@ public class ArchiveFragment extends Fragment{
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+
     private FavouriteViewModel favouriteViewModel;
     private ArchiveActivityAdapter simpleAdapter;
     private RecyclerView mRecyclerView;
