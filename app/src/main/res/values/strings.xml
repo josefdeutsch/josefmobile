@@ -17,4 +17,6 @@
     <string name="first">first</string>
     <string name="last">last</string>
     <string name="hello_world">hello</string>
+    <string name="question">more info..?</string>
+    <string name="OK">OK</string>
 </resources>

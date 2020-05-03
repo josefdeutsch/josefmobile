@@ -33,6 +33,7 @@ import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
+import com.google.android.exoplayer2.ext.ima.ImaAdsLoader;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.extractor.ExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
@@ -93,6 +94,8 @@ public class PlayerFragment extends Fragment implements Player.EventListener {
     private ImageButton imageButton;
     private static final String TAG = "PlayerFragment";
     private View mView;
+    private ImaAdsLoader imaAdsLoader;
+
     Target target = new Target() {
         @Override
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
@@ -141,6 +144,8 @@ public class PlayerFragment extends Fragment implements Player.EventListener {
             mResumePosition = savedInstanceState.getLong(STATE_RESUME_POSITION);
             mExoPlayerFullscreen = savedInstanceState.getBoolean(STATE_PLAYER_FULLSCREEN);
         }
+        imaAdsLoader = new ImaAdsLoader(getContext(), getAdTagUri());
+
     }
 
     @Override
@@ -155,7 +160,6 @@ public class PlayerFragment extends Fragment implements Player.EventListener {
             }
         });
         mExoPlayerView = (SimpleExoPlayerView) mView.findViewById(R.id.exoplayer);
-
         initFullscreenDialog();
         initFullscreenButton();
         initExoPlayer();
@@ -197,6 +201,16 @@ public class PlayerFragment extends Fragment implements Player.EventListener {
         if (Util.SDK_INT > Build.VERSION_CODES.M) {
             matchesExoPlayerFullScreenConfig();
         }
+      /**  SimpleExoPlayer simpleExoPlayer = ExoPlayerFactory.newSimpleInstance(this);
+        simpleExoPlayerView.setPlayer(simpleExoPlayer);
+        MediaSource mediaSourceWithAds = new AdsMediaSource(
+                getContentMediaSource(),
+                dataSourceFactory,
+                imaAdsLoader,
+                simpleExoPlayerView.getOverlayFrameLayout());
+        simpleExoPlayer.seekTo(contentPosition);
+        simpleExoPlayer.prepare(mediaSourceWithAds);
+        simpleExoPlayer.setPlayWhenReady(true);**/
     }
 
     @Override
@@ -423,5 +437,9 @@ public class PlayerFragment extends Fragment implements Player.EventListener {
 
     private void postThumbnailIntoExoplayer(String png) {
          Picasso.get().load(png).into(target);
+    }
+
+    private Uri getAdTagUri() {
+        return Uri.parse("https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dskippablelinear&correlator=");
     }
 }

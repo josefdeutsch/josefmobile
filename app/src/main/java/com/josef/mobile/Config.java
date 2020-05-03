@@ -36,5 +36,10 @@ public class Config {
     public static final String STATE_RESUME_POSITION = "resumePosition";
     public static final String STATE_PLAYER_FULLSCREEN = "playerFullscreen";
 
+    public static final String RECIPE_INDEX = "recipe_index";
+    public static final String SHAREDPREFERENCES_EDITOR = "sharedpreferences_editor";
+    public static final String KEY_BUTTON_TEXT = "keyButtonText";
+    public static final String SHOPPINGLIST_TAG = "shoppinglist_tag";
+
 
 }

@@ -17,7 +17,11 @@ import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
 import android.annotation.TargetApi;
+import android.appwidget.AppWidgetManager;
+import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -34,6 +38,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.UUID;
 
 import static com.josef.mobile.Config.KEY_TASK_OUTPUT;
+import static com.josef.mobile.Config.RECIPE_INDEX;
+import static com.josef.mobile.Config.SHAREDPREFERENCES_EDITOR;
 import static com.josef.mobile.Config.VIEWPAGER_AMOUNT;
 import static com.josef.mobile.Config.WORKREQUET_MAINACTIVITY;
 
@@ -53,6 +59,8 @@ public class SplashActivity extends AppCompatActivity {
         mDownload = buildOneTimeWorkRequest();
 
         executeWorkRequest();
+        supplySharedPreferences();
+        onUpdateAppWidgetProvider();
     }
 
     public void performMainActivity(View view) {
@@ -78,6 +86,20 @@ public class SplashActivity extends AppCompatActivity {
                     }
                 });
      //  Intent intent = new Intent(this,MainA)
+    }
+    private void supplySharedPreferences() {
+        SharedPreferences.Editor editor = this.getSharedPreferences(SHAREDPREFERENCES_EDITOR, MODE_PRIVATE).edit();
+        editor.remove(RECIPE_INDEX);
+        editor.putInt(RECIPE_INDEX, 1);
+        editor.apply();
+    }
+
+    private void onUpdateAppWidgetProvider() {
+        Intent intent = new Intent(this, AppWidgetProvider.class);
+        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        int[] ids = AppWidgetManager.getInstance(this).getAppWidgetIds(new ComponentName(this, AppWidgetProvider.class));
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+        this.sendBroadcast(intent);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
