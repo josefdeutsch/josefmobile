@@ -83,10 +83,10 @@ import static com.josef.mobile.Config.WORKER_DOWNLOADID;
  * create an instance of this fragment.
  */
 public class PlayerFragment extends Fragment implements Player.EventListener {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
+
     // https://github.com/googleads/googleads-ima-android
-    // TODO: Rename and change types of parameters
+
     private String mId;
     private int mIndex;
     private SimpleExoPlayerView mExoPlayerView;
@@ -122,13 +122,6 @@ public class PlayerFragment extends Fragment implements Player.EventListener {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment PlayerFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static PlayerFragment newInstance(String downloadid, int index) {
         PlayerFragment fragment = new PlayerFragment();
         Bundle args = new Bundle();
@@ -153,6 +146,7 @@ public class PlayerFragment extends Fragment implements Player.EventListener {
         imaAdsLoader = new ImaAdsLoader(getContext(), getAdTagUri());
 
     }
+
     private ToggleButton playpauseButton;
 
     @Override

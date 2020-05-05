@@ -108,7 +108,5 @@ public class ArchiveActivity extends AppCompatActivity {
         TextView snackBarText =  snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text);
         snackBarText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorBlack));
         snackbar.show();
-
     }
-
 }

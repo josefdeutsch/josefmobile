@@ -52,11 +52,23 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
-            android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"></LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="256dp"
+                android:src="@drawable/ic_webdesignsvg_02"></ImageView>
+
         </LinearLayout>
+
 
     </androidx.core.widget.NestedScrollView>
 

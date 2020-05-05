@@ -19,4 +19,12 @@
     <string name="hello_world">hello</string>
     <string name="question">more info..?</string>
     <string name="OK">OK</string>
+    <string name="power">power</string>
+    <string name="volume">volume</string>
+    <string name="scroll">scroll</string>
+    <string name="swipe">swipe</string>
+    <string name="swipe_down">down</string>
+    <string name="swipe_up">up</string>
+    <string name="swipe_right">right</string>
+    <string name="swipe_left">left</string>
 </resources>

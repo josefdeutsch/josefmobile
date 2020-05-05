@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -28,6 +29,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -130,14 +132,20 @@ public class HomeActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu, menu);
+      //  getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if (item.getItemId() == android.R.id.home) {
-        } else if (item.getItemId() == R.id.app_bar_info) {
+        if (item.getItemId() == android.R.id.home) { }
+        else if (item.getItemId() == R.id.action_settings){
+            Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            return true;
+        }
+        else if (item.getItemId() == R.id.app_bar_info) {
             EspressoIdlingResource.increment();
             setupProgressBar();
             loadIntersitialAds(new InterstitialAdsRequest() {
@@ -170,7 +178,8 @@ public class HomeActivity extends AppCompatActivity {
                     });
                 }
             });
-        } else if (item.getItemId() == R.id.app_bar_archieve) {
+        }
+        else if (item.getItemId() == R.id.app_bar_archieve) {
             setupProgressBar();
             loadIntersitialAds(new InterstitialAdsRequest() {
                 @Override

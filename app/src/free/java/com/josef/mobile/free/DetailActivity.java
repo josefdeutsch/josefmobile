@@ -111,6 +111,7 @@ public class DetailActivity extends AppCompatActivity  {
     }
 
     private InterstitialAd mInterstitialAd;
+
     private AlertDialog mDialog;
 
     private void setupProgressBar(){
@@ -129,7 +130,6 @@ public class DetailActivity extends AppCompatActivity  {
         Intent intent = new Intent(conext, clazz);
         startActivity(intent);
     }
-
 
     private void setupScrollView() {
         final NestedScrollView scrollView = findViewById(R.id.nested_scrollview);
