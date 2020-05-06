@@ -28,6 +28,7 @@ import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 
 import com.josef.josefmobile.R;
 
@@ -91,7 +92,7 @@ public class GlobalActionBarService extends AccessibilityService {
 
   private void configureSwipeButtonUp() {
 
-      Button swipeButton = (Button) mLayout.findViewById(R.id.swipeup);
+      ImageButton swipeButton = (ImageButton) mLayout.findViewById(R.id.swipeup);
       swipeButton.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View view) {
@@ -112,7 +113,7 @@ public class GlobalActionBarService extends AccessibilityService {
 
   private void configureSwipeButtonDown() {
 
-      Button swipeButton = (Button) mLayout.findViewById(R.id.swipedown);
+      ImageButton swipeButton = (ImageButton) mLayout.findViewById(R.id.swipedown);
       swipeButton.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View view) {
@@ -132,7 +133,7 @@ public class GlobalActionBarService extends AccessibilityService {
 
     private void configureSwipeButtonRight() {
 
-        Button swipeButton = (Button) mLayout.findViewById(R.id.swiperight);
+        ImageButton swipeButton = (ImageButton) mLayout.findViewById(R.id.swiperight);
         swipeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -151,7 +152,7 @@ public class GlobalActionBarService extends AccessibilityService {
     }
     private void configureSwipeButtonLeft() {
 
-        Button swipeButton = (Button) mLayout.findViewById(R.id.swipeleft);
+        ImageButton swipeButton = (ImageButton) mLayout.findViewById(R.id.swipeleft);
         swipeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
