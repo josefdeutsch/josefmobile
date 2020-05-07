@@ -25,17 +25,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
-import android.view.accessibility.AccessibilityNodeInfo;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
 import com.josef.josefmobile.R;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-
 public class GlobalActionBarService extends AccessibilityService {
+
     private static final String TAG = "GlobalActionBarService";
     FrameLayout mLayout;
 
@@ -61,75 +57,45 @@ public class GlobalActionBarService extends AccessibilityService {
         configureSwipeButtonUp();
     }
 
-    private void configureScrollButton() {
-        Button scrollButton = (Button) mLayout.findViewById(R.id.swipedown);
-        scrollButton.setOnClickListener(new View.OnClickListener() {
+    private void configureSwipeButtonUp() {
+
+        ImageButton swipeButton = (ImageButton) mLayout.findViewById(R.id.swipeup);
+        swipeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AccessibilityNodeInfo scrollable = findScrollableNode(getRootInActiveWindow());
-                if (scrollable != null) {
-                    scrollable.performAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_SCROLL_FORWARD.getId());
-                   // scrollable.performAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_SCROLL_FORWARD.getId());
-                }
+
+                int x = 1000;
+                int y = 1000;
+
+                Path swipePath = new Path();
+                swipePath.moveTo(x, y);
+                swipePath.lineTo(x, 1900);
+                GestureDescription.Builder gestureBuilder = new GestureDescription.Builder();
+                gestureBuilder.addStroke(new GestureDescription.StrokeDescription(swipePath, 0, 500));
+                dispatchGesture(gestureBuilder.build(), null, null);
             }
         });
     }
-    private AccessibilityNodeInfo findScrollableNode(AccessibilityNodeInfo root) {
-        Deque<AccessibilityNodeInfo> deque = new ArrayDeque<>();
-        deque.add(root);
-        while (!deque.isEmpty()) {
-            AccessibilityNodeInfo node = deque.removeFirst();
-            if (node.getActionList().contains(AccessibilityNodeInfo.AccessibilityAction.ACTION_SCROLL_FORWARD)) {
-                return node;
+
+    private void configureSwipeButtonDown() {
+
+        ImageButton swipeButton = (ImageButton) mLayout.findViewById(R.id.swipedown);
+        swipeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                int x = 1000;
+                int y = 1000;
+
+                Path swipePath = new Path();
+                swipePath.moveTo(x, y);
+                swipePath.lineTo(x, 100);
+                GestureDescription.Builder gestureBuilder = new GestureDescription.Builder();
+                gestureBuilder.addStroke(new GestureDescription.StrokeDescription(swipePath, 0, 500));
+                dispatchGesture(gestureBuilder.build(), null, null);
             }
-            for (int i = 0; i < node.getChildCount(); i++) {
-                deque.addLast(node.getChild(i));
-            }
-        }
-        return null;
+        });
     }
-
-
-  private void configureSwipeButtonUp() {
-
-      ImageButton swipeButton = (ImageButton) mLayout.findViewById(R.id.swipeup);
-      swipeButton.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
-
-              int x = 1000;
-              int y = 1000;
-
-              Path swipePath = new Path();
-              swipePath.moveTo(x, y);
-              swipePath.lineTo(x, 1900);
-              GestureDescription.Builder gestureBuilder = new GestureDescription.Builder();
-              gestureBuilder.addStroke(new GestureDescription.StrokeDescription(swipePath, 0, 500));
-              dispatchGesture(gestureBuilder.build(), null, null);
-          }
-      });
-  }
-
-
-  private void configureSwipeButtonDown() {
-
-      ImageButton swipeButton = (ImageButton) mLayout.findViewById(R.id.swipedown);
-      swipeButton.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
-
-              int x = 1000;
-              int y = 1000;
-
-              Path swipePath = new Path();
-              swipePath.moveTo(x, y);
-              swipePath.lineTo(x, 100);
-              GestureDescription.Builder gestureBuilder = new GestureDescription.Builder();
-              gestureBuilder.addStroke(new GestureDescription.StrokeDescription(swipePath, 0, 500));
-              dispatchGesture(gestureBuilder.build(), null, null);
-          }
-      });
-  }
 
     private void configureSwipeButtonRight() {
 
@@ -150,6 +116,7 @@ public class GlobalActionBarService extends AccessibilityService {
             }
         });
     }
+
     private void configureSwipeButtonLeft() {
 
         ImageButton swipeButton = (ImageButton) mLayout.findViewById(R.id.swipeleft);
@@ -169,6 +136,7 @@ public class GlobalActionBarService extends AccessibilityService {
             }
         });
     }
+
     @Override
     public void onInterrupt() {
         Log.d(TAG, "onInterrupt: ");

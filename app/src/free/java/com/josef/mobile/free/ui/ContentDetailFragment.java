@@ -1,9 +1,6 @@
-package com.josef.mobile;
+package com.josef.mobile.free.ui;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Path;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,7 +12,6 @@ import android.view.animation.ScaleAnimation;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
@@ -23,7 +19,9 @@ import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.test.espresso.IdlingResource;
 import androidx.work.Constraints;
 import androidx.work.Data;
@@ -38,10 +36,12 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.josef.josefmobile.R;
-import com.josef.mobile.free.DetailActivity;
+import com.josef.mobile.AppPreferences;
+import com.josef.mobile.InterstitialAdsRequest;
+import com.josef.mobile.data.Favourite;
+import com.josef.mobile.data.FavouriteViewModel;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
 import com.josef.mobile.net.CallBackWorker;
-import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -62,19 +62,19 @@ import static com.josef.mobile.Config.WORKREQUEST_VIEWPAGER;
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * to handle interaction events.
- * Use the {@link com.josef.mobile.MainFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment {
+public class ContentDetailFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
-
+    private FavouriteViewModel favouriteViewModel;
     private Data mData;
     private Constraints mConstraints;
     private OneTimeWorkRequest mDownload;
     public ImageView mImageButton;
-    public ToggleButton buttonFavorite;
+    public ToggleButton mButtonFavorite;
+    public ToggleButton mButtonDataBase;
     public TextView article;
     public TextView article_by_line;
     public View layoutInflater;
@@ -85,12 +85,12 @@ public class HomeFragment extends Fragment {
     private int index;
 
 
-    public HomeFragment() {
+    public ContentDetailFragment() {
         // Required empty public constructor
     }
 
-    public static HomeFragment newInstance(int which, int index) {
-        HomeFragment fragment = new HomeFragment();
+    public static ContentDetailFragment newInstance(int which, int index) {
+        ContentDetailFragment fragment = new ContentDetailFragment();
         Bundle args = new Bundle();
         args.putInt(VIEWPAGERMAINKEY, which);
         args.putInt(VIEWPAGERDETAILKEY, index);
@@ -111,22 +111,48 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        layoutInflater = inflater.inflate(R.layout.fragment_home, container, false);
+        layoutInflater = inflater.inflate(R.layout.fragment_content_detail, container, false);
         mImageButton = layoutInflater.findViewById(R.id.imgBanner);
-        buttonFavorite = layoutInflater.findViewById(R.id.button_favorite);
-        pressImage();
+        mButtonFavorite = layoutInflater.findViewById(R.id.button_favorite);
+        mButtonDataBase = layoutInflater.findViewById(R.id.button_favorite2);
+        //pressImage();
         article = (TextView) layoutInflater.findViewById(R.id.article_title);
         article.setText("hello");
         article_by_line = (TextView) layoutInflater.findViewById(R.id.article_byline);
+        favouriteViewModel = ViewModelProviders.of(this).get(FavouriteViewModel.class);
 
         setupWorkRequest(which);
         executeWorkRequest();
         setupViewPager(index);
-        intent = new Intent(getActivity(), DetailActivity.class);
-        intent.putExtra(VIEWPAGERMAINKEY, which);
-        intent.putExtra(VIEWPAGERDETAILKEY, index);
+
+        FragmentTransaction fm = getChildFragmentManager().beginTransaction();
+        getChildFragmentManager().beginTransaction()
+                .add(R.id.nested_container, ContentPlayerFragment.newInstance(mDownload.getId().toString(),index))
+                .commit();
+        fm.commit();
+
+
+        //intent = new Intent(getActivity(), DetailActivity.class);
+        //intent.putExtra(VIEWPAGERMAINKEY, which);
+        //intent.putExtra(VIEWPAGERDETAILKEY, index);
 
         return layoutInflater;
+    }
+
+    public void onPlayBackState(){
+        Fragment fragment = getChildFragmentManager().findFragmentById(R.id.nested_container);
+        if(fragment instanceof ContentPlayerFragment){
+            ContentPlayerFragment playerFragment =(ContentPlayerFragment)fragment;
+            playerFragment.onPlayerBackState();
+        }
+    }
+
+    public void setupMediaSource(){
+        Fragment fragment = getChildFragmentManager().findFragmentById(R.id.nested_container);
+        if(fragment instanceof ContentPlayerFragment){
+            ContentPlayerFragment playerFragment =(ContentPlayerFragment)fragment;
+            playerFragment.setupMediaSource();
+        }
     }
 
     Intent intent;
@@ -171,6 +197,7 @@ public class HomeFragment extends Fragment {
     }
 
     private InterstitialAd mInterstitialAd;
+
     private AlertDialog mDialog;
 
     private void setupProgressBar() {
@@ -186,13 +213,13 @@ public class HomeFragment extends Fragment {
         request.execute();
     }
 
-    private void setupToggleButton(final String url, final int index) {
+    private void setupToggleFavorite(final String url, final int index) {
         final ScaleAnimation scaleAnimation = new ScaleAnimation(0.7f, 1.0f, 0.7f, 1.0f, Animation.RELATIVE_TO_SELF, 0.7f, Animation.RELATIVE_TO_SELF, 0.7f);
         scaleAnimation.setDuration(500);
         BounceInterpolator bounceInterpolator = new BounceInterpolator();
         scaleAnimation.setInterpolator(bounceInterpolator);
 
-        buttonFavorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        mButtonFavorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 compoundButton.startAnimation(scaleAnimation);
@@ -209,8 +236,26 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+    public void setupToggleDatabase(final int index) {
+        final ScaleAnimation scaleAnimation = new ScaleAnimation(0.7f, 1.0f, 0.7f, 1.0f, Animation.RELATIVE_TO_SELF, 0.7f, Animation.RELATIVE_TO_SELF, 0.7f);
+        scaleAnimation.setDuration(500);
+        BounceInterpolator bounceInterpolator = new BounceInterpolator();
+        scaleAnimation.setInterpolator(bounceInterpolator);
 
-    public void shareMetaData(final int index) {
+        mButtonDataBase.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                compoundButton.startAnimation(scaleAnimation);
+                if (isChecked) {
+                   addItemtsToDataBase(index);
+                } else {
+                   //removeItemtsFromDataBase(index);
+                }
+            }
+        });
+    }
+
+    public void addItemsToAppPreference(final int index) {
         EspressoIdlingResource.increment();
         WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(mDownload.getId())
                 .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
@@ -224,7 +269,7 @@ public class HomeFragment extends Fragment {
                                     JSONObject container = input.getJSONObject(index);
                                     JSONObject metadata = (JSONObject) container.get("metadata");
                                     String url = (String) metadata.get("url");
-                                    setupToggleButton(url, index);
+                                    setupToggleFavorite(url, index);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -237,33 +282,38 @@ public class HomeFragment extends Fragment {
                 });
     }
 
-    private void setupWorkRequest(int index) {
-        setupProgressBar();
-        mData = buildData(index);
-        mConstraints = buildConstraints();
-        mDownload = buildOneTimeWorkRequest(mData, mConstraints);
-    }
 
-    private void executeWorkRequest() {
-        WorkManager.getInstance(getActivity()).beginUniqueWork(WORKREQUEST_VIEWPAGER + mDownload.getId(),
-                ExistingWorkPolicy.KEEP, mDownload).enqueue().getState().observe(this, new Observer<Operation.State>() {
-            @Override
-            public void onChanged(Operation.State state) {
+    public void addItemtsToDataBase(final int pos){
+        WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(mDownload.getId())
+                .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
+                    @Override
+                    public void onChanged(@Nullable WorkInfo workInfo) {
+                        if (workInfo != null) {
+                            if (workInfo.getState().isFinished()) {
+                                String output = getViewPagerContent(workInfo);
+                                try {
+                                    JSONArray input = new JSONArray(output);
+                                    JSONObject container = input.getJSONObject(pos);
+                                    JSONObject metadata = (JSONObject) container.get("metadata");
+                                    String name = (String) metadata.get("name");
+                                    String png = (String) metadata.get("png");
+                                    String url = (String) metadata.get("url");
+                                    Log.d(TAG, "onChanged: "+png);
+                                    Log.d(TAG, "onChanged: "+url);
+                                    Favourite favourite = new Favourite(png,url,0);
+
+                                    favouriteViewModel.insert(favourite);
 
 
-                if (state == Operation.IN_PROGRESS) {
-
-                }
-
-                if (state == Operation.SUCCESS) {
-                   // mDialog.hide();
-                   // mDialog.dismiss();
-                }
-
-                //Toast.makeText(getActivity(), state.toString(),
-                // Toast.LENGTH_LONG).show();
-            }
-        });
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+                                    EspressoIdlingResource.decrement();
+                                }
+                            }
+                        }
+                    }
+                });
     }
 
     private void setupViewPager(final int index) {
@@ -281,9 +331,8 @@ public class HomeFragment extends Fragment {
                                     JSONObject metadata = (JSONObject) container.get("metadata");
                                     String name = (String) metadata.get("name");
                                     String png = (String) metadata.get("png");
-
-                                    Picasso.get().load(png).config(Bitmap.Config.RGB_565)
-                                            .fit().centerCrop().into(mImageButton);
+                                  //  Picasso.get().load(png).config(Bitmap.Config.RGB_565)
+                                  //          .fit().centerCrop().into(mImageButton);
                                     article_by_line.setText(name);
                                     //mHeader.setText("uschi");
                                     Log.d(TAG, "onChanged: " + name);
@@ -298,6 +347,21 @@ public class HomeFragment extends Fragment {
                         }
                     }
                 });
+    }
+    private void setupWorkRequest(int index) {
+        mData = buildData(index);
+        mConstraints = buildConstraints();
+        mDownload = buildOneTimeWorkRequest(mData, mConstraints);
+    }
+
+    private void executeWorkRequest() {
+        WorkManager.getInstance(getActivity()).beginUniqueWork(WORKREQUEST_VIEWPAGER + mDownload.getId(),
+                ExistingWorkPolicy.KEEP, mDownload).enqueue().getState().observe(this, new Observer<Operation.State>() {
+            @Override
+            public void onChanged(Operation.State state) {
+
+            }
+        });
     }
 
     @Nullable

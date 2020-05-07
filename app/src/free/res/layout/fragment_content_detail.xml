@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#000000"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    card_view:cardElevation="1dp"
+    card_view:cardMaxElevation="1dp"
+    card_view:cardUseCompatPadding="true">
+
+
+    <com.josef.mobile.components.MaxWidthLinearLayout
+        android:id="@+id/maxwidthlayout_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:elevation="2dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/meta_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorBlack"
+            android:orientation="vertical"
+            android:paddingTop="8dp">
+
+            <TextView
+                android:id="@+id/article_title"
+                style="?android:attr/textAppearanceLarge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="HEADER"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="#fff"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/article_byline"
+                style="?android:attr/textAppearanceMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SUBHEADERS"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                android:textColor="#8fff" />
+        </LinearLayout>
+
+    </com.josef.mobile.components.MaxWidthLinearLayout>
+
+
+    <ToggleButton
+        android:id="@+id/button_favorite"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/ic_button_favourite"
+        android:checked="false"
+        android:text=""
+        android:textOff=""
+        android:textOn="" />
+
+    <ToggleButton
+        android:id="@+id/button_favorite2"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_toLeftOf="@+id/button_favorite"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/ic_button_database"
+        android:checked="false"
+        android:text=""
+        android:textOff=""
+        android:textOn="" />
+
+    <FrameLayout
+        android:id="@+id/nested_container"
+        android:layout_width="match_parent"
+        android:layout_height="256dp"
+        android:layout_below="@+id/maxwidthlayout_container">
+    </FrameLayout>
+
+</RelativeLayout>
+

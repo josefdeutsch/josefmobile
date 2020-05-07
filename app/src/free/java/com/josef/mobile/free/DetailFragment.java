@@ -72,15 +72,6 @@ public class DetailFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MainActivityViewPagerFragment.
-     */
-    // TODO: Rename and change types and number of parameters
 
     public static DetailFragment newInstance(int param1, int param2) {
         DetailFragment fragment = new DetailFragment();
@@ -99,7 +90,6 @@ public class DetailFragment extends Fragment {
             index = getArguments().getInt(ARG_PARAM2);
         }
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -5,7 +5,6 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.FragmentTransaction;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -14,7 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.TextView;
-
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.josef.josefmobile.R;
@@ -34,7 +32,7 @@ public class ArchiveActivity extends AppCompatActivity {
         bar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // Handle the navigation click by showing a BottomDrawer etc.
+                // Handle the navigation click by showing a BottomDrawer etc.
             }
         });
         bar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
@@ -55,14 +53,17 @@ public class ArchiveActivity extends AppCompatActivity {
                         }
                     }
                 });
-        if (savedInstanceState == null) {
-            FragmentTransaction fm = getSupportFragmentManager().beginTransaction();
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.archieve_container, ArchiveFragment.newInstance("0","0"))
-                    .commit();
-            fm.commit();
-        }
 
+        FragmentTransaction fm = getSupportFragmentManager().beginTransaction();
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.archieve_container, ArchiveFragment.newInstance("0", "0"))
+                .commit();
+        fm.commit();
+    }
+
+    @Override
+    public void onRestart() {
+        super.onRestart();
     }
 
     @Override
@@ -105,7 +106,7 @@ public class ArchiveActivity extends AppCompatActivity {
         params.gravity = Gravity.TOP;
         view1.setLayoutParams(params);
         view1.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorWhite));
-        TextView snackBarText =  snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text);
+        TextView snackBarText = snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text);
         snackBarText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorBlack));
         snackbar.show();
     }

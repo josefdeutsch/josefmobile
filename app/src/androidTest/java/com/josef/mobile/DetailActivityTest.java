@@ -80,7 +80,7 @@ public final class DetailActivityTest {
 
     @Test
     public void verify_if_bottomappbar_is_displayed_and_child_of_parent(){
-        //ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(HomeActivity.class);
+        //ActivityScenario<ContentActivity> scenario = ActivityScenario.launch(ContentActivity.class);
         onView(withId(R.id.bottom_app_bar)).check(matches(withParent(withId(R.id.bottom_app_bar_coord))));
         onView(withId(R.id.bottom_app_bar)).check(matches(isDisplayed()));
 
@@ -88,7 +88,7 @@ public final class DetailActivityTest {
 
     @Test
     public void verify_if_fab_is_clickable_and_child_of_parent(){
-        //  ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(HomeActivity.class);
+        //  ActivityScenario<ContentActivity> scenario = ActivityScenario.launch(ContentActivity.class);
         onView(withId(R.id.fab)).check(matches(withParent(withId(R.id.bottom_app_bar_coord))));
         onView(withId(R.id.fab)).check(matches(isClickable()));
     }
@@ -296,7 +296,7 @@ public final class DetailActivityTest {
 
     @Test
     public void press_back_toolbar_VISIBLE() {
-       // intending(hasComponent(HomeActivity.class.getName())).respondWith(new Instrumentation.ActivityResult(resultCode, dataIntent));
+       // intending(hasComponent(ContentActivity.class.getName())).respondWith(new Instrumentation.ActivityResult(resultCode, dataIntent));
        // activityTestRule.getActivity().startActivityForResult(new Intent(context,DummyActivity.class));
     }
 

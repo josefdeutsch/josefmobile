@@ -30,6 +30,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import com.josef.josefmobile.R;
+import com.josef.mobile.free.ui.ContentActivity;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
 import com.josef.mobile.net.CallBackWorkerSplashActivity;
 
@@ -73,7 +74,7 @@ public class SplashActivity extends AppCompatActivity {
                     public void onChanged(@Nullable WorkInfo workInfo) {
                         if (workInfo != null) {
                             if (workInfo.getState().isFinished()) {
-                                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                                Intent intent = new Intent(getApplicationContext(), ContentActivity.class);
                                 String amount = getAmountofViewpager(workInfo);
                                 intent.putExtra(VIEWPAGER_AMOUNT,Integer.parseInt(amount));
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
