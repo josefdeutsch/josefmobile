@@ -5,6 +5,7 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ public class FavouriteViewModel extends AndroidViewModel {
         super(application);
         repository = new FavouriteRepository(application);
         allNotes = repository.getAllNotes();
+        metadata = new MutableLiveData<>();
     }
 
     public void insert(Favourite note) {
@@ -38,4 +40,6 @@ public class FavouriteViewModel extends AndroidViewModel {
     public LiveData<List<Favourite>> getAllNotes() {
         return allNotes;
     }
+
+    private MutableLiveData<List<String>> metadata;
 }

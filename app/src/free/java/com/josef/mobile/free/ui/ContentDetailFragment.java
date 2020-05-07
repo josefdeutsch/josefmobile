@@ -2,7 +2,9 @@ package com.josef.mobile.free.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AlertDialog;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
@@ -35,9 +39,11 @@ import androidx.work.WorkManager;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.material.snackbar.Snackbar;
 import com.josef.josefmobile.R;
 import com.josef.mobile.AppPreferences;
 import com.josef.mobile.InterstitialAdsRequest;
+import com.josef.mobile.OnPlayExecute;
 import com.josef.mobile.data.Favourite;
 import com.josef.mobile.data.FavouriteViewModel;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
@@ -123,11 +129,15 @@ public class ContentDetailFragment extends Fragment {
 
         setupWorkRequest(which);
         executeWorkRequest();
+
         setupViewPager(index);
+        // setupToggleFavorite(index);
+        setupToggleDatabase(index);
+        setupToggleFavorite(index);
 
         FragmentTransaction fm = getChildFragmentManager().beginTransaction();
         getChildFragmentManager().beginTransaction()
-                .add(R.id.nested_container, ContentPlayerFragment.newInstance(mDownload.getId().toString(),index))
+                .add(R.id.nested_container, ContentPlayerFragment.newInstance(mDownload.getId().toString(), index))
                 .commit();
         fm.commit();
 
@@ -139,18 +149,27 @@ public class ContentDetailFragment extends Fragment {
         return layoutInflater;
     }
 
-    public void onPlayBackState(){
+
+    public void onPlayBackState() {
         Fragment fragment = getChildFragmentManager().findFragmentById(R.id.nested_container);
-        if(fragment instanceof ContentPlayerFragment){
-            ContentPlayerFragment playerFragment =(ContentPlayerFragment)fragment;
+        if (fragment instanceof ContentPlayerFragment) {
+            ContentPlayerFragment playerFragment = (ContentPlayerFragment) fragment;
             playerFragment.onPlayerBackState();
         }
     }
 
-    public void setupMediaSource(){
+    public void onPlayExecute() {
         Fragment fragment = getChildFragmentManager().findFragmentById(R.id.nested_container);
-        if(fragment instanceof ContentPlayerFragment){
-            ContentPlayerFragment playerFragment =(ContentPlayerFragment)fragment;
+        if (fragment instanceof ContentPlayerFragment) {
+            final ContentPlayerFragment playerFragment = (ContentPlayerFragment) fragment;
+            playerFragment.onPlayExecute();
+        }
+    }
+
+    public void setupMediaSource() {
+        Fragment fragment = getChildFragmentManager().findFragmentById(R.id.nested_container);
+        if (fragment instanceof ContentPlayerFragment) {
+            ContentPlayerFragment playerFragment = (ContentPlayerFragment) fragment;
             playerFragment.setupMediaSource();
         }
     }
@@ -213,7 +232,32 @@ public class ContentDetailFragment extends Fragment {
         request.execute();
     }
 
-    private void setupToggleFavorite(final String url, final int index) {
+    /**
+     * private void setupToggleFavorite(final String url, final int index) {
+     * final ScaleAnimation scaleAnimation = new ScaleAnimation(0.7f, 1.0f, 0.7f, 1.0f, Animation.RELATIVE_TO_SELF, 0.7f, Animation.RELATIVE_TO_SELF, 0.7f);
+     * scaleAnimation.setDuration(500);
+     * BounceInterpolator bounceInterpolator = new BounceInterpolator();
+     * scaleAnimation.setInterpolator(bounceInterpolator);
+     * <p>
+     * mButtonFavorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+     *
+     * @Override public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+     * compoundButton.startAnimation(scaleAnimation);
+     * if (isChecked) {
+     * Log.d(TAG, "onChanged: " + url);
+     * ArrayList<String> meta = new ArrayList<>(AppPreferences.getName(getContext()));
+     * meta.add(url + System.lineSeparator());
+     * AppPreferences.setName(getContext(), meta);
+     * } else {
+     * ArrayList<String> meta = new ArrayList<>(AppPreferences.getName(getContext()));
+     * meta.remove(index);
+     * AppPreferences.setName(getContext(), meta);
+     * }
+     * }
+     * });
+     * }
+     ***/
+    private void setupToggleFavorite(final int index) {
         final ScaleAnimation scaleAnimation = new ScaleAnimation(0.7f, 1.0f, 0.7f, 1.0f, Animation.RELATIVE_TO_SELF, 0.7f, Animation.RELATIVE_TO_SELF, 0.7f);
         scaleAnimation.setDuration(500);
         BounceInterpolator bounceInterpolator = new BounceInterpolator();
@@ -221,21 +265,45 @@ public class ContentDetailFragment extends Fragment {
 
         mButtonFavorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+            public void onCheckedChanged(final CompoundButton compoundButton, boolean isChecked) {
                 compoundButton.startAnimation(scaleAnimation);
                 if (isChecked) {
-                    Log.d(TAG, "onChanged: " + url);
-                    ArrayList<String> meta = new ArrayList<>(AppPreferences.getName(getContext()));
-                    meta.add(url + System.lineSeparator());
-                    AppPreferences.setName(getContext(), meta);
+                    final Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.bottom_app_bar_coord), "ready to share..!", Snackbar.LENGTH_LONG)
+                            .setAction("OK", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    addItemsToAppPreference(index);
+                                    compoundButton.setChecked(false);
+                                }
+                            }).setActionTextColor(getResources().getColor(android.R.color.holo_red_light));
+
+
+                    View view1 = snackbar.getView();
+                    CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) view1.getLayoutParams();
+                    params.gravity = Gravity.TOP;
+                    view1.setLayoutParams(params);
+                    view1.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorWhite));
+                    TextView snackBarText = snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text);
+                    snackBarText.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorBlack));
+                    snackbar.show();
+
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            compoundButton.setChecked(false);
+                        }
+                    }, 3000);
                 } else {
-                    ArrayList<String> meta = new ArrayList<>(AppPreferences.getName(getContext()));
-                    meta.remove(index);
-                    AppPreferences.setName(getContext(), meta);
+
+//                    ArrayList<String> meta = new ArrayList<>(AppPreferences.getName(getContext()));
+                    //                  meta.remove(index);
+                    //                AppPreferences.setName(getContext(), meta);
                 }
             }
         });
     }
+
     public void setupToggleDatabase(final int index) {
         final ScaleAnimation scaleAnimation = new ScaleAnimation(0.7f, 1.0f, 0.7f, 1.0f, Animation.RELATIVE_TO_SELF, 0.7f, Animation.RELATIVE_TO_SELF, 0.7f);
         scaleAnimation.setDuration(500);
@@ -244,12 +312,37 @@ public class ContentDetailFragment extends Fragment {
 
         mButtonDataBase.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+            public void onCheckedChanged(final CompoundButton compoundButton, boolean isChecked) {
                 compoundButton.startAnimation(scaleAnimation);
                 if (isChecked) {
-                   addItemtsToDataBase(index);
+                    final Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.bottom_app_bar_coord), "save item..?!", Snackbar.LENGTH_LONG)
+                            .setAction("OK", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    addItemtsToDataBase(index);
+                                    compoundButton.setChecked(false);
+                                }
+                            }).setActionTextColor(getResources().getColor(android.R.color.holo_red_light));
+
+
+                    View view1 = snackbar.getView();
+                    CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) view1.getLayoutParams();
+                    params.gravity = Gravity.TOP;
+                    view1.setLayoutParams(params);
+                    view1.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorWhite));
+                    TextView snackBarText = snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text);
+                    snackBarText.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorBlack));
+                    snackbar.show();
+
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            compoundButton.setChecked(false);
+                        }
+                    }, 3000);
                 } else {
-                   //removeItemtsFromDataBase(index);
+
                 }
             }
         });
@@ -264,15 +357,22 @@ public class ContentDetailFragment extends Fragment {
                         if (workInfo != null) {
                             if (workInfo.getState().isFinished()) {
                                 String output = getViewPagerContent(workInfo);
+
                                 try {
                                     JSONArray input = new JSONArray(output);
                                     JSONObject container = input.getJSONObject(index);
                                     JSONObject metadata = (JSONObject) container.get("metadata");
                                     String url = (String) metadata.get("url");
-                                    setupToggleFavorite(url, index);
+                                    AppPreferences.clearNameList(getContext());
+                                    ArrayList<String> meta = new ArrayList<>(AppPreferences.getName(getContext()));
+                                    meta.add(url + System.lineSeparator());
+                                    AppPreferences.clearNameList(getContext());
+                                    AppPreferences.setName(getContext(), meta);
+
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
+
                                 if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
                                     EspressoIdlingResource.decrement();
                                 }
@@ -282,8 +382,7 @@ public class ContentDetailFragment extends Fragment {
                 });
     }
 
-
-    public void addItemtsToDataBase(final int pos){
+    public void addItemtsToDataBase(final int pos) {
         WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(mDownload.getId())
                 .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
                     @Override
@@ -298,16 +397,14 @@ public class ContentDetailFragment extends Fragment {
                                     String name = (String) metadata.get("name");
                                     String png = (String) metadata.get("png");
                                     String url = (String) metadata.get("url");
-                                    Log.d(TAG, "onChanged: "+png);
-                                    Log.d(TAG, "onChanged: "+url);
-                                    Favourite favourite = new Favourite(png,url,0);
-
+                                    Log.d(TAG, "onChanged: " + png);
+                                    Log.d(TAG, "onChanged: " + url);
+                                    Favourite favourite = new Favourite(png, url, 0);
                                     favouriteViewModel.insert(favourite);
-
-
                                 } catch (JSONException e) {
                                     e.printStackTrace();
-                                }if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+                                }
+                                if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
                                     EspressoIdlingResource.decrement();
                                 }
                             }
@@ -331,11 +428,11 @@ public class ContentDetailFragment extends Fragment {
                                     JSONObject metadata = (JSONObject) container.get("metadata");
                                     String name = (String) metadata.get("name");
                                     String png = (String) metadata.get("png");
-                                  //  Picasso.get().load(png).config(Bitmap.Config.RGB_565)
-                                  //          .fit().centerCrop().into(mImageButton);
+                                    //  Picasso.get().load(png).config(Bitmap.Config.RGB_565)
+                                    //          .fit().centerCrop().into(mImageButton);
                                     article_by_line.setText(name);
                                     //mHeader.setText("uschi");
-                                    Log.d(TAG, "onChanged: " + name);
+//                                    setupToggleFavorite(index);
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -348,6 +445,7 @@ public class ContentDetailFragment extends Fragment {
                     }
                 });
     }
+
     private void setupWorkRequest(int index) {
         mData = buildData(index);
         mConstraints = buildConstraints();

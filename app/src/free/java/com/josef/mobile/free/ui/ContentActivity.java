@@ -116,6 +116,7 @@ public class ContentActivity extends AppCompatActivity {
     }
 
     private InterstitialAd mInterstitialAd;
+
     private AlertDialog mDialog;
 
     private void setupProgressBar() {
@@ -235,7 +236,7 @@ public class ContentActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
 
-                        favouriteViewModel = ViewModelProviders.of(ContentActivity.this).get(FavouriteViewModel.class);
+                       /** favouriteViewModel = ViewModelProviders.of(ContentActivity.this).get(FavouriteViewModel.class);
                         favouriteViewModel.getAllNotes().observe(ContentActivity.this, new Observer<List<Favourite>>() {
                             @Override
                             public void onChanged(@Nullable List<Favourite> favourites) {
@@ -253,17 +254,19 @@ public class ContentActivity extends AppCompatActivity {
                                     startActivity(shareIntent);
                                 }
                             }
-                        });
-                        /**   ArrayList<String> metadata = new ArrayList<>(AppPreferences.getName(getApplicationContext()));
+                        });**/
+                         ArrayList<String> metadata = new ArrayList<>(AppPreferences.getName(getApplicationContext()));
                          String data = metadata.toString();
+                         Log.d(TAG, "onClick: "+data);
                          String mimeType = "text/plain";
-                         Intent shareIntent = ShareCompat.IntentBuilder.from(ContentActivity.this)
+                         /**Intent shareIntent = ShareCompat.IntentBuilder.from(ContentActivity.this)
                          .setType(mimeType)
                          .setText(data)
                          .getIntent();
                          if (shareIntent.resolveActivity(getPackageManager()) != null) {
                          startActivity(shareIntent);
                          }**/
+
                     }
                 }).setActionTextColor(getResources().getColor(android.R.color.holo_red_light));
         View view1 = snackbar.getView();

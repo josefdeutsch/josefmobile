@@ -37,7 +37,7 @@ public class ContentContainerFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private int which;
     ViewPager viewPager;
-    private int mPosition;
+    private Integer mPosition;
     private ToggleButton buttonFavorite;
     View layoutInflater;
     ContentDetailFragment mHomeFragment;
@@ -78,6 +78,7 @@ public class ContentContainerFragment extends Fragment {
         //EspressoIdlingResource.increment();
         viewPager.setAdapter(adapters);
         viewPager.setOffscreenPageLimit(3);
+        //zu schnell background thread problematisch..
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -88,18 +89,19 @@ public class ContentContainerFragment extends Fragment {
             public void onPageSelected(int position) {
                 mPosition = position;
                 mHomeFragment = (ContentDetailFragment) adapters.getRegisteredFragment(position);
-               // mHomeFragment.addItemsToAppPreference(position);
-                mHomeFragment.setupToggleDatabase(position);
-               // mHomeFragment.setupMediaSource();
 
                 SparseArray<Fragment> array = adapters.getRegisteredFragments();
+
+                mHomeFragment.onPlayExecute();
+
                 if (position - 1 != -1) {
                     ContentDetailFragment before = (ContentDetailFragment) array.get(position - 1);
                     before.onPlayBackState();
-
+                    //     before.onPlayExecute();
                 } else if (position + 1 != 49) {
                     ContentDetailFragment after = (ContentDetailFragment) array.get(position + 1);
                     after.onPlayBackState();
+                    //           after.onPlayExecute();
                 }
             }
 
@@ -108,14 +110,18 @@ public class ContentContainerFragment extends Fragment {
 
             }
         });
-        viewPager.setCurrentItem(mPosition);
+        //viewPager.setCurrentItem(1);
+        //viewPager.setCurrentItem(0);
+        //mHomeFragment.addItemtsToDataBase(0);
+
+        //viewPager.setCurrentItem(mPosition);
         return layoutInflater;
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(VIEWPAGERDETAILKEY, mPosition);
+        //outState.putInt(VIEWPAGERDETAILKEY, mPosition);
     }
 
     public class ViewPagerFragmentAdapters extends FragmentStatePagerAdapter {

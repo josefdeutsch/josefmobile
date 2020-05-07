@@ -52,6 +52,7 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.josef.josefmobile.R;
+import com.josef.mobile.OnPlayExecute;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -92,11 +93,14 @@ public class ContentPlayerFragment extends Fragment implements Player.EventListe
     private Dialog mFullScreenDialog;
     private int mResumeWindow;
     private long mResumePosition;
-    private ImageButton playButton;
+    public ImageButton playButton;
     private ImageButton pauseButton;
     private static final String TAG = "PlayerFragment";
     private View mView;
     private ImaAdsLoader imaAdsLoader;
+
+    private Object lock;
+
 
     Target target = new Target() {
         @Override
@@ -144,17 +148,25 @@ public class ContentPlayerFragment extends Fragment implements Player.EventListe
     }
 
     private ToggleButton playpauseButton;
+    private Boolean mExoPlayerIsSetup = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_player, container, false);
+
         playButton = mView.findViewById(R.id.exo_play);
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // mExoPlayerView.getPlayer().setPlayWhenReady(true);
-                setupMediaSource();
+
+                if (lock == null) {
+                    setupMediaSource();
+                    mExoPlayerView.getPlayer().setPlayWhenReady(true);
+                } else {
+                    if (!mExoPlayerView.getPlayer().getPlayWhenReady())
+                        mExoPlayerView.getPlayer().setPlayWhenReady(true);
+                }
             }
         });
 
@@ -167,8 +179,18 @@ public class ContentPlayerFragment extends Fragment implements Player.EventListe
         return mView;
     }
 
-    public void onPlayerBackState(){
-        mExoPlayerView.getPlayer().setPlayWhenReady(false);
+    public void onPlayExecute() {
+        if (lock != null) {
+            if (!mExoPlayerView.getPlayer().getPlayWhenReady())
+                mExoPlayerView.getPlayer().setPlayWhenReady(true);
+        }
+    }
+
+    public void onPlayerBackState() {
+        if (lock != null) {
+            if (mExoPlayerView.getPlayer().getPlayWhenReady())
+                mExoPlayerView.getPlayer().setPlayWhenReady(false);
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -218,7 +240,6 @@ public class ContentPlayerFragment extends Fragment implements Player.EventListe
 
     }
 
-
     @Override
     public void onDetach() {
         super.onDetach();
@@ -228,6 +249,9 @@ public class ContentPlayerFragment extends Fragment implements Player.EventListe
     }
 
     public void setupMediaSource() {
+
+        lock = new Object();
+
         EspressoIdlingResource.increment();
         WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(UUID.fromString(mId))
                 .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
@@ -331,6 +355,7 @@ public class ContentPlayerFragment extends Fragment implements Player.EventListe
     public void onPositionDiscontinuity() {
 
     }
+
     @Override
     public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
 
@@ -405,12 +430,12 @@ public class ContentPlayerFragment extends Fragment implements Player.EventListe
         MediaSource mediaSource = new ExtractorMediaSource(Uri.parse(videoURL), dataSourceFactory, extractorsFactory, null, null);
 
         MediaSource mediaSourceWithAds = new ImaAdsMediaSource(
-                mediaSource,dataSourceFactory,
+                mediaSource, dataSourceFactory,
                 imaAdsLoader,
                 mExoPlayerView.getOverlayFrameLayout());
         mExoPlayerView.getPlayer().prepare(mediaSourceWithAds);
-        mExoPlayerView.getPlayer().setPlayWhenReady(true);
-        mExoPlayerView.getPlayer().seekTo(mResumePosition);
+        // mExoPlayerView.getPlayer().setPlayWhenReady(true);
+        // mExoPlayerView.getPlayer().seekTo(mResumePosition);
 
     }
 
@@ -442,7 +467,7 @@ public class ContentPlayerFragment extends Fragment implements Player.EventListe
     }
 
     private void postThumbnailIntoExoplayer(String png) {
-         Picasso.get().load(png).into(target);
+        Picasso.get().load(png).into(target);
     }
 
     private Uri getAdTagUri() {
