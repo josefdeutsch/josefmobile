@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.annotation.Nullable;
@@ -27,6 +28,7 @@ import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.PlaybackParameters;
@@ -67,6 +69,7 @@ import java.util.UUID;
 import static com.josef.mobile.Config.KEY_TASK_OUTPUT;
 import static com.josef.mobile.Config.STATE_PLAYER_FULLSCREEN;
 import static com.josef.mobile.Config.STATE_RESUME_POSITION;
+import static com.josef.mobile.Config.STATE_RESUME_POSITION_MIN_FRAME;
 import static com.josef.mobile.Config.STATE_RESUME_WINDOW;
 import static com.josef.mobile.Config.VIEWPAGERDETAILKEY;
 import static com.josef.mobile.Config.WORKER_DOWNLOADID;
@@ -93,6 +96,7 @@ public class ContentPlayerFragment extends Fragment implements Player.EventListe
     private Dialog mFullScreenDialog;
     private int mResumeWindow;
     private long mResumePosition;
+    private long mResumePosition_min;
     public ImageButton playButton;
     private ImageButton pauseButton;
     private static final String TAG = "PlayerFragment";
@@ -141,6 +145,7 @@ public class ContentPlayerFragment extends Fragment implements Player.EventListe
         if (savedInstanceState != null) {
             mResumeWindow = savedInstanceState.getInt(STATE_RESUME_WINDOW);
             mResumePosition = savedInstanceState.getLong(STATE_RESUME_POSITION);
+            mResumePosition_min = savedInstanceState.getLong(STATE_RESUME_POSITION_MIN_FRAME);
             mExoPlayerFullscreen = savedInstanceState.getBoolean(STATE_PLAYER_FULLSCREEN);
         }
         imaAdsLoader = new ImaAdsLoader(getContext(), getAdTagUri());
@@ -153,23 +158,25 @@ public class ContentPlayerFragment extends Fragment implements Player.EventListe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.fragment_player, container, false);
 
+        mView = inflater.inflate(R.layout.fragment_player, container, false);
         playButton = mView.findViewById(R.id.exo_play);
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (lock == null) {
                     setupMediaSource();
+                    Log.d(TAG, "withdrawExoPlayer: "+mResumePosition);
+
+                    mExoPlayerView.getPlayer().seekTo(mResumePosition);
                     mExoPlayerView.getPlayer().setPlayWhenReady(true);
+
                 } else {
                     if (!mExoPlayerView.getPlayer().getPlayWhenReady())
                         mExoPlayerView.getPlayer().setPlayWhenReady(true);
                 }
             }
         });
-
         mExoPlayerView = (SimpleExoPlayerView) mView.findViewById(R.id.exoplayer);
         initFullscreenDialog();
         initFullscreenButton();
@@ -199,6 +206,7 @@ public class ContentPlayerFragment extends Fragment implements Player.EventListe
 
         outState.putInt(STATE_RESUME_WINDOW, mResumeWindow);
         outState.putLong(STATE_RESUME_POSITION, mResumePosition);
+        outState.putLong(STATE_RESUME_POSITION_MIN_FRAME, mResumePosition_min);
         outState.putBoolean(STATE_PLAYER_FULLSCREEN, mExoPlayerFullscreen);
 
         super.onSaveInstanceState(outState);
@@ -207,36 +215,32 @@ public class ContentPlayerFragment extends Fragment implements Player.EventListe
     @Override
     public void onResume() {
         super.onResume();
-        if (Util.SDK_INT <= Build.VERSION_CODES.M) {
-            matchesExoPlayerFullScreenConfig();
-        }
+
 
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        if (Util.SDK_INT <= Build.VERSION_CODES.M) {
-            withdrawExoPlayer();
-        }
-        Log.d(TAG, "onPause: ");
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        if (Util.SDK_INT > Build.VERSION_CODES.M) {
-            matchesExoPlayerFullScreenConfig();
-        }
+        Log.d(TAG, "withdrawExoPlayer: "+mResumePosition);
+        matchesExoPlayerFullScreenConfig();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (Util.SDK_INT > Build.VERSION_CODES.M) {
-            withdrawExoPlayer();
-        }
-        mExoPlayerView.getPlayer().release();
+       // mResumePosition_min = mExoPlayerView.getPlayer().getCurrentPosition();
+
+        withdrawExoPlayer();
+     //   mResumePosition = Math.max(0, mExoPlayerView.getPlayer().getContentPosition());
+       // Toast.makeText(getActivity(), String.valueOf(mResumePosition),
+         //       Toast.LENGTH_SHORT).show();
+//        mExoPlayerView.getPlayer().release();
 
     }
 
@@ -454,11 +458,12 @@ public class ContentPlayerFragment extends Fragment implements Player.EventListe
         }
     }
 
-    private void withdrawExoPlayer() {
+    private final void withdrawExoPlayer() {
         mExoPlayerView.getPlayer().setPlayWhenReady(false);
         if (mExoPlayerView != null && mExoPlayerView.getPlayer() != null) {
             mResumeWindow = mExoPlayerView.getPlayer().getCurrentWindowIndex();
-            mResumePosition = Math.max(0, mExoPlayerView.getPlayer().getContentPosition());
+            mResumePosition = Math.max(0, mExoPlayerView.getPlayer().getContentPosition());;
+            Log.d(TAG, "withdrawExoPlayer: "+mResumePosition);
             mExoPlayerView.getPlayer().release();
         }
         if (mFullScreenDialog != null) {

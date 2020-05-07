@@ -13,6 +13,7 @@ import android.view.animation.BounceInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -158,6 +159,7 @@ public class ContentDetailFragment extends Fragment {
         }
     }
 
+
     public void onPlayExecute() {
         Fragment fragment = getChildFragmentManager().findFragmentById(R.id.nested_container);
         if (fragment instanceof ContentPlayerFragment) {
@@ -165,6 +167,7 @@ public class ContentDetailFragment extends Fragment {
             playerFragment.onPlayExecute();
         }
     }
+
 
     public void setupMediaSource() {
         Fragment fragment = getChildFragmentManager().findFragmentById(R.id.nested_container);

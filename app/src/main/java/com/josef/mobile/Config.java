@@ -7,7 +7,7 @@ public class Config {
     public static final String SHAREURL = "shareurl";
 
     public static final String WORKER_DOWNLOADID = "worker_downloadid";
-
+    public static final String STATE_RESUME_POSITION_MIN_FRAME = "state_resume_position_min_frame";
 
     public static final String KEY_TASK_OUTPUT = "service_request";
     public static final String KEY_TASK_ERROR = "error_request";
@@ -30,7 +30,7 @@ public class Config {
     public static final String VIEWPAGERHOMEFRAGMENTMAINKEY = "homefragmentmainkey";
     public static final String VIEWPAGERHOMEFRAGMENTDETAILVAULE = "homefragmentdetailvalue";
 
-    public static final String JOSEPHOPENINGSTATEMENT = "example text here :"+System.lineSeparator();
+    public static final String JOSEPHOPENINGSTATEMENT = "example text here :" + System.lineSeparator();
 
     public static final String STATE_RESUME_WINDOW = "resumeWindow";
     public static final String STATE_RESUME_POSITION = "resumePosition";

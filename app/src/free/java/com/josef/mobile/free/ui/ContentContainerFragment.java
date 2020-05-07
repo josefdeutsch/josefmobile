@@ -91,8 +91,8 @@ public class ContentContainerFragment extends Fragment {
                 mHomeFragment = (ContentDetailFragment) adapters.getRegisteredFragment(position);
 
                 SparseArray<Fragment> array = adapters.getRegisteredFragments();
-
-                mHomeFragment.onPlayExecute();
+            mHomeFragment.onDelete(getActivity().findViewById(R.id.nested_container));
+               /** mHomeFragment.onPlayExecute();
 
                 if (position - 1 != -1) {
                     ContentDetailFragment before = (ContentDetailFragment) array.get(position - 1);
@@ -102,7 +102,7 @@ public class ContentContainerFragment extends Fragment {
                     ContentDetailFragment after = (ContentDetailFragment) array.get(position + 1);
                     after.onPlayBackState();
                     //           after.onPlayExecute();
-                }
+                }**/
             }
 
             @Override
@@ -110,7 +110,8 @@ public class ContentContainerFragment extends Fragment {
 
             }
         });
-        //viewPager.setCurrentItem(1);
+
+       // viewPager.setCurrentItem(1);
         //viewPager.setCurrentItem(0);
         //mHomeFragment.addItemtsToDataBase(0);
 
