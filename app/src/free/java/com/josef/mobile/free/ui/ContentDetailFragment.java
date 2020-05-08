@@ -56,11 +56,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.josef.mobile.Config.KEY_TASK_OUTPUT;
 import static com.josef.mobile.Config.VIEWPAGERDETAILKEY;
 import static com.josef.mobile.Config.VIEWPAGERMAINKEY;
+import static com.josef.mobile.Config.WORKERDOWNLOADID;
 import static com.josef.mobile.Config.WORKREQUEST_AMOUNT;
 import static com.josef.mobile.Config.WORKREQUEST_VIEWPAGER;
 
@@ -76,9 +78,6 @@ public class ContentDetailFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
     private FavouriteViewModel favouriteViewModel;
-    private Data mData;
-    private Constraints mConstraints;
-    private OneTimeWorkRequest mDownload;
     public ImageView mImageButton;
     public ToggleButton mButtonFavorite;
     public ToggleButton mButtonDataBase;
@@ -88,7 +87,7 @@ public class ContentDetailFragment extends Fragment {
 
     // TODO: Rename and change types of parameters
 
-    private int which;
+    private String mDownloadId;
     private int index;
 
 
@@ -96,10 +95,10 @@ public class ContentDetailFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static ContentDetailFragment newInstance(int which, int index) {
+    public static ContentDetailFragment newInstance(String which, int index) {
         ContentDetailFragment fragment = new ContentDetailFragment();
         Bundle args = new Bundle();
-        args.putInt(VIEWPAGERMAINKEY, which);
+        args.putString(WORKERDOWNLOADID, which);
         args.putInt(VIEWPAGERDETAILKEY, index);
         fragment.setArguments(args);
         return fragment;
@@ -109,7 +108,7 @@ public class ContentDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            which = getArguments().getInt(VIEWPAGERMAINKEY);
+            mDownloadId = getArguments().getString(WORKERDOWNLOADID);
             index = getArguments().getInt(VIEWPAGERDETAILKEY);
         }
 
@@ -128,8 +127,6 @@ public class ContentDetailFragment extends Fragment {
         article_by_line = (TextView) layoutInflater.findViewById(R.id.article_byline);
         favouriteViewModel = ViewModelProviders.of(this).get(FavouriteViewModel.class);
 
-        setupWorkRequest(which);
-        executeWorkRequest();
 
         setupViewPager(index);
         // setupToggleFavorite(index);
@@ -138,10 +135,11 @@ public class ContentDetailFragment extends Fragment {
 
         FragmentTransaction fm = getChildFragmentManager().beginTransaction();
         getChildFragmentManager().beginTransaction()
-                .add(R.id.nested_container, ContentPlayerFragment.newInstance(mDownload.getId().toString(), index))
+                .add(R.id.nested_container, ContentPlayerFragment.newInstance(mDownloadId, index))
                 .commit();
         fm.commit();
 
+        Log.d(TAG, "onCreateView: "+" count of detailFragments");
 
         //intent = new Intent(getActivity(), DetailActivity.class);
         //intent.putExtra(VIEWPAGERMAINKEY, which);
@@ -353,7 +351,7 @@ public class ContentDetailFragment extends Fragment {
 
     public void addItemsToAppPreference(final int index) {
         EspressoIdlingResource.increment();
-        WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(mDownload.getId())
+        WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(UUID.fromString(mDownloadId))
                 .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
                     @Override
                     public void onChanged(@Nullable WorkInfo workInfo) {
@@ -386,7 +384,7 @@ public class ContentDetailFragment extends Fragment {
     }
 
     public void addItemtsToDataBase(final int pos) {
-        WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(mDownload.getId())
+        WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(UUID.fromString(mDownloadId))
                 .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
                     @Override
                     public void onChanged(@Nullable WorkInfo workInfo) {
@@ -418,7 +416,7 @@ public class ContentDetailFragment extends Fragment {
 
     private void setupViewPager(final int index) {
         EspressoIdlingResource.increment();
-        WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(mDownload.getId())
+        WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(UUID.fromString(mDownloadId))
                 .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
                     @Override
                     public void onChanged(@Nullable WorkInfo workInfo) {
@@ -449,49 +447,13 @@ public class ContentDetailFragment extends Fragment {
                 });
     }
 
-    private void setupWorkRequest(int index) {
-        mData = buildData(index);
-        mConstraints = buildConstraints();
-        mDownload = buildOneTimeWorkRequest(mData, mConstraints);
-    }
 
-    private void executeWorkRequest() {
-        WorkManager.getInstance(getActivity()).beginUniqueWork(WORKREQUEST_VIEWPAGER + mDownload.getId(),
-                ExistingWorkPolicy.KEEP, mDownload).enqueue().getState().observe(this, new Observer<Operation.State>() {
-            @Override
-            public void onChanged(Operation.State state) {
-
-            }
-        });
-    }
 
     @Nullable
     private String getViewPagerContent(@NotNull WorkInfo workInfo) {
         Data data = workInfo.getOutputData();
         String output = data.getString(KEY_TASK_OUTPUT);
         return output;
-    }
-
-    @NotNull
-    private OneTimeWorkRequest buildOneTimeWorkRequest(Data data, Constraints constraints) {
-        return new OneTimeWorkRequest.Builder(CallBackWorker.class)
-                .setConstraints(constraints)
-                .setInputData(data)
-                .build();
-    }
-
-    @NotNull
-    private Constraints buildConstraints() {
-        return new Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .build();
-    }
-
-    @NotNull
-    private Data buildData(int index) {
-        return new Data.Builder()
-                .putInt(WORKREQUEST_AMOUNT, index)
-                .build();
     }
 
     @Nullable

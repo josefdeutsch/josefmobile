@@ -66,6 +66,7 @@ import org.json.JSONObject;
 
 import java.util.UUID;
 
+import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.josef.mobile.Config.KEY_TASK_OUTPUT;
 import static com.josef.mobile.Config.STATE_PLAYER_FULLSCREEN;
 import static com.josef.mobile.Config.STATE_RESUME_POSITION;
@@ -82,7 +83,7 @@ import static com.josef.mobile.Config.WORKER_DOWNLOADID;
  * Use the {@link ContentPlayerFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ContentPlayerFragment extends Fragment implements Player.EventListener {
+public class ContentPlayerFragment extends Fragment {
 
 
     // https://github.com/googleads/googleads-ima-android
@@ -148,7 +149,7 @@ public class ContentPlayerFragment extends Fragment implements Player.EventListe
             mResumePosition_min = savedInstanceState.getLong(STATE_RESUME_POSITION_MIN_FRAME);
             mExoPlayerFullscreen = savedInstanceState.getBoolean(STATE_PLAYER_FULLSCREEN);
         }
-        imaAdsLoader = new ImaAdsLoader(getContext(), getAdTagUri());
+      //  imaAdsLoader = new ImaAdsLoader(getContext(), getAdTagUri());
 
     }
 
@@ -160,6 +161,7 @@ public class ContentPlayerFragment extends Fragment implements Player.EventListe
                              Bundle savedInstanceState) {
 
         mView = inflater.inflate(R.layout.fragment_player, container, false);
+
         playButton = mView.findViewById(R.id.exo_play);
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -167,8 +169,7 @@ public class ContentPlayerFragment extends Fragment implements Player.EventListe
                 if (lock == null) {
                     setupMediaSource();
                     Log.d(TAG, "withdrawExoPlayer: "+mResumePosition);
-
-                    mExoPlayerView.getPlayer().seekTo(mResumePosition);
+                    mExoPlayerView.getPlayer().seekTo(23041);
                     mExoPlayerView.getPlayer().setPlayWhenReady(true);
 
                 } else {
@@ -178,11 +179,19 @@ public class ContentPlayerFragment extends Fragment implements Player.EventListe
             }
         });
         mExoPlayerView = (SimpleExoPlayerView) mView.findViewById(R.id.exoplayer);
+
         initFullscreenDialog();
         initFullscreenButton();
         initExoPlayer();
         setupThumbNailSource();
 
+        Log.d(TAG, "onCreateView: "+" count of playerfragments");
+
+
+      /**  boolean haveResumePosition = mResumeWindow != C.INDEX_UNSET;
+        if (haveResumePosition) {
+            mExoPlayerView.getPlayer().seekTo(mResumeWindow, mResumePosition);
+        }**/
         return mView;
     }
 
@@ -318,54 +327,6 @@ public class ContentPlayerFragment extends Fragment implements Player.EventListe
     }
 
 
-    @Override
-    public void onTimelineChanged(Timeline timeline, Object manifest) {
-
-    }
-
-    @Override
-    public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-    }
-
-    @Override
-    public void onLoadingChanged(boolean isLoading) {
-    }
-
-    @Override
-    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-        if (playbackState == Player.STATE_READY && playWhenReady) {
-
-
-        } else if (playbackState == Player.STATE_READY) {
-
-
-        } else if (playbackState == Player.STATE_ENDED) {
-            mExoPlayerView.getPlayer().seekTo(0);
-            mExoPlayerView.getPlayer().setPlayWhenReady(false);
-        }
-
-    }
-
-    @Override
-    public void onRepeatModeChanged(int repeatMode) {
-    }
-
-    @Override
-    public void onPlayerError(ExoPlaybackException error) {
-        getActivity().finish();
-    }
-
-    @Override
-    public void onPositionDiscontinuity() {
-
-    }
-
-    @Override
-    public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
-
-    }
-
-
     private void initFullscreenDialog() {
 
         mFullScreenDialog = new Dialog(getContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen) {
@@ -413,21 +374,32 @@ public class ContentPlayerFragment extends Fragment implements Player.EventListe
     }
 
     private void initExoPlayer() {
+        EspressoIdlingResource.increment();
+        WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(UUID.fromString(mId))
+                .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
+                    @Override
+                    public void onChanged(@Nullable WorkInfo workInfo) {
+                        if (workInfo != null) {
+                            if (workInfo.getState().isFinished()) {
+                                BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
+                                TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
+                                TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
+                                LoadControl loadControl = new DefaultLoadControl();
+                                SimpleExoPlayer player = ExoPlayerFactory.newSimpleInstance(new DefaultRenderersFactory(getContext()), trackSelector, loadControl);
+                                mExoPlayerView.setPlayer(player);
+                                //mExoPlayerView.getPlayer().addListener(this);
 
-        BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-        TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
-        TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
-        LoadControl loadControl = new DefaultLoadControl();
-        SimpleExoPlayer player = ExoPlayerFactory.newSimpleInstance(new DefaultRenderersFactory(getContext()), trackSelector, loadControl);
-        mExoPlayerView.setPlayer(player);
-        boolean haveResumePosition = mResumeWindow != C.INDEX_UNSET;
-        if (haveResumePosition) {
-            mExoPlayerView.getPlayer().seekTo(mResumeWindow, mResumePosition);
-        }
-        mExoPlayerView.getPlayer().addListener(this);
+                                if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+                                    EspressoIdlingResource.decrement();
+                                }
+                            }
+                        }
+                    }
+                });
+
     }
 
-    private void supplyExoPlayer(String videoURL) {
+  /**  private void supplyExoPlayer(String videoURL) {
 
         DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(getContext(), Util.getUserAgent(getContext(), "ExoPlayer"));
         final ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
@@ -440,6 +412,13 @@ public class ContentPlayerFragment extends Fragment implements Player.EventListe
         mExoPlayerView.getPlayer().prepare(mediaSourceWithAds);
         // mExoPlayerView.getPlayer().setPlayWhenReady(true);
         // mExoPlayerView.getPlayer().seekTo(mResumePosition);
+
+    }**/
+    private void supplyExoPlayer(String videoURL) {
+
+        MediaSource videoSource = buildMediaSource(videoURL);
+        mExoPlayerView.getPlayer().prepare(videoSource);
+        mExoPlayerView.getPlayer().setPlayWhenReady(true);
 
     }
 
@@ -463,7 +442,7 @@ public class ContentPlayerFragment extends Fragment implements Player.EventListe
         if (mExoPlayerView != null && mExoPlayerView.getPlayer() != null) {
             mResumeWindow = mExoPlayerView.getPlayer().getCurrentWindowIndex();
             mResumePosition = Math.max(0, mExoPlayerView.getPlayer().getContentPosition());;
-            Log.d(TAG, "withdrawExoPlayer: "+mResumePosition);
+         //   Log.d(TAG, "withdrawExoPlayer: "+mResumePosition);
             mExoPlayerView.getPlayer().release();
         }
         if (mFullScreenDialog != null) {
