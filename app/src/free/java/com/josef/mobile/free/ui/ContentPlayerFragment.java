@@ -103,7 +103,6 @@ public class ContentPlayerFragment extends Fragment {
     private static final String TAG = "PlayerFragment";
     private View mView;
     private ImaAdsLoader imaAdsLoader;
-
     private Object lock;
 
 
@@ -149,7 +148,7 @@ public class ContentPlayerFragment extends Fragment {
             mResumePosition_min = savedInstanceState.getLong(STATE_RESUME_POSITION_MIN_FRAME);
             mExoPlayerFullscreen = savedInstanceState.getBoolean(STATE_PLAYER_FULLSCREEN);
         }
-      //  imaAdsLoader = new ImaAdsLoader(getContext(), getAdTagUri());
+        //  imaAdsLoader = new ImaAdsLoader(getContext(), getAdTagUri());
 
     }
 
@@ -168,8 +167,8 @@ public class ContentPlayerFragment extends Fragment {
             public void onClick(View v) {
                 if (lock == null) {
                     setupMediaSource();
-                    Log.d(TAG, "withdrawExoPlayer: "+mResumePosition);
-                    mExoPlayerView.getPlayer().seekTo(23041);
+
+                    mExoPlayerView.getPlayer().seekTo(mResumePosition);
                     mExoPlayerView.getPlayer().setPlayWhenReady(true);
 
                 } else {
@@ -185,13 +184,12 @@ public class ContentPlayerFragment extends Fragment {
         initExoPlayer();
         setupThumbNailSource();
 
-        Log.d(TAG, "onCreateView: "+" count of playerfragments");
+        Log.d(TAG, "onCreateView: " + " count of playerfragments");
 
-
-      /**  boolean haveResumePosition = mResumeWindow != C.INDEX_UNSET;
-        if (haveResumePosition) {
-            mExoPlayerView.getPlayer().seekTo(mResumeWindow, mResumePosition);
-        }**/
+        /**  boolean haveResumePosition = mResumeWindow != C.INDEX_UNSET;
+         if (haveResumePosition) {
+         mExoPlayerView.getPlayer().seekTo(mResumeWindow, mResumePosition);
+         }**/
         return mView;
     }
 
@@ -236,19 +234,19 @@ public class ContentPlayerFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        Log.d(TAG, "withdrawExoPlayer: "+mResumePosition);
+        Log.d(TAG, "withdrawExoPlayer: " + mResumePosition);
         matchesExoPlayerFullScreenConfig();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-       // mResumePosition_min = mExoPlayerView.getPlayer().getCurrentPosition();
+        // mResumePosition_min = mExoPlayerView.getPlayer().getCurrentPosition();
 
         withdrawExoPlayer();
-     //   mResumePosition = Math.max(0, mExoPlayerView.getPlayer().getContentPosition());
-       // Toast.makeText(getActivity(), String.valueOf(mResumePosition),
-         //       Toast.LENGTH_SHORT).show();
+        //   mResumePosition = Math.max(0, mExoPlayerView.getPlayer().getContentPosition());
+        // Toast.makeText(getActivity(), String.valueOf(mResumePosition),
+        //       Toast.LENGTH_SHORT).show();
 //        mExoPlayerView.getPlayer().release();
 
     }
@@ -256,8 +254,7 @@ public class ContentPlayerFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        if (mExoPlayerView.getPlayer() != null)
-            mExoPlayerView.getPlayer().release();
+
         //imaAdsLoader.release();
     }
 
@@ -290,7 +287,6 @@ public class ContentPlayerFragment extends Fragment {
                     }
                 });
     }
-
 
     private void setupThumbNailSource() {
         EspressoIdlingResource.increment();
@@ -325,7 +321,6 @@ public class ContentPlayerFragment extends Fragment {
         String output = data.getString(KEY_TASK_OUTPUT);
         return output;
     }
-
 
     private void initFullscreenDialog() {
 
@@ -399,21 +394,6 @@ public class ContentPlayerFragment extends Fragment {
 
     }
 
-  /**  private void supplyExoPlayer(String videoURL) {
-
-        DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(getContext(), Util.getUserAgent(getContext(), "ExoPlayer"));
-        final ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
-        MediaSource mediaSource = new ExtractorMediaSource(Uri.parse(videoURL), dataSourceFactory, extractorsFactory, null, null);
-
-        MediaSource mediaSourceWithAds = new ImaAdsMediaSource(
-                mediaSource, dataSourceFactory,
-                imaAdsLoader,
-                mExoPlayerView.getOverlayFrameLayout());
-        mExoPlayerView.getPlayer().prepare(mediaSourceWithAds);
-        // mExoPlayerView.getPlayer().setPlayWhenReady(true);
-        // mExoPlayerView.getPlayer().seekTo(mResumePosition);
-
-    }**/
     private void supplyExoPlayer(String videoURL) {
 
         MediaSource videoSource = buildMediaSource(videoURL);
@@ -441,8 +421,9 @@ public class ContentPlayerFragment extends Fragment {
         mExoPlayerView.getPlayer().setPlayWhenReady(false);
         if (mExoPlayerView != null && mExoPlayerView.getPlayer() != null) {
             mResumeWindow = mExoPlayerView.getPlayer().getCurrentWindowIndex();
-            mResumePosition = Math.max(0, mExoPlayerView.getPlayer().getContentPosition());;
-         //   Log.d(TAG, "withdrawExoPlayer: "+mResumePosition);
+            mResumePosition = Math.max(0, mExoPlayerView.getPlayer().getContentPosition());
+            ;
+            //   Log.d(TAG, "withdrawExoPlayer: "+mResumePosition);
             mExoPlayerView.getPlayer().release();
         }
         if (mFullScreenDialog != null) {
@@ -457,4 +438,24 @@ public class ContentPlayerFragment extends Fragment {
     private Uri getAdTagUri() {
         return Uri.parse("https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dskippablelinear&correlator=");
     }
+
+
+
+    /**
+     * private void supplyExoPlayer(String videoURL) {
+     * <p>
+     * DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(getContext(), Util.getUserAgent(getContext(), "ExoPlayer"));
+     * final ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
+     * MediaSource mediaSource = new ExtractorMediaSource(Uri.parse(videoURL), dataSourceFactory, extractorsFactory, null, null);
+     * <p>
+     * MediaSource mediaSourceWithAds = new ImaAdsMediaSource(
+     * mediaSource, dataSourceFactory,
+     * imaAdsLoader,
+     * mExoPlayerView.getOverlayFrameLayout());
+     * mExoPlayerView.getPlayer().prepare(mediaSourceWithAds);
+     * // mExoPlayerView.getPlayer().setPlayWhenReady(true);
+     * // mExoPlayerView.getPlayer().seekTo(mResumePosition);
+     * <p>
+     * }
+     **/
 }

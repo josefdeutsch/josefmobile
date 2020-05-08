@@ -1,6 +1,10 @@
 package com.josef.mobile.free.ui;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -12,6 +16,8 @@ import android.view.animation.Animation;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.widget.CompoundButton;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -24,6 +30,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -37,6 +44,26 @@ import androidx.work.Operation;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
+import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.DefaultRenderersFactory;
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.LoadControl;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.ext.ima.ImaAdsLoader;
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
+import com.google.android.exoplayer2.extractor.ExtractorsFactory;
+import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.ui.PlaybackControlView;
+import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+import com.google.android.exoplayer2.upstream.BandwidthMeter;
+import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.util.Util;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
@@ -49,6 +76,8 @@ import com.josef.mobile.data.Favourite;
 import com.josef.mobile.data.FavouriteViewModel;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
 import com.josef.mobile.net.CallBackWorker;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -60,6 +89,10 @@ import java.util.UUID;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.josef.mobile.Config.KEY_TASK_OUTPUT;
+import static com.josef.mobile.Config.STATE_PLAYER_FULLSCREEN;
+import static com.josef.mobile.Config.STATE_RESUME_POSITION;
+import static com.josef.mobile.Config.STATE_RESUME_POSITION_MIN_FRAME;
+import static com.josef.mobile.Config.STATE_RESUME_WINDOW;
 import static com.josef.mobile.Config.VIEWPAGERDETAILKEY;
 import static com.josef.mobile.Config.VIEWPAGERMAINKEY;
 import static com.josef.mobile.Config.WORKERDOWNLOADID;
@@ -84,11 +117,42 @@ public class ContentDetailFragment extends Fragment {
     public TextView article;
     public TextView article_by_line;
     public View layoutInflater;
-
+    public View mView;
     // TODO: Rename and change types of parameters
-
     private String mDownloadId;
     private int index;
+
+    private String mId;
+    private SimpleExoPlayerView mExoPlayerView;
+    private boolean mExoPlayerFullscreen = false;
+    private FrameLayout mFullScreenButton;
+    private ImageView mFullScreenIcon;
+    private Dialog mFullScreenDialog;
+    private int mResumeWindow;
+    private long mResumePosition;
+    private long mResumePosition_min;
+    public ImageButton playButton;
+    private ImageButton pauseButton;
+    private static final String TAG = "PlayerFragment";
+    private ImaAdsLoader imaAdsLoader;
+    private Object lock;
+
+    Target target = new Target() {
+        @Override
+        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+            mExoPlayerView.setDefaultArtwork(bitmap);
+        }
+
+        @Override
+        public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+        }
+
+        @Override
+        public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+        }
+    };
+
 
 
     public ContentDetailFragment() {
@@ -111,6 +175,12 @@ public class ContentDetailFragment extends Fragment {
             mDownloadId = getArguments().getString(WORKERDOWNLOADID);
             index = getArguments().getInt(VIEWPAGERDETAILKEY);
         }
+        if (savedInstanceState != null) {
+            mResumeWindow = savedInstanceState.getInt(STATE_RESUME_WINDOW);
+            mResumePosition = savedInstanceState.getLong(STATE_RESUME_POSITION);
+            mResumePosition_min = savedInstanceState.getLong(STATE_RESUME_POSITION_MIN_FRAME);
+            mExoPlayerFullscreen = savedInstanceState.getBoolean(STATE_PLAYER_FULLSCREEN);
+        }
 
     }
 
@@ -118,6 +188,7 @@ public class ContentDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         layoutInflater = inflater.inflate(R.layout.fragment_content_detail, container, false);
+        mView = inflater.inflate(R.layout.fragment_content_player, container, false);
         mImageButton = layoutInflater.findViewById(R.id.imgBanner);
         mButtonFavorite = layoutInflater.findViewById(R.id.button_favorite);
         mButtonDataBase = layoutInflater.findViewById(R.id.button_favorite2);
@@ -127,137 +198,284 @@ public class ContentDetailFragment extends Fragment {
         article_by_line = (TextView) layoutInflater.findViewById(R.id.article_byline);
         favouriteViewModel = ViewModelProviders.of(this).get(FavouriteViewModel.class);
 
-
         setupViewPager(index);
-        // setupToggleFavorite(index);
         setupToggleDatabase(index);
         setupToggleFavorite(index);
 
-        FragmentTransaction fm = getChildFragmentManager().beginTransaction();
-        getChildFragmentManager().beginTransaction()
-                .add(R.id.nested_container, ContentPlayerFragment.newInstance(mDownloadId, index))
-                .commit();
-        fm.commit();
+        Log.d(TAG, "onCreateView: "+" count of detailfragments");
 
-        Log.d(TAG, "onCreateView: "+" count of detailFragments");
+       /** getChildFragmentManager().beginTransaction()
+                .replace(R.id.nested_container, ContentPlayerFragment.newInstance(mDownloadId, index))
+                .commit();**/
 
-        //intent = new Intent(getActivity(), DetailActivity.class);
-        //intent.putExtra(VIEWPAGERMAINKEY, which);
-        //intent.putExtra(VIEWPAGERDETAILKEY, index);
+
+        playButton = layoutInflater.findViewById(R.id.exo_play);
+        playButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (lock == null) {
+                    setupMediaSource();
+
+                    mExoPlayerView.getPlayer().seekTo(mResumePosition);
+                    mExoPlayerView.getPlayer().setPlayWhenReady(true);
+
+                } else {
+                    if (!mExoPlayerView.getPlayer().getPlayWhenReady())
+                        mExoPlayerView.getPlayer().setPlayWhenReady(true);
+                }
+            }
+        });
+        mExoPlayerView = (SimpleExoPlayerView) layoutInflater.findViewById(R.id.exoplayer);
+
+        initFullscreenDialog();
+        initFullscreenButton();
+        initExoPlayer();
+        setupThumbNailSource();
+
 
         return layoutInflater;
     }
 
-
-    public void onPlayBackState() {
-        Fragment fragment = getChildFragmentManager().findFragmentById(R.id.nested_container);
-        if (fragment instanceof ContentPlayerFragment) {
-            ContentPlayerFragment playerFragment = (ContentPlayerFragment) fragment;
-            playerFragment.onPlayerBackState();
+    public void onPlayerBackState() {
+        if (lock != null) {
+            if (mExoPlayerView.getPlayer().getPlayWhenReady())
+                mExoPlayerView.getPlayer().setPlayWhenReady(false);
         }
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
 
-    public void onPlayExecute() {
-        Fragment fragment = getChildFragmentManager().findFragmentById(R.id.nested_container);
-        if (fragment instanceof ContentPlayerFragment) {
-            final ContentPlayerFragment playerFragment = (ContentPlayerFragment) fragment;
-            playerFragment.onPlayExecute();
-        }
+        outState.putInt(STATE_RESUME_WINDOW, mResumeWindow);
+        outState.putLong(STATE_RESUME_POSITION, mResumePosition);
+        outState.putLong(STATE_RESUME_POSITION_MIN_FRAME, mResumePosition_min);
+        outState.putBoolean(STATE_PLAYER_FULLSCREEN, mExoPlayerFullscreen);
+
+        super.onSaveInstanceState(outState);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, "withdrawExoPlayer: " + mResumePosition);
+        matchesExoPlayerFullScreenConfig();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        // mResumePosition_min = mExoPlayerView.getPlayer().getCurrentPosition();
+
+        withdrawExoPlayer();
+        //   mResumePosition = Math.max(0, mExoPlayerView.getPlayer().getContentPosition());
+        // Toast.makeText(getActivity(), String.valueOf(mResumePosition),
+        //       Toast.LENGTH_SHORT).show();
+//        mExoPlayerView.getPlayer().release();
+
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        //imaAdsLoader.release();
+    }
 
     public void setupMediaSource() {
-        Fragment fragment = getChildFragmentManager().findFragmentById(R.id.nested_container);
-        if (fragment instanceof ContentPlayerFragment) {
-            ContentPlayerFragment playerFragment = (ContentPlayerFragment) fragment;
-            playerFragment.setupMediaSource();
+
+        lock = new Object();
+
+        EspressoIdlingResource.increment();
+        WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(UUID.fromString(mDownloadId))
+                .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
+                    @Override
+                    public void onChanged(@Nullable WorkInfo workInfo) {
+                        if (workInfo != null) {
+                            if (workInfo.getState().isFinished()) {
+                                String output = getViewPagerContent(workInfo);
+                                try {
+                                    JSONArray input = new JSONArray(output);
+                                    JSONObject container = input.getJSONObject(index);
+                                    JSONObject metadata = (JSONObject) container.get("metadata");
+                                    String url = (String) metadata.get("url");
+                                    supplyExoPlayer(url);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+                                    EspressoIdlingResource.decrement();
+                                }
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void setupThumbNailSource() {
+        EspressoIdlingResource.increment();
+        WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(UUID.fromString(mDownloadId))
+                .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
+                    @Override
+                    public void onChanged(@Nullable WorkInfo workInfo) {
+                        if (workInfo != null) {
+                            if (workInfo.getState().isFinished()) {
+                                String output = getViewPagerContent(workInfo);
+                                try {
+                                    JSONArray input = new JSONArray(output);
+                                    JSONObject container = input.getJSONObject(index);
+                                    JSONObject metadata = (JSONObject) container.get("metadata");
+                                    String png = (String) metadata.get("png");
+                                    postThumbnailIntoExoplayer(png);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+                                    EspressoIdlingResource.decrement();
+                                }
+                            }
+                        }
+                    }
+                });
+    }
+
+    @Nullable
+
+    private void initFullscreenDialog() {
+
+        mFullScreenDialog = new Dialog(getContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen) {
+            public void onBackPressed() {
+                if (mExoPlayerFullscreen)
+                    closeFullscreenDialog();
+                super.onBackPressed();
+            }
+        };
+    }
+
+    private void openFullscreenDialog() {
+
+        ((ViewGroup) mExoPlayerView.getParent()).removeView(mExoPlayerView);
+        mFullScreenDialog.addContentView(mExoPlayerView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        mFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_fullscreen_skrink));
+        mExoPlayerFullscreen = true;
+        mFullScreenDialog.show();
+    }
+
+    private void closeFullscreenDialog() {
+
+        ((ViewGroup) mExoPlayerView.getParent()).removeView(mExoPlayerView);
+        ((FrameLayout) mView.findViewById(R.id.main_media_frame)).addView(mExoPlayerView);
+        mExoPlayerFullscreen = false;
+        mFullScreenDialog.dismiss();
+        mFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_fullscreen_expand));
+    }
+
+    private void initFullscreenButton() {
+
+        PlaybackControlView controlView = mExoPlayerView.findViewById(R.id.exo_controller);
+        mFullScreenIcon = controlView.findViewById(R.id.exo_fullscreen_icon);
+        mFullScreenButton = controlView.findViewById(R.id.exo_fullscreen_button);
+        mFullScreenButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!mExoPlayerFullscreen)
+                    openFullscreenDialog();
+                else
+                    closeFullscreenDialog();
+            }
+        });
+
+    }
+
+    private void initExoPlayer() {
+        EspressoIdlingResource.increment();
+        WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(UUID.fromString(mDownloadId))
+                .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
+                    @Override
+                    public void onChanged(@Nullable WorkInfo workInfo) {
+                        if (workInfo != null) {
+                            if (workInfo.getState().isFinished()) {
+                                BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
+                                TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
+                                TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
+                                LoadControl loadControl = new DefaultLoadControl();
+                                SimpleExoPlayer player = ExoPlayerFactory.newSimpleInstance(new DefaultRenderersFactory(getContext()), trackSelector, loadControl);
+                                mExoPlayerView.setPlayer(player);
+                                //mExoPlayerView.getPlayer().addListener(this);
+
+                                if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+                                    EspressoIdlingResource.decrement();
+                                }
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void supplyExoPlayer(String videoURL) {
+
+        MediaSource videoSource = buildMediaSource(videoURL);
+        mExoPlayerView.getPlayer().prepare(videoSource);
+        mExoPlayerView.getPlayer().setPlayWhenReady(true);
+
+    }
+
+    private MediaSource buildMediaSource(String videoURL) {
+        DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(getContext(), Util.getUserAgent(getContext(), "ExoPlayer"));
+        final ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
+        return new ExtractorMediaSource(Uri.parse(videoURL), dataSourceFactory, extractorsFactory, null, null);
+    }
+
+    private void matchesExoPlayerFullScreenConfig() {
+        if (mExoPlayerFullscreen) {
+            ((ViewGroup) mExoPlayerView.getParent()).removeView(mExoPlayerView);
+            mFullScreenDialog.addContentView(mExoPlayerView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            mFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_fullscreen_skrink));
+            mFullScreenDialog.show();
         }
     }
 
-    Intent intent;
-
-    private void pressImage() {
-        mImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setupProgressBar();
-                loadIntersitialAds(new InterstitialAdsRequest() {
-                    @Override
-                    public void execute() {
-                        mInterstitialAd = new InterstitialAd(getContext());
-                        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
-                        mInterstitialAd.loadAd(new AdRequest.Builder().build());
-                        mInterstitialAd.setAdListener(new AdListener() {
-                            @Override
-                            public void onAdLoaded() {
-                                if (mDialog != null) {
-                                    mDialog.hide();
-                                }
-                                mInterstitialAd.show();
-                            }
-
-                            @Override
-                            public void onAdFailedToLoad(int errorCode) {
-                                if (mDialog != null) {
-                                    mDialog.hide();
-                                }
-                                getActivity().startActivity(intent);
-                            }
-
-                            @Override
-                            public void onAdClosed() {
-                                getActivity().startActivity(intent);
-                            }
-                        });
-                    }
-                });
-            }
-        });
+    private final void withdrawExoPlayer() {
+        mExoPlayerView.getPlayer().setPlayWhenReady(false);
+        if (mExoPlayerView != null && mExoPlayerView.getPlayer() != null) {
+            mResumeWindow = mExoPlayerView.getPlayer().getCurrentWindowIndex();
+            mResumePosition = Math.max(0, mExoPlayerView.getPlayer().getContentPosition());
+            ;
+            //   Log.d(TAG, "withdrawExoPlayer: "+mResumePosition);
+            mExoPlayerView.getPlayer().release();
+        }
+        if (mFullScreenDialog != null) {
+            mFullScreenDialog.dismiss();
+        }
     }
 
-    private InterstitialAd mInterstitialAd;
-
-    private AlertDialog mDialog;
-
-    private void setupProgressBar() {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setCancelable(false);
-        builder.setView(R.layout.progressdialog);
-        mDialog = builder.create();
-        mDialog.show();
+    private void postThumbnailIntoExoplayer(String png) {
+        Picasso.get().load(png).into(target);
     }
 
-    public void loadIntersitialAds(InterstitialAdsRequest request) {
-        request.execute();
+    private Uri getAdTagUri() {
+        return Uri.parse("https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dskippablelinear&correlator=");
     }
 
-    /**
-     * private void setupToggleFavorite(final String url, final int index) {
-     * final ScaleAnimation scaleAnimation = new ScaleAnimation(0.7f, 1.0f, 0.7f, 1.0f, Animation.RELATIVE_TO_SELF, 0.7f, Animation.RELATIVE_TO_SELF, 0.7f);
-     * scaleAnimation.setDuration(500);
-     * BounceInterpolator bounceInterpolator = new BounceInterpolator();
-     * scaleAnimation.setInterpolator(bounceInterpolator);
-     * <p>
-     * mButtonFavorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-     *
-     * @Override public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-     * compoundButton.startAnimation(scaleAnimation);
-     * if (isChecked) {
-     * Log.d(TAG, "onChanged: " + url);
-     * ArrayList<String> meta = new ArrayList<>(AppPreferences.getName(getContext()));
-     * meta.add(url + System.lineSeparator());
-     * AppPreferences.setName(getContext(), meta);
-     * } else {
-     * ArrayList<String> meta = new ArrayList<>(AppPreferences.getName(getContext()));
-     * meta.remove(index);
-     * AppPreferences.setName(getContext(), meta);
-     * }
-     * }
-     * });
-     * }
-     ***/
+
+
+
+
+
+
+
+
     private void setupToggleFavorite(final int index) {
         final ScaleAnimation scaleAnimation = new ScaleAnimation(0.7f, 1.0f, 0.7f, 1.0f, Animation.RELATIVE_TO_SELF, 0.7f, Animation.RELATIVE_TO_SELF, 0.7f);
         scaleAnimation.setDuration(500);
@@ -446,8 +664,6 @@ public class ContentDetailFragment extends Fragment {
                     }
                 });
     }
-
-
 
     @Nullable
     private String getViewPagerContent(@NotNull WorkInfo workInfo) {

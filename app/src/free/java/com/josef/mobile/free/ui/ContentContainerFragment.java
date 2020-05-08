@@ -151,7 +151,7 @@ public class ContentContainerFragment extends Fragment {
                 int len = array.size();
                 for (int i = 0; i <= len-1 ; i++) {
                     ContentDetailFragment detailFragment = (ContentDetailFragment) array.get(i);
-                    if(i != position) detailFragment.onPlayBackState();
+                    if(i != position) detailFragment.onPlayerBackState();
                 }
             }
 
