@@ -99,6 +99,7 @@ public class ContentContainerFragment extends Fragment {
             }
         });
     }
+
     @NotNull
     private OneTimeWorkRequest buildOneTimeWorkRequest(Data data, Constraints constraints) {
         return new OneTimeWorkRequest.Builder(CallBackWorker.class)
@@ -135,7 +136,7 @@ public class ContentContainerFragment extends Fragment {
         adapters = new ViewPagerFragmentAdapters(getChildFragmentManager(), mDownload.getStringId());
         //EspressoIdlingResource.increment();
         viewPager.setAdapter(adapters);
-        viewPager.setOffscreenPageLimit(1);
+        viewPager.setOffscreenPageLimit(3);
         //zu schnell background thread problematisch..
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -149,9 +150,11 @@ public class ContentContainerFragment extends Fragment {
                 mHomeFragment = (ContentDetailFragment) adapters.getRegisteredFragment(position);
                 SparseArray<Fragment> array = adapters.getRegisteredFragments();
                 int len = array.size();
-                for (int i = 0; i <= len-1 ; i++) {
-                    ContentDetailFragment detailFragment = (ContentDetailFragment) array.get(i);
-                    if(i != position) detailFragment.onPlayerBackState();
+                for (int i = 0; i <= len - 1; i++) {
+                    if ((ContentDetailFragment) array.get(i) != null) {
+                        ContentDetailFragment detailFragment = (ContentDetailFragment) array.get(i);
+                        if (i != position) detailFragment.onPlayerBackState();
+                    }
                 }
             }
 
@@ -162,14 +165,15 @@ public class ContentContainerFragment extends Fragment {
         });
 
 
-        //viewPager.setCurrentItem(0);
+        //      viewPager.setCurrentItem(17);
         //mHomeFragment.addItemtsToDataBase(0);
 
         //viewPager.setCurrentItem(mPosition);
         return layoutInflater;
     }
+
     @Override
-    public void onDestroyView(){
+    public void onDestroyView() {
         super.onDestroyView();
         viewPager.setAdapter(null);
 

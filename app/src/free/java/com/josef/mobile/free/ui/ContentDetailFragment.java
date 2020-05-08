@@ -1,7 +1,6 @@
 package com.josef.mobile.free.ui;
 
 import android.app.Dialog;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -19,28 +18,19 @@ import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
-import androidx.appcompat.app.AlertDialog;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.test.espresso.IdlingResource;
-import androidx.work.Constraints;
 import androidx.work.Data;
-import androidx.work.ExistingWorkPolicy;
-import androidx.work.NetworkType;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.Operation;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
@@ -64,18 +54,12 @@ import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.material.snackbar.Snackbar;
 import com.josef.josefmobile.R;
 import com.josef.mobile.AppPreferences;
-import com.josef.mobile.InterstitialAdsRequest;
-import com.josef.mobile.OnPlayExecute;
 import com.josef.mobile.data.Favourite;
 import com.josef.mobile.data.FavouriteViewModel;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
-import com.josef.mobile.net.CallBackWorker;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -87,17 +71,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.josef.mobile.Config.KEY_TASK_OUTPUT;
 import static com.josef.mobile.Config.STATE_PLAYER_FULLSCREEN;
 import static com.josef.mobile.Config.STATE_RESUME_POSITION;
 import static com.josef.mobile.Config.STATE_RESUME_POSITION_MIN_FRAME;
 import static com.josef.mobile.Config.STATE_RESUME_WINDOW;
 import static com.josef.mobile.Config.VIEWPAGERDETAILKEY;
-import static com.josef.mobile.Config.VIEWPAGERMAINKEY;
 import static com.josef.mobile.Config.WORKERDOWNLOADID;
-import static com.josef.mobile.Config.WORKREQUEST_AMOUNT;
-import static com.josef.mobile.Config.WORKREQUEST_VIEWPAGER;
 
 
 /**
@@ -117,7 +97,7 @@ public class ContentDetailFragment extends Fragment {
     public TextView article;
     public TextView article_by_line;
     public View layoutInflater;
-    public View mView;
+    public View layoutinflater;
     // TODO: Rename and change types of parameters
     private String mDownloadId;
     private int index;
@@ -136,6 +116,9 @@ public class ContentDetailFragment extends Fragment {
     private static final String TAG = "PlayerFragment";
     private ImaAdsLoader imaAdsLoader;
     private Object lock;
+
+    // Player Event Listener.....
+
 
     Target target = new Target() {
         @Override
@@ -188,7 +171,7 @@ public class ContentDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         layoutInflater = inflater.inflate(R.layout.fragment_content_detail, container, false);
-        mView = inflater.inflate(R.layout.fragment_content_player, container, false);
+        //layoutinflater = inflater.inflate(R.layout.fragment_content_player, container, false);
         mImageButton = layoutInflater.findViewById(R.id.imgBanner);
         mButtonFavorite = layoutInflater.findViewById(R.id.button_favorite);
         mButtonDataBase = layoutInflater.findViewById(R.id.button_favorite2);
@@ -207,7 +190,6 @@ public class ContentDetailFragment extends Fragment {
        /** getChildFragmentManager().beginTransaction()
                 .replace(R.id.nested_container, ContentPlayerFragment.newInstance(mDownloadId, index))
                 .commit();**/
-
 
         playButton = layoutInflater.findViewById(R.id.exo_play);
         playButton.setOnClickListener(new View.OnClickListener() {
@@ -375,7 +357,7 @@ public class ContentDetailFragment extends Fragment {
     private void closeFullscreenDialog() {
 
         ((ViewGroup) mExoPlayerView.getParent()).removeView(mExoPlayerView);
-        ((FrameLayout) mView.findViewById(R.id.main_media_frame)).addView(mExoPlayerView);
+        ((FrameLayout) layoutInflater.findViewById(R.id.main_media_frame)).addView(mExoPlayerView);
         mExoPlayerFullscreen = false;
         mFullScreenDialog.dismiss();
         mFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_fullscreen_expand));

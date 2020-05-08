@@ -77,16 +77,13 @@
         android:textOff=""
         android:textOn="" />
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/maxwidthlayout_container"
-        android:background="#000000">
+
         <FrameLayout
             android:id="@+id/main_media_frame"
             android:layout_width="match_parent"
             android:layout_height="256dp"
-            android:background="#000000">
+            android:background="#000000"
+            android:layout_below="@id/maxwidthlayout_container">
             <com.google.android.exoplayer2.ui.SimpleExoPlayerView
                 android:id="@+id/exoplayer"
                 android:layout_width="match_parent"
@@ -94,7 +91,7 @@
                 android:gravity="center">
             </com.google.android.exoplayer2.ui.SimpleExoPlayerView>
         </FrameLayout>
-    </FrameLayout>
+
 
 </RelativeLayout>
 
