@@ -213,7 +213,7 @@ public class VideoPlayer {
 
     public final void withdrawExoPlayer() {
 
-        if (mExoPlayerView != null|| mExoPlayerView.getPlayer()!=null) {
+        if (mExoPlayerView != null && mExoPlayerView.getPlayer()!=null) {
             mExoPlayerView.getPlayer().setPlayWhenReady(false);
             if (mExoPlayerView != null && mExoPlayerView.getPlayer() != null) {
                 mResumeWindow = mExoPlayerView.getPlayer().getCurrentWindowIndex();

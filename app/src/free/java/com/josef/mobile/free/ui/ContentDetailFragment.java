@@ -129,23 +129,20 @@ public class ContentDetailFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        // videoPlayer.matchesExoPlayerFullScreenConfig();
+         videoPlayer.matchesExoPlayerFullScreenConfig();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        //if(videoPlayer!=null) videoPlayer.withdrawExoPlayer();
-        //mResumePosition = videoPlayer.getmResumePosition();
-        //mResumeWindow = videoPlayer.getmResumeWindow();
+        if(videoPlayer!=null) videoPlayer.withdrawExoPlayer();
+        mResumePosition = videoPlayer.getmResumePosition();
+        mResumeWindow = videoPlayer.getmResumeWindow();
 
     }
 
     public void onDestroyView() {
         super.onDestroyView();
-        // if(videoPlayer!=null) videoPlayer.withdrawExoPlayer();
-        // mResumePosition = videoPlayer.getmResumePosition();
-        //   mResumeWindow = videoPlayer.getmResumeWindow();
 
     }
 

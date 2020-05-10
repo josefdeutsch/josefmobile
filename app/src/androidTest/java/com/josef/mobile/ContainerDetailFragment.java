@@ -34,7 +34,7 @@ import static com.josef.mobile.Config.WORKER_DOWNLOADID;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(AndroidJUnit4.class)
-public class HomeFragmentTest {
+public class ContainerDetailFragment {
 
     private IdlingResource mIdlingResource;
 

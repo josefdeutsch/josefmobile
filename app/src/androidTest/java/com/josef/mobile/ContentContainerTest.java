@@ -111,7 +111,7 @@ public class ContentContainerTest {
 
     private static void testScrollToLastThenFirst(boolean smoothScroll) {
         Bundle args = new Bundle();
-        args.putInt(VIEWPAGERMAINKEY,1);
+        args.putInt(VIEWPAGERMAINKEY,0);
         FragmentScenario<ContentContainerFragment> scenario = FragmentScenario.launchInContainer(ContentContainerFragment.class,args);
         scenario.onFragment(new FragmentScenario.FragmentAction<ContentContainerFragment>() {
             @Override
@@ -122,9 +122,11 @@ public class ContentContainerTest {
         onPager()
                 .check(matches(isShowingPage(0)))
                 .perform(scrollToLast(smoothScroll))
-                .check(matches(isShowingPage(2)))
+                .check(matches(isShowingPage(49)))
                 .perform(scrollToFirst(smoothScroll))
-                .check(matches(isShowingPage(0)));
+                .check(matches(isShowingPage(0)));;
+
+
     }
 
     @Test
@@ -153,6 +155,15 @@ public class ContentContainerTest {
         testScrollToPage(true);
     }
 
+
+    private static void testScrollToPage(boolean smoothScroll) {
+        onPager()
+                .check(matches(isShowingPage(0)))
+                .perform(ViewPagerActions.scrollToPage(2, smoothScroll))
+                .check(matches(isShowingPage(2)))
+                .perform(ViewPagerActions.scrollToPage(1, smoothScroll))
+                .check(matches(isShowingPage(1)));
+    }
     @Test
     public void scrollToPage_back_scrollToPage_back() {
 
@@ -186,15 +197,6 @@ public class ContentContainerTest {
         }
     }
 
-    private static void testScrollToPage(boolean smoothScroll) {
-        onPager()
-                .check(matches(isShowingPage(0)))
-                .perform(ViewPagerActions.scrollToPage(2, smoothScroll))
-                .check(matches(isShowingPage(2)))
-                .perform(ViewPagerActions.scrollToPage(1, smoothScroll))
-                .check(matches(isShowingPage(1)));
-    }
-
     private static void testScrollToPage(final int index,boolean smoothScroll) {
         onPager().perform(ViewPagerActions.scrollToPage(index, smoothScroll))
                 .check(matches(isShowingPage(index)));
@@ -205,7 +207,7 @@ public class ContentContainerTest {
     }
 
     private static Matcher<? super View> isShowingPage(int index) {
-        return ViewMatchers.hasDescendant(ViewMatchers.withText("hello"));
+        return ViewMatchers.hasDescendant(ViewMatchers.withText("Skulpture"+index));
     }
 
 }
