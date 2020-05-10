@@ -28,6 +28,7 @@ import com.google.android.exoplayer2.ext.ima.ImaAdsLoader;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.material.snackbar.Snackbar;
 import com.josef.josefmobile.R;
+import com.josef.mobile.Action;
 import com.josef.mobile.AppPreferences;
 import com.josef.mobile.data.Favourite;
 import com.josef.mobile.data.FavouriteViewModel;
@@ -68,6 +69,7 @@ public class ContentDetailFragment extends Fragment {
     private ImaAdsLoader imaAdsLoader;
     private Object lock;
 
+
     public ContentDetailFragment() {
     }
 
@@ -103,16 +105,14 @@ public class ContentDetailFragment extends Fragment {
         setupUi();
 
         videoPlayer = new VideoPlayer(getActivity(), layoutInflater, mExoPlayerView, mResumePosition, mResumeWindow);
-
-        mArticle.setText("hello");
-        //mArticle.setText("Skulpture" + index);
+        mArticle.setText("Skulpture" + index);
 
         setupExoPlayer(mDownloadId, index);
         setupSubHeader(mDownloadId, index);
         setupPlayButton(mDownloadId, index);
         setupToggleDatabase(mDownloadId, index);
         setupToggleFavorite(mDownloadId, index);
-
+        //   videoPlayer.matchesExoPlayerFullScreenConfig();
         return layoutInflater;
     }
 
@@ -129,15 +129,23 @@ public class ContentDetailFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        videoPlayer.matchesExoPlayerFullScreenConfig();
+        // videoPlayer.matchesExoPlayerFullScreenConfig();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        videoPlayer.withdrawExoPlayer();
-        mResumePosition = videoPlayer.getmResumePosition();
-        mResumeWindow = videoPlayer.getmResumeWindow();
+        //if(videoPlayer!=null) videoPlayer.withdrawExoPlayer();
+        //mResumePosition = videoPlayer.getmResumePosition();
+        //mResumeWindow = videoPlayer.getmResumeWindow();
+
+    }
+
+    public void onDestroyView() {
+        super.onDestroyView();
+        // if(videoPlayer!=null) videoPlayer.withdrawExoPlayer();
+        // mResumePosition = videoPlayer.getmResumePosition();
+        //   mResumeWindow = videoPlayer.getmResumeWindow();
 
     }
 
@@ -157,6 +165,10 @@ public class ContentDetailFragment extends Fragment {
         mPlayButton = layoutInflater.findViewById(R.id.exo_play);
     }
 
+    public void addActionToUI(Action action) {
+        action.performAction(mDownloadId, index);
+    }
+
     private void setupPlayButton(final String downloadId, final int index) {
         mPlayButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,139 +184,147 @@ public class ContentDetailFragment extends Fragment {
     }
 
     public void setupMediaSource(final String downloadId, final int index) {
-        WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(UUID.fromString(downloadId))
-                .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
-                    @Override
-                    public void onChanged(@Nullable WorkInfo workInfo) {
-                        if (workInfo != null) {
-                            if (workInfo.getState().isFinished()) {
-                                final String output = getViewPagerContent(workInfo);
-                                try {
-                                    videoPlayer.setupMediaSource(output, index);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
+        if(downloadId!=null) {
+            WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(UUID.fromString(downloadId))
+                    .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
+                        @Override
+                        public void onChanged(@Nullable WorkInfo workInfo) {
+                            if (workInfo != null) {
+                                if (workInfo.getState().isFinished()) {
+                                    final String output = getViewPagerContent(workInfo);
+                                    try {
+                                        videoPlayer.setupMediaSource(output, index);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
 
+                                }
                             }
                         }
-                    }
-                });
+                    });
+        }
     }
 
     public void setupExoPlayer(final String downloadId, final int index) {
-        WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(UUID.fromString(downloadId))
-                .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
-                    @Override
-                    public void onChanged(@Nullable WorkInfo workInfo) {
-                        if (workInfo != null) {
-                            if (workInfo.getState().isFinished()) {
-                                final String output = getViewPagerContent(workInfo);
-                                try {
-                                    videoPlayer.setupThumbNailSource(output, index);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                                videoPlayer.initExoPlayer();
-                                videoPlayer.initFullscreenButton();
-                                videoPlayer.initFullscreenDialog();
+        if (downloadId != null) {
+            WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(UUID.fromString(downloadId))
+                    .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
+                        @Override
+                        public void onChanged(@Nullable WorkInfo workInfo) {
+                            if (workInfo != null) {
+                                if (workInfo.getState().isFinished()) {
+                                    final String output = getViewPagerContent(workInfo);
+                                    try {
+                                        videoPlayer.setupThumbNailSource(output, index);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    videoPlayer.initExoPlayer();
+                                    videoPlayer.initFullscreenButton();
+                                    videoPlayer.initFullscreenDialog();
 
+                                }
                             }
                         }
-                    }
-                });
+                    });
+        }
     }
 
     private void setupToggleFavorite(final String downloadId, final int index) {
-        WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(UUID.fromString(downloadId))
-                .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
-                    @Override
-                    public void onChanged(@Nullable WorkInfo workInfo) {
-                        if (workInfo != null) {
-                            if (workInfo.getState().isFinished()) {
-                                final String output = getViewPagerContent(workInfo);
-                                mButtonFavorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                    @Override
-                                    public void onCheckedChanged(final CompoundButton compoundButton, boolean isChecked) {
-                                        final ScaleAnimation scaleAnimation = new ScaleAnimation(0.7f, 1.0f, 0.7f, 1.0f, Animation.RELATIVE_TO_SELF, 0.7f, Animation.RELATIVE_TO_SELF, 0.7f);
-                                        scaleAnimation.setDuration(500);
-                                        BounceInterpolator bounceInterpolator = new BounceInterpolator();
-                                        scaleAnimation.setInterpolator(bounceInterpolator);
-                                        compoundButton.startAnimation(scaleAnimation);
-                                        if (isChecked) {
-                                            final Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.main_content), "ready to share..!", Snackbar.LENGTH_LONG)
-                                                    .setAction("OK", new View.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(View view) {
-                                                            addItemsToAppPreference(output, index);
-                                                            compoundButton.setChecked(false);
-                                                        }
-                                                    }).setActionTextColor(getResources().getColor(android.R.color.holo_red_light));
+        if (downloadId != null) {
+            WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(UUID.fromString(downloadId))
+                    .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
+                        @Override
+                        public void onChanged(@Nullable WorkInfo workInfo) {
+                            if (workInfo != null) {
+                                if (workInfo.getState().isFinished()) {
+                                    final String output = getViewPagerContent(workInfo);
+                                    mButtonFavorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                        @Override
+                                        public void onCheckedChanged(final CompoundButton compoundButton, boolean isChecked) {
+                                            final ScaleAnimation scaleAnimation = new ScaleAnimation(0.7f, 1.0f, 0.7f, 1.0f, Animation.RELATIVE_TO_SELF, 0.7f, Animation.RELATIVE_TO_SELF, 0.7f);
+                                            scaleAnimation.setDuration(500);
+                                            BounceInterpolator bounceInterpolator = new BounceInterpolator();
+                                            scaleAnimation.setInterpolator(bounceInterpolator);
+                                            compoundButton.startAnimation(scaleAnimation);
+                                            if (isChecked) {
+                                                final Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.main_content), "ready to share..!", Snackbar.LENGTH_LONG)
+                                                        .setAction("OK", new View.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(View view) {
+                                                                addItemsToAppPreference(output, index);
+                                                                compoundButton.setChecked(false);
+                                                            }
+                                                        }).setActionTextColor(getResources().getColor(android.R.color.holo_red_light));
 
-                                            snackbar.setAnchorView(getActivity().findViewById(R.id.fab));
-                                            snackbar.show();
+                                                snackbar.setAnchorView(getActivity().findViewById(R.id.fab));
+                                                snackbar.show();
 
-                                            Handler handler = new Handler();
-                                            handler.postDelayed(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    compoundButton.setChecked(false);
-                                                }
-                                            }, 3000);
+                                                Handler handler = new Handler();
+                                                handler.postDelayed(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        compoundButton.setChecked(false);
+                                                    }
+                                                }, 3000);
+                                            }
                                         }
-                                    }
-                                });
+                                    });
+                                }
                             }
                         }
-                    }
-                });
+                    });
+        }
     }
 
     public void setupToggleDatabase(final String downloadId, final int index) {
-        WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(UUID.fromString(downloadId))
-                .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
-                    @Override
-                    public void onChanged(@Nullable WorkInfo workInfo) {
-                        if (workInfo != null) {
-                            if (workInfo.getState().isFinished()) {
-                                final String output = getViewPagerContent(workInfo);
-                                final ScaleAnimation scaleAnimation = new ScaleAnimation(0.7f, 1.0f, 0.7f, 1.0f, Animation.RELATIVE_TO_SELF, 0.7f, Animation.RELATIVE_TO_SELF, 0.7f);
-                                scaleAnimation.setDuration(500);
-                                BounceInterpolator bounceInterpolator = new BounceInterpolator();
-                                scaleAnimation.setInterpolator(bounceInterpolator);
+        if (downloadId != null) {
+            WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(UUID.fromString(downloadId))
+                    .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
+                        @Override
+                        public void onChanged(@Nullable WorkInfo workInfo) {
+                            if (workInfo != null) {
+                                if (workInfo.getState().isFinished()) {
+                                    final String output = getViewPagerContent(workInfo);
+                                    final ScaleAnimation scaleAnimation = new ScaleAnimation(0.7f, 1.0f, 0.7f, 1.0f, Animation.RELATIVE_TO_SELF, 0.7f, Animation.RELATIVE_TO_SELF, 0.7f);
+                                    scaleAnimation.setDuration(500);
+                                    BounceInterpolator bounceInterpolator = new BounceInterpolator();
+                                    scaleAnimation.setInterpolator(bounceInterpolator);
 
-                                mButtonDataBase.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                    @Override
-                                    public void onCheckedChanged(final CompoundButton compoundButton, boolean isChecked) {
-                                        compoundButton.startAnimation(scaleAnimation);
-                                        if (isChecked) {
-                                            final Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.bottom_app_bar_coord), "save item..?!", Snackbar.LENGTH_LONG)
-                                                    .setAction("OK", new View.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(View view) {
-                                                            addItemtsToDataBase(output, index);
-                                                            compoundButton.setChecked(false);
-                                                        }
-                                                    }).setActionTextColor(getResources().getColor(android.R.color.holo_red_light));
+                                    mButtonDataBase.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                        @Override
+                                        public void onCheckedChanged(final CompoundButton compoundButton, boolean isChecked) {
+                                            compoundButton.startAnimation(scaleAnimation);
+                                            if (isChecked) {
+                                                final Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.bottom_app_bar_coord), "save item..?!", Snackbar.LENGTH_LONG)
+                                                        .setAction("OK", new View.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(View view) {
+                                                                addItemtsToDataBase(output, index);
+                                                                compoundButton.setChecked(false);
+                                                            }
+                                                        }).setActionTextColor(getResources().getColor(android.R.color.holo_red_light));
 
-                                            snackbar.setAnchorView(getActivity().findViewById(R.id.fab));
-                                            snackbar.show();
+                                                snackbar.setAnchorView(getActivity().findViewById(R.id.fab));
+                                                snackbar.show();
 
-                                            Handler handler = new Handler();
-                                            handler.postDelayed(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    compoundButton.setChecked(false);
-                                                }
-                                            }, 3000);
-                                        } else {
+                                                Handler handler = new Handler();
+                                                handler.postDelayed(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        compoundButton.setChecked(false);
+                                                    }
+                                                }, 3000);
+                                            } else {
 
+                                            }
                                         }
-                                    }
-                                });
+                                    });
+                                }
                             }
                         }
-                    }
-                });
+                    });
+        }
     }
 
     public void addItemsToAppPreference(final String output, final int index) {
@@ -344,27 +364,29 @@ public class ContentDetailFragment extends Fragment {
     }
 
     private void setupSubHeader(final String downloadId, final int index) {
-        WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(UUID.fromString(downloadId))
-                .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
-                    @Override
-                    public void onChanged(@Nullable WorkInfo workInfo) {
-                        if (workInfo != null) {
-                            if (workInfo.getState().isFinished()) {
-                                String output = getViewPagerContent(workInfo);
-                                try {
-                                    JSONArray input = new JSONArray(output);
-                                    JSONObject container = input.getJSONObject(index);
-                                    JSONObject metadata = (JSONObject) container.get("metadata");
-                                    String name = (String) metadata.get("name");
-                                    mArticleByLine.setText(name);
+        if (downloadId != null) {
+            WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(UUID.fromString(downloadId))
+                    .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
+                        @Override
+                        public void onChanged(@Nullable WorkInfo workInfo) {
+                            if (workInfo != null) {
+                                if (workInfo.getState().isFinished()) {
+                                    String output = getViewPagerContent(workInfo);
+                                    try {
+                                        JSONArray input = new JSONArray(output);
+                                        JSONObject container = input.getJSONObject(index);
+                                        JSONObject metadata = (JSONObject) container.get("metadata");
+                                        String name = (String) metadata.get("name");
+                                        mArticleByLine.setText(name);
 
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             }
                         }
-                    }
-                });
+                    });
+        }
     }
 
     @Nullable

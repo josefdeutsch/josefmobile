@@ -1,4 +1,4 @@
-package com.josef.mobile.free.ui;
+package com.josef.mobile;
 
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +10,8 @@ import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.josef.josefmobile.R;
 import com.josef.mobile.ViewPagerActions;
+import com.josef.mobile.free.ui.ContentContainerFragment;
+
 import org.hamcrest.Matcher;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,7 +53,6 @@ public class ContentContainerTest {
         scenario.onFragment(new FragmentScenario.FragmentAction<ContentContainerFragment>() {
             @Override
             public void perform(@NonNull ContentContainerFragment fragment) {
-
             }
         });
         testScrollRightThenLeft(false);

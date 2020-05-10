@@ -94,14 +94,14 @@ public class VideoPlayer {
     }
 
     public void onPlayerBackState() {
-            if (mExoPlayerView.getPlayer().getPlayWhenReady())
-                mExoPlayerView.getPlayer().setPlayWhenReady(false);
+        if (mExoPlayerView.getPlayer().getPlayWhenReady())
+            mExoPlayerView.getPlayer().setPlayWhenReady(false);
     }
 
     public void onPlay() {
 
-            if (!mExoPlayerView.getPlayer().getPlayWhenReady())
-                mExoPlayerView.getPlayer().setPlayWhenReady(true);
+        if (!mExoPlayerView.getPlayer().getPlayWhenReady())
+            mExoPlayerView.getPlayer().setPlayWhenReady(true);
     }
 
     public VideoPlayer(Context mContext, View layoutInflater, SimpleExoPlayerView mExoPlayerView, long mResumePosition, int mResumeWindow) {
@@ -170,7 +170,7 @@ public class VideoPlayer {
 
     }
 
-    public void setupThumbNailSource(final String output,final int index) throws JSONException {
+    public void setupThumbNailSource(final String output, final int index) throws JSONException {
         JSONArray input = new JSONArray(output);
         JSONObject container = input.getJSONObject(index);
         JSONObject metadata = (JSONObject) container.get("metadata");
@@ -178,7 +178,7 @@ public class VideoPlayer {
         postThumbnailIntoExoplayer(png);
     }
 
-    public void setupMediaSource(final String output,final int index) throws JSONException {
+    public void setupMediaSource(final String output, final int index) throws JSONException {
         JSONArray input = new JSONArray(output);
         JSONObject container = input.getJSONObject(index);
         JSONObject metadata = (JSONObject) container.get("metadata");
@@ -212,14 +212,17 @@ public class VideoPlayer {
     }
 
     public final void withdrawExoPlayer() {
-        mExoPlayerView.getPlayer().setPlayWhenReady(false);
-        if (mExoPlayerView != null && mExoPlayerView.getPlayer() != null) {
-            mResumeWindow = mExoPlayerView.getPlayer().getCurrentWindowIndex();
-            mResumePosition = Math.max(0, mExoPlayerView.getPlayer().getContentPosition());
-            mExoPlayerView.getPlayer().release();
-        }
-        if (mFullScreenDialog != null) {
-            mFullScreenDialog.dismiss();
+
+        if (mExoPlayerView != null|| mExoPlayerView.getPlayer()!=null) {
+            mExoPlayerView.getPlayer().setPlayWhenReady(false);
+            if (mExoPlayerView != null && mExoPlayerView.getPlayer() != null) {
+                mResumeWindow = mExoPlayerView.getPlayer().getCurrentWindowIndex();
+                mResumePosition = Math.max(0, mExoPlayerView.getPlayer().getContentPosition());
+                mExoPlayerView.getPlayer().release();
+            }
+            if (mFullScreenDialog != null) {
+                mFullScreenDialog.dismiss();
+            }
         }
     }
 
