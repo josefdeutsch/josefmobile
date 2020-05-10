@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativecontainer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#000000"
@@ -8,8 +10,7 @@
     android:foreground="?android:attr/selectableItemBackground"
     card_view:cardElevation="1dp"
     card_view:cardMaxElevation="1dp"
-    card_view:cardUseCompatPadding="true"
-    android:id="@+id/relativecontainer">
+    card_view:cardUseCompatPadding="true">
 
 
     <com.josef.mobile.components.MaxWidthLinearLayout
@@ -55,9 +56,9 @@
         android:id="@+id/button_favorite"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="32dp"
         android:background="@drawable/ic_button_favourite"
         android:checked="false"
         android:text=""
@@ -68,29 +69,29 @@
         android:id="@+id/button_favorite2"
         android:layout_width="32dp"
         android:layout_height="32dp"
+        android:layout_alignParentTop="true"
         android:layout_marginTop="32dp"
         android:layout_toLeftOf="@+id/button_favorite"
-        android:layout_alignParentTop="true"
         android:background="@drawable/ic_button_database"
         android:checked="false"
         android:text=""
         android:textOff=""
         android:textOn="" />
 
+    <FrameLayout
+        android:id="@+id/main_media_frame"
+        android:layout_width="match_parent"
+        android:layout_height="256dp"
+        android:layout_below="@id/maxwidthlayout_container"
+        android:background="#000000">
 
-        <FrameLayout
-            android:id="@+id/main_media_frame"
+        <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+            android:id="@+id/exoplayer"
             android:layout_width="match_parent"
             android:layout_height="256dp"
-            android:background="#000000"
-            android:layout_below="@id/maxwidthlayout_container">
-            <com.google.android.exoplayer2.ui.SimpleExoPlayerView
-                android:id="@+id/exoplayer"
-                android:layout_width="match_parent"
-                android:layout_height="256dp"
-                android:gravity="center">
-            </com.google.android.exoplayer2.ui.SimpleExoPlayerView>
-        </FrameLayout>
+            android:gravity="center"></com.google.android.exoplayer2.ui.SimpleExoPlayerView>
+    </FrameLayout>
+
 
 
 </RelativeLayout>

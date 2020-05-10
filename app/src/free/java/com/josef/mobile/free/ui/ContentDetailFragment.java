@@ -56,6 +56,7 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.material.snackbar.Snackbar;
 import com.josef.josefmobile.R;
+import com.josef.mobile.Action;
 import com.josef.mobile.AppPreferences;
 import com.josef.mobile.data.Favourite;
 import com.josef.mobile.data.FavouriteViewModel;
@@ -98,6 +99,7 @@ public class ContentDetailFragment extends Fragment {
     public TextView article_by_line;
     public View layoutInflater;
     public View layoutinflater;
+    private VideoPlayer videoPlayer;
     // TODO: Rename and change types of parameters
     private String mDownloadId;
     private int index;
@@ -137,7 +139,6 @@ public class ContentDetailFragment extends Fragment {
     };
 
 
-
     public ContentDetailFragment() {
         // Required empty public constructor
     }
@@ -172,6 +173,7 @@ public class ContentDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         layoutInflater = inflater.inflate(R.layout.fragment_content_detail, container, false);
         //layoutinflater = inflater.inflate(R.layout.fragment_content_player, container, false);
+        mExoPlayerView = (SimpleExoPlayerView) layoutInflater.findViewById(R.id.exoplayer);
         mImageButton = layoutInflater.findViewById(R.id.imgBanner);
         mButtonFavorite = layoutInflater.findViewById(R.id.button_favorite);
         mButtonDataBase = layoutInflater.findViewById(R.id.button_favorite2);
@@ -181,47 +183,90 @@ public class ContentDetailFragment extends Fragment {
         article_by_line = (TextView) layoutInflater.findViewById(R.id.article_byline);
         favouriteViewModel = ViewModelProviders.of(this).get(FavouriteViewModel.class);
 
+
         setupViewPager(index);
         setupToggleDatabase(index);
         setupToggleFavorite(index);
 
-        Log.d(TAG, "onCreateView: "+" count of detailfragments");
+        Log.d(TAG, "onCreateView: " + " count of detailfragments");
 
-       /** getChildFragmentManager().beginTransaction()
-                .replace(R.id.nested_container, ContentPlayerFragment.newInstance(mDownloadId, index))
-                .commit();**/
+
+        videoPlayer = new VideoPlayer(getActivity(), layoutInflater, mExoPlayerView, mResumePosition, mResumeWindow);
+
+        /** getChildFragmentManager().beginTransaction()
+         .replace(R.id.nested_container, ContentPlayerFragment.newInstance(mDownloadId, index))
+         .commit();**/
 
         playButton = layoutInflater.findViewById(R.id.exo_play);
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (lock == null) {
-                    setupMediaSource();
-
-                    mExoPlayerView.getPlayer().seekTo(mResumePosition);
-                    mExoPlayerView.getPlayer().setPlayWhenReady(true);
-
+                    lock = new Object();
+                    do_async_query(new Action() {
+                        @Override
+                        public void performAction(@Nullable String output, int index) {
+                            try {
+                                videoPlayer.setupMediaSource(output, index);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, mDownloadId, index);
                 } else {
-                    if (!mExoPlayerView.getPlayer().getPlayWhenReady())
-                        mExoPlayerView.getPlayer().setPlayWhenReady(true);
+                    videoPlayer.onPlay();
                 }
             }
         });
-        mExoPlayerView = (SimpleExoPlayerView) layoutInflater.findViewById(R.id.exoplayer);
 
-        initFullscreenDialog();
-        initFullscreenButton();
-        initExoPlayer();
-        setupThumbNailSource();
+
+        do_async_query(new Action() {
+            @Override
+            public void performAction(@Nullable String output, int index) {
+                videoPlayer.initExoPlayer();
+                videoPlayer.initFullscreenButton();
+                videoPlayer.initFullscreenDialog();
+                try {
+                    videoPlayer.setupThumbNailSource(output, index);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, mDownloadId, index);
+
+
+        //initFullscreenDialog();
+        //initFullscreenButton();
+        //initExoPlayer();
+        //setupThumbNailSource();
 
 
         return layoutInflater;
     }
 
+    public void do_async_query(final Action action, final String mDownloadId, final int index) {
+        EspressoIdlingResource.increment();
+        WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(UUID.fromString(mDownloadId))
+                .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
+                    @Override
+                    public void onChanged(@Nullable WorkInfo workInfo) {
+                        if (workInfo != null) {
+                            if (workInfo.getState().isFinished()) {
+                                String output = getViewPagerContent(workInfo);
+                                action.performAction(output, index);
+                                if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+                                    EspressoIdlingResource.decrement();
+                                }
+                            }
+                        }
+                    }
+                });
+    }
+
     public void onPlayerBackState() {
         if (lock != null) {
-            if (mExoPlayerView.getPlayer().getPlayWhenReady())
-                mExoPlayerView.getPlayer().setPlayWhenReady(false);
+            Log.d(TAG, "onPlayerBackState: ");
+            videoPlayer.onPlayerBackState();
         }
     }
 
@@ -251,16 +296,17 @@ public class ContentDetailFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        videoPlayer.matchesExoPlayerFullScreenConfig();
         Log.d(TAG, "withdrawExoPlayer: " + mResumePosition);
-        matchesExoPlayerFullScreenConfig();
     }
 
     @Override
     public void onStop() {
         super.onStop();
         // mResumePosition_min = mExoPlayerView.getPlayer().getCurrentPosition();
-
-        withdrawExoPlayer();
+        videoPlayer.withdrawExoPlayer();
+        mResumePosition = videoPlayer.getmResumePosition();
+        mResumeWindow = videoPlayer.getmResumeWindow();
         //   mResumePosition = Math.max(0, mExoPlayerView.getPlayer().getContentPosition());
         // Toast.makeText(getActivity(), String.valueOf(mResumePosition),
         //       Toast.LENGTH_SHORT).show();
@@ -333,7 +379,6 @@ public class ContentDetailFragment extends Fragment {
     }
 
     @Nullable
-
     private void initFullscreenDialog() {
 
         mFullScreenDialog = new Dialog(getContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen) {
@@ -449,13 +494,6 @@ public class ContentDetailFragment extends Fragment {
     private Uri getAdTagUri() {
         return Uri.parse("https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dskippablelinear&correlator=");
     }
-
-
-
-
-
-
-
 
 
     private void setupToggleFavorite(final int index) {
