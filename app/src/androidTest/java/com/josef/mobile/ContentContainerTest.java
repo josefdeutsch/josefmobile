@@ -1,20 +1,15 @@
-package com.josef.mobile;
+package com.josef.mobile.free.ui;
 
 import android.os.Bundle;
 import android.view.View;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.testing.FragmentScenario;
-import androidx.test.core.app.ActivityScenario;
-import androidx.test.espresso.IdlingRegistry;
 import androidx.test.espresso.IdlingResource;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.josef.josefmobile.R;
-import com.josef.mobile.free.DetailActivity;
-import com.josef.mobile.idlingres.EspressoIdlingResource;
-
+import com.josef.mobile.ViewPagerActions;
 import org.hamcrest.Matcher;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +25,7 @@ import static com.josef.mobile.ViewPagerActions.scrollToLast;
 
 
 @RunWith(AndroidJUnit4.class)
-public class HomeContainerTest {
+public class ContentContainerTest {
 
     private IdlingResource mIdlingResource;
 
@@ -38,10 +33,10 @@ public class HomeContainerTest {
     public void verfiy_viewpager_is_visible(){
         Bundle args = new Bundle();
         args.putInt(VIEWPAGERMAINKEY,1);
-        FragmentScenario<HomeContainer> scenario = FragmentScenario.launchInContainer(HomeContainer.class,args);
-        scenario.onFragment(new FragmentScenario.FragmentAction<HomeContainer>() {
+        FragmentScenario<ContentContainerFragment> scenario = FragmentScenario.launchInContainer(ContentContainerFragment.class,args);
+        scenario.onFragment(new FragmentScenario.FragmentAction<ContentContainerFragment>() {
             @Override
-            public void perform(@NonNull HomeContainer fragment) {
+            public void perform(@NonNull ContentContainerFragment fragment) {
 
             }
         });
@@ -52,10 +47,10 @@ public class HomeContainerTest {
     public void scrollRightThenLeft() {
         Bundle args = new Bundle();
         args.putInt(VIEWPAGERMAINKEY,1);
-        FragmentScenario<HomeContainer> scenario = FragmentScenario.launchInContainer(HomeContainer.class,args);
-        scenario.onFragment(new FragmentScenario.FragmentAction<HomeContainer>() {
+        FragmentScenario<ContentContainerFragment> scenario = FragmentScenario.launchInContainer(ContentContainerFragment.class,args);
+        scenario.onFragment(new FragmentScenario.FragmentAction<ContentContainerFragment>() {
             @Override
-            public void perform(@NonNull HomeContainer fragment) {
+            public void perform(@NonNull ContentContainerFragment fragment) {
 
             }
         });
@@ -66,10 +61,10 @@ public class HomeContainerTest {
     public void scrollRightThenLeft_smooth() {
         Bundle args = new Bundle();
         args.putInt(VIEWPAGERMAINKEY,1);
-        FragmentScenario<HomeContainer> scenario = FragmentScenario.launchInContainer(HomeContainer.class,args);
-        scenario.onFragment(new FragmentScenario.FragmentAction<HomeContainer>() {
+        FragmentScenario<ContentContainerFragment> scenario = FragmentScenario.launchInContainer(ContentContainerFragment.class,args);
+        scenario.onFragment(new FragmentScenario.FragmentAction<ContentContainerFragment>() {
             @Override
-            public void perform(@NonNull HomeContainer fragment) {
+            public void perform(@NonNull ContentContainerFragment fragment) {
 
             }
         });
@@ -89,10 +84,10 @@ public class HomeContainerTest {
     public void scrollToLastThenFirst() {
         Bundle args = new Bundle();
         args.putInt(VIEWPAGERMAINKEY,1);
-        FragmentScenario<HomeContainer> scenario = FragmentScenario.launchInContainer(HomeContainer.class,args);
-        scenario.onFragment(new FragmentScenario.FragmentAction<HomeContainer>() {
+        FragmentScenario<ContentContainerFragment> scenario = FragmentScenario.launchInContainer(ContentContainerFragment.class,args);
+        scenario.onFragment(new FragmentScenario.FragmentAction<ContentContainerFragment>() {
             @Override
-            public void perform(@NonNull HomeContainer fragment) {
+            public void perform(@NonNull ContentContainerFragment fragment) {
 
             }
         });
@@ -103,10 +98,10 @@ public class HomeContainerTest {
     public void scrollToLastThenFirst_smooth() {
         Bundle args = new Bundle();
         args.putInt(VIEWPAGERMAINKEY,1);
-        FragmentScenario<HomeContainer> scenario = FragmentScenario.launchInContainer(HomeContainer.class,args);
-        scenario.onFragment(new FragmentScenario.FragmentAction<HomeContainer>() {
+        FragmentScenario<ContentContainerFragment> scenario = FragmentScenario.launchInContainer(ContentContainerFragment.class,args);
+        scenario.onFragment(new FragmentScenario.FragmentAction<ContentContainerFragment>() {
             @Override
-            public void perform(@NonNull HomeContainer fragment) {
+            public void perform(@NonNull ContentContainerFragment fragment) {
 
             }
         });
@@ -116,10 +111,10 @@ public class HomeContainerTest {
     private static void testScrollToLastThenFirst(boolean smoothScroll) {
         Bundle args = new Bundle();
         args.putInt(VIEWPAGERMAINKEY,1);
-        FragmentScenario<HomeContainer> scenario = FragmentScenario.launchInContainer(HomeContainer.class,args);
-        scenario.onFragment(new FragmentScenario.FragmentAction<HomeContainer>() {
+        FragmentScenario<ContentContainerFragment> scenario = FragmentScenario.launchInContainer(ContentContainerFragment.class,args);
+        scenario.onFragment(new FragmentScenario.FragmentAction<ContentContainerFragment>() {
             @Override
-            public void perform(@NonNull HomeContainer fragment) {
+            public void perform(@NonNull ContentContainerFragment fragment) {
 
             }
         });
@@ -134,10 +129,10 @@ public class HomeContainerTest {
     @Test
     public void scrollToPage() {
         Bundle args = new Bundle();
-        FragmentScenario<HomeContainer> scenario = FragmentScenario.launchInContainer(HomeContainer.class,args);
-        scenario.onFragment(new FragmentScenario.FragmentAction<HomeContainer>() {
+        FragmentScenario<ContentContainerFragment> scenario = FragmentScenario.launchInContainer(ContentContainerFragment.class,args);
+        scenario.onFragment(new FragmentScenario.FragmentAction<ContentContainerFragment>() {
             @Override
-            public void perform(@NonNull HomeContainer fragment) {
+            public void perform(@NonNull ContentContainerFragment fragment) {
 
             }
         });
@@ -147,10 +142,10 @@ public class HomeContainerTest {
     @Test
     public void scrollToPage_smooth() {
         Bundle args = new Bundle();
-        FragmentScenario<HomeContainer> scenario = FragmentScenario.launchInContainer(HomeContainer.class,args);
-        scenario.onFragment(new FragmentScenario.FragmentAction<HomeContainer>() {
+        FragmentScenario<ContentContainerFragment> scenario = FragmentScenario.launchInContainer(ContentContainerFragment.class,args);
+        scenario.onFragment(new FragmentScenario.FragmentAction<ContentContainerFragment>() {
             @Override
-            public void perform(@NonNull HomeContainer fragment) {
+            public void perform(@NonNull ContentContainerFragment fragment) {
 
             }
         });
@@ -162,10 +157,10 @@ public class HomeContainerTest {
 
         for (int index = 1; index <= 3; index++) {
             Bundle args = new Bundle();
-            FragmentScenario<HomeContainer> scenario = FragmentScenario.launchInContainer(HomeContainer.class,args);
-            scenario.onFragment(new FragmentScenario.FragmentAction<HomeContainer>() {
+            FragmentScenario<ContentContainerFragment> scenario = FragmentScenario.launchInContainer(ContentContainerFragment.class,args);
+            scenario.onFragment(new FragmentScenario.FragmentAction<ContentContainerFragment>() {
                 @Override
-                public void perform(@NonNull HomeContainer fragment) {
+                public void perform(@NonNull ContentContainerFragment fragment) {
 
                 }
             });
@@ -179,10 +174,10 @@ public class HomeContainerTest {
 
         for (int index = 1; index <= 3; index++) {
             Bundle args = new Bundle();
-            FragmentScenario<HomeContainer> scenario = FragmentScenario.launchInContainer(HomeContainer.class,args);
-            scenario.onFragment(new FragmentScenario.FragmentAction<HomeContainer>() {
+            FragmentScenario<ContentContainerFragment> scenario = FragmentScenario.launchInContainer(ContentContainerFragment.class,args);
+            scenario.onFragment(new FragmentScenario.FragmentAction<ContentContainerFragment>() {
                 @Override
-                public void perform(@NonNull HomeContainer fragment) {
+                public void perform(@NonNull ContentContainerFragment fragment) {
 
                 }
             });

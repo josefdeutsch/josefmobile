@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.josef.josefmobile.R;
-import com.josef.mobile.HomeActivity;
+import com.josef.mobile.free.ui.ContentActivity;
 
 public class ArchiveActivity extends AppCompatActivity {
 
@@ -96,7 +96,7 @@ public class ArchiveActivity extends AppCompatActivity {
                 .setAction("OK", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent intent = new Intent(ArchiveActivity.this, HomeActivity.class);
+                        Intent intent = new Intent(ArchiveActivity.this, ContentActivity.class);
                         startActivity(intent);
                     }
                 }).setActionTextColor(getResources().getColor(android.R.color.holo_red_light));

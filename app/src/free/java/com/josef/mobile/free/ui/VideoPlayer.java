@@ -97,6 +97,7 @@ public class VideoPlayer {
             if (mExoPlayerView.getPlayer().getPlayWhenReady())
                 mExoPlayerView.getPlayer().setPlayWhenReady(false);
     }
+
     public void onPlay() {
 
             if (!mExoPlayerView.getPlayer().getPlayWhenReady())

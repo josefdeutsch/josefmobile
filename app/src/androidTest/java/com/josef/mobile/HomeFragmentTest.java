@@ -1,25 +1,23 @@
-package com.josef.mobile;
+package com.josef.mobile.free.ui;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.testing.FragmentScenario;
-import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.IdlingRegistry;
 import androidx.test.espresso.IdlingResource;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.josef.josefmobile.R;
-import com.josef.mobile.free.ArchiveActivity;
-import com.josef.mobile.free.DetailActivity;
+import com.josef.mobile.AppPreferences;
+import com.josef.mobile.InterstitialAdsRequest;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import java.util.ArrayList;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isChecked;
 import static androidx.test.espresso.matcher.ViewMatchers.isClickable;
@@ -41,10 +39,10 @@ public class HomeFragmentTest {
             Bundle args = new Bundle();
             args.putInt(VIEWPAGERDETAILKEY,1);
             args.putInt(VIEWPAGERDETAILKEY,3);
-            FragmentScenario<HomeFragment> scenario = FragmentScenario.launchInContainer(HomeFragment.class,args);
-            scenario.onFragment(new FragmentScenario.FragmentAction<HomeFragment>() {
+            FragmentScenario<ContentDetailFragment> scenario = FragmentScenario.launchInContainer(ContentDetailFragment.class,args);
+            scenario.onFragment(new FragmentScenario.FragmentAction<ContentDetailFragment>() {
                 @Override
-                public void perform(@NonNull HomeFragment fragment) {
+                public void perform(@NonNull ContentDetailFragment fragment) {
 
                 }
             });
@@ -56,10 +54,10 @@ public class HomeFragmentTest {
             Bundle args = new Bundle();
             args.putInt(VIEWPAGERDETAILKEY,1);
             args.putInt(VIEWPAGERDETAILKEY,3);
-            FragmentScenario<HomeFragment> scenario = FragmentScenario.launchInContainer(HomeFragment.class,args);
-            scenario.onFragment(new FragmentScenario.FragmentAction<HomeFragment>() {
+            FragmentScenario<ContentDetailFragment> scenario = FragmentScenario.launchInContainer(ContentDetailFragment.class,args);
+            scenario.onFragment(new FragmentScenario.FragmentAction<ContentDetailFragment>() {
                  @Override
-                 public void perform(@NonNull HomeFragment fragment) {
+                 public void perform(@NonNull ContentDetailFragment fragment) {
                      mIdlingResource = fragment.getIdlingResource();
                      IdlingRegistry.getInstance().register(mIdlingResource);
             }
@@ -73,10 +71,10 @@ public class HomeFragmentTest {
             Bundle args = new Bundle();
             args.putInt(VIEWPAGERDETAILKEY,1);
             args.putInt(VIEWPAGERDETAILKEY,3);
-            FragmentScenario<HomeFragment> scenario = FragmentScenario.launchInContainer(HomeFragment.class,args);
-            scenario.onFragment(new FragmentScenario.FragmentAction<HomeFragment>() {
+            FragmentScenario<ContentDetailFragment> scenario = FragmentScenario.launchInContainer(ContentDetailFragment.class,args);
+            scenario.onFragment(new FragmentScenario.FragmentAction<ContentDetailFragment>() {
                 @Override
-                public void perform(@NonNull HomeFragment fragment) {
+                public void perform(@NonNull ContentDetailFragment fragment) {
 
                 }
             });
@@ -89,10 +87,10 @@ public class HomeFragmentTest {
         Bundle args = new Bundle();
         args.putInt(VIEWPAGERDETAILKEY,1);
         args.putInt(VIEWPAGERDETAILKEY,3);
-        FragmentScenario<HomeFragment> scenario = FragmentScenario.launchInContainer(HomeFragment.class,args);
-        scenario.onFragment(new FragmentScenario.FragmentAction<HomeFragment>() {
+        FragmentScenario<ContentDetailFragment> scenario = FragmentScenario.launchInContainer(ContentDetailFragment.class,args);
+        scenario.onFragment(new FragmentScenario.FragmentAction<ContentDetailFragment>() {
             @Override
-            public void perform(@NonNull HomeFragment fragment) {
+            public void perform(@NonNull ContentDetailFragment fragment) {
             }
         });
         onView(withId(R.id.button_favorite)).check(matches(isClickable()));
@@ -104,10 +102,10 @@ public class HomeFragmentTest {
         Bundle args = new Bundle();
         args.putInt(VIEWPAGERDETAILKEY,1);
         args.putInt(VIEWPAGERDETAILKEY,3);
-        FragmentScenario<HomeFragment> scenario = FragmentScenario.launchInContainer(HomeFragment.class,args);
-        scenario.onFragment(new FragmentScenario.FragmentAction<HomeFragment>() {
+        FragmentScenario<ContentDetailFragment> scenario = FragmentScenario.launchInContainer(ContentDetailFragment.class,args);
+        scenario.onFragment(new FragmentScenario.FragmentAction<ContentDetailFragment>() {
             @Override
-            public void perform(@NonNull HomeFragment fragment) {
+            public void perform(@NonNull ContentDetailFragment fragment) {
             }
         });
         onView(withId(R.id.button_favorite)).perform(click());
@@ -120,10 +118,10 @@ public class HomeFragmentTest {
         Bundle args = new Bundle();
         args.putInt(VIEWPAGERDETAILKEY,1);
         args.putInt(VIEWPAGERDETAILKEY,3);
-        FragmentScenario<HomeFragment> scenario = FragmentScenario.launchInContainer(HomeFragment.class,args);
-        scenario.onFragment(new FragmentScenario.FragmentAction<HomeFragment>() {
+        FragmentScenario<ContentDetailFragment> scenario = FragmentScenario.launchInContainer(ContentDetailFragment.class,args);
+        scenario.onFragment(new FragmentScenario.FragmentAction<ContentDetailFragment>() {
             @Override
-            public void perform(@NonNull HomeFragment fragment) {
+            public void perform(@NonNull ContentDetailFragment fragment) {
             }
         });
         onView(withId(R.id.button_favorite)).perform(click());
@@ -136,15 +134,15 @@ public class HomeFragmentTest {
         Bundle args = new Bundle();
         args.putInt(VIEWPAGERDETAILKEY,1);
         args.putInt(VIEWPAGERDETAILKEY,3);
-        FragmentScenario<HomeFragment> scenario = FragmentScenario.launchInContainer(HomeFragment.class,args);
-        scenario.onFragment(new FragmentScenario.FragmentAction<HomeFragment>() {
+        FragmentScenario<ContentDetailFragment> scenario = FragmentScenario.launchInContainer(ContentDetailFragment.class,args);
+        scenario.onFragment(new FragmentScenario.FragmentAction<ContentDetailFragment>() {
             @Override
-            public void perform(@NonNull HomeFragment fragment) {
+            public void perform(@NonNull ContentDetailFragment fragment) {
                 Context context = fragment.getContext();
                 mIdlingResource = fragment.getIdlingResource();
                 IdlingRegistry.getInstance().register(mIdlingResource);
-                fragment.shareMetaData(1);
-                fragment.buttonFavorite.performClick();
+               // fragment.shareMetaData(1);
+               // fragment.buttonFavorite.performClick();
                 ArrayList<String> arrayList = new ArrayList<>(AppPreferences.getName(context));
                 String str = arrayList.get(0);
                 String exp = "http://joseph3d.com/wp-content/uploads/2019/06/g0001.mp4";
@@ -154,63 +152,19 @@ public class HomeFragmentTest {
         IdlingRegistry.getInstance().unregister(EspressoIdlingResource.getIdlingResource());
     }
 
-    @Test
-    public void verify_if_imagview_is_visible(){
-        Bundle args = new Bundle();
-        args.putInt(VIEWPAGERDETAILKEY,1);
-        args.putInt(VIEWPAGERDETAILKEY,3);
-        FragmentScenario<HomeFragment> scenario = FragmentScenario.launchInContainer(HomeFragment.class,args);
-        scenario.onFragment(new FragmentScenario.FragmentAction<HomeFragment>() {
-            @Override
-            public void perform(@NonNull HomeFragment fragment) {
 
-            }
-        });
-        onView(withId(R.id.imgBanner)).check(matches(isDisplayed()));
-    }
 
-    @Test
-    public void verify_if_imagview_is_clickable(){
-        Bundle args = new Bundle();
-        args.putInt(VIEWPAGERDETAILKEY,1);
-        args.putInt(VIEWPAGERDETAILKEY,3);
-        FragmentScenario<HomeFragment> scenario = FragmentScenario.launchInContainer(HomeFragment.class,args);
-        scenario.onFragment(new FragmentScenario.FragmentAction<HomeFragment>() {
-            @Override
-            public void perform(@NonNull HomeFragment fragment) {
-
-            }
-        });
-        onView(withId(R.id.imgBanner)).check(matches(isClickable()));
-    }
-
-    @Test
-    public void verify_if_imagview_is_lounches_detailactivity(){
-        Bundle args = new Bundle();
-        args.putInt(VIEWPAGERDETAILKEY,1);
-        args.putInt(VIEWPAGERDETAILKEY,3);
-        FragmentScenario<HomeFragment> scenario = FragmentScenario.launchInContainer(HomeFragment.class,args);
-        scenario.onFragment(new FragmentScenario.FragmentAction<HomeFragment>() {
-            @Override
-            public void perform(@NonNull HomeFragment fragment) {
-                mIdlingResource = fragment.getIdlingResource();
-                IdlingRegistry.getInstance().register(mIdlingResource);
-            }
-        });
-        onView(withId(R.id.imgBanner)).perform(click());
-        onView(withId(R.id.detailviewpager)).check(matches(isDisplayed()));
-        IdlingRegistry.getInstance().unregister(EspressoIdlingResource.getIdlingResource());
-    }
+  /**
 
     @Test
     public void verify_if_menuItem_app_bar_archieve_is_clickable_and_performs_action(){
         Bundle args = new Bundle();
         args.putInt(VIEWPAGERDETAILKEY,1);
         args.putInt(VIEWPAGERDETAILKEY,3);
-        FragmentScenario<HomeFragment> scenario = FragmentScenario.launchInContainer(HomeFragment.class,args);
-        scenario.onFragment(new FragmentScenario.FragmentAction<HomeFragment>() {
+        FragmentScenario<ContentDetailFragment> scenario = FragmentScenario.launchInContainer(ContentDetailFragment.class,args);
+        scenario.onFragment(new FragmentScenario.FragmentAction<ContentDetailFragment>() {
             @Override
-            public void perform(@NonNull final HomeFragment fragment) {
+            public void perform(@NonNull final ContentDetailFragment fragment) {
                 fragment.loadIntersitialAds(new InterstitialAdsRequest() {
                     @Override
                     public void execute() {
@@ -227,5 +181,5 @@ public class HomeFragmentTest {
         Espresso.pressBack();
         onView(withId(R.id.imgBanner)).check(matches(isClickable()));
         onView(withId(R.id.imgBanner)).perform(click());
-    }
+    }**/
 }

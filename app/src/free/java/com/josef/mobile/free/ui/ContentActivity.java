@@ -48,25 +48,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.josef.mobile.Config.JOSEPHOPENINGSTATEMENT;
+import static com.josef.mobile.Config.SCROLLVIEWYPOSITION;
+import static com.josef.mobile.Config.VIEWPAGERDETAILKEY;
 import static com.josef.mobile.Config.VIEWPAGER_AMOUNT;
 
 public class ContentActivity extends AppCompatActivity {
 
-    BottomAppBar bar;
-    public int amount;
-    private static final String TAG = "ContentActivity";
-    private LinearLayout mLayout;
-    private LayoutInflater mLayoutInflater;
-    ViewPager mViewPager;
-    LinearLayout mLinearLayout;
-    private static final int CONTENT_VIEW_ID = 10101010;
+    private BottomAppBar bar;
+    private int amount;
+    private int scrollY;
 
-    //https://guides.codepath.com/android/ViewPager-with-FragmentPagerAdapter
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content);
-        mLinearLayout = findViewById(R.id.container);
 
         if (savedInstanceState == null) {
             amount = getIntent().getIntExtra(VIEWPAGER_AMOUNT, 0);
@@ -78,26 +73,24 @@ public class ContentActivity extends AppCompatActivity {
                         .commit();
             }
             fm.commit();
-            // fragContainer.addView(ll);
         }
+        if (savedInstanceState != null)
+            scrollY = savedInstanceState.getInt(SCROLLVIEWYPOSITION, 0);
         bar = (BottomAppBar) findViewById(R.id.bottom_app_bar);
         setSupportActionBar(bar);
         bar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
         setupNestedScrollView();
 
-        if (AppPreferences.getName(this) == null) {
-            ArrayList<String> meta = new ArrayList<>();
-            meta.add(JOSEPHOPENINGSTATEMENT);
-            AppPreferences.setName(this, meta);
-        }
-
-        /** //https://proandroiddev.com/look-deep-into-viewpager2-13eb8e06e419
-         final float pageMargin = this.getResources().getDimensionPixelOffset(R.dimen.pageMargin);
-         final float pageOffset = this.getResources().getDimensionPixelOffset(R.dimen.offset);**/
+    }
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(SCROLLVIEWYPOSITION, scrollY);
     }
 
     private void setupNestedScrollView() {
         final NestedScrollView scrollView = findViewById(R.id.nested_scrollview);
+        scrollView.smoothScrollTo(0,scrollY);
         scrollView.getViewTreeObserver()
                 .addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
                     @Override
@@ -108,8 +101,8 @@ public class ContentActivity extends AppCompatActivity {
                                 <= (scrollView.getHeight() + scrollView.getScrollY())) {
                             bar.performHide();
                         } else {
-                            //scroll view is not at bottom
                         }
+                        scrollY= scrollView.getScrollY();
                     }
                 });
         scrollView.setFillViewport(true);
@@ -138,9 +131,7 @@ public class ContentActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu, menu);
-        //  getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -154,7 +145,6 @@ public class ContentActivity extends AppCompatActivity {
             startActivity(intent);
             return true;
         } else if (item.getItemId() == R.id.app_bar_info) {
-            EspressoIdlingResource.increment();
             setupProgressBar();
             loadIntersitialAds(new InterstitialAdsRequest() {
                 @Override
@@ -176,13 +166,11 @@ public class ContentActivity extends AppCompatActivity {
                             if (mDialog != null) {
                                 mDialog.hide();
                             }
-                            //  EspressoIdlingResource.decrement();
                             startActivity(getApplicationContext(), PresenterActivity.class);
                         }
 
                         @Override
                         public void onAdClosed() {
-                            //   EspressoIdlingResource.decrement();
                             startActivity(getApplicationContext(), PresenterActivity.class);
                         }
                     });
@@ -210,13 +198,11 @@ public class ContentActivity extends AppCompatActivity {
                             if (mDialog != null) {
                                 mDialog.hide();
                             }
-                            // EspressoIdlingResource.decrement();
                             startActivity(getApplicationContext(), ArchiveActivity.class);
                         }
 
                         @Override
                         public void onAdClosed() {
-                            //  EspressoIdlingResource.decrement();
                             startActivity(getApplicationContext(), ArchiveActivity.class);
                         }
                     });
@@ -226,56 +212,20 @@ public class ContentActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private FavouriteViewModel favouriteViewModel;
-
     public void performFloatingAction(View view) {
 
-        CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.bottom_app_bar_coord);
+        CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.main_content);
         final Snackbar snackbar = Snackbar.make(coordinatorLayout, "data cached.. ", Snackbar.LENGTH_LONG)
                 .setAction("OK", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
-                       /** favouriteViewModel = ViewModelProviders.of(ContentActivity.this).get(FavouriteViewModel.class);
-                        favouriteViewModel.getAllNotes().observe(ContentActivity.this, new Observer<List<Favourite>>() {
-                            @Override
-                            public void onChanged(@Nullable List<Favourite> favourites) {
-                                ArrayList<String> metadata = new ArrayList<>();
-                                for (Favourite favourite : favourites) {
-                                    metadata.add(favourite.getTitle());
-                                }
-                                String data = metadata.toString();
-                                String mimeType = "text/plain";
-                                Intent shareIntent = ShareCompat.IntentBuilder.from(ContentActivity.this)
-                                        .setType(mimeType)
-                                        .setText(data)
-                                        .getIntent();
-                                if (shareIntent.resolveActivity(getPackageManager()) != null) {
-                                    startActivity(shareIntent);
-                                }
-                            }
-                        });**/
-                         ArrayList<String> metadata = new ArrayList<>(AppPreferences.getName(getApplicationContext()));
-                         String data = metadata.toString();
-                         Log.d(TAG, "onClick: "+data);
-                         String mimeType = "text/plain";
-                         /**Intent shareIntent = ShareCompat.IntentBuilder.from(ContentActivity.this)
-                         .setType(mimeType)
-                         .setText(data)
-                         .getIntent();
-                         if (shareIntent.resolveActivity(getPackageManager()) != null) {
-                         startActivity(shareIntent);
-                         }**/
+                        ArrayList<String> metadata = new ArrayList<>(AppPreferences.getName(getApplicationContext()));
+                        String data = metadata.toString();
+                        String mimeType = "text/plain";
 
                     }
                 }).setActionTextColor(getResources().getColor(android.R.color.holo_red_light));
-        View view1 = snackbar.getView();
-        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) view1.getLayoutParams();
-        params.gravity = Gravity.TOP;
-        view1.setLayoutParams(params);
-        view1.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorWhite));
-        TextView snackBarText = snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text);
-        snackBarText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorBlack));
+        snackbar.setAnchorView(R.id.fab);
         snackbar.show();
     }
 

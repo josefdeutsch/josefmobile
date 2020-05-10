@@ -6,6 +6,7 @@ public class Config {
     public static final String SHAREMETADATA = "sharemetadata";
     public static final String SHAREURL = "shareurl";
 
+    public static final String SCROLLVIEWYPOSITION = "scroll_view_y_position";
     public static final String WORKER_DOWNLOADID = "worker_downloadid";
     public static final String STATE_RESUME_POSITION_MIN_FRAME = "state_resume_position_min_frame";
 

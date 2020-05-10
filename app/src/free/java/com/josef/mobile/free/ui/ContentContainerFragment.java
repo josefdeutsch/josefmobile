@@ -5,7 +5,6 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,7 +24,6 @@ import androidx.work.Operation;
 import androidx.work.WorkManager;
 
 import com.josef.josefmobile.R;
-import com.josef.mobile.free.DetailFragment;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
 import com.josef.mobile.net.CallBackWorker;
 
@@ -45,21 +43,17 @@ import static com.josef.mobile.Config.WORKREQUEST_VIEWPAGER;
  */
 
 public class ContentContainerFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
     private static final String ARG_PARAM1 = "param1";
-    // TODO: Rename and change types of parameters
     private int which;
     ViewPager viewPager;
-    private Integer mPosition;
-    private ToggleButton buttonFavorite;
+    private int mPosition;
     View layoutInflater;
     ContentDetailFragment mHomeFragment;
     private Data mData;
     private Constraints mConstraints;
     private OneTimeWorkRequest mDownload;
 
-    // erstes Item wird nicht initialisiert - rekursiv.
 
     public ContentContainerFragment() {
 
@@ -134,10 +128,8 @@ public class ContentContainerFragment extends Fragment {
         layoutInflater = inflater.inflate(R.layout.fragment_content_container, container, false);
         viewPager = layoutInflater.findViewById(R.id.viewidpager);
         adapters = new ViewPagerFragmentAdapters(getChildFragmentManager(), mDownload.getStringId());
-        //EspressoIdlingResource.increment();
         viewPager.setAdapter(adapters);
         viewPager.setOffscreenPageLimit(3);
-        //zu schnell background thread problematisch..
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -163,12 +155,8 @@ public class ContentContainerFragment extends Fragment {
 
             }
         });
+        viewPager.setCurrentItem(mPosition);
 
-
-        //      viewPager.setCurrentItem(17);
-        //mHomeFragment.addItemtsToDataBase(0);
-
-        //viewPager.setCurrentItem(mPosition);
         return layoutInflater;
     }
 
@@ -182,7 +170,7 @@ public class ContentContainerFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        //outState.putInt(VIEWPAGERDETAILKEY, mPosition);
+        outState.putInt(VIEWPAGERDETAILKEY, mPosition);
     }
 
     public class ViewPagerFragmentAdapters extends FragmentStatePagerAdapter {
