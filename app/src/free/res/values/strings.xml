@@ -1,5 +1,6 @@
 <resources>
 
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="selection">My Selection</string>
+    <string name="selectionrequest">add and delete items..</string>
 
 </resources>

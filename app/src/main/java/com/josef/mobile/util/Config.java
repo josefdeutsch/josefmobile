@@ -19,5 +19,5 @@ public class Config {
     public static final String SHAREDPREFERENCES_KEYTAG = "com.josef.mobile.util.config.sharedpreferences_key_tag";
     public static final String SHAREDPREFERENCES_URL_REQUEST = "com.josef.mobile.util.config.sharedpreferences_url_request";
 
-
+    public static final String JOSEPHOPENINGSTATEMENT = "example text here :" + System.lineSeparator();
 }

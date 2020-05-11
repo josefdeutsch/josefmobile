@@ -23,7 +23,6 @@ import java.util.List;
 public class ArchiveActivityAdapter extends RecyclerView.Adapter<ArchiveActivityAdapter.ViewHolder> {
     private Context mContext;
     private List<Favourite> mValues;
-    FavouriteViewModel mDb;
     private OnDeleteCallBack mDeleteCallBack;
     public interface OnDeleteCallBack{
         void delete(Favourite note);
@@ -51,12 +50,7 @@ public class ArchiveActivityAdapter extends RecyclerView.Adapter<ArchiveActivity
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-
         holder.itemView.setTag(position);
-        /** GlideApp.with(mContext)
-         .load(mValues.get(position).getDescription())
-         .centerCrop()
-         .into(holder.imageButton);**/
         holder.onDelete(mValues.get(position));
         Picasso.get().load(mValues.get(position).getDescription()).config(Bitmap.Config.ARGB_8888)
                 .fit().centerCrop().into(holder.imageView);
@@ -111,7 +105,6 @@ public class ArchiveActivityAdapter extends RecyclerView.Adapter<ArchiveActivity
                                 compoundButton.setChecked(false);
                             }
                         }, 100);
-                       // compoundButton.setChecked(false);
                     } else {
 
                     }

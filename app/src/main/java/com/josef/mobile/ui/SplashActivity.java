@@ -94,13 +94,12 @@ public class SplashActivity extends AppCompatActivity {
                                         }
                                         WorkManager.getInstance(SplashActivity.this).beginUniqueWork(WORKREQUET_CONTENTACTIVITY,
                                                 ExistingWorkPolicy.KEEP, list).enqueue();
-
                                         Intent intent = new Intent(getApplicationContext(), ContentActivity.class);
-
                                         intent.putExtra(VIEWPAGER_AMOUNT, Integer.parseInt(amount));
                                         intent.putStringArrayListExtra(WORKREQUEST_LIST, downloadId);
                                         intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
                                         getApplicationContext().startActivity(intent);
+                                        finish();
                                     }
                                 });
                             }

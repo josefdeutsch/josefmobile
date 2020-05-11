@@ -5,5 +5,5 @@
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorAccent">#D81B60</color>
     <color name="transparent_statusbar">#00000000</color>
-
+    <color name="brown">#292626</color>
 </resources>

@@ -1,6 +1,5 @@
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <LinearLayout
@@ -8,6 +7,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         xmlns:android="http://schemas.android.com/apk/res/android">
+
         <com.josef.mobile.util.MaxWidthLinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
                     style="?android:attr/textAppearanceLarge"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="HEADER"
+                    android:text="@string/selection"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     android:textColor="#fff"
                     android:textStyle="bold" />
@@ -36,7 +36,7 @@
                     style="?android:attr/textAppearanceMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="SUBHEADERS"
+                    android:text="@string/selectionrequest"
                     android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                     android:textColor="#8fff" />
             </LinearLayout>

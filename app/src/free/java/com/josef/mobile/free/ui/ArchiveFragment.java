@@ -25,10 +25,9 @@ import com.josef.mobile.free.util.ArchiveActivityAdapter;
 
 import java.util.List;
 
-
 public class ArchiveFragment extends Fragment{
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private View mLayoutInflater;
@@ -63,20 +62,14 @@ public class ArchiveFragment extends Fragment{
     private ArchiveActivityAdapter.OnDeleteCallBack onDeleteCallBack = new ArchiveActivityAdapter.OnDeleteCallBack() {
         @Override
         public void delete(final Favourite note) {
-            final Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.bottom_app_bar_coord), "delete item..?", Snackbar.LENGTH_LONG)
+            final Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.main_content), "delete item..?", Snackbar.LENGTH_LONG)
                     .setAction("OK", new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             favouriteViewModel.delete(note);
                         }
                     }).setActionTextColor(getResources().getColor(android.R.color.holo_red_light));
-            View view = snackbar.getView();
-            CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) view.getLayoutParams();
-            params.gravity = Gravity.TOP;
-            view.setLayoutParams(params);
-            view.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorWhite));
-            TextView snackBarText =  snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text);
-            snackBarText.setTextColor(ContextCompat.getColor(getContext(), R.color.colorBlack));
+            snackbar.setAnchorView(R.id.fab);
             snackbar.show();
         }
     };

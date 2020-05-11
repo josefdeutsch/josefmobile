@@ -9,25 +9,22 @@
     card_view:cardMaxElevation="1dp"
     card_view:cardUseCompatPadding="true">
 
-    <RelativeLayout
+    <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/pageMarginAndOffset"
-        android:layout_marginRight="@dimen/pageMarginAndOffset"
         android:clickable="true"
-        android:foreground="?android:attr/selectableItemBackground">
+        android:background="@color/brown"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:orientation="horizontal">
 
 
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="256dp"
             android:layout_height="128dp"
-            android:layout_gravity="center_horizontal"
             android:contentDescription="@string/app_name"
-            android:scaleType="centerCrop"
             android:src="@drawable/ic_webdesignsvg_02" />
 
 
@@ -35,15 +32,14 @@
             android:id="@+id/button_delete"
             android:layout_width="36dp"
             android:layout_height="36dp"
+            android:gravity="center"
             android:background="@drawable/ic_delete_24dp"
             android:checked="false"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
             android:text=""
             android:textOff=""
             android:textOn=""
             />
 
-    </RelativeLayout>
+    </LinearLayout>
 </androidx.cardview.widget.CardView>
 

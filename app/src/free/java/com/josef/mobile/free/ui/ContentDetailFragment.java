@@ -38,6 +38,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.UUID;
+
+import static com.josef.mobile.util.Config.JOSEPHOPENINGSTATEMENT;
 import static com.josef.mobile.util.Config.WORKREQUEST_KEYTAST_OUTPUT;
 import static com.josef.mobile.util.Config.VIEWPAGERDETAILKEY;
 import static com.josef.mobile.util.Config.WORKREQUEST_DOWNLOADID;
@@ -312,7 +314,7 @@ public class ContentDetailFragment extends Fragment {
                     });
         }
     }
-    public static final String JOSEPHOPENINGSTATEMENT = "example text here :" + System.lineSeparator();
+
     public void addItemsToAppPreference(final String output, final int index) {
 
         try {

@@ -69,18 +69,6 @@ public class ArchiveActivity extends AppCompatActivity {
     }
 
 
-    private void setupProgressBar() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setCancelable(false);
-        builder.setView(R.layout.progressdialog);
-        mDialog = builder.create();
-        mDialog.show();
-    }
-    public void loadIntersitialAds(InterstitialAdsRequest request) {
-        request.execute();
-    }
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
@@ -96,68 +84,27 @@ public class ArchiveActivity extends AppCompatActivity {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             return true;
-        } else if (item.getItemId() == R.id.app_bar_info) {
-            setupProgressBar();
-            loadIntersitialAds(mPresenterActiity);
+
         } else if (item.getItemId() == R.id.app_bar_archieve) {
 
         }
         return super.onOptionsItemSelected(item);
     }
     public void performFloatingAction(View view) {
-        CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.bottom_app_bar_coord);
+        CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.main_content);
         final Snackbar snackbar = Snackbar.make(coordinatorLayout, "add more items.. ?", Snackbar.LENGTH_LONG)
                 .setAction("OK", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent intent = new Intent(ArchiveActivity.this, ContentActivity.class);
-                        startActivity(intent);
+                       finish();
                     }
                 }).setActionTextColor(getResources().getColor(android.R.color.holo_red_light));
 
-        View view1 = snackbar.getView();
-        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) view1.getLayoutParams();
-        params.gravity = Gravity.TOP;
-        view1.setLayoutParams(params);
-        view1.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorWhite));
-        TextView snackBarText = snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text);
-        snackBarText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorBlack));
+        snackbar.setAnchorView(R.id.fab);
         snackbar.show();
     }
-    private void startActivity(Context conext, Class clazz) {
-        Intent intent = new Intent(conext, clazz);
-        startActivity(intent);
-    }
 
-    private InterstitialAdsRequest mPresenterActiity = new InterstitialAdsRequest() {
-        @Override
-        public void execute() {
-            mInterstitialAd = new InterstitialAd(getApplicationContext());
-            mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
-            mInterstitialAd.loadAd(new AdRequest.Builder().build());
-            mInterstitialAd.setAdListener(new AdListener() {
-                @Override
-                public void onAdLoaded() {
-                    if (mDialog != null) {
-                        mDialog.hide();
-                    }
-                    mInterstitialAd.show();
-                }
 
-                @Override
-                public void onAdFailedToLoad(int errorCode) {
-                    if (mDialog != null) {
-                        mDialog.hide();
-                    }
-                    startActivity(getApplicationContext(), PresenterActivity.class);
-                }
 
-                @Override
-                public void onAdClosed() {
-                    startActivity(getApplicationContext(), PresenterActivity.class);
-                }
-            });
-        }
-    };
 
 }

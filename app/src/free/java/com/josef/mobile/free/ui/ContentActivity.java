@@ -29,6 +29,8 @@ import com.josef.mobile.util.AppPreferences;
 import com.josef.mobile.util.InterstitialAdsRequest;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
 import java.util.ArrayList;
+
+import static com.josef.mobile.util.Config.JOSEPHOPENINGSTATEMENT;
 import static com.josef.mobile.util.Config.VIEWPAGER_AMOUNT;
 import static com.josef.mobile.util.Config.WORKREQUEST_LIST;
 
@@ -126,9 +128,7 @@ public class ContentActivity extends AppCompatActivity {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             return true;
-        } else if (item.getItemId() == R.id.app_bar_info) {
-            setupProgressBar();
-            loadIntersitialAds(mPresenterActiity);
+
         } else if (item.getItemId() == R.id.app_bar_archieve) {
             setupProgressBar();
             loadIntersitialAds(mArchiveActivity);
@@ -139,11 +139,14 @@ public class ContentActivity extends AppCompatActivity {
     public void performFloatingAction(View view) {
 
         CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.main_content);
-        final Snackbar snackbar = Snackbar.make(coordinatorLayout, "data cached.. ", Snackbar.LENGTH_LONG)
+        final Snackbar snackbar = Snackbar.make(coordinatorLayout, "share items..?! ", Snackbar.LENGTH_LONG)
                 .setAction("OK", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+
                         ArrayList<String> metadata = new ArrayList<>(AppPreferences.getName(getApplicationContext()));
+                        if(metadata==null){
+                            metadata = new ArrayList<>();metadata.add(JOSEPHOPENINGSTATEMENT);}
                         String data = metadata.toString();
                         String mimeType = "text/plain";
                         Intent shareIntent = ShareCompat.IntentBuilder.from(ContentActivity.this)
@@ -161,38 +164,6 @@ public class ContentActivity extends AppCompatActivity {
         snackbar.show();
     }
 
-
-
-  InterstitialAdsRequest mPresenterActiity = new InterstitialAdsRequest() {
-        @Override
-        public void execute() {
-            mInterstitialAd = new InterstitialAd(getApplicationContext());
-            mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
-            mInterstitialAd.loadAd(new AdRequest.Builder().build());
-            mInterstitialAd.setAdListener(new AdListener() {
-                @Override
-                public void onAdLoaded() {
-                    if (mDialog != null) {
-                        mDialog.hide();
-                    }
-                    mInterstitialAd.show();
-                }
-
-                @Override
-                public void onAdFailedToLoad(int errorCode) {
-                    if (mDialog != null) {
-                        mDialog.hide();
-                    }
-                    startActivity(getApplicationContext(), PresenterActivity.class);
-                }
-
-                @Override
-                public void onAdClosed() {
-                    startActivity(getApplicationContext(), PresenterActivity.class);
-                }
-            });
-        }
-    };
    InterstitialAdsRequest mArchiveActivity = new InterstitialAdsRequest() {
         @Override
         public void execute() {
