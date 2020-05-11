@@ -55,6 +55,8 @@ public class VideoPlayer {
     private boolean mExoPlayerFullscreen = false;
     private ImaAdsLoader imaAdsLoader;
 
+    private String targetUrl = "https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dskippablelinear&correlator=";
+
     private Target target = new Target() {
         @Override
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
@@ -72,28 +74,12 @@ public class VideoPlayer {
     };
 
 
-    public boolean ismExoPlayerFullscreen() {
-        return mExoPlayerFullscreen;
-    }
-
-    public void setmExoPlayerFullscreen(boolean mExoPlayerFullscreen) {
-        this.mExoPlayerFullscreen = mExoPlayerFullscreen;
-    }
-
     public long getmResumePosition() {
         return mResumePosition;
     }
 
-    public void setmResumePosition(int mResumePosition) {
-        this.mResumePosition = mResumePosition;
-    }
-
     public int getmResumeWindow() {
         return mResumeWindow;
-    }
-
-    public void setmResumeWindow(int mResumeWindow) {
-        this.mResumeWindow = mResumeWindow;
     }
 
     public void onPlayerBackState() {
@@ -205,7 +191,7 @@ public class VideoPlayer {
         mExoPlayerView.getPlayer().prepare(mediaSourceWithAds);
         mExoPlayerView.getPlayer().setPlayWhenReady(true);
     }
-    
+
     public void matchesExoPlayerFullScreenConfig() {
         if (mExoPlayerFullscreen) {
             ((ViewGroup) mExoPlayerView.getParent()).removeView(mExoPlayerView);
@@ -235,7 +221,7 @@ public class VideoPlayer {
     }
 
     private Uri getAdTagUri() {
-        return Uri.parse("https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dskippablelinear&correlator=");
+        return Uri.parse(targetUrl);
     }
 
 }

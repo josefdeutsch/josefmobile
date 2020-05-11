@@ -1,25 +1,37 @@
 package com.josef.mobile.free.ui;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.FragmentTransaction;
+
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.TextView;
+
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.josef.josefmobile.R;
+import com.josef.mobile.util.InterstitialAdsRequest;
 
 public class ArchiveActivity extends AppCompatActivity {
 
-    BottomAppBar bar;
+    private BottomAppBar bar;
+    private InterstitialAd mInterstitialAd;
+    private AlertDialog mDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,10 +68,18 @@ public class ArchiveActivity extends AppCompatActivity {
         fm.commit();
     }
 
-    @Override
-    public void onRestart() {
-        super.onRestart();
+
+    private void setupProgressBar() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
+        builder.setView(R.layout.progressdialog);
+        mDialog = builder.create();
+        mDialog.show();
     }
+    public void loadIntersitialAds(InterstitialAdsRequest request) {
+        request.execute();
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -71,19 +91,19 @@ public class ArchiveActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == android.R.id.home) {
-
+        } else if (item.getItemId() == R.id.action_settings) {
+            Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            return true;
         } else if (item.getItemId() == R.id.app_bar_info) {
-            Intent intent = new Intent(this, PresenterActivity.class);
-            startActivity(intent);
-
+            setupProgressBar();
+            loadIntersitialAds(mPresenterActiity);
         } else if (item.getItemId() == R.id.app_bar_archieve) {
-            Intent intent = new Intent(this, ArchiveActivity.class);
-            startActivity(intent);
 
         }
         return super.onOptionsItemSelected(item);
     }
-
     public void performFloatingAction(View view) {
         CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.bottom_app_bar_coord);
         final Snackbar snackbar = Snackbar.make(coordinatorLayout, "add more items.. ?", Snackbar.LENGTH_LONG)
@@ -104,4 +124,40 @@ public class ArchiveActivity extends AppCompatActivity {
         snackBarText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorBlack));
         snackbar.show();
     }
+    private void startActivity(Context conext, Class clazz) {
+        Intent intent = new Intent(conext, clazz);
+        startActivity(intent);
+    }
+
+    private InterstitialAdsRequest mPresenterActiity = new InterstitialAdsRequest() {
+        @Override
+        public void execute() {
+            mInterstitialAd = new InterstitialAd(getApplicationContext());
+            mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+            mInterstitialAd.loadAd(new AdRequest.Builder().build());
+            mInterstitialAd.setAdListener(new AdListener() {
+                @Override
+                public void onAdLoaded() {
+                    if (mDialog != null) {
+                        mDialog.hide();
+                    }
+                    mInterstitialAd.show();
+                }
+
+                @Override
+                public void onAdFailedToLoad(int errorCode) {
+                    if (mDialog != null) {
+                        mDialog.hide();
+                    }
+                    startActivity(getApplicationContext(), PresenterActivity.class);
+                }
+
+                @Override
+                public void onAdClosed() {
+                    startActivity(getApplicationContext(), PresenterActivity.class);
+                }
+            });
+        }
+    };
+
 }

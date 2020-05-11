@@ -282,7 +282,7 @@ public class ContentDetailFragment extends Fragment {
                                         public void onCheckedChanged(final CompoundButton compoundButton, boolean isChecked) {
                                             compoundButton.startAnimation(scaleAnimation);
                                             if (isChecked) {
-                                                final Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.bottom_app_bar_coord), "save item..?!", Snackbar.LENGTH_LONG)
+                                                final Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.main_content), "save item..?!", Snackbar.LENGTH_LONG)
                                                         .setAction("OK", new View.OnClickListener() {
                                                             @Override
                                                             public void onClick(View view) {

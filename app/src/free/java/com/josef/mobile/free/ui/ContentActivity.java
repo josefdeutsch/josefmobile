@@ -18,6 +18,7 @@ import androidx.core.app.ShareCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.test.espresso.IdlingResource;
+
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
@@ -60,6 +61,7 @@ public class ContentActivity extends AppCompatActivity {
         setSupportActionBar(bar);
         bar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
         setupNestedScrollView();
+
 
     }
     @Override
@@ -126,68 +128,10 @@ public class ContentActivity extends AppCompatActivity {
             return true;
         } else if (item.getItemId() == R.id.app_bar_info) {
             setupProgressBar();
-            loadIntersitialAds(new InterstitialAdsRequest() {
-                @Override
-                public void execute() {
-                    mInterstitialAd = new InterstitialAd(getApplicationContext());
-                    mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
-                    mInterstitialAd.loadAd(new AdRequest.Builder().build());
-                    mInterstitialAd.setAdListener(new AdListener() {
-                        @Override
-                        public void onAdLoaded() {
-                            if (mDialog != null) {
-                                mDialog.hide();
-                            }
-                            mInterstitialAd.show();
-                        }
-
-                        @Override
-                        public void onAdFailedToLoad(int errorCode) {
-                            if (mDialog != null) {
-                                mDialog.hide();
-                            }
-                            startActivity(getApplicationContext(), PresenterActivity.class);
-                        }
-
-                        @Override
-                        public void onAdClosed() {
-                            startActivity(getApplicationContext(), PresenterActivity.class);
-                        }
-                    });
-                }
-            });
+            loadIntersitialAds(mPresenterActiity);
         } else if (item.getItemId() == R.id.app_bar_archieve) {
             setupProgressBar();
-            loadIntersitialAds(new InterstitialAdsRequest() {
-                @Override
-                public void execute() {
-                    mInterstitialAd = new InterstitialAd(getApplicationContext());
-                    mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
-                    mInterstitialAd.loadAd(new AdRequest.Builder().build());
-                    mInterstitialAd.setAdListener(new AdListener() {
-                        @Override
-                        public void onAdLoaded() {
-                            if (mDialog != null) {
-                                mDialog.hide();
-                            }
-                            mInterstitialAd.show();
-                        }
-
-                        @Override
-                        public void onAdFailedToLoad(int errorCode) {
-                            if (mDialog != null) {
-                                mDialog.hide();
-                            }
-                            startActivity(getApplicationContext(), ArchiveActivity.class);
-                        }
-
-                        @Override
-                        public void onAdClosed() {
-                            startActivity(getApplicationContext(), ArchiveActivity.class);
-                        }
-                    });
-                }
-            });
+            loadIntersitialAds(mArchiveActivity);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -217,6 +161,69 @@ public class ContentActivity extends AppCompatActivity {
         snackbar.show();
     }
 
+
+
+  InterstitialAdsRequest mPresenterActiity = new InterstitialAdsRequest() {
+        @Override
+        public void execute() {
+            mInterstitialAd = new InterstitialAd(getApplicationContext());
+            mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+            mInterstitialAd.loadAd(new AdRequest.Builder().build());
+            mInterstitialAd.setAdListener(new AdListener() {
+                @Override
+                public void onAdLoaded() {
+                    if (mDialog != null) {
+                        mDialog.hide();
+                    }
+                    mInterstitialAd.show();
+                }
+
+                @Override
+                public void onAdFailedToLoad(int errorCode) {
+                    if (mDialog != null) {
+                        mDialog.hide();
+                    }
+                    startActivity(getApplicationContext(), PresenterActivity.class);
+                }
+
+                @Override
+                public void onAdClosed() {
+                    startActivity(getApplicationContext(), PresenterActivity.class);
+                }
+            });
+        }
+    };
+   InterstitialAdsRequest mArchiveActivity = new InterstitialAdsRequest() {
+        @Override
+        public void execute() {
+            mInterstitialAd = new InterstitialAd(getApplicationContext());
+            mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+            mInterstitialAd.loadAd(new AdRequest.Builder().build());
+            mInterstitialAd.setAdListener(new AdListener() {
+                @Override
+                public void onAdLoaded() {
+                    if (mDialog != null) {
+                        mDialog.hide();
+                    }
+                    mInterstitialAd.show();
+                }
+
+                @Override
+                public void onAdFailedToLoad(int errorCode) {
+                    if (mDialog != null) {
+                        mDialog.hide();
+                    }
+                    startActivity(getApplicationContext(), ArchiveActivity.class);
+                }
+
+                @Override
+                public void onAdClosed() {
+                    startActivity(getApplicationContext(), ArchiveActivity.class);
+                }
+            });
+        }
+    };
+
     @Nullable
     private IdlingResource mIdlingResource;
 
@@ -228,4 +235,10 @@ public class ContentActivity extends AppCompatActivity {
         }
         return mIdlingResource;
     }
+
+
+
+
+
+
 }
