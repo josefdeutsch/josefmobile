@@ -1,6 +1,7 @@
 package com.josef.mobile.free.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,25 +46,21 @@ import static com.josef.mobile.Config.WORKREQUEST_VIEWPAGER;
 public class ContentContainerFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
-    private int which;
+    private String which;
     ViewPager viewPager;
     private int mPosition;
     View layoutInflater;
     ContentDetailFragment mHomeFragment;
-    private Data mData;
-    private Constraints mConstraints;
-    private OneTimeWorkRequest mDownload;
-
 
     public ContentContainerFragment() {
 
     }
 
     @Nullable
-    public static ContentContainerFragment newInstance(int which) {
+    public static ContentContainerFragment newInstance(String which) {
         ContentContainerFragment fragment = new ContentContainerFragment();
         Bundle args = new Bundle();
-        args.putInt(VIEWPAGERMAINKEY, which);
+        args.putString(VIEWPAGERMAINKEY, which);
         fragment.setArguments(args);
         return fragment;
     }
@@ -72,49 +69,12 @@ public class ContentContainerFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            which = getArguments().getInt(VIEWPAGERMAINKEY);
+            which = getArguments().getString(VIEWPAGERMAINKEY);
         }
         if (savedInstanceState != null)
             mPosition = savedInstanceState.getInt(VIEWPAGERDETAILKEY, 0);
     }
 
-    private void setupWorkRequest(int index) {
-        mData = buildData(index);
-        mConstraints = buildConstraints();
-        mDownload = buildOneTimeWorkRequest(mData, mConstraints);
-    }
-
-    private void executeWorkRequest() {
-        WorkManager.getInstance(getActivity()).beginUniqueWork(WORKREQUEST_VIEWPAGER + mDownload.getId(),
-                ExistingWorkPolicy.KEEP, mDownload).enqueue().getState().observe(this, new Observer<Operation.State>() {
-            @Override
-            public void onChanged(Operation.State state) {
-
-            }
-        });
-    }
-
-    @NotNull
-    private OneTimeWorkRequest buildOneTimeWorkRequest(Data data, Constraints constraints) {
-        return new OneTimeWorkRequest.Builder(CallBackWorker.class)
-                .setConstraints(constraints)
-                .setInputData(data)
-                .build();
-    }
-
-    @NotNull
-    private Constraints buildConstraints() {
-        return new Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .build();
-    }
-
-    @NotNull
-    private Data buildData(int index) {
-        return new Data.Builder()
-                .putInt(WORKREQUEST_AMOUNT, index)
-                .build();
-    }
 
     ViewPagerFragmentAdapters adapters;
 
@@ -122,12 +82,9 @@ public class ContentContainerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        setupWorkRequest(which);
-        executeWorkRequest();
-
         layoutInflater = inflater.inflate(R.layout.fragment_content_container, container, false);
         viewPager = layoutInflater.findViewById(R.id.viewidpager);
-        adapters = new ViewPagerFragmentAdapters(getChildFragmentManager(), mDownload.getStringId());
+        adapters = new ViewPagerFragmentAdapters(getChildFragmentManager(), which);
         viewPager.setAdapter(adapters);
         viewPager.setOffscreenPageLimit(3);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -175,12 +132,12 @@ public class ContentContainerFragment extends Fragment {
 
     public class ViewPagerFragmentAdapters extends FragmentStatePagerAdapter {
 
-        public String mDownloadId;
+        public String downloadid;
         SparseArray<Fragment> registeredFragments = new SparseArray<>();
 
-        public ViewPagerFragmentAdapters(FragmentManager fm, String id) {
+        public ViewPagerFragmentAdapters(FragmentManager fm, final String id) {
             super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-            mDownloadId = id;
+            downloadid = id;
         }
 
         public Fragment getRegisteredFragment(int position) {
@@ -206,7 +163,7 @@ public class ContentContainerFragment extends Fragment {
         @Override
         public Fragment getItem(int position) {
             if (registeredFragments.get(position) != null) return registeredFragments.get(position);
-            return ContentDetailFragment.newInstance(mDownloadId, position);
+            return ContentDetailFragment.newInstance(downloadid, position);
         }
 
         @Override

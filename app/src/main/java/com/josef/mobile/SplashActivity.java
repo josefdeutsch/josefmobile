@@ -3,8 +3,10 @@ package com.josef.mobile;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.test.espresso.IdlingResource;
 import androidx.work.Constraints;
@@ -20,29 +22,39 @@ import android.annotation.TargetApi;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
+import android.widget.Toast;
 
 import com.josef.josefmobile.R;
 import com.josef.mobile.free.ui.ContentActivity;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
+import com.josef.mobile.net.CallBackWorker;
 import com.josef.mobile.net.CallBackWorkerSplashActivity;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.josef.mobile.Config.KEY_TASK_OUTPUT;
 import static com.josef.mobile.Config.RECIPE_INDEX;
 import static com.josef.mobile.Config.SHAREDPREFERENCES_EDITOR;
 import static com.josef.mobile.Config.VIEWPAGER_AMOUNT;
+import static com.josef.mobile.Config.WORKREQUEST_AMOUNT;
+import static com.josef.mobile.Config.WORKREQUEST_LIST;
 import static com.josef.mobile.Config.WORKREQUET_MAINACTIVITY;
+import static com.josef.mobile.Config.WORKREQUET_SPLASHACTIVITY;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -55,39 +67,67 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         setTransparentStatusBarLollipop();
-        mData = buildData();
-        mConstraints = buildConstraints();
-        mDownload = buildOneTimeWorkRequest();
 
-        executeWorkRequest();
         supplySharedPreferences();
         onUpdateAppWidgetProvider();
-    }
 
-    public void performMainActivity(View view) {
-        //Intent intent = new Intent(this, MainActivity.class);
-        //startActivity(intent);
-        EspressoIdlingResource.increment();
+
+        mData = buildData();
+        mConstraints = buildConstraints();
+        mDownload = buildOneTimeWorkRequest(CallBackWorker.class,
+                mConstraints, mData);
+
+        executeWorkRequest();
+
         WorkManager.getInstance(this).getWorkInfoByIdLiveData(UUID.fromString(String.valueOf(mDownload.getId())))
                 .observe(this, new Observer<WorkInfo>() {
                     @Override
-                    public void onChanged(@Nullable WorkInfo workInfo) {
+                    public void onChanged(@Nullable final WorkInfo workInfo) {
                         if (workInfo != null) {
                             if (workInfo.getState().isFinished()) {
-                                Intent intent = new Intent(getApplicationContext(), ContentActivity.class);
-                                String amount = getAmountofViewpager(workInfo);
-                                intent.putExtra(VIEWPAGER_AMOUNT,Integer.parseInt(amount));
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
-                                    EspressoIdlingResource.decrement();
-                                }
-                                getApplicationContext().startActivity(intent);
+
+                                Handler handler = new Handler(Looper.getMainLooper());
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        String amount = getAmountofViewpager(workInfo);
+                                        List<OneTimeWorkRequest> list = new ArrayList<>();
+                                        ArrayList<String> downloadId = new ArrayList<>();
+                                        for (int index = 1; index <= Integer.parseInt(amount); index++) {
+                                            Data data = buildData(index);
+                                            Constraints constraints = buildConstraints();
+                                            OneTimeWorkRequest request = buildOneTimeWorkRequest(CallBackWorker.class,
+                                                    constraints, data);
+                                            list.add(request);
+                                            downloadId.add(request.getStringId());
+                                        }
+                                        WorkManager.getInstance(SplashActivity.this).beginUniqueWork(WORKREQUET_MAINACTIVITY,
+                                                ExistingWorkPolicy.KEEP, list).enqueue();
+
+                                        Intent intent = new Intent(getApplicationContext(), ContentActivity.class);
+
+                                        intent.putExtra(VIEWPAGER_AMOUNT, Integer.parseInt(amount));
+                                        intent.putStringArrayListExtra(WORKREQUEST_LIST, downloadId);
+                                        intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+                                        getApplicationContext().startActivity(intent);
+                                    }
+                                });
                             }
                         }
                     }
                 });
-     //  Intent intent = new Intent(this,MainA)
     }
+
+    private AlertDialog mDialog;
+
+    private void setupProgressBar() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
+        builder.setView(R.layout.progressdialog);
+        mDialog = builder.create();
+        mDialog.show();
+    }
+
     private void supplySharedPreferences() {
         SharedPreferences.Editor editor = this.getSharedPreferences(SHAREDPREFERENCES_EDITOR, MODE_PRIVATE).edit();
         editor.remove(RECIPE_INDEX);
@@ -113,6 +153,7 @@ public class SplashActivity extends AppCompatActivity {
             window.setStatusBarColor(ContextCompat.getColor(this, R.color.transparent_statusbar));
         }
     }
+
     @TargetApi(Build.VERSION_CODES.M)
     private void setTransparentStatusBarMarshmallow() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -123,20 +164,24 @@ public class SplashActivity extends AppCompatActivity {
             this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         }
     }
+
     private void executeWorkRequest() {
-        WorkManager.getInstance(getApplicationContext()).beginUniqueWork(WORKREQUET_MAINACTIVITY,
+
+        WorkManager.getInstance(getApplicationContext()).beginUniqueWork(WORKREQUET_SPLASHACTIVITY,
                 ExistingWorkPolicy.KEEP, mDownload).enqueue().getState().observe(this, new Observer<Operation.State>() {
             @Override
             public void onChanged(Operation.State state) {
-                //Toast.makeText(getApplicationContext(), state.toString(),
-                //     Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), state.toString(),
+                        Toast.LENGTH_LONG).show();
             }
         });
+
     }
-    private OneTimeWorkRequest buildOneTimeWorkRequest() {
-        return new OneTimeWorkRequest.Builder(CallBackWorkerSplashActivity.class)
-                .setConstraints(mConstraints)
-                .setInputData(mData)
+
+    private OneTimeWorkRequest buildOneTimeWorkRequest(final Class clazz, final Constraints constraints, final Data data) {
+        return new OneTimeWorkRequest.Builder(clazz)
+                .setConstraints(constraints)
+                .setInputData(data)
                 .build();
     }
 
@@ -149,6 +194,13 @@ public class SplashActivity extends AppCompatActivity {
 
     private Data buildData() {
         return new Data.Builder()
+                .build();
+    }
+
+    @NotNull
+    private Data buildData(int index) {
+        return new Data.Builder()
+                .putInt(WORKREQUEST_AMOUNT, index)
                 .build();
     }
 

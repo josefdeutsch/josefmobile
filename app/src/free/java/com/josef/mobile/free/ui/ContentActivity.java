@@ -51,25 +51,28 @@ import static com.josef.mobile.Config.JOSEPHOPENINGSTATEMENT;
 import static com.josef.mobile.Config.SCROLLVIEWYPOSITION;
 import static com.josef.mobile.Config.VIEWPAGERDETAILKEY;
 import static com.josef.mobile.Config.VIEWPAGER_AMOUNT;
+import static com.josef.mobile.Config.WORKREQUEST_LIST;
 
 public class ContentActivity extends AppCompatActivity {
 
     private BottomAppBar bar;
     private int amount;
+    ArrayList<String> downloadId;
     private int scrollY;
-
+    private static final String TAG = "ContentActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content);
 
         if (savedInstanceState == null) {
+            downloadId = getIntent().getStringArrayListExtra(WORKREQUEST_LIST);
             amount = getIntent().getIntExtra(VIEWPAGER_AMOUNT, 0);
-
             FragmentTransaction fm = getSupportFragmentManager().beginTransaction();
-            for (int index = 1; index <= amount; index++) {
+            for (int index = 0; index <= amount-1; index++) {
+                Log.d(TAG, "onCreate: "+downloadId.get(index));
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.container, ContentContainerFragment.newInstance(index))
+                        .add(R.id.container, ContentContainerFragment.newInstance(downloadId.get(index)))
                         .commit();
             }
             fm.commit();

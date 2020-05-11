@@ -17,10 +17,11 @@ public class Config {
 
     public static final String VIEWPAGER_AMOUNT = "viewpager_amount";
     public static final String WORKREQUET_MAINACTIVITY = "mainactivity_request";
+    public static final String WORKREQUET_SPLASHACTIVITY = "splashactivity_request";
     public static final String WORKREQUET_MAINACTIVITY_AMOUNT = "mainactivity_request_amount";
     public static final String WORKERDOWNLOADID = "download_id";
     public static final String APPPREFERENCE_DEFAULTVALUE = "appprefrence_defaultvalue";
-
+    public static final String WORKREQUEST_LIST = "workrequest_list";
     public static final String ONVIEWPAGERINITLISTENER = "viewpagerinitlistener";
 
 

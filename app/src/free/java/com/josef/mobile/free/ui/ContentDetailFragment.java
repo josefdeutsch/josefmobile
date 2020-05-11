@@ -2,6 +2,7 @@ package com.josef.mobile.free.ui;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +50,7 @@ import static com.josef.mobile.Config.STATE_RESUME_POSITION_MIN_FRAME;
 import static com.josef.mobile.Config.STATE_RESUME_WINDOW;
 import static com.josef.mobile.Config.VIEWPAGERDETAILKEY;
 import static com.josef.mobile.Config.WORKERDOWNLOADID;
+import static com.josef.mobile.ErrorActivity.TAG;
 
 public class ContentDetailFragment extends Fragment {
 
@@ -112,7 +114,7 @@ public class ContentDetailFragment extends Fragment {
         setupPlayButton(mDownloadId, index);
         setupToggleDatabase(mDownloadId, index);
         setupToggleFavorite(mDownloadId, index);
-        //   videoPlayer.matchesExoPlayerFullScreenConfig();
+
         return layoutInflater;
     }
 
