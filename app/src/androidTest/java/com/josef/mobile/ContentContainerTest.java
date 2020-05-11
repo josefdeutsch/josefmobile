@@ -198,7 +198,7 @@ public class ContentContainerTest {
     }
 
     private static Matcher<? super View> isShowingPage(int index) {
-        return ViewMatchers.hasDescendant(ViewMatchers.withText("Skulpture"+index));
+        return ViewMatchers.hasDescendant(ViewMatchers.withText("Sculpture: "+index));
     }
 
 }

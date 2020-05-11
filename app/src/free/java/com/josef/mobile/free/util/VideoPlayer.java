@@ -9,13 +9,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.ext.ima.ImaAdsLoader;
+import com.google.android.exoplayer2.ext.ima.ImaAdsMediaSource;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.extractor.ExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
@@ -33,6 +37,7 @@ import com.google.android.exoplayer2.util.Util;
 import com.josef.josefmobile.R;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,6 +53,7 @@ public class VideoPlayer {
     private long mResumePosition;
     private int mResumeWindow;
     private boolean mExoPlayerFullscreen = false;
+    private ImaAdsLoader imaAdsLoader;
 
     private Target target = new Target() {
         @Override
@@ -107,6 +113,7 @@ public class VideoPlayer {
         this.mExoPlayerView = mExoPlayerView;
         this.mResumePosition = mResumePosition;
         this.mResumeWindow = mResumeWindow;
+        imaAdsLoader = new ImaAdsLoader(mContext, getAdTagUri());
     }
 
     @Nullable
@@ -187,10 +194,16 @@ public class VideoPlayer {
 
     private void supplyExoPlayer(String videoURL) {
 
-        MediaSource videoSource = buildMediaSource(videoURL);
-        mExoPlayerView.getPlayer().prepare(videoSource);
-        mExoPlayerView.getPlayer().setPlayWhenReady(true);
+        DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(mContext, Util.getUserAgent(mContext, "ExoPlayer"));
+        final ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
+        MediaSource mediaSource = new ExtractorMediaSource(Uri.parse(videoURL), dataSourceFactory, extractorsFactory, null, null);
 
+        MediaSource mediaSourceWithAds = new ImaAdsMediaSource(
+                mediaSource, dataSourceFactory,
+                imaAdsLoader,
+                mExoPlayerView.getOverlayFrameLayout());
+        mExoPlayerView.getPlayer().prepare(mediaSourceWithAds);
+        mExoPlayerView.getPlayer().setPlayWhenReady(true);
     }
 
     private MediaSource buildMediaSource(String videoURL) {
@@ -210,7 +223,7 @@ public class VideoPlayer {
 
     public final void withdrawExoPlayer() {
 
-        if (mExoPlayerView != null && mExoPlayerView.getPlayer()!=null) {
+        if (mExoPlayerView != null && mExoPlayerView.getPlayer() != null) {
             mExoPlayerView.getPlayer().setPlayWhenReady(false);
             if (mExoPlayerView != null && mExoPlayerView.getPlayer() != null) {
                 mResumeWindow = mExoPlayerView.getPlayer().getCurrentWindowIndex();

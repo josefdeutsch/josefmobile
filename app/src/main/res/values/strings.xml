@@ -2,29 +2,9 @@
     <string name="app_name">josefmobile</string>
     <string name="action_settings">settings</string>
     <string name="action_mail">Mail</string>
-    <string name="action_delete">Delete</string>
-    <string name="action_archieve">Archieve</string>
     <string name="action_archive">Archive</string>
-    <string name="action_share">Share</string>
-    <string name="action_upload">Upload</string>
-    <string name="action_copy">Copy</string>
-    <string name="action_print">Print</string>
-    <string name="bottom_sheet_name">name</string>
-    <string name="bottom_sheet_email">email</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="first">first</string>
-    <string name="last">last</string>
-    <string name="hello_world">hello</string>
     <string name="question">more info..?</string>
     <string name="OK">OK</string>
-    <string name="power">power</string>
-    <string name="volume">volume</string>
-    <string name="scroll">scroll</string>
-    <string name="swipe">swipe</string>
-    <string name="swipe_down">down</string>
-    <string name="swipe_up">up</string>
-    <string name="swipe_right">right</string>
-    <string name="swipe_left">left</string>
 </resources>

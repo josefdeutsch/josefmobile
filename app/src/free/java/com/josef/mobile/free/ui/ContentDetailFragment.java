@@ -96,10 +96,12 @@ public class ContentDetailFragment extends Fragment {
         setupUi();
 
         videoPlayer = new VideoPlayer(getActivity(), layoutInflater, mExoPlayerView, mResumePosition, mResumeWindow);
-        mArticle.setText("Skulpture" + index);
+        mArticle.setText("Sculpture: " + index);
 
         setupExoPlayer(mDownloadId, index);
+
         setupSubHeader(mDownloadId, index);
+
         setupPlayButton(mDownloadId, index);
         setupToggleDatabase(mDownloadId, index);
         setupToggleFavorite(mDownloadId, index);
@@ -361,6 +363,7 @@ public class ContentDetailFragment extends Fragment {
                                         JSONObject container = input.getJSONObject(index);
                                         JSONObject metadata = (JSONObject) container.get("metadata");
                                         String name = (String) metadata.get("name");
+                                        name = removeLastChar(name);
                                         mArticleByLine.setText(name);
 
                                     } catch (JSONException e) {
@@ -390,5 +393,8 @@ public class ContentDetailFragment extends Fragment {
             mIdlingResource = EspressoIdlingResource.getIdlingResource();
         }
         return mIdlingResource;
+    }
+    private static String removeLastChar(String str) {
+        return str.substring(0, str.length() - 22);
     }
 }

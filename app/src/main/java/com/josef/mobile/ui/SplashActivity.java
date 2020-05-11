@@ -152,8 +152,8 @@ public class SplashActivity extends AppCompatActivity {
                 ExistingWorkPolicy.KEEP, mDownload).enqueue().getState().observe(this, new Observer<Operation.State>() {
             @Override
             public void onChanged(Operation.State state) {
-                Toast.makeText(getApplicationContext(), state.toString(),
-                        Toast.LENGTH_LONG).show();
+              //  Toast.makeText(getApplicationContext(), state.toString(),
+                //        Toast.LENGTH_LONG).show();
             }
         });
 
