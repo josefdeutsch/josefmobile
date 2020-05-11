@@ -1,12 +1,10 @@
-package com.josef.mobile;
+package com.josef.mobile.ui;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.test.espresso.IdlingResource;
 import androidx.work.Constraints;
@@ -17,12 +15,10 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.Operation;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
-
 import android.annotation.TargetApi;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -33,28 +29,23 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
-
 import com.josef.josefmobile.R;
 import com.josef.mobile.free.ui.ContentActivity;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
-import com.josef.mobile.net.CallBackWorker;
-import com.josef.mobile.net.CallBackWorkerSplashActivity;
-
+import com.josef.mobile.util.CallBackWorker;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-import static com.josef.mobile.Config.KEY_TASK_OUTPUT;
-import static com.josef.mobile.Config.RECIPE_INDEX;
-import static com.josef.mobile.Config.SHAREDPREFERENCES_EDITOR;
-import static com.josef.mobile.Config.VIEWPAGER_AMOUNT;
-import static com.josef.mobile.Config.WORKREQUEST_AMOUNT;
-import static com.josef.mobile.Config.WORKREQUEST_LIST;
-import static com.josef.mobile.Config.WORKREQUET_MAINACTIVITY;
-import static com.josef.mobile.Config.WORKREQUET_SPLASHACTIVITY;
+import static com.josef.mobile.util.Config.WORKREQUEST_KEYTAST_OUTPUT;
+import static com.josef.mobile.util.Config.SHAREDPREFERENCES_LOCK_INDEX;
+import static com.josef.mobile.util.Config.SHAREDPREFERENCES_EDITOR;
+import static com.josef.mobile.util.Config.VIEWPAGER_AMOUNT;
+import static com.josef.mobile.util.Config.WORKREQUEST_AMOUNT;
+import static com.josef.mobile.util.Config.WORKREQUEST_LIST;
+import static com.josef.mobile.util.Config.WORKREQUET_CONTENTACTIVITY;
+import static com.josef.mobile.util.Config.WORKREQUET_SPLASHACTIVITY;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -101,7 +92,7 @@ public class SplashActivity extends AppCompatActivity {
                                             list.add(request);
                                             downloadId.add(request.getStringId());
                                         }
-                                        WorkManager.getInstance(SplashActivity.this).beginUniqueWork(WORKREQUET_MAINACTIVITY,
+                                        WorkManager.getInstance(SplashActivity.this).beginUniqueWork(WORKREQUET_CONTENTACTIVITY,
                                                 ExistingWorkPolicy.KEEP, list).enqueue();
 
                                         Intent intent = new Intent(getApplicationContext(), ContentActivity.class);
@@ -118,20 +109,10 @@ public class SplashActivity extends AppCompatActivity {
                 });
     }
 
-    private AlertDialog mDialog;
-
-    private void setupProgressBar() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setCancelable(false);
-        builder.setView(R.layout.progressdialog);
-        mDialog = builder.create();
-        mDialog.show();
-    }
-
     private void supplySharedPreferences() {
         SharedPreferences.Editor editor = this.getSharedPreferences(SHAREDPREFERENCES_EDITOR, MODE_PRIVATE).edit();
-        editor.remove(RECIPE_INDEX);
-        editor.putInt(RECIPE_INDEX, 1);
+        editor.remove(SHAREDPREFERENCES_LOCK_INDEX);
+        editor.putInt(SHAREDPREFERENCES_LOCK_INDEX, 1);
         editor.apply();
     }
 
@@ -207,7 +188,7 @@ public class SplashActivity extends AppCompatActivity {
     @Nullable
     private String getAmountofViewpager(@NotNull WorkInfo workInfo) {
         Data data = workInfo.getOutputData();
-        String output = data.getString(KEY_TASK_OUTPUT);
+        String output = data.getString(WORKREQUEST_KEYTAST_OUTPUT);
         return output;
     }
 

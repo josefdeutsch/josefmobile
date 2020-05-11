@@ -1,4 +1,4 @@
-package com.josef.mobile.prov;
+package com.josef.mobile.util;
 
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import static com.josef.mobile.prov.AppWidgetProvider.EXTRA_ITEM_POSITION;
+import static com.josef.mobile.util.AppWidgetProvider.EXTRA_ITEM_POSITION;
 
 public class WidgetService extends RemoteViewsService {
 
@@ -39,8 +39,6 @@ public class WidgetService extends RemoteViewsService {
         private int recipeIndex;
         private int appWidgetId;
 
-        // List<Ingredient> recipes;
-
         ExampleWidgetItemFactory(Context context, Intent intent) {
             this.context = context;
             this.recipeIndex = intent.getIntExtra(AppWidgetManager.EXTRA_CUSTOM_EXTRAS,
@@ -55,26 +53,24 @@ public class WidgetService extends RemoteViewsService {
 
         @Override
         public void onDataSetChanged() {
-            if (hasInternet(context)) {
-                executeRetrofitServiceConnection();
-            }
+
         }
 
         @Override
         public void onDestroy() {
-            //   recipes.clear();
         }
 
         @Override
         public int getCount() {
-            //   if (recipes == null) recipes = new ArrayList<>(1);
-            //   return recipes.size();
             return 3;
         }
 
         RemoteViews views;
         @Override
         public RemoteViews getViewAt(int position) {
+
+            //query design to display new events on my server if applicable..
+
             views = new RemoteViews(context.getPackageName(), R.layout.widget_item);
             URL url = null;
             try {
@@ -89,40 +85,14 @@ public class WidgetService extends RemoteViewsService {
                 e.printStackTrace();
             }
             views.setImageViewBitmap(R.id.imageButtonViewWidget,bmp);
-            //String txt2 = "https://www.example.com";
-            //views.setTextViewText(R.id.example_widget_item_text, txt2);
 
             Intent fillIntent = new Intent();
             fillIntent.putExtra(EXTRA_ITEM_POSITION, position);
             views.setOnClickFillInIntent(R.id.imageButtonViewWidget, fillIntent);
 
-            // views.setImageViewBitmap(R.id.imageButtonViewWidget,BitmapFactory.decodeResource
-            // (context.getResources(), R.drawable.question_mark));
             return views;
         }
 
-        private Bitmap mBitmap;
-        private static final String TAG = "ExampleWidgetItemFactor";
-        Target target = new Target() {
-            @Override
-            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                  views.setImageViewBitmap(R.id.imageButtonViewWidget,bitmap);
-            }
-
-            @Override
-            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-                Log.d(TAG, "onBitmapFailed: ");
-            }
-
-            @Override
-            public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-            }
-        };
-
-        private void postThumbnailIntoExoplayer(String png) {
-            Picasso.get().load(png).into(target);
-        }
 
         @Override
         public RemoteViews getLoadingView() {
@@ -144,16 +114,6 @@ public class WidgetService extends RemoteViewsService {
             return true;
         }
 
-        private void executeRetrofitServiceConnection() {
-            /**     AsyncDownloadWidget asyncDownloadWidget = new AsyncDownloadWidget(context, recipeIndex);
-             try {
-             recipes = asyncDownloadWidget.execute().get();
-             } catch (ExecutionException e) {
-             e.printStackTrace();
-             } catch (InterruptedException e) {
-             e.printStackTrace();
-             }**/
-        }
 
         public boolean hasInternet(Context context) {
             ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

@@ -1,4 +1,4 @@
-<com.josef.mobile.components.MaxWidthLinearLayout android:layout_width="match_parent"
+<com.josef.mobile.util.MaxWidthLinearLayout android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
     android:elevation="2dp"
@@ -44,4 +44,4 @@
                 Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse"
         android:textSize="22dp" />
 
-</com.josef.mobile.components.MaxWidthLinearLayout>
+</com.josef.mobile.util.MaxWidthLinearLayout>

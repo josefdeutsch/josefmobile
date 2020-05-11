@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.josef.mobile.access;
+package com.josef.mobile.util;
 
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.GestureDescription;
@@ -124,12 +124,25 @@ public class GlobalActionBarService extends AccessibilityService {
             @Override
             public void onClick(View view) {
 
+                DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+
+
                 int x = 1000;
                 int y = 1000;
+
+             //   108;
+             /**   double swipe = (displayMetrics.widthPixels*Math.);
+                Log.d(TAG, "onClick: "+swipe);
+                swipe = swipe*10;
+                Log.d(TAG, "onClick: "+swipe);
+
+                double sum = displayMetrics.widthPixels*2;
+                Log.d(TAG, "onClick: "+sum);**/
 
                 Path swipePath = new Path();
                 swipePath.moveTo(x, y);
                 swipePath.lineTo(1900, y);
+
                 GestureDescription.Builder gestureBuilder = new GestureDescription.Builder();
                 gestureBuilder.addStroke(new GestureDescription.StrokeDescription(swipePath, 0, 500));
                 dispatchGesture(gestureBuilder.build(), null, null);

@@ -1,4 +1,4 @@
-package com.josef.mobile.free;
+package com.josef.mobile.free.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -16,11 +16,9 @@ import android.widget.TextView;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.josef.josefmobile.R;
-import com.josef.mobile.free.ui.ContentActivity;
 
 public class ArchiveActivity extends AppCompatActivity {
 
-    private static final String TAG = "PresenterActivity";
     BottomAppBar bar;
 
     @Override
@@ -32,11 +30,9 @@ public class ArchiveActivity extends AppCompatActivity {
         bar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Handle the navigation click by showing a BottomDrawer etc.
             }
         });
         bar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
-        //restart activity?
 
         final NestedScrollView scrollView = findViewById(R.id.nested_scrollview);
         scrollView.getViewTreeObserver()
@@ -49,14 +45,13 @@ public class ArchiveActivity extends AppCompatActivity {
                                 <= (scrollView.getHeight() + scrollView.getScrollY())) {
                             bar.performHide();
                         } else {
-                            //scroll view is not at bottom
                         }
                     }
                 });
 
         FragmentTransaction fm = getSupportFragmentManager().beginTransaction();
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.archieve_container, ArchiveFragment.newInstance("0", "0"))
+                .add(R.id.archieve_container, ArchiveFragment.newInstance("", ""))
                 .commit();
         fm.commit();
     }
@@ -68,7 +63,6 @@ public class ArchiveActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }

@@ -1,7 +1,6 @@
 package com.josef.mobile.free.ui;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,44 +12,23 @@ import androidx.annotation.VisibleForTesting;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.lifecycle.Observer;
 import androidx.test.espresso.IdlingResource;
 import androidx.viewpager.widget.ViewPager;
-import androidx.work.Constraints;
-import androidx.work.Data;
-import androidx.work.ExistingWorkPolicy;
-import androidx.work.NetworkType;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.Operation;
-import androidx.work.WorkManager;
 
 import com.josef.josefmobile.R;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
-import com.josef.mobile.net.CallBackWorker;
 
-import org.jetbrains.annotations.NotNull;
-
-import static com.josef.mobile.Config.VIEWPAGERDETAILKEY;
-import static com.josef.mobile.Config.VIEWPAGERMAINKEY;
-import static com.josef.mobile.Config.WORKREQUEST_AMOUNT;
-import static com.josef.mobile.Config.WORKREQUEST_VIEWPAGER;
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * to handle interaction events.
- * Use the {@link ContentContainerFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import static com.josef.mobile.util.Config.VIEWPAGERDETAILKEY;
+import static com.josef.mobile.util.Config.WORKREQUEST_DOWNLOADID;
 
 public class ContentContainerFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
     private String which;
-    ViewPager viewPager;
+    private ViewPager viewPager;
     private int mPosition;
-    View layoutInflater;
-    ContentDetailFragment mHomeFragment;
+    private View layoutInflater;
+    private ContentDetailFragment mHomeFragment;
 
     public ContentContainerFragment() {
 
@@ -60,7 +38,7 @@ public class ContentContainerFragment extends Fragment {
     public static ContentContainerFragment newInstance(String which) {
         ContentContainerFragment fragment = new ContentContainerFragment();
         Bundle args = new Bundle();
-        args.putString(VIEWPAGERMAINKEY, which);
+        args.putString(WORKREQUEST_DOWNLOADID, which);
         fragment.setArguments(args);
         return fragment;
     }
@@ -69,7 +47,7 @@ public class ContentContainerFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            which = getArguments().getString(VIEWPAGERMAINKEY);
+            which = getArguments().getString(WORKREQUEST_DOWNLOADID);
         }
         if (savedInstanceState != null)
             mPosition = savedInstanceState.getInt(VIEWPAGERDETAILKEY, 0);

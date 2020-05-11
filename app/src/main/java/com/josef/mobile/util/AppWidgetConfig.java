@@ -1,4 +1,4 @@
-package com.josef.mobile.prov;
+package com.josef.mobile.util;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -14,15 +14,15 @@ import android.widget.RemoteViews;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import com.josef.josefmobile.R;
-import com.josef.mobile.SplashActivity;
+import com.josef.mobile.ui.SplashActivity;
 
 import org.jetbrains.annotations.NotNull;
 
-import static com.josef.mobile.Config.KEY_BUTTON_TEXT;
-import static com.josef.mobile.Config.RECIPE_INDEX;
-import static com.josef.mobile.Config.SHAREDPREFERENCES_EDITOR;
-import static com.josef.mobile.Config.SHOPPINGLIST_TAG;
-import static com.josef.mobile.prov.AppWidgetProvider.ACTION_TOAST;
+import static com.josef.mobile.util.Config.SHAREDPREFERENCES_KEYBUTTON_TEXT;
+import static com.josef.mobile.util.Config.SHAREDPREFERENCES_LOCK_INDEX;
+import static com.josef.mobile.util.Config.SHAREDPREFERENCES_EDITOR;
+import static com.josef.mobile.util.Config.SHAREDPREFERENCES_KEYTAG;
+import static com.josef.mobile.util.AppWidgetProvider.ACTION_TOAST;
 
 public class AppWidgetConfig extends AppCompatActivity {
 
@@ -67,7 +67,7 @@ public class AppWidgetConfig extends AppCompatActivity {
 
     private boolean isRepositoryEmpty() {
         SharedPreferences prefs = getApplicationContext().getSharedPreferences(SHAREDPREFERENCES_EDITOR, Context.MODE_PRIVATE);
-        if (!prefs.contains(RECIPE_INDEX)) return true;
+        if (!prefs.contains(SHAREDPREFERENCES_LOCK_INDEX)) return true;
         return false;
     }
 
@@ -100,7 +100,7 @@ public class AppWidgetConfig extends AppCompatActivity {
     private void supplyKeyButtonSharedPreferences(String buttonText) {
         SharedPreferences prefs = getSharedPreferences(SHAREDPREFERENCES_EDITOR, MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(KEY_BUTTON_TEXT + appWidgetId, buttonText);
+        editor.putString(SHAREDPREFERENCES_KEYBUTTON_TEXT + appWidgetId, buttonText);
         editor.apply();
     }
 
@@ -150,8 +150,8 @@ public class AppWidgetConfig extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         SharedPreferences.Editor editor = getSharedPreferences(SHAREDPREFERENCES_EDITOR, MODE_PRIVATE).edit();
-        editor.remove(SHOPPINGLIST_TAG);
-        editor.putBoolean(SHOPPINGLIST_TAG, true);
+        editor.remove(SHAREDPREFERENCES_KEYTAG);
+        editor.putBoolean(SHAREDPREFERENCES_KEYTAG, true);
         editor.apply();
     }
 

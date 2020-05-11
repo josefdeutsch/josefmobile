@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <com.josef.mobile.components.MaxWidthLinearLayout
+        <com.josef.mobile.util.MaxWidthLinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -47,7 +47,7 @@
             </LinearLayout>
 
 
-        </com.josef.mobile.components.MaxWidthLinearLayout>
+        </com.josef.mobile.util.MaxWidthLinearLayout>
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

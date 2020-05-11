@@ -1,4 +1,4 @@
-package com.josef.mobile.free;
+package com.josef.mobile.free.ui;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ShareCompat;
@@ -56,7 +56,7 @@ public class PresenterActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             FragmentTransaction fm = getSupportFragmentManager().beginTransaction();
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.presenter_container, PresenterFragment.newInstance("0","0"))
+                    .add(R.id.presenter_container, PresenterFragment.newInstance("",""))
                     .commit();
                 fm.commit();
         }
@@ -72,7 +72,7 @@ public class PresenterActivity extends AppCompatActivity {
                         String mimeType = "text/plain";
                         Intent shareIntent =   ShareCompat.IntentBuilder.from(PresenterActivity.this)
                                 .setType(mimeType)
-                                .setText("share your selection..")
+                                .setText("joseph3d@gmail.com")
                                 .getIntent();
                         if (shareIntent.resolveActivity(getPackageManager()) != null){
                             startActivity(shareIntent);

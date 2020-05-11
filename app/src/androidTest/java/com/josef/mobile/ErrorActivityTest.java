@@ -8,6 +8,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.josef.josefmobile.R;
+import com.josef.mobile.ui.ErrorActivity;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

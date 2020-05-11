@@ -58,7 +58,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.josef.mobile.components.MaxWidthLinearLayout
+            <com.josef.mobile.util.MaxWidthLinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -92,7 +92,7 @@
                         android:textColor="#8fff" />
                 </LinearLayout>
 
-            </com.josef.mobile.components.MaxWidthLinearLayout>
+            </com.josef.mobile.util.MaxWidthLinearLayout>
 
            <TextView
                android:layout_width="match_parent"

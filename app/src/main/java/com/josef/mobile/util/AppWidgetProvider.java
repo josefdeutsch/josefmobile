@@ -1,4 +1,4 @@
-package com.josef.mobile.prov;
+package com.josef.mobile.util;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -11,22 +11,22 @@ import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.josef.josefmobile.R;
-import com.josef.mobile.SplashActivity;
+import com.josef.mobile.ui.SplashActivity;
 
 import org.jetbrains.annotations.NotNull;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-import static com.josef.mobile.Config.KEY_BUTTON_TEXT;
-import static com.josef.mobile.Config.RECIPE_INDEX;
-import static com.josef.mobile.Config.SHAREDPREFERENCES_EDITOR;
+import static com.josef.mobile.util.Config.SHAREDPREFERENCES_KEYBUTTON_TEXT;
+import static com.josef.mobile.util.Config.SHAREDPREFERENCES_LOCK_INDEX;
+import static com.josef.mobile.util.Config.SHAREDPREFERENCES_EDITOR;
 
 
 public class AppWidgetProvider extends android.appwidget.AppWidgetProvider {
+
     public static final String ACTION_TOAST = "actionToast";
     public static final String EXTRA_ITEM_POSITION = "extraItemPosition";
+
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         for (int appWidgetId : appWidgetIds) {
@@ -34,9 +34,9 @@ public class AppWidgetProvider extends android.appwidget.AppWidgetProvider {
 
             SharedPreferences prefs = context.getSharedPreferences(SHAREDPREFERENCES_EDITOR, Context.MODE_PRIVATE);
 
-            String buttonText = prefs.getString(KEY_BUTTON_TEXT + appWidgetId, "press me!");
+            String buttonText = prefs.getString(SHAREDPREFERENCES_KEYBUTTON_TEXT + appWidgetId, "press me!");
 
-            int recipeIndex = prefs.getInt(RECIPE_INDEX,0);
+            int recipeIndex = prefs.getInt(SHAREDPREFERENCES_LOCK_INDEX,0);
 
             Intent serviceIntent = getServiceIntent(context, recipeIndex,appWidgetId);
 
@@ -49,7 +49,6 @@ public class AppWidgetProvider extends android.appwidget.AppWidgetProvider {
             appWidgetManager.updateAppWidget(appWidgetId, views);
         }
     }
-    public static final String EXTRA_CUSTOM_EXTRAS2 = "custom_extra_2";
 
     @NotNull
     private Intent getServiceIntent(Context context, int recipeIndex, int appWidgetIndex) {
@@ -106,23 +105,21 @@ public class AppWidgetProvider extends android.appwidget.AppWidgetProvider {
 
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
-        Toast.makeText(context, "onDeleted", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onEnabled(Context context) {
-        Toast.makeText(context, "onEnabled", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onDisabled(Context context) {
-        Toast.makeText(context, "onDisabled", Toast.LENGTH_SHORT).show();
     }
+
     @Override
     public void onReceive(Context context, Intent intent) {
         if (ACTION_TOAST.equals(intent.getAction())) {
             int clickedPosition = intent.getIntExtra(EXTRA_ITEM_POSITION, 0);
-            Toast.makeText(context, "Clicked position: " + clickedPosition, Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "clicked position: " + clickedPosition, Toast.LENGTH_SHORT).show();
             String url = "http://www.joseph3d.com";
             Intent intent1 = new Intent(Intent.ACTION_VIEW);
             intent1.setFlags(FLAG_ACTIVITY_NEW_TASK);

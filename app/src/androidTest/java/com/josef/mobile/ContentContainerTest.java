@@ -9,7 +9,6 @@ import androidx.test.espresso.ViewInteraction;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.josef.josefmobile.R;
-import com.josef.mobile.ViewPagerActions;
 import com.josef.mobile.free.ui.ContentContainerFragment;
 
 import org.hamcrest.Matcher;
@@ -19,7 +18,6 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static com.josef.mobile.Config.VIEWPAGERMAINKEY;
 import static com.josef.mobile.ViewPagerActions.scrollLeft;
 import static com.josef.mobile.ViewPagerActions.scrollRight;
 import static com.josef.mobile.ViewPagerActions.scrollToFirst;
@@ -29,12 +27,10 @@ import static com.josef.mobile.ViewPagerActions.scrollToLast;
 @RunWith(AndroidJUnit4.class)
 public class ContentContainerTest {
 
-    private IdlingResource mIdlingResource;
 
     @Test
     public void verfiy_viewpager_is_visible(){
         Bundle args = new Bundle();
-        args.putInt(VIEWPAGERMAINKEY,1);
         FragmentScenario<ContentContainerFragment> scenario = FragmentScenario.launchInContainer(ContentContainerFragment.class,args);
         scenario.onFragment(new FragmentScenario.FragmentAction<ContentContainerFragment>() {
             @Override
@@ -48,7 +44,6 @@ public class ContentContainerTest {
     @Test
     public void scrollRightThenLeft() {
         Bundle args = new Bundle();
-        args.putInt(VIEWPAGERMAINKEY,1);
         FragmentScenario<ContentContainerFragment> scenario = FragmentScenario.launchInContainer(ContentContainerFragment.class,args);
         scenario.onFragment(new FragmentScenario.FragmentAction<ContentContainerFragment>() {
             @Override
@@ -61,7 +56,6 @@ public class ContentContainerTest {
     @Test
     public void scrollRightThenLeft_smooth() {
         Bundle args = new Bundle();
-        args.putInt(VIEWPAGERMAINKEY,1);
         FragmentScenario<ContentContainerFragment> scenario = FragmentScenario.launchInContainer(ContentContainerFragment.class,args);
         scenario.onFragment(new FragmentScenario.FragmentAction<ContentContainerFragment>() {
             @Override
@@ -84,7 +78,6 @@ public class ContentContainerTest {
     @Test
     public void scrollToLastThenFirst() {
         Bundle args = new Bundle();
-        args.putInt(VIEWPAGERMAINKEY,1);
         FragmentScenario<ContentContainerFragment> scenario = FragmentScenario.launchInContainer(ContentContainerFragment.class,args);
         scenario.onFragment(new FragmentScenario.FragmentAction<ContentContainerFragment>() {
             @Override
@@ -98,7 +91,6 @@ public class ContentContainerTest {
     @Test
     public void scrollToLastThenFirst_smooth() {
         Bundle args = new Bundle();
-        args.putInt(VIEWPAGERMAINKEY,1);
         FragmentScenario<ContentContainerFragment> scenario = FragmentScenario.launchInContainer(ContentContainerFragment.class,args);
         scenario.onFragment(new FragmentScenario.FragmentAction<ContentContainerFragment>() {
             @Override
@@ -111,7 +103,6 @@ public class ContentContainerTest {
 
     private static void testScrollToLastThenFirst(boolean smoothScroll) {
         Bundle args = new Bundle();
-        args.putInt(VIEWPAGERMAINKEY,0);
         FragmentScenario<ContentContainerFragment> scenario = FragmentScenario.launchInContainer(ContentContainerFragment.class,args);
         scenario.onFragment(new FragmentScenario.FragmentAction<ContentContainerFragment>() {
             @Override

@@ -14,21 +14,13 @@
         android:usesCleartextTraffic="true">
 
         <activity android:name="com.josef.mobile.free.ui.ContentActivity"
-            android:parentActivityName="com.josef.mobile.SplashActivity"></activity>
-        <activity android:name="com.josef.mobile.free.DetailActivity"
-            android:parentActivityName="com.josef.mobile.HomeActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:parentActivityName="com.josef.mobile.free.ui.ContentActivity"></activity>
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name="com.josef.mobile.free.ui.PresenterActivity"
+            android:parentActivityName="com.josef.mobile.free.ui.ContentActivity"></activity>
 
-        <activity android:name="com.josef.mobile.free.PresenterActivity"
-            android:parentActivityName="com.josef.mobile.HomeActivity"></activity>
-
-        <activity android:name="com.josef.mobile.free.ArchiveActivity"
-            android:parentActivityName="com.josef.mobile.HomeActivity"></activity>
+        <activity android:name="com.josef.mobile.free.ui.ArchiveActivity"
+            android:parentActivityName="com.josef.mobile.free.ui.ContentActivity"></activity>
     </application>
 
 </manifest>

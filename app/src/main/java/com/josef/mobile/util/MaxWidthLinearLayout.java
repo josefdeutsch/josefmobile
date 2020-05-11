@@ -1,4 +1,4 @@
-package com.josef.mobile.components;
+package com.josef.mobile.util;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -8,11 +8,6 @@ import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
 import com.josef.josefmobile.R;
-
-
-/**
- * A simple {@link LinearLayout} subclass that has a maxWidth
- */
 
 public class MaxWidthLinearLayout extends LinearLayout {
     private static final int[] ATTRS = {

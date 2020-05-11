@@ -1,4 +1,4 @@
-package com.josef.mobile.free.ui;
+package com.josef.mobile.free.util;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -9,10 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -35,7 +33,6 @@ import com.google.android.exoplayer2.util.Util;
 import com.josef.josefmobile.R;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

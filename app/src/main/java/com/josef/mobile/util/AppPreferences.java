@@ -1,15 +1,13 @@
-package com.josef.mobile;
+package com.josef.mobile.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.josef.mobile.Config.SHAREMETADATA;
-import static com.josef.mobile.Config.SHAREURL;
+import static com.josef.mobile.util.Config.SHAREDPREFERENCES_URL_REQUEST;
 
 public class AppPreferences {
     private static SharedPreferences mPrefs;
@@ -17,7 +15,7 @@ public class AppPreferences {
 
     public static Set<String> getName(Context ctx) {
         mPrefs = PreferenceManager.getDefaultSharedPreferences(ctx);
-        return mPrefs.getStringSet(SHAREURL, null);
+        return mPrefs.getStringSet(SHAREDPREFERENCES_URL_REQUEST, null);
     }
 
     public static void setName(Context ctx, ArrayList<String> value) {
@@ -25,7 +23,7 @@ public class AppPreferences {
         mPrefsEditor = mPrefs.edit();
         Set<String> set = new HashSet<>();
         set.addAll(value);
-        mPrefsEditor.putStringSet(SHAREURL, set);
+        mPrefsEditor.putStringSet(SHAREDPREFERENCES_URL_REQUEST, set);
         mPrefsEditor.commit();
     }
 
@@ -33,7 +31,7 @@ public class AppPreferences {
         mPrefs = PreferenceManager.getDefaultSharedPreferences(ctx);
         mPrefsEditor = mPrefs.edit();
         Set<String> set = new HashSet<>();
-        mPrefsEditor.putStringSet(SHAREURL, set);
+        mPrefsEditor.putStringSet(SHAREDPREFERENCES_URL_REQUEST, set);
         mPrefsEditor.commit();
     }
 }

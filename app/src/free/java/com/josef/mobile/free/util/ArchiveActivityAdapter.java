@@ -1,4 +1,4 @@
-package com.josef.mobile.free.components;
+package com.josef.mobile.free.util;
 
 import android.content.Context;
 import android.graphics.Bitmap;

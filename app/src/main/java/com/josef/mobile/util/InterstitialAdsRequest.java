@@ -1,6 +1,4 @@
-package com.josef.mobile;
-
-import android.content.Context;
+package com.josef.mobile.util;
 
 public interface InterstitialAdsRequest {
 

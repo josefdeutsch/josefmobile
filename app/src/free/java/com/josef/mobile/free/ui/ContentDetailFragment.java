@@ -2,7 +2,6 @@ package com.josef.mobile.free.ui;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,32 +24,23 @@ import androidx.work.Data;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
-import com.google.android.exoplayer2.ext.ima.ImaAdsLoader;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.material.snackbar.Snackbar;
 import com.josef.josefmobile.R;
-import com.josef.mobile.Action;
-import com.josef.mobile.AppPreferences;
+import com.josef.mobile.free.util.VideoPlayer;
+import com.josef.mobile.util.AppPreferences;
 import com.josef.mobile.data.Favourite;
 import com.josef.mobile.data.FavouriteViewModel;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
-
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.UUID;
-
-import static com.josef.mobile.Config.JOSEPHOPENINGSTATEMENT;
-import static com.josef.mobile.Config.KEY_TASK_OUTPUT;
-import static com.josef.mobile.Config.STATE_RESUME_POSITION;
-import static com.josef.mobile.Config.STATE_RESUME_POSITION_MIN_FRAME;
-import static com.josef.mobile.Config.STATE_RESUME_WINDOW;
-import static com.josef.mobile.Config.VIEWPAGERDETAILKEY;
-import static com.josef.mobile.Config.WORKERDOWNLOADID;
-import static com.josef.mobile.ErrorActivity.TAG;
+import static com.josef.mobile.util.Config.WORKREQUEST_KEYTAST_OUTPUT;
+import static com.josef.mobile.util.Config.VIEWPAGERDETAILKEY;
+import static com.josef.mobile.util.Config.WORKREQUEST_DOWNLOADID;
 
 public class ContentDetailFragment extends Fragment {
 
@@ -66,11 +56,11 @@ public class ContentDetailFragment extends Fragment {
     private SimpleExoPlayerView mExoPlayerView;
     private int mResumeWindow;
     private long mResumePosition;
-    private long mResumePosition_min;
     public ImageButton mPlayButton;
-    private ImaAdsLoader imaAdsLoader;
     private Object lock;
 
+    public static final String STATE_RESUME_WINDOW = "com.josef.mobile.free.ui.ContentDetailFragment.resumeWindow";
+    public static final String STATE_RESUME_POSITION = "com.josef.mobile.free.ui.ContentDetailFragment.resumePosition";
 
     public ContentDetailFragment() {
     }
@@ -78,7 +68,7 @@ public class ContentDetailFragment extends Fragment {
     public static ContentDetailFragment newInstance(String which, int index) {
         ContentDetailFragment fragment = new ContentDetailFragment();
         Bundle args = new Bundle();
-        args.putString(WORKERDOWNLOADID, which);
+        args.putString(WORKREQUEST_DOWNLOADID, which);
         args.putInt(VIEWPAGERDETAILKEY, index);
         fragment.setArguments(args);
         return fragment;
@@ -88,13 +78,12 @@ public class ContentDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mDownloadId = getArguments().getString(WORKERDOWNLOADID);
+            mDownloadId = getArguments().getString(WORKREQUEST_DOWNLOADID);
             index = getArguments().getInt(VIEWPAGERDETAILKEY);
         }
         if (savedInstanceState != null) {
             mResumeWindow = savedInstanceState.getInt(STATE_RESUME_WINDOW);
             mResumePosition = savedInstanceState.getLong(STATE_RESUME_POSITION);
-            mResumePosition_min = savedInstanceState.getLong(STATE_RESUME_POSITION_MIN_FRAME);
         }
 
     }
@@ -123,7 +112,6 @@ public class ContentDetailFragment extends Fragment {
 
         outState.putInt(STATE_RESUME_WINDOW, mResumeWindow);
         outState.putLong(STATE_RESUME_POSITION, mResumePosition);
-        outState.putLong(STATE_RESUME_POSITION_MIN_FRAME, mResumePosition_min);
 
         super.onSaveInstanceState(outState);
     }
@@ -164,9 +152,6 @@ public class ContentDetailFragment extends Fragment {
         mPlayButton = layoutInflater.findViewById(R.id.exo_play);
     }
 
-    public void addActionToUI(Action action) {
-        action.performAction(mDownloadId, index);
-    }
 
     private void setupPlayButton(final String downloadId, final int index) {
         mPlayButton.setOnClickListener(new View.OnClickListener() {
@@ -325,7 +310,7 @@ public class ContentDetailFragment extends Fragment {
                     });
         }
     }
-
+    public static final String JOSEPHOPENINGSTATEMENT = "example text here :" + System.lineSeparator();
     public void addItemsToAppPreference(final String output, final int index) {
 
         try {
@@ -391,7 +376,7 @@ public class ContentDetailFragment extends Fragment {
     @Nullable
     private String getViewPagerContent(@NotNull WorkInfo workInfo) {
         Data data = workInfo.getOutputData();
-        String output = data.getString(KEY_TASK_OUTPUT);
+        String output = data.getString(WORKREQUEST_KEYTAST_OUTPUT);
         return output;
     }
 

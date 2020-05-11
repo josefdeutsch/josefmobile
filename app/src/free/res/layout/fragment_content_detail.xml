@@ -13,7 +13,7 @@
     card_view:cardUseCompatPadding="true">
 
 
-    <com.josef.mobile.components.MaxWidthLinearLayout
+    <com.josef.mobile.util.MaxWidthLinearLayout
         android:id="@+id/maxwidthlayout_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -49,7 +49,7 @@
                 android:textColor="#8fff" />
         </LinearLayout>
 
-    </com.josef.mobile.components.MaxWidthLinearLayout>
+    </com.josef.mobile.util.MaxWidthLinearLayout>
 
 
     <ToggleButton

@@ -4,16 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
@@ -21,45 +15,29 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ShareCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.test.espresso.IdlingResource;
-import androidx.viewpager.widget.ViewPager;
-
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.josef.josefmobile.R;
-import com.josef.mobile.AppPreferences;
-import com.josef.mobile.InterstitialAdsRequest;
-import com.josef.mobile.data.Favourite;
-import com.josef.mobile.data.FavouriteViewModel;
-import com.josef.mobile.free.ArchiveActivity;
-import com.josef.mobile.free.PresenterActivity;
+import com.josef.mobile.util.AppPreferences;
+import com.josef.mobile.util.InterstitialAdsRequest;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
-
 import java.util.ArrayList;
-import java.util.List;
-
-import static com.josef.mobile.Config.JOSEPHOPENINGSTATEMENT;
-import static com.josef.mobile.Config.SCROLLVIEWYPOSITION;
-import static com.josef.mobile.Config.VIEWPAGERDETAILKEY;
-import static com.josef.mobile.Config.VIEWPAGER_AMOUNT;
-import static com.josef.mobile.Config.WORKREQUEST_LIST;
+import static com.josef.mobile.util.Config.VIEWPAGER_AMOUNT;
+import static com.josef.mobile.util.Config.WORKREQUEST_LIST;
 
 public class ContentActivity extends AppCompatActivity {
 
     private BottomAppBar bar;
     private int amount;
-    ArrayList<String> downloadId;
-    private int scrollY;
-    private static final String TAG = "ContentActivity";
+    private ArrayList<String> downloadId;
+    private int mScrollY;
+    public static final String SCROLLVIEWYPOSITION = "com.josef.mobile.free.ui.ContentActivity.scroll_view_y_position";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,7 +48,6 @@ public class ContentActivity extends AppCompatActivity {
             amount = getIntent().getIntExtra(VIEWPAGER_AMOUNT, 0);
             FragmentTransaction fm = getSupportFragmentManager().beginTransaction();
             for (int index = 0; index <= amount-1; index++) {
-                Log.d(TAG, "onCreate: "+downloadId.get(index));
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.container, ContentContainerFragment.newInstance(downloadId.get(index)))
                         .commit();
@@ -78,7 +55,7 @@ public class ContentActivity extends AppCompatActivity {
             fm.commit();
         }
         if (savedInstanceState != null)
-            scrollY = savedInstanceState.getInt(SCROLLVIEWYPOSITION, 0);
+            mScrollY = savedInstanceState.getInt(SCROLLVIEWYPOSITION, 0);
         bar = (BottomAppBar) findViewById(R.id.bottom_app_bar);
         setSupportActionBar(bar);
         bar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
@@ -88,12 +65,12 @@ public class ContentActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(SCROLLVIEWYPOSITION, scrollY);
+        outState.putInt(SCROLLVIEWYPOSITION, mScrollY);
     }
 
     private void setupNestedScrollView() {
         final NestedScrollView scrollView = findViewById(R.id.nested_scrollview);
-        scrollView.smoothScrollTo(0,scrollY);
+        scrollView.smoothScrollTo(0, mScrollY);
         scrollView.getViewTreeObserver()
                 .addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
                     @Override
@@ -105,7 +82,7 @@ public class ContentActivity extends AppCompatActivity {
                             bar.performHide();
                         } else {
                         }
-                        scrollY= scrollView.getScrollY();
+                        mScrollY = scrollView.getScrollY();
                     }
                 });
         scrollView.setFillViewport(true);
@@ -225,6 +202,14 @@ public class ContentActivity extends AppCompatActivity {
                         ArrayList<String> metadata = new ArrayList<>(AppPreferences.getName(getApplicationContext()));
                         String data = metadata.toString();
                         String mimeType = "text/plain";
+                        Intent shareIntent = ShareCompat.IntentBuilder.from(ContentActivity.this)
+                                .setType(mimeType)
+                                .setText(data)
+                                .getIntent();
+
+                        if (shareIntent.resolveActivity(getPackageManager()) != null) {
+                            startActivity(shareIntent);
+                        }
 
                     }
                 }).setActionTextColor(getResources().getColor(android.R.color.holo_red_light));

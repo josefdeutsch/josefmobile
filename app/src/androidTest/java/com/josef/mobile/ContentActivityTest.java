@@ -6,16 +6,13 @@ import androidx.test.espresso.Espresso;
 import androidx.test.espresso.IdlingResource;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.josef.josefmobile.R;
-import com.josef.mobile.InterstitialAdsRequest;
-import com.josef.mobile.free.ArchiveActivity;
-import com.josef.mobile.free.PresenterActivity;
+import com.josef.mobile.free.ui.ArchiveActivity;
+import com.josef.mobile.free.ui.PresenterActivity;
 import com.josef.mobile.free.ui.ContentActivity;
+import com.josef.mobile.util.InterstitialAdsRequest;
 
-import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
-
 import static androidx.test.espresso.Espresso.onView;;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
