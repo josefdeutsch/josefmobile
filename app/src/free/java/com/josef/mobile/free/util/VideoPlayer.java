@@ -205,13 +205,7 @@ public class VideoPlayer {
         mExoPlayerView.getPlayer().prepare(mediaSourceWithAds);
         mExoPlayerView.getPlayer().setPlayWhenReady(true);
     }
-
-    private MediaSource buildMediaSource(String videoURL) {
-        DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(mContext, Util.getUserAgent(mContext, "ExoPlayer"));
-        final ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
-        return new ExtractorMediaSource(Uri.parse(videoURL), dataSourceFactory, extractorsFactory, null, null);
-    }
-
+    
     public void matchesExoPlayerFullScreenConfig() {
         if (mExoPlayerFullscreen) {
             ((ViewGroup) mExoPlayerView.getParent()).removeView(mExoPlayerView);
