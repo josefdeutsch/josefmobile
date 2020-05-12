@@ -104,7 +104,7 @@ public class ArchiveActivityAdapter extends RecyclerView.Adapter<ArchiveActivity
                             public void run() {
                                 compoundButton.setChecked(false);
                             }
-                        }, 100);
+                        }, 3000);
                     } else {
 
                     }

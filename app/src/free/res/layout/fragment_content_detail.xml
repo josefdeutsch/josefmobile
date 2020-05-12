@@ -32,7 +32,6 @@
                 style="?android:attr/textAppearanceLarge"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="HEADER"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 android:textColor="#fff"
                 android:textStyle="bold" />
@@ -42,7 +41,6 @@
                 style="?android:attr/textAppearanceMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="SUBHEADERS"
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                 android:textColor="#8fff" />
         </LinearLayout>
@@ -75,13 +73,12 @@
         android:text=""
         android:textOff=""
         android:textOn="" />
-
     <FrameLayout
         android:id="@+id/main_media_frame"
         android:layout_width="match_parent"
         android:layout_height="256dp"
         android:layout_below="@id/maxwidthlayout_container"
-        android:background="#000000">
+        android:background="@color/colorBlack">
 
         <com.google.android.exoplayer2.ui.SimpleExoPlayerView
             android:id="@+id/exoplayer"

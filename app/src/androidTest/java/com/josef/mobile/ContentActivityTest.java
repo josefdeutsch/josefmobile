@@ -7,10 +7,8 @@ import androidx.test.espresso.IdlingResource;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.josef.josefmobile.R;
 import com.josef.mobile.free.ui.ArchiveActivity;
-import com.josef.mobile.free.ui.PresenterActivity;
 import com.josef.mobile.free.ui.ContentActivity;
 import com.josef.mobile.util.InterstitialAdsRequest;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static androidx.test.espresso.Espresso.onView;;
@@ -79,47 +77,6 @@ public class ContentActivityTest {
         onView(withId(R.id.photo)).check(matches(withParent(withId(R.id.collapsing_toolbar))));
         onView(withId(R.id.photo)).check(matches(isDisplayed()));
     }
-
-    @Test
-    public void verify_if_menuItem_app_bar_info_is_clickable_and_performs_action(){
-        ActivityScenario<ContentActivity> scenario = ActivityScenario.launch(ContentActivity.class);
-        scenario.onActivity(new ActivityScenario.ActivityAction<ContentActivity>() {
-            @Override
-            public void perform(final ContentActivity activity) {
-                activity.loadIntersitialAds(new InterstitialAdsRequest() {
-                    @Override
-                    public void execute() {
-                        Intent intent = new Intent(activity.getApplicationContext(), PresenterActivity.class);
-                        activity.startActivity(intent);
-                    }
-                });
-            }
-        });
-        onView(withId(R.id.presenter_container)).check(matches(isDisplayed()));
-        Espresso.pressBack();
-        onView(withId(R.id.app_bar_info)).check(matches(isClickable()));
-        onView(withId(R.id.app_bar_info)).perform(click());
-    }
-
-    @Test
-    public void verify_if_menuItem_app_bar_performs_action_return_source(){
-        ActivityScenario<ContentActivity> scenario = ActivityScenario.launch(ContentActivity.class);
-        scenario.onActivity(new ActivityScenario.ActivityAction<ContentActivity>() {
-            @Override
-            public void perform(final ContentActivity activity) {
-                activity.loadIntersitialAds(new InterstitialAdsRequest() {
-                    @Override
-                    public void execute() {
-                        Intent intent = new Intent(activity.getApplicationContext(), PresenterActivity.class);
-                        activity.startActivity(intent);
-                    }
-                });
-            }
-        });
-        Espresso.pressBack();
-        onView(withId(R.id.main_content)).check(matches(isDisplayed()));
-    }
-
 
 
     @Test

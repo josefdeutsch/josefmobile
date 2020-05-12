@@ -1,10 +1,7 @@
 <resources>
     <string name="app_name">josefmobile</string>
     <string name="action_settings">settings</string>
-    <string name="action_mail">Mail</string>
     <string name="action_archive">Archive</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="question">more info..?</string>
     <string name="OK">OK</string>
 </resources>

@@ -1,37 +1,23 @@
 package com.josef.mobile.free.ui;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.FragmentTransaction;
-
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.widget.TextView;
-
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.josef.josefmobile.R;
-import com.josef.mobile.util.InterstitialAdsRequest;
 
 public class ArchiveActivity extends AppCompatActivity {
 
     private BottomAppBar bar;
-    private InterstitialAd mInterstitialAd;
-    private AlertDialog mDialog;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +49,7 @@ public class ArchiveActivity extends AppCompatActivity {
 
         FragmentTransaction fm = getSupportFragmentManager().beginTransaction();
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.archieve_container, ArchiveFragment.newInstance("", ""))
+                .add(R.id.archieve_container, ArchiveFragment.newInstance("",""))
                 .commit();
         fm.commit();
     }

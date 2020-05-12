@@ -18,6 +18,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.josef.josefmobile.R;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
 
+
 import static com.josef.mobile.util.Config.VIEWPAGERDETAILKEY;
 import static com.josef.mobile.util.Config.WORKREQUEST_DOWNLOADID;
 
@@ -64,6 +65,7 @@ public class ContentContainerFragment extends Fragment {
         viewPager = layoutInflater.findViewById(R.id.viewidpager);
         adapters = new ViewPagerFragmentAdapters(getChildFragmentManager(), which);
         viewPager.setAdapter(adapters);
+
         viewPager.setOffscreenPageLimit(3);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

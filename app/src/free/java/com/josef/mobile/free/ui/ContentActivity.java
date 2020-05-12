@@ -64,6 +64,10 @@ public class ContentActivity extends AppCompatActivity {
         bar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
         setupNestedScrollView();
 
+        AppPreferences.clearNameList(this);
+        ArrayList<String> meta = new ArrayList<>(AppPreferences.getName(this));
+        meta.add(JOSEPHOPENINGSTATEMENT + System.lineSeparator());
+
 
     }
     @Override
@@ -145,8 +149,6 @@ public class ContentActivity extends AppCompatActivity {
                     public void onClick(View view) {
 
                         ArrayList<String> metadata = new ArrayList<>(AppPreferences.getName(getApplicationContext()));
-                        if(metadata==null){
-                            metadata = new ArrayList<>();metadata.add(JOSEPHOPENINGSTATEMENT);}
                         String data = metadata.toString();
                         String mimeType = "text/plain";
                         Intent shareIntent = ShareCompat.IntentBuilder.from(ContentActivity.this)

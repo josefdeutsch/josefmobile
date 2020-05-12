@@ -33,10 +33,11 @@ import com.josef.josefmobile.R;
 import com.josef.mobile.free.ui.ContentActivity;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
 import com.josef.mobile.util.CallBackWorker;
-import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.josef.mobile.util.Config.WORKREQUEST_KEYTAST_OUTPUT;
 import static com.josef.mobile.util.Config.SHAREDPREFERENCES_LOCK_INDEX;
@@ -165,7 +166,6 @@ public class SplashActivity extends AppCompatActivity {
                 .build();
     }
 
-    @NotNull
     private Constraints buildConstraints() {
         return new Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -177,7 +177,6 @@ public class SplashActivity extends AppCompatActivity {
                 .build();
     }
 
-    @NotNull
     private Data buildData(int index) {
         return new Data.Builder()
                 .putInt(WORKREQUEST_AMOUNT, index)
@@ -185,7 +184,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     @Nullable
-    private String getAmountofViewpager(@NotNull WorkInfo workInfo) {
+    private String getAmountofViewpager(WorkInfo workInfo) {
         Data data = workInfo.getOutputData();
         String output = data.getString(WORKREQUEST_KEYTAST_OUTPUT);
         return output;

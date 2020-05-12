@@ -21,7 +21,5 @@ public class ErrorActivity extends AppCompatActivity {
         bar = (BottomAppBar) findViewById(R.id.bottom_app_bar);
         setSupportActionBar(bar);
         bar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
-
-
     }
 }

@@ -60,7 +60,10 @@ public class ContentDetailFragment extends Fragment {
     private long mResumePosition;
     public ImageButton mPlayButton;
     private Object lock;
-
+    public static final String JSON_METADATA ="metadata";
+    public static final String JSON_NAME="name";
+    public static final String JSON_PNG="png";
+    public static final String JSON_URL="url";
     public static final String STATE_RESUME_WINDOW = "com.josef.mobile.free.ui.ContentDetailFragment.resumeWindow";
     public static final String STATE_RESUME_POSITION = "com.josef.mobile.free.ui.ContentDetailFragment.resumePosition";
 
@@ -320,8 +323,8 @@ public class ContentDetailFragment extends Fragment {
         try {
             JSONArray input = new JSONArray(output);
             JSONObject container = input.getJSONObject(index);
-            JSONObject metadata = (JSONObject) container.get("metadata");
-            String url = (String) metadata.get("url");
+            JSONObject metadata = (JSONObject) container.get(JSON_METADATA);
+            String url = (String) metadata.get(JSON_NAME);
             AppPreferences.clearNameList(getContext());
             ArrayList<String> meta = new ArrayList<>(AppPreferences.getName(getContext()));
             meta.add(JOSEPHOPENINGSTATEMENT + System.lineSeparator());
@@ -339,17 +342,17 @@ public class ContentDetailFragment extends Fragment {
         try {
             JSONArray input = new JSONArray(output);
             JSONObject container = input.getJSONObject(index);
-            JSONObject metadata = (JSONObject) container.get("metadata");
-            String name = (String) metadata.get("name");
-            String png = (String) metadata.get("png");
-            String url = (String) metadata.get("url");
-            Favourite favourite = new Favourite(png, url, 0);
+            JSONObject metadata = (JSONObject) container.get(JSON_METADATA);
+            String name = (String) metadata.get(JSON_NAME);
+            String png = (String) metadata.get(JSON_PNG);
+            Favourite favourite = new Favourite(png, name, 0);
             mFavouriteViewMode.insert(favourite);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
     }
+
 
     private void setupSubHeader(final String downloadId, final int index) {
         if (downloadId != null) {
@@ -363,8 +366,8 @@ public class ContentDetailFragment extends Fragment {
                                     try {
                                         JSONArray input = new JSONArray(output);
                                         JSONObject container = input.getJSONObject(index);
-                                        JSONObject metadata = (JSONObject) container.get("metadata");
-                                        String name = (String) metadata.get("name");
+                                        JSONObject metadata = (JSONObject) container.get(JSON_METADATA);
+                                        String name = (String) metadata.get(JSON_NAME);
                                         name = removeLastChar(name);
                                         mArticleByLine.setText(name);
 
