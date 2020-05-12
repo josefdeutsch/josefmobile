@@ -65,7 +65,8 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="256dp"
-                android:src="@drawable/ic_webdesignsvg_02"></ImageView>
+                android:background="@color/colorBlack"
+                android:src="@drawable/ic_webdesignsvg_03"></ImageView>
 
         </LinearLayout>
 
