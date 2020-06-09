@@ -1,30 +1,40 @@
 package com.josef.mobile.free.ui;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.LinearLayout;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.appcompat.widget.ToolbarWidgetWrapper;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ShareCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.test.espresso.IdlingResource;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.josef.josefmobile.R;
 import com.josef.mobile.util.AppPreferences;
 import com.josef.mobile.util.InterstitialAdsRequest;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
+
 import java.util.ArrayList;
 
 import static com.josef.mobile.util.Config.JOSEPHOPENINGSTATEMENT;
@@ -38,16 +48,18 @@ public class ContentActivity extends AppCompatActivity {
     private ArrayList<String> downloadId;
     private int mScrollY;
     public static final String SCROLLVIEWYPOSITION = "com.josef.mobile.free.ui.ContentActivity.scroll_view_y_position";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content);
-
+        CoordinatorLayout mainLayout = findViewById(R.id.main_content);
+       // mainLayout.setVisibility(LinearLayout.GONE);
         if (savedInstanceState == null) {
             downloadId = getIntent().getStringArrayListExtra(WORKREQUEST_LIST);
             amount = getIntent().getIntExtra(VIEWPAGER_AMOUNT, 0);
             FragmentTransaction fm = getSupportFragmentManager().beginTransaction();
-            for (int index = 0; index <= amount-1; index++) {
+            for (int index = 0; index <= amount - 1; index++) {
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.container, ContentContainerFragment.newInstance(downloadId.get(index)))
                         .commit();
@@ -56,17 +68,38 @@ public class ContentActivity extends AppCompatActivity {
         }
         if (savedInstanceState != null)
             mScrollY = savedInstanceState.getInt(SCROLLVIEWYPOSITION, 0);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         bar = (BottomAppBar) findViewById(R.id.bottom_app_bar);
-        setSupportActionBar(bar);
+
+
+        // setSupportActionBar(bar);
+
         bar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
+        bar.replaceMenu(R.menu.toolbarmenu);
+        bar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_settings:
+                        Log.d(TAG, "onOptionsItemSelected: " + "hellobottombar");
+                        break;
+                    case R.id.app_bar_archieve:
+
+                }
+                return true;
+            }
+        });
         setupNestedScrollView();
 
         AppPreferences.clearNameList(this);
         ArrayList<String> meta = new ArrayList<>(AppPreferences.getName(this));
         meta.add(JOSEPHOPENINGSTATEMENT + System.lineSeparator());
-
-
     }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -93,7 +126,7 @@ public class ContentActivity extends AppCompatActivity {
         scrollView.setFillViewport(true);
     }
 
-   // private InterstitialAd mInterstitialAd;
+    // private InterstitialAd mInterstitialAd;
 
     private AlertDialog mDialog;
 
@@ -116,22 +149,25 @@ public class ContentActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
+        getMenuInflater().inflate(R.menu.toolbarmenu, menu);
         return true;
     }
+
+    private static final String TAG = "ContentActivity";
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == android.R.id.home) {
         } else if (item.getItemId() == R.id.action_settings) {
-            Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
+            Log.d(TAG, "onOptionsItemSelected: " + "hellotoolbar");
+            //    Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+            //   intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            //   startActivity(intent);
             return true;
 
         } else if (item.getItemId() == R.id.app_bar_archieve) {
-            setupProgressBar();
+            // setupProgressBar();
             //loadIntersitialAds(mArchiveActivity);
         }
         return super.onOptionsItemSelected(item);
@@ -163,37 +199,38 @@ public class ContentActivity extends AppCompatActivity {
         snackbar.show();
     }
 
-  /** InterstitialAdsRequest mArchiveActivity = new InterstitialAdsRequest() {
-        @Override
-        public void execute() {
-            mInterstitialAd = new InterstitialAd(getApplicationContext());
-            mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
-            mInterstitialAd.loadAd(new AdRequest.Builder().build());
-            mInterstitialAd.setAdListener(new AdListener() {
-                @Override
-                public void onAdLoaded() {
-                    if (mDialog != null) {
-                        mDialog.hide();
-                    }
-                    mInterstitialAd.show();
-                }
+    /**
+     * InterstitialAdsRequest mArchiveActivity = new InterstitialAdsRequest() {
+     *
+     * @Override public void execute() {
+     * mInterstitialAd = new InterstitialAd(getApplicationContext());
+     * mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+     * mInterstitialAd.loadAd(new AdRequest.Builder().build());
+     * mInterstitialAd.setAdListener(new AdListener() {
+     * @Override public void onAdLoaded() {
+     * if (mDialog != null) {
+     * mDialog.hide();
+     * }
+     * mInterstitialAd.show();
+     * }
+     * @Override public void onAdFailedToLoad(int errorCode) {
+     * if (mDialog != null) {
+     * mDialog.hide();
+     * }
+     * startActivity(getApplicationContext(), ArchiveActivity.class);
+     * }
+     * @Override public void onAdClosed() {
+     * startActivity(getApplicationContext(), ArchiveActivity.class);
+     * }
+     * });
+     * }
+     * };
+     **/
 
-                @Override
-                public void onAdFailedToLoad(int errorCode) {
-                    if (mDialog != null) {
-                        mDialog.hide();
-                    }
-                    startActivity(getApplicationContext(), ArchiveActivity.class);
-                }
 
-                @Override
-                public void onAdClosed() {
-                    startActivity(getApplicationContext(), ArchiveActivity.class);
-                }
-            });
-        }
-    };
-**/
+
+
+
     @Nullable
     private IdlingResource mIdlingResource;
 
@@ -205,10 +242,6 @@ public class ContentActivity extends AppCompatActivity {
         }
         return mIdlingResource;
     }
-
-
-
-
 
 
 }

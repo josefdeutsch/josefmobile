@@ -213,7 +213,8 @@ public class GoogleSignInActivity extends BaseActivity implements GoogleApiClien
                         new ResultCallback<Status>() {
                             @Override
                             public void onResult(@NonNull Status status) {
-                                updateUI(null);
+                                 finish();
+                             //   updateUI(null);
                             }
                         }
                 );
