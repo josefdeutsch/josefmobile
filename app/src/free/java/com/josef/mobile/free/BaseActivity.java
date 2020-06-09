@@ -1,26 +1,28 @@
 package com.josef.mobile.free;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.josef.josefmobile.R;
 
 public class BaseActivity extends AppCompatActivity {
-    private ProgressDialog mProgressDialog;
+    private AlertDialog mDialog;
 
-    public void showProgressDialog() {
-        if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setMessage(getString(R.string.loading));
-            mProgressDialog.setIndeterminate(true);
-        }
-        mProgressDialog.show();
+    public void showProgressDialog(Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setCancelable(false);
+        builder.setView(R.layout.progressdialog);
+        mDialog = builder.create();
+        mDialog.show();
     }
 
     public void hideProgressDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.dismiss();
+        if (mDialog != null && mDialog.isShowing()) {
+            mDialog.hide();
+            mDialog.dismiss();
         }
     }
 

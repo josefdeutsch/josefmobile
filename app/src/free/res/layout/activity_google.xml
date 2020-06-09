@@ -1,19 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    style="@style/CustomRelativeLayout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <ImageView
-        android:id="@+id/logo"
-        style="@style/CustomLogoImageView"
-        android:contentDescription="@string/app_name"/>
-
-    <TextView
-        android:id="@+id/profile"
-        style="@style/CustomStatusTextView"
-        android:layout_below="@id/logo"
-        tools:text="@string/app_name"/>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.josef.mobile.ui.SplashActivity">
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/sign_in_button"
@@ -21,35 +11,19 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:visibility="visible"
-        tools:visibility="gone"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/logo"
+        app:layout_constraintVertical_bias="0.776"
+        tools:visibility="gone" />
 
-    <LinearLayout
-        android:id="@+id/sign_out_and_disconnect"
+
+    <ImageView
+        android:id="@+id/logo"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/profile"
-        android:orientation="horizontal"
-        android:visibility="gone"
-        tools:visibility="visible">
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_webdesignsvg_02"></ImageView>
 
-        <Button
-            android:id="@+id/sign_out_button"
-            style="?android:attr/button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/sign_out"
-            android:theme="@style/ThemeOverlay.MyDarkButton"/>
-
-        <Button
-            android:id="@+id/disconnect_button"
-            style="?android:attr/button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/disconnect"
-            android:theme="@style/ThemeOverlay.MyDarkButton"/>
-
-    </LinearLayout>
-
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

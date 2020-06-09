@@ -23,23 +23,36 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.josef.josefmobile.R;
 import com.josef.mobile.free.GoogleSignInActivity;
+import com.josef.mobile.free.ui.ContentActivity;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
+import com.josef.mobile.util.CallBackWorker;
 
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static com.josef.mobile.util.Config.VIEWPAGER_AMOUNT;
 import static com.josef.mobile.util.Config.WORKREQUEST_KEYTAST_OUTPUT;
 import static com.josef.mobile.util.Config.SHAREDPREFERENCES_LOCK_INDEX;
 import static com.josef.mobile.util.Config.SHAREDPREFERENCES_EDITOR;
 import static com.josef.mobile.util.Config.WORKREQUEST_AMOUNT;
+import static com.josef.mobile.util.Config.WORKREQUEST_LIST;
+import static com.josef.mobile.util.Config.WORKREQUET_CONTENTACTIVITY;
 import static com.josef.mobile.util.Config.WORKREQUET_SPLASHACTIVITY;
 
 public class SplashActivity extends AppCompatActivity {
-
+    private static final String TAG = "SplashActivity";
     public Data mData;
     public Constraints mConstraints;
     public OneTimeWorkRequest mDownload;
@@ -50,14 +63,8 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         setTransparentStatusBarLollipop();
 
-
-        Intent client = new Intent(this, GoogleSignInActivity.class);
-        startActivity(client);
-
-
-/**
-        supplySharedPreferences();
-        onUpdateAppWidgetProvider();
+       // supplySharedPreferences();
+      //  onUpdateAppWidgetProvider();
 
 
         mData = buildData();
@@ -81,6 +88,7 @@ public class SplashActivity extends AppCompatActivity {
                                         String amount = getAmountofViewpager(workInfo);
                                         List<OneTimeWorkRequest> list = new ArrayList<>();
                                         ArrayList<String> downloadId = new ArrayList<>();
+                                        Log.d(TAG, "run: "+amount);
                                         for (int index = 1; index <= Integer.parseInt(amount); index++) {
                                             Data data = buildData(index);
                                             Constraints constraints = buildConstraints();
@@ -91,7 +99,7 @@ public class SplashActivity extends AppCompatActivity {
                                         }
                                         WorkManager.getInstance(SplashActivity.this).beginUniqueWork(WORKREQUET_CONTENTACTIVITY,
                                                 ExistingWorkPolicy.KEEP, list).enqueue();
-                                        Intent intent = new Intent(getApplicationContext(), ContentActivity.class);
+                                        Intent intent = new Intent(getApplicationContext(),GoogleSignInActivity.class);
                                         intent.putExtra(VIEWPAGER_AMOUNT, Integer.parseInt(amount));
                                         intent.putStringArrayListExtra(WORKREQUEST_LIST, downloadId);
                                         intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
@@ -103,7 +111,7 @@ public class SplashActivity extends AppCompatActivity {
                         }
                     }
                 });
- **/
+
     }
 
     private void supplySharedPreferences() {
