@@ -19,9 +19,6 @@ import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.test.espresso.IdlingResource;
 
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.josef.josefmobile.R;
@@ -96,7 +93,7 @@ public class ContentActivity extends AppCompatActivity {
         scrollView.setFillViewport(true);
     }
 
-    private InterstitialAd mInterstitialAd;
+   // private InterstitialAd mInterstitialAd;
 
     private AlertDialog mDialog;
 
@@ -135,7 +132,7 @@ public class ContentActivity extends AppCompatActivity {
 
         } else if (item.getItemId() == R.id.app_bar_archieve) {
             setupProgressBar();
-            loadIntersitialAds(mArchiveActivity);
+            //loadIntersitialAds(mArchiveActivity);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -166,7 +163,7 @@ public class ContentActivity extends AppCompatActivity {
         snackbar.show();
     }
 
-   InterstitialAdsRequest mArchiveActivity = new InterstitialAdsRequest() {
+  /** InterstitialAdsRequest mArchiveActivity = new InterstitialAdsRequest() {
         @Override
         public void execute() {
             mInterstitialAd = new InterstitialAd(getApplicationContext());
@@ -196,7 +193,7 @@ public class ContentActivity extends AppCompatActivity {
             });
         }
     };
-
+**/
     @Nullable
     private IdlingResource mIdlingResource;
 

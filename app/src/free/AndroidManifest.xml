@@ -13,6 +13,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
 
+        <activity android:name="com.josef.mobile.free.GoogleSignInActivity"></activity>
+
         <activity android:name="com.josef.mobile.free.ui.ContentActivity"
             android:parentActivityName="com.josef.mobile.free.ui.ContentActivity"></activity>
 

@@ -1,3 +1,4 @@
+
 // Copyright 2017 Google Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,6 +14,7 @@
 // limitations under the License.import org.apache.tools.ant.filters.ReplaceTokens
 
 // [START build_script]
+
 buildscript {
     repositories {
         jcenter()
@@ -39,35 +41,33 @@ dependencies {
     implementation 'com.google.endpoints:endpoints-framework:2.2.1'
     implementation 'com.google.endpoints:endpoints-management-control-appengine:1.0.12'
     implementation 'com.google.endpoints:endpoints-framework-auth:1.0.12'
+
     implementation 'javax.inject:javax.inject:1'
     implementation group: 'com.google.protobuf', name: 'protobuf-java-util', version: '3.10.0'
     implementation group: 'io.grpc', name: 'grpc-stub', version: '1.28.0'
     implementation group: 'io.grpc', name: 'grpc-protobuf', version: '1.28.0'
-}
-// [END dependencies]
 
+}
+
+// [END dependencies]
 // [START endpoints_server_configuration]
 // You must replace YOUR_PROJECT_ID with your Google Cloud Project Id
-def projectIds = 'capstone-272303'
 
+def projectIds = 'capstone-272303'
 endpointsServer {
     // Endpoints Framework Plugin server-side configuration
     hostname = "${projectIds}.appspot.com"
 }
 // [END endpoints_server_configuration]
-
 def gcpProject = project.findProperty('stageName') ?: 'a'
 
 appengine.deploy.projectId = 'capstone-272303'
-
 appengine {  // App Engine tasks configuration
     deploy {   // deploy configuration
         version = "GCLOUD_CONFIG"
         projectId = "GCLOUD_CONFIG"
     }
 }
-
-
 
 // this replaces the ${endpoints.project.id} in appengine-web.xml and web.xml
 task replaceProjectId(type: Copy) {

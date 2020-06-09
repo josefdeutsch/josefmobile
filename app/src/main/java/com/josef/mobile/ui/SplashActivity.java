@@ -23,29 +23,19 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
+
 import com.josef.josefmobile.R;
-import com.josef.mobile.free.ui.ContentActivity;
+import com.josef.mobile.free.GoogleSignInActivity;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
-import com.josef.mobile.util.CallBackWorker;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.josef.mobile.util.Config.WORKREQUEST_KEYTAST_OUTPUT;
 import static com.josef.mobile.util.Config.SHAREDPREFERENCES_LOCK_INDEX;
 import static com.josef.mobile.util.Config.SHAREDPREFERENCES_EDITOR;
-import static com.josef.mobile.util.Config.VIEWPAGER_AMOUNT;
 import static com.josef.mobile.util.Config.WORKREQUEST_AMOUNT;
-import static com.josef.mobile.util.Config.WORKREQUEST_LIST;
-import static com.josef.mobile.util.Config.WORKREQUET_CONTENTACTIVITY;
 import static com.josef.mobile.util.Config.WORKREQUET_SPLASHACTIVITY;
 
 public class SplashActivity extends AppCompatActivity {
@@ -60,6 +50,12 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         setTransparentStatusBarLollipop();
 
+
+        Intent client = new Intent(this, GoogleSignInActivity.class);
+        startActivity(client);
+
+
+/**
         supplySharedPreferences();
         onUpdateAppWidgetProvider();
 
@@ -107,6 +103,7 @@ public class SplashActivity extends AppCompatActivity {
                         }
                     }
                 });
+ **/
     }
 
     private void supplySharedPreferences() {
