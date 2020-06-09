@@ -180,6 +180,8 @@ public class GoogleSignInActivity extends BaseActivity implements GoogleApiClien
             public void onComplete(@NonNull Task<AuthResult> task) {
                 Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
                 if (task.isSuccessful()) {
+                    //https://stackoverflow.com/questions/4226604/how-to-hide-linearlayout-from-java-code
+
                     Intent intent = new Intent(getApplicationContext(),ContentActivity.class);
                     intent.putExtra(VIEWPAGER_AMOUNT, amount);
                     intent.putStringArrayListExtra(WORKREQUEST_LIST, downloadId);

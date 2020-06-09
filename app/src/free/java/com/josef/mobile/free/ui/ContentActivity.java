@@ -1,7 +1,6 @@
 package com.josef.mobile.free.ui;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -54,7 +53,7 @@ public class ContentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content);
         CoordinatorLayout mainLayout = findViewById(R.id.main_content);
-       // mainLayout.setVisibility(LinearLayout.GONE);
+        mainLayout.setVisibility(LinearLayout.GONE);
         if (savedInstanceState == null) {
             downloadId = getIntent().getStringArrayListExtra(WORKREQUEST_LIST);
             amount = getIntent().getIntExtra(VIEWPAGER_AMOUNT, 0);
