@@ -27,7 +27,6 @@ import androidx.work.WorkManager;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.material.snackbar.Snackbar;
 import com.josef.josefmobile.R;
-import com.josef.mobile.free.util.VideoPlayer;
 import com.josef.mobile.util.AppPreferences;
 import com.josef.mobile.data.Favourite;
 import com.josef.mobile.data.FavouriteViewModel;
@@ -52,7 +51,7 @@ public class ContentDetailFragment extends Fragment {
     public TextView mArticle;
     public TextView mArticleByLine;
     public View layoutInflater;
-    private VideoPlayer videoPlayer;
+    private com.josef.mobile.free.ui.VideoPlayer videoPlayer;
     private String mDownloadId;
     private int index;
     private SimpleExoPlayerView mExoPlayerView;
@@ -100,7 +99,7 @@ public class ContentDetailFragment extends Fragment {
 
         setupUi();
 
-        videoPlayer = new VideoPlayer(getActivity(), layoutInflater, mExoPlayerView, mResumePosition, mResumeWindow);
+        videoPlayer = new com.josef.mobile.free.ui.VideoPlayer(getActivity(), layoutInflater, mExoPlayerView, mResumePosition, mResumeWindow);
         mArticle.setText("Sculpture: " + index);
 
         setupExoPlayer(mDownloadId, index);

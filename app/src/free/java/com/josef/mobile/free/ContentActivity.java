@@ -1,6 +1,5 @@
 package com.josef.mobile.free;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,9 +17,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.app.ShareCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.test.espresso.IdlingResource;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -40,14 +40,18 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
 import com.josef.josefmobile.R;
+import com.josef.mobile.data.Favourite;
+import com.josef.mobile.data.FavouriteViewModel;
 import com.josef.mobile.free.ui.ContentContainerFragment;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
 import com.josef.mobile.ui.SplashActivity;
 import com.josef.mobile.util.AppPreferences;
-import com.josef.mobile.util.InterstitialAdsRequest;
-
 import java.util.ArrayList;
+import java.util.List;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.josef.mobile.util.Config.JOSEPHOPENINGSTATEMENT;
@@ -92,6 +96,7 @@ public class ContentActivity extends BaseActivity implements GoogleApiClient.OnC
             }
             fm.commit();
         }
+
         if (savedInstanceState != null)
             mScrollY = savedInstanceState.getInt(SCROLLVIEWYPOSITION, 0);
 
@@ -111,13 +116,15 @@ public class ContentActivity extends BaseActivity implements GoogleApiClient.OnC
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_settings:
-                        //   signOut();
                         break;
+                    case R.id.app_bar_archieve:
                 }
                 return true;
             }
         });
+
         setupNestedScrollView();
+
         SignInButton signInButton = findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_WIDE);
         signInButton.setOnClickListener(this);
@@ -129,9 +136,14 @@ public class ContentActivity extends BaseActivity implements GoogleApiClient.OnC
                 .build();
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
+                .
+                        enableAutoManage(this, this)
+                .
+
+                        addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .
+
+                        build();
 
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -145,7 +157,9 @@ public class ContentActivity extends BaseActivity implements GoogleApiClient.OnC
                 }
                 updateUI(user);
             }
-        };
+        }
+
+        ;
         AppPreferences.clearNameList(this);
         ArrayList<String> meta = new ArrayList<>(AppPreferences.getName(this));
         meta.add(JOSEPHOPENINGSTATEMENT + System.lineSeparator());
@@ -188,7 +202,6 @@ public class ContentActivity extends BaseActivity implements GoogleApiClient.OnC
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
             } else {
-                // Google Sign In failed, update UI appropriately
                 updateUI(null);
                 Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show();
             }
@@ -206,7 +219,6 @@ public class ContentActivity extends BaseActivity implements GoogleApiClient.OnC
             public void onComplete(@NonNull Task<AuthResult> task) {
                 Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
                 if (task.isSuccessful()) {
-                    //https://stackoverflow.com/questions/4226604/how-to-hide-linearlayout-from-java-code
                     FirebaseUser user = mAuth.getCurrentUser();
                     updateUI(user);
                 } else {
@@ -229,9 +241,7 @@ public class ContentActivity extends BaseActivity implements GoogleApiClient.OnC
         alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                // Firebase sign out
                 mAuth.signOut();
-                // Google sign out
                 Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
                         new ResultCallback<Status>() {
                             @Override
@@ -257,6 +267,7 @@ public class ContentActivity extends BaseActivity implements GoogleApiClient.OnC
 
     private void updateUI(FirebaseUser user) {
         if (user != null) {
+            userId=user.getUid();
             mSignInLayout.setVisibility(LinearLayout.GONE);
             mContentLayout.setVisibility(LinearLayout.VISIBLE);
         }
@@ -298,11 +309,6 @@ public class ContentActivity extends BaseActivity implements GoogleApiClient.OnC
         scrollView.setFillViewport(true);
     }
 
-    // private InterstitialAd mInterstitialAd;
-
-    private AlertDialog mDialog;
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbarmenu, menu);
@@ -318,13 +324,10 @@ public class ContentActivity extends BaseActivity implements GoogleApiClient.OnC
         } else if (item.getItemId() == R.id.action_settings) {
             signOut();
             return true;
-
-        } else if (item.getItemId() == R.id.app_bar_archieve) {
-            // setupProgressBar();
-            //loadIntersitialAds(mArchiveActivity);
         }
         return super.onOptionsItemSelected(item);
     }
+    private FavouriteViewModel favouriteViewModel;
 
     public void performFloatingAction(View view) {
 
@@ -334,18 +337,23 @@ public class ContentActivity extends BaseActivity implements GoogleApiClient.OnC
                     @Override
                     public void onClick(View view) {
 
-                        ArrayList<String> metadata = new ArrayList<>(AppPreferences.getName(getApplicationContext()));
-                        String data = metadata.toString();
-                        String mimeType = "text/plain";
-                        Intent shareIntent = ShareCompat.IntentBuilder.from(ContentActivity.this)
-                                .setType(mimeType)
-                                .setText(data)
-                                .getIntent();
-
-                        if (shareIntent.resolveActivity(getPackageManager()) != null) {
-                            startActivity(shareIntent);
-                        }
-
+                        favouriteViewModel = ViewModelProviders.of(ContentActivity.this).get(FavouriteViewModel.class);
+                        favouriteViewModel.getAllNotes().observe(ContentActivity.this, new Observer<List<Favourite>>() {
+                            @Override
+                            public void onChanged(@Nullable List<Favourite> favourites) {
+                                FirebaseDatabase database = FirebaseDatabase.getInstance();//
+                                DatabaseReference myRef = database.getReference("users");
+                                List<String> meta = new ArrayList<>();
+                                int len = favourites.size();
+                                for (int i = 0; i <=len-1 ; i++) {
+                                meta.add(favourites.get(i).getDescription());
+                                }
+                                Gson gson = new Gson();
+                                String serial = gson.toJson(meta);
+                                Data data = new Data("bild3,", "uschi", serial);
+                                myRef.child(userId).setValue(data);
+                            }
+                        });
                     }
                 }).setActionTextColor(getResources().getColor(android.R.color.holo_red_light));
         snackbar.setAnchorView(R.id.fab);

@@ -1,4 +1,4 @@
-package com.josef.mobile.free.util;
+package com.josef.mobile.free.ui;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -18,8 +18,6 @@ import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.ext.ima.ImaAdsLoader;
-import com.google.android.exoplayer2.ext.ima.ImaAdsMediaSource;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.extractor.ExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
@@ -53,9 +51,6 @@ public class VideoPlayer {
     private long mResumePosition;
     private int mResumeWindow;
     private boolean mExoPlayerFullscreen = false;
-    private ImaAdsLoader imaAdsLoader;
-
-    private String targetUrl = "https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dskippablelinear&correlator=";
 
     private Target target = new Target() {
         @Override
@@ -74,12 +69,28 @@ public class VideoPlayer {
     };
 
 
+    public boolean ismExoPlayerFullscreen() {
+        return mExoPlayerFullscreen;
+    }
+
+    public void setmExoPlayerFullscreen(boolean mExoPlayerFullscreen) {
+        this.mExoPlayerFullscreen = mExoPlayerFullscreen;
+    }
+
     public long getmResumePosition() {
         return mResumePosition;
     }
 
+    public void setmResumePosition(int mResumePosition) {
+        this.mResumePosition = mResumePosition;
+    }
+
     public int getmResumeWindow() {
         return mResumeWindow;
+    }
+
+    public void setmResumeWindow(int mResumeWindow) {
+        this.mResumeWindow = mResumeWindow;
     }
 
     public void onPlayerBackState() {
@@ -99,7 +110,6 @@ public class VideoPlayer {
         this.mExoPlayerView = mExoPlayerView;
         this.mResumePosition = mResumePosition;
         this.mResumeWindow = mResumeWindow;
-        imaAdsLoader = new ImaAdsLoader(mContext, getAdTagUri());
     }
 
     @Nullable
@@ -180,16 +190,16 @@ public class VideoPlayer {
 
     private void supplyExoPlayer(String videoURL) {
 
+        MediaSource videoSource = buildMediaSource(videoURL);
+        mExoPlayerView.getPlayer().prepare(videoSource);
+        mExoPlayerView.getPlayer().setPlayWhenReady(true);
+
+    }
+
+    private MediaSource buildMediaSource(String videoURL) {
         DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(mContext, Util.getUserAgent(mContext, "ExoPlayer"));
         final ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
-        MediaSource mediaSource = new ExtractorMediaSource(Uri.parse(videoURL), dataSourceFactory, extractorsFactory, null, null);
-
-        MediaSource mediaSourceWithAds = new ImaAdsMediaSource(
-                mediaSource, dataSourceFactory,
-                imaAdsLoader,
-                mExoPlayerView.getOverlayFrameLayout());
-        mExoPlayerView.getPlayer().prepare(mediaSourceWithAds);
-        mExoPlayerView.getPlayer().setPlayWhenReady(true);
+        return new ExtractorMediaSource(Uri.parse(videoURL), dataSourceFactory, extractorsFactory, null, null);
     }
 
     public void matchesExoPlayerFullScreenConfig() {
@@ -203,7 +213,7 @@ public class VideoPlayer {
 
     public final void withdrawExoPlayer() {
 
-        if (mExoPlayerView != null && mExoPlayerView.getPlayer() != null) {
+        if (mExoPlayerView != null|| mExoPlayerView.getPlayer()!=null) {
             mExoPlayerView.getPlayer().setPlayWhenReady(false);
             if (mExoPlayerView != null && mExoPlayerView.getPlayer() != null) {
                 mResumeWindow = mExoPlayerView.getPlayer().getCurrentWindowIndex();
@@ -221,7 +231,7 @@ public class VideoPlayer {
     }
 
     private Uri getAdTagUri() {
-        return Uri.parse(targetUrl);
+        return Uri.parse("https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dskippablelinear&correlator=");
     }
 
 }
