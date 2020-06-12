@@ -63,7 +63,6 @@ public class GoogleSignInActivity extends BaseActivity implements GoogleApiClien
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private GoogleApiClient mGoogleApiClient;
-    private ImageView mImageView;
 
     public String userId;
     private int amount;
@@ -74,7 +73,6 @@ public class GoogleSignInActivity extends BaseActivity implements GoogleApiClien
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_google);
         setTransparentStatusBarLollipop();
-        mImageView = findViewById(R.id.logo);
         if (savedInstanceState == null) {
             downloadId = getIntent().getStringArrayListExtra(WORKREQUEST_LIST);
             amount = getIntent().getIntExtra(VIEWPAGER_AMOUNT, 0);

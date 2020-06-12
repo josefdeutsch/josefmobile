@@ -31,8 +31,8 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.josef.josefmobile.R;
+import com.josef.mobile.free.ContentActivity;
 import com.josef.mobile.free.GoogleSignInActivity;
-import com.josef.mobile.free.ui.ContentActivity;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
 import com.josef.mobile.util.CallBackWorker;
 
@@ -99,7 +99,7 @@ public class SplashActivity extends AppCompatActivity {
                                         }
                                         WorkManager.getInstance(SplashActivity.this).beginUniqueWork(WORKREQUET_CONTENTACTIVITY,
                                                 ExistingWorkPolicy.KEEP, list).enqueue();
-                                        Intent intent = new Intent(getApplicationContext(),GoogleSignInActivity.class);
+                                        Intent intent = new Intent(getApplicationContext(), ContentActivity.class);
                                         intent.putExtra(VIEWPAGER_AMOUNT, Integer.parseInt(amount));
                                         intent.putStringArrayListExtra(WORKREQUEST_LIST, downloadId);
                                         intent.setFlags(FLAG_ACTIVITY_NEW_TASK);

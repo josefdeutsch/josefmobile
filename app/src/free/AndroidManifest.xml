@@ -18,6 +18,9 @@
         <activity android:name="com.josef.mobile.free.ui.ContentActivity"
             android:parentActivityName="com.josef.mobile.free.ui.ContentActivity"></activity>
 
+        <activity android:name="com.josef.mobile.free.ContentActivity"
+            android:parentActivityName="com.josef.mobile.free.ContentActivity"></activity>
+
         <activity android:name="com.josef.mobile.free.ui.PresenterActivity"
             android:parentActivityName="com.josef.mobile.free.ui.ContentActivity"></activity>
 
