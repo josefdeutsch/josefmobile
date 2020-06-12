@@ -77,6 +77,7 @@ public class GoogleSignInActivity extends BaseActivity implements GoogleApiClien
             downloadId = getIntent().getStringArrayListExtra(WORKREQUEST_LIST);
             amount = getIntent().getIntExtra(VIEWPAGER_AMOUNT, 0);
         }
+
         SignInButton signInButton = findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_WIDE);
         signInButton.setOnClickListener(this);

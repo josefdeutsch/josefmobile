@@ -46,7 +46,9 @@ import com.google.gson.Gson;
 import com.josef.josefmobile.R;
 import com.josef.mobile.data.Favourite;
 import com.josef.mobile.data.FavouriteViewModel;
+import com.josef.mobile.free.ui.ArchiveActivity;
 import com.josef.mobile.free.ui.ContentContainerFragment;
+import com.josef.mobile.free.ui.ModalFragment;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
 import com.josef.mobile.ui.SplashActivity;
 import com.josef.mobile.util.AppPreferences;
@@ -69,7 +71,7 @@ public class ContentActivity extends BaseActivity implements GoogleApiClient.OnC
     private ConstraintLayout mSignInLayout;
 
     public String userId;
-
+    private static final String FRAGMENT_MODAL = "modal";
     private BottomAppBar bar;
     private int amount;
     private ArrayList<String> downloadId;
@@ -110,7 +112,7 @@ public class ContentActivity extends BaseActivity implements GoogleApiClient.OnC
         // setSupportActionBar(bar);
 
         bar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
-        bar.replaceMenu(R.menu.toolbarmenu);
+        bar.replaceMenu(R.menu.menu);
         bar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -118,6 +120,15 @@ public class ContentActivity extends BaseActivity implements GoogleApiClient.OnC
                     case R.id.action_settings:
                         break;
                     case R.id.app_bar_archieve:
+                        /**FragmentTransaction fm = getSupportFragmentManager().beginTransaction();
+                        for (int index = 0; index <= amount - 1; index++) {
+                            getSupportFragmentManager().beginTransaction()
+                                    .add(R.id.modalfragment, ModalFragment.newInstance())
+                                    .commit();
+                        }
+                        fm.commit();**/
+                        new ModalFragment().show(getSupportFragmentManager(), FRAGMENT_MODAL);
+                        break;
                 }
                 return true;
             }
@@ -352,8 +363,10 @@ public class ContentActivity extends BaseActivity implements GoogleApiClient.OnC
                                 String serial = gson.toJson(meta);
                                 Data data = new Data("bild3,", "uschi", serial);
                                 myRef.child(userId).setValue(data);
+
                             }
                         });
+
                     }
                 }).setActionTextColor(getResources().getColor(android.R.color.holo_red_light));
         snackbar.setAnchorView(R.id.fab);
