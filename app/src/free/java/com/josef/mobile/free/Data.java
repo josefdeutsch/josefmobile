@@ -6,7 +6,6 @@ public class Data {
     String url;
     String email;
 
-
     public Data() {
 
     }

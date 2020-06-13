@@ -52,6 +52,9 @@ import com.josef.mobile.free.ui.ModalFragment;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
 import com.josef.mobile.ui.SplashActivity;
 import com.josef.mobile.util.AppPreferences;
+
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,19 +63,14 @@ import static com.josef.mobile.util.Config.JOSEPHOPENINGSTATEMENT;
 import static com.josef.mobile.util.Config.VIEWPAGER_AMOUNT;
 import static com.josef.mobile.util.Config.WORKREQUEST_LIST;
 
-public class ContentActivity extends BaseActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
+public class ContentActivity extends BaseActivity implements  View.OnClickListener {
 
-
-    private static final int RC_SIGN_IN = 9001;
-    private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
-    private GoogleApiClient mGoogleApiClient;
     private CoordinatorLayout mContentLayout;
     private ConstraintLayout mSignInLayout;
+    private FavouriteViewModel favouriteViewModel;
 
     public String userId;
     private static final String FRAGMENT_MODAL = "modal";
-    private BottomAppBar bar;
     private int amount;
     private ArrayList<String> downloadId;
     private int mScrollY;
@@ -82,9 +80,9 @@ public class ContentActivity extends BaseActivity implements GoogleApiClient.OnC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content);
+
         mContentLayout = findViewById(R.id.main_content);
         mContentLayout.setVisibility(LinearLayout.GONE);
-
         mSignInLayout = findViewById(R.id.signIn_layout);
 
         if (savedInstanceState == null) {
@@ -106,11 +104,7 @@ public class ContentActivity extends BaseActivity implements GoogleApiClient.OnC
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        bar = (BottomAppBar) findViewById(R.id.bottom_app_bar);
-
-
-        // setSupportActionBar(bar);
-
+        BottomAppBar bar = (BottomAppBar) findViewById(R.id.bottom_app_bar);
         bar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
         bar.replaceMenu(R.menu.menu);
         bar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -120,13 +114,6 @@ public class ContentActivity extends BaseActivity implements GoogleApiClient.OnC
                     case R.id.action_settings:
                         break;
                     case R.id.app_bar_archieve:
-                        /**FragmentTransaction fm = getSupportFragmentManager().beginTransaction();
-                        for (int index = 0; index <= amount - 1; index++) {
-                            getSupportFragmentManager().beginTransaction()
-                                    .add(R.id.modalfragment, ModalFragment.newInstance())
-                                    .commit();
-                        }
-                        fm.commit();**/
                         new ModalFragment().show(getSupportFragmentManager(), FRAGMENT_MODAL);
                         break;
                 }
@@ -134,46 +121,22 @@ public class ContentActivity extends BaseActivity implements GoogleApiClient.OnC
             }
         });
 
-        setupNestedScrollView();
+        setupNestedScrollView(bar);
 
         SignInButton signInButton = findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_WIDE);
         signInButton.setOnClickListener(this);
 
-        // Configure Google Sign In
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
+        GoogleSignInOptions gso = setupGoogleSignInOptions();
 
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .
-                        enableAutoManage(this, this)
-                .
+        buildGoogleApiClient(gso);
 
-                        addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .
+        setupFirebaseAuth();
 
-                        build();
-
-        mAuth = FirebaseAuth.getInstance();
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                } else {
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
-                }
-                updateUI(user);
-            }
-        }
-
-        ;
         AppPreferences.clearNameList(this);
         ArrayList<String> meta = new ArrayList<>(AppPreferences.getName(this));
         meta.add(JOSEPHOPENINGSTATEMENT + System.lineSeparator());
+
     }
 
     @Override
@@ -202,7 +165,6 @@ public class ContentActivity extends BaseActivity implements GoogleApiClient.OnC
         }
     }
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -219,77 +181,6 @@ public class ContentActivity extends BaseActivity implements GoogleApiClient.OnC
         }
     }
 
-
-    private void firebaseAuthWithGoogle(final GoogleSignInAccount acct) {
-        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
-        showProgressDialog(this);
-
-        final AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-        mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
-                if (task.isSuccessful()) {
-                    FirebaseUser user = mAuth.getCurrentUser();
-                    updateUI(user);
-                } else {
-
-                }
-                hideProgressDialog();
-            }
-        });
-    }
-
-    private void signIn() {
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
-    }
-
-    private void signOut() {
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setMessage(R.string.logout);
-        alert.setCancelable(false);
-        alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                mAuth.signOut();
-                Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                        new ResultCallback<Status>() {
-                            @Override
-                            public void onResult(@NonNull Status status) {
-                                Intent intent = new Intent(getApplicationContext(), SplashActivity.class);
-                                intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
-                                getApplicationContext().startActivity(intent);
-                                finish();
-                            }
-                        }
-                );
-            }
-        });
-        alert.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-        alert.show();
-    }
-
-
-    private void updateUI(FirebaseUser user) {
-        if (user != null) {
-            userId=user.getUid();
-            mSignInLayout.setVisibility(LinearLayout.GONE);
-            mContentLayout.setVisibility(LinearLayout.VISIBLE);
-        }
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.d(TAG, "onConnectionFailed:" + connectionResult);
-        Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show();
-    }
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -299,8 +190,16 @@ public class ContentActivity extends BaseActivity implements GoogleApiClient.OnC
         }
     }
 
+    @Override
+    public void updateUI(FirebaseUser user) {
+        if (user != null) {
+            userId=user.getUid();
+            mSignInLayout.setVisibility(LinearLayout.GONE);
+            mContentLayout.setVisibility(LinearLayout.VISIBLE);
+        }
+    }
 
-    private void setupNestedScrollView() {
+    private void setupNestedScrollView(final BottomAppBar bar) {
         final NestedScrollView scrollView = findViewById(R.id.nested_scrollview);
         scrollView.smoothScrollTo(0, mScrollY);
         scrollView.getViewTreeObserver()
@@ -326,8 +225,6 @@ public class ContentActivity extends BaseActivity implements GoogleApiClient.OnC
         return true;
     }
 
-    private static final String TAG = "ContentActivity";
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -338,7 +235,6 @@ public class ContentActivity extends BaseActivity implements GoogleApiClient.OnC
         }
         return super.onOptionsItemSelected(item);
     }
-    private FavouriteViewModel favouriteViewModel;
 
     public void performFloatingAction(View view) {
 

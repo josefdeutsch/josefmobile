@@ -45,10 +45,6 @@ public class ModalFragment extends BottomSheetDialogFragment {
         }
     };
 
-    public static ModalFragment newInstance() {
-        ModalFragment fragment = new ModalFragment();
-        return fragment;
-    }
 
     @Nullable
     @Override
