@@ -108,7 +108,6 @@ public class ContentDetailFragment extends Fragment {
 
         setupPlayButton(mDownloadId, index);
         setupToggleDatabase(mDownloadId, index);
-        setupToggleFavorite(mDownloadId, index);
 
         return layoutInflater;
     }
@@ -153,7 +152,6 @@ public class ContentDetailFragment extends Fragment {
         mExoPlayerView = layoutInflater.findViewById(R.id.exoplayer);
         mArticle = layoutInflater.findViewById(R.id.article_title);
         mArticleByLine = layoutInflater.findViewById(R.id.article_byline);
-        mButtonFavorite = layoutInflater.findViewById(R.id.button_favorite);
         mButtonDataBase = layoutInflater.findViewById(R.id.button_favorite2);
         mPlayButton = layoutInflater.findViewById(R.id.exo_play);
     }
@@ -220,52 +218,6 @@ public class ContentDetailFragment extends Fragment {
         }
     }
 
-    private void setupToggleFavorite(final String downloadId, final int index) {
-        if (downloadId != null) {
-            WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(UUID.fromString(downloadId))
-                    .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
-                        @Override
-                        public void onChanged(@Nullable WorkInfo workInfo) {
-                            if (workInfo != null) {
-                                if (workInfo.getState().isFinished()) {
-                                    final String output = getViewPagerContent(workInfo);
-                                    mButtonFavorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                        @Override
-                                        public void onCheckedChanged(final CompoundButton compoundButton, boolean isChecked) {
-                                            final ScaleAnimation scaleAnimation = new ScaleAnimation(0.7f, 1.0f, 0.7f, 1.0f, Animation.RELATIVE_TO_SELF, 0.7f, Animation.RELATIVE_TO_SELF, 0.7f);
-                                            scaleAnimation.setDuration(500);
-                                            BounceInterpolator bounceInterpolator = new BounceInterpolator();
-                                            scaleAnimation.setInterpolator(bounceInterpolator);
-                                            compoundButton.startAnimation(scaleAnimation);
-                                            if (isChecked) {
-                                                final Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.main_content), "ready to share..!", Snackbar.LENGTH_LONG)
-                                                        .setAction("OK", new View.OnClickListener() {
-                                                            @Override
-                                                            public void onClick(View view) {
-                                                                addItemsToAppPreference(output, index);
-                                                                compoundButton.setChecked(false);
-                                                            }
-                                                        }).setActionTextColor(getResources().getColor(android.R.color.holo_red_light));
-
-                                                snackbar.setAnchorView(getActivity().findViewById(R.id.fab));
-                                                snackbar.show();
-
-                                                Handler handler = new Handler();
-                                                handler.postDelayed(new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        compoundButton.setChecked(false);
-                                                    }
-                                                }, 3000);
-                                            }
-                                        }
-                                    });
-                                }
-                            }
-                        }
-                    });
-        }
-    }
 
     public void setupToggleDatabase(final String downloadId, final int index) {
         if (downloadId != null) {
@@ -317,24 +269,7 @@ public class ContentDetailFragment extends Fragment {
         }
     }
 
-    public void addItemsToAppPreference(final String output, final int index) {
 
-        try {
-            JSONArray input = new JSONArray(output);
-            JSONObject container = input.getJSONObject(index);
-            JSONObject metadata = (JSONObject) container.get(JSON_METADATA);
-            String url = (String) metadata.get(JSON_NAME);
-            AppPreferences.clearNameList(getContext());
-            ArrayList<String> meta = new ArrayList<>(AppPreferences.getName(getContext()));
-            meta.add(JOSEPHOPENINGSTATEMENT + System.lineSeparator());
-            meta.add(url + System.lineSeparator());
-            AppPreferences.clearNameList(getContext());
-            AppPreferences.setName(getContext(), meta);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void addItemtsToDataBase(final String output, final int index) {
 

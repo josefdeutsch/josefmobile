@@ -72,9 +72,11 @@ public class ArchiveActivityAdapter extends RecyclerView.Adapter<ArchiveActivity
         notifyDataSetChanged();
 
     }
+
     public Context getContext(){
         return mContext;
     }
+
     class ViewHolder extends RecyclerView.ViewHolder{
         public ImageView imageView;
         public ToggleButton mDelete;

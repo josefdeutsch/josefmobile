@@ -1,9 +1,7 @@
 package com.josef.mobile.free;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,7 +11,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -26,44 +23,29 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 import com.josef.josefmobile.R;
 import com.josef.mobile.data.Favourite;
 import com.josef.mobile.data.FavouriteViewModel;
-import com.josef.mobile.free.ui.ArchiveActivity;
 import com.josef.mobile.free.ui.ContentContainerFragment;
 import com.josef.mobile.free.ui.ModalFragment;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
-import com.josef.mobile.ui.SplashActivity;
 import com.josef.mobile.util.AppPreferences;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.josef.mobile.util.Config.JOSEPHOPENINGSTATEMENT;
 import static com.josef.mobile.util.Config.VIEWPAGER_AMOUNT;
 import static com.josef.mobile.util.Config.WORKREQUEST_LIST;
 
-public class ContentActivity extends BaseActivity implements  View.OnClickListener {
+public class ContentActivity extends LoginActivity implements  View.OnClickListener {
 
     private CoordinatorLayout mContentLayout;
     private ConstraintLayout mSignInLayout;
@@ -132,11 +114,6 @@ public class ContentActivity extends BaseActivity implements  View.OnClickListen
         buildGoogleApiClient(gso);
 
         setupFirebaseAuth();
-
-        AppPreferences.clearNameList(this);
-        ArrayList<String> meta = new ArrayList<>(AppPreferences.getName(this));
-        meta.add(JOSEPHOPENINGSTATEMENT + System.lineSeparator());
-
     }
 
     @Override

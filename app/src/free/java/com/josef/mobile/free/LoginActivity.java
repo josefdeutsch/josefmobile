@@ -34,7 +34,7 @@ import org.jetbrains.annotations.NotNull;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
-public class BaseActivity extends AppCompatActivity
+public class LoginActivity extends AppCompatActivity
         implements GoogleApiClient.OnConnectionFailedListener{
 
     public AlertDialog mDialog;
@@ -42,7 +42,7 @@ public class BaseActivity extends AppCompatActivity
     public FirebaseAuth mAuth;
     public FirebaseAuth.AuthStateListener mAuthListener;
     public GoogleApiClient mGoogleApiClient;
-    private static final String TAG = "BaseActivity";
+    private static final String TAG = "LoginActivity";
 
     public void setupFirebaseAuth() {
         mAuth = FirebaseAuth.getInstance();
