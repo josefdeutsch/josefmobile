@@ -1,4 +1,4 @@
-package com.josef.mobile.free.ui;
+package com.josef.mobile.free.util;
 
 import android.app.Dialog;
 import android.content.Context;

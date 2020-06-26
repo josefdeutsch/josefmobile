@@ -130,7 +130,9 @@ public class LoginActivity extends AppCompatActivity
         alert.show();
     }
 
-    public void updateUI(FirebaseUser user) {
+    public void updateUI(FirebaseUser user)
+
+    {
 
     }
 

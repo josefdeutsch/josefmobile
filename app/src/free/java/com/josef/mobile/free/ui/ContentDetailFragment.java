@@ -1,7 +1,9 @@
 package com.josef.mobile.free.ui;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,12 +33,15 @@ import com.josef.mobile.util.AppPreferences;
 import com.josef.mobile.data.Favourite;
 import com.josef.mobile.data.FavouriteViewModel;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
+
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.josef.mobile.util.Config.JOSEPHOPENINGSTATEMENT;
 import static com.josef.mobile.util.Config.WORKREQUEST_KEYTAST_OUTPUT;
@@ -51,7 +56,7 @@ public class ContentDetailFragment extends Fragment {
     public TextView mArticle;
     public TextView mArticleByLine;
     public View layoutInflater;
-    private com.josef.mobile.free.ui.VideoPlayer videoPlayer;
+    private com.josef.mobile.free.util.VideoPlayer videoPlayer;
     private String mDownloadId;
     private int index;
     private SimpleExoPlayerView mExoPlayerView;
@@ -59,12 +64,15 @@ public class ContentDetailFragment extends Fragment {
     private long mResumePosition;
     public ImageButton mPlayButton;
     private Object lock;
-    public static final String JSON_METADATA ="metadata";
-    public static final String JSON_NAME="name";
-    public static final String JSON_PNG="png";
-    public static final String JSON_URL="url";
+    public static final String JSON_METADATA = "metadata";
+    public static final String JSON_NAME = "name";
+    public static final String JSON_PNG = "png";
+    public static final String JSON_URL = "url";
     public static final String STATE_RESUME_WINDOW = "com.josef.mobile.free.ui.ContentDetailFragment.resumeWindow";
     public static final String STATE_RESUME_POSITION = "com.josef.mobile.free.ui.ContentDetailFragment.resumePosition";
+
+    private AtomicBoolean atomicBoolean = new AtomicBoolean();
+    private SharedPreferences mPrefs;
 
     public ContentDetailFragment() {
     }
@@ -89,7 +97,7 @@ public class ContentDetailFragment extends Fragment {
             mResumeWindow = savedInstanceState.getInt(STATE_RESUME_WINDOW);
             mResumePosition = savedInstanceState.getLong(STATE_RESUME_POSITION);
         }
-
+         mPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
     }
 
     @Override
@@ -99,7 +107,7 @@ public class ContentDetailFragment extends Fragment {
 
         setupUi();
 
-        videoPlayer = new com.josef.mobile.free.ui.VideoPlayer(getActivity(), layoutInflater, mExoPlayerView, mResumePosition, mResumeWindow);
+        videoPlayer = new com.josef.mobile.free.util.VideoPlayer(getActivity(), layoutInflater, mExoPlayerView, mResumePosition, mResumeWindow);
         mArticle.setText("Sculpture: " + index);
 
         setupExoPlayer(mDownloadId, index);
@@ -124,13 +132,13 @@ public class ContentDetailFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-         videoPlayer.matchesExoPlayerFullScreenConfig();
+        videoPlayer.matchesExoPlayerFullScreenConfig();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if(videoPlayer!=null) videoPlayer.withdrawExoPlayer();
+        if (videoPlayer != null) videoPlayer.withdrawExoPlayer();
         mResumePosition = videoPlayer.getmResumePosition();
         mResumeWindow = videoPlayer.getmResumeWindow();
 
@@ -172,7 +180,7 @@ public class ContentDetailFragment extends Fragment {
     }
 
     public void setupMediaSource(final String downloadId, final int index) {
-        if(downloadId!=null) {
+        if (downloadId != null) {
             WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(UUID.fromString(downloadId))
                     .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
                         @Override
@@ -238,17 +246,21 @@ public class ContentDetailFragment extends Fragment {
                                         public void onCheckedChanged(final CompoundButton compoundButton, boolean isChecked) {
                                             compoundButton.startAnimation(scaleAnimation);
                                             if (isChecked) {
-                                                final Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.main_content), "save item..?!", Snackbar.LENGTH_LONG)
-                                                        .setAction("OK", new View.OnClickListener() {
-                                                            @Override
-                                                            public void onClick(View view) {
-                                                                addItemtsToDataBase(output, index);
-                                                                compoundButton.setChecked(false);
-                                                            }
-                                                        }).setActionTextColor(getResources().getColor(android.R.color.holo_red_light));
+                                                Boolean lock = mPrefs.getBoolean("locked", false);
+                                                if(!lock) {
+                                                    final Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.main_content), "save item..?!", Snackbar.LENGTH_LONG)
+                                                            .setAction("OK", new View.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(View view) {
+                                                                    addItemtsToDataBase(output, index);
+                                                                    compoundButton.setChecked(false);
+                                                                }
+                                                            }).setActionTextColor(getResources().getColor(android.R.color.holo_red_light));
 
-                                                snackbar.setAnchorView(getActivity().findViewById(R.id.fab));
-                                                snackbar.show();
+                                                    snackbar.setAnchorView(getActivity().findViewById(R.id.fab));
+                                                    snackbar.show();
+                                                }
+                                                mPrefs.edit().putBoolean("locked", true).apply();
 
                                                 Handler handler = new Handler();
                                                 handler.postDelayed(new Runnable() {
@@ -270,16 +282,15 @@ public class ContentDetailFragment extends Fragment {
     }
 
 
-
     public void addItemtsToDataBase(final String output, final int index) {
 
         try {
             JSONArray input = new JSONArray(output);
             JSONObject container = input.getJSONObject(index);
             JSONObject metadata = (JSONObject) container.get(JSON_METADATA);
-            String name = (String) metadata.get(JSON_NAME);
+            String url = (String) metadata.get(JSON_URL);
             String png = (String) metadata.get(JSON_PNG);
-            Favourite favourite = new Favourite(png, name, 0);
+            Favourite favourite = new Favourite(png, url, 0);
             mFavouriteViewMode.insert(favourite);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -333,6 +344,7 @@ public class ContentDetailFragment extends Fragment {
         }
         return mIdlingResource;
     }
+
     private static String removeLastChar(String str) {
         return str.substring(0, str.length() - 22);
     }

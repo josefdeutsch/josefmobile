@@ -25,6 +25,7 @@ import com.josef.mobile.free.util.ArchiveActivityAdapter;
 import java.util.List;
 
 public class ModalFragment extends BottomSheetDialogFragment {
+
     private FavouriteViewModel favouriteViewModel;
 
 

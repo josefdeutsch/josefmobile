@@ -1,13 +1,17 @@
 package com.josef.mobile.free;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
@@ -19,6 +23,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.test.espresso.IdlingResource;
+
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -29,23 +34,26 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.gson.Gson;
 import com.josef.josefmobile.R;
 import com.josef.mobile.data.Favourite;
 import com.josef.mobile.data.FavouriteViewModel;
 import com.josef.mobile.free.ui.ContentContainerFragment;
 import com.josef.mobile.free.ui.ModalFragment;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
-import com.josef.mobile.util.AppPreferences;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.josef.mobile.util.Config.JOSEPHOPENINGSTATEMENT;
 import static com.josef.mobile.util.Config.VIEWPAGER_AMOUNT;
 import static com.josef.mobile.util.Config.WORKREQUEST_LIST;
 
-public class ContentActivity extends LoginActivity implements  View.OnClickListener {
+public class ContentActivity extends LoginActivity implements View.OnClickListener {
 
     private CoordinatorLayout mContentLayout;
     private ConstraintLayout mSignInLayout;
@@ -57,15 +65,24 @@ public class ContentActivity extends LoginActivity implements  View.OnClickListe
     private ArrayList<String> downloadId;
     private int mScrollY;
     public static final String SCROLLVIEWYPOSITION = "com.josef.mobile.free.ui.ContentActivity.scroll_view_y_position";
+    private AtomicBoolean atomicBoolean = new AtomicBoolean();
+    private SharedPreferences mPrefs;
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content);
-
+        atomicBoolean.set(true);
         mContentLayout = findViewById(R.id.main_content);
         mContentLayout.setVisibility(LinearLayout.GONE);
         mSignInLayout = findViewById(R.id.signIn_layout);
+
+        //Boolean lock = mPrefs.getBoolean("locked", false);
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        mPrefs.edit().putBoolean("locked", false).apply();
+        // andere Behaviour???
+
+        favouriteViewModel = ViewModelProviders.of(ContentActivity.this).get(FavouriteViewModel.class);
+
 
         if (savedInstanceState == null) {
             downloadId = getIntent().getStringArrayListExtra(WORKREQUEST_LIST);
@@ -170,7 +187,7 @@ public class ContentActivity extends LoginActivity implements  View.OnClickListe
     @Override
     public void updateUI(FirebaseUser user) {
         if (user != null) {
-            userId=user.getUid();
+            userId = user.getUid();
             mSignInLayout.setVisibility(LinearLayout.GONE);
             mContentLayout.setVisibility(LinearLayout.VISIBLE);
         }
@@ -213,37 +230,63 @@ public class ContentActivity extends LoginActivity implements  View.OnClickListe
         return super.onOptionsItemSelected(item);
     }
 
+
     public void performFloatingAction(View view) {
+        if (atomicBoolean.get() == true) {
+            CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.main_content);
+            final Snackbar snackbar = Snackbar.make(coordinatorLayout, "share items..?! ", Snackbar.LENGTH_LONG)
+                    .setAction("OK", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            push();
+                        }
+                    }).setActionTextColor(getResources().getColor(android.R.color.holo_red_light));
+            snackbar.setAnchorView(R.id.fab);
+            snackbar.show();
+            atomicBoolean.set(false);
+        }
+    }
 
-        CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.main_content);
-        final Snackbar snackbar = Snackbar.make(coordinatorLayout, "share items..?! ", Snackbar.LENGTH_LONG)
-                .setAction("OK", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
+    private void push() {
+        if (favouriteViewModel != null) {
+            favouriteViewModel.getAllNotes().observe(ContentActivity.this, new Observer<List<Favourite>>() {
+                @Override
+                public void onChanged(@Nullable List<Favourite> favourites) {
 
-                        favouriteViewModel = ViewModelProviders.of(ContentActivity.this).get(FavouriteViewModel.class);
-                        favouriteViewModel.getAllNotes().observe(ContentActivity.this, new Observer<List<Favourite>>() {
-                            @Override
-                            public void onChanged(@Nullable List<Favourite> favourites) {
-                                FirebaseDatabase database = FirebaseDatabase.getInstance();//
-                                DatabaseReference myRef = database.getReference("users");
-                                List<String> meta = new ArrayList<>();
-                                int len = favourites.size();
-                                for (int i = 0; i <=len-1 ; i++) {
-                                meta.add(favourites.get(i).getDescription());
-                                }
-                                Gson gson = new Gson();
-                                String serial = gson.toJson(meta);
-                                Data data = new Data("bild3,", "uschi", serial);
-                                myRef.child(userId).setValue(data);
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();//
+                    final DatabaseReference myRef = database.getReference("users");
+                    int len = favourites.size();
+                    Data string = null;
+                    try {
+                        JSONObject jsonObject = new JSONObject();
+                        JSONArray googlevideos = new JSONArray();
+                        JSONObject data = new JSONObject();
+                        JSONArray sources = new JSONArray();
+                        for (int i = 0; i <= len - 1; i++) {
+                            JSONObject sum = new JSONObject();
+                            sum.put("description", "LoremIpsum...");
+                            JSONArray path = new JSONArray();
+                            path.put(favourites.get(i).getTitle());
+                            sum.put("sources", path);
+                            sum.put("card", favourites.get(i).getDescription());
+                            sum.put("background", favourites.get(i).getDescription());
+                            sum.put("title", "material");
+                            sum.put("studio", "Google+");
+                            sources.put(sum);
+                        }
+                        data.put("category", "Google+");
+                        data.put("videos", sources);
+                        googlevideos.put(data);
+                        jsonObject.put("googlevideos", googlevideos);
+                        string = new Data(jsonObject.toString(), "", "");
 
-                            }
-                        });
-
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                }).setActionTextColor(getResources().getColor(android.R.color.holo_red_light));
-        snackbar.setAnchorView(R.id.fab);
-        snackbar.show();
+                    myRef.child(userId).setValue(string);
+                }
+            });
+        }
     }
 
     @Nullable
