@@ -31,6 +31,8 @@ public class ContentContainerFragment extends Fragment {
     private View layoutInflater;
     private ContentDetailFragment mHomeFragment;
 
+    //
+
     public ContentContainerFragment() {
 
     }
