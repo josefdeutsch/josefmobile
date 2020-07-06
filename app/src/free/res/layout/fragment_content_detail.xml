@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#000000"
+    android:background="@color/colorWhite"
     android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground"
     card_view:cardElevation="1dp"
@@ -23,26 +23,28 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorBlack"
+            android:background="@color/colorWhite"
             android:orientation="vertical"
             android:paddingTop="8dp">
 
             <TextView
                 android:id="@+id/article_title"
                 style="?android:attr/textAppearanceLarge"
+                android:fontFamily="@font/robotolight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textColor="#fff"
+                android:textColor="@color/colorBlack"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/article_byline"
                 style="?android:attr/textAppearanceMedium"
+                android:fontFamily="@font/robotolight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                android:textColor="#8fff" />
+                android:textColor="@color/colorBlack" />
         </LinearLayout>
 
     </com.josef.mobile.util.MaxWidthLinearLayout>
@@ -65,7 +67,7 @@
         android:layout_width="match_parent"
         android:layout_height="256dp"
         android:layout_below="@id/maxwidthlayout_container"
-        android:background="@color/colorBlack">
+        android:background="@color/colorWhite">
 
         <com.google.android.exoplayer2.ui.SimpleExoPlayerView
             android:id="@+id/exoplayer"
