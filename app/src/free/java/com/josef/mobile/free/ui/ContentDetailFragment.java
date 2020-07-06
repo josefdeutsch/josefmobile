@@ -117,6 +117,8 @@ public class ContentDetailFragment extends Fragment {
         setupPlayButton(mDownloadId, index);
         setupToggleDatabase(mDownloadId, index);
 
+        mExoPlayerView.setControllerAutoShow(false);
+
         return layoutInflater;
     }
 
@@ -246,8 +248,8 @@ public class ContentDetailFragment extends Fragment {
                                         public void onCheckedChanged(final CompoundButton compoundButton, boolean isChecked) {
                                             compoundButton.startAnimation(scaleAnimation);
                                             if (isChecked) {
-                                                Boolean lock = mPrefs.getBoolean("locked", false);
-                                                if(!lock) {
+                                               // Boolean lock = mPrefs.getBoolean("locked", false);
+                                               // if(!lock) {
                                                     final Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.main_content), "save item..?!", Snackbar.LENGTH_LONG)
                                                             .setAction("OK", new View.OnClickListener() {
                                                                 @Override
@@ -259,7 +261,7 @@ public class ContentDetailFragment extends Fragment {
 
                                                     snackbar.setAnchorView(getActivity().findViewById(R.id.fab));
                                                     snackbar.show();
-                                                }
+                                              //  }
                                                 mPrefs.edit().putBoolean("locked", true).apply();
 
                                                 Handler handler = new Handler();
