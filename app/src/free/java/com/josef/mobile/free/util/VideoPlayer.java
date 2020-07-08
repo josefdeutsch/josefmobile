@@ -8,26 +8,35 @@ import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
+import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
+import com.google.android.exoplayer2.PlaybackParameters;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.extractor.ExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.PlaybackControlView;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
@@ -67,6 +76,70 @@ public class VideoPlayer {
 
         @Override
         public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+        }
+    };
+
+    private Player.EventListener playerListener = new Player.EventListener() {
+        @Override
+        public void onTimelineChanged(Timeline timeline, Object manifest) {
+
+        }
+
+        @Override
+        public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+
+        }
+
+        @Override
+        public void onLoadingChanged(boolean isLoading) {
+
+        }
+
+        @Override
+        public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+            if (playbackState == Player.STATE_READY && playWhenReady) {
+
+
+            } else if (playbackState == Player.STATE_READY) {
+
+
+            } else if (playbackState == Player.STATE_ENDED) {
+                mExoPlayerView.getPlayer().release();
+                ImageButton playbutton = layoutInflater.findViewById(R.id.exo_play);
+                Picasso.get().load(mPng).into(target);
+                initExoPlayer();
+                initFullscreenButton();
+                initFullscreenDialog();
+                playbutton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        MediaSource videoSource = buildMediaSource(mVideoUrl);
+                        mExoPlayerView.getPlayer().prepare(videoSource);
+                        mExoPlayerView.getPlayer().setPlayWhenReady(true);
+                    }
+                });
+            }
+
+        }
+
+        @Override
+        public void onRepeatModeChanged(int repeatMode) {
+
+        }
+
+        @Override
+        public void onPlayerError(ExoPlaybackException error) {
+
+        }
+
+        @Override
+        public void onPositionDiscontinuity() {
+
+        }
+
+        @Override
+        public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
 
         }
     };
@@ -170,6 +243,7 @@ public class VideoPlayer {
         LoadControl loadControl = new DefaultLoadControl();
         SimpleExoPlayer player = ExoPlayerFactory.newSimpleInstance(new DefaultRenderersFactory(mContext), trackSelector, loadControl);
         mExoPlayerView.setPlayer(player);
+        mExoPlayerView.getPlayer().addListener(playerListener);
 
     }
 
@@ -191,8 +265,10 @@ public class VideoPlayer {
         mExoPlayerView.getPlayer().setPlayWhenReady(true);
     }
 
-    private void supplyExoPlayer(String videoURL) {
+    private String mVideoUrl;
 
+    private void supplyExoPlayer(String videoURL) {
+        mVideoUrl = videoURL;
         MediaSource videoSource = buildMediaSource(videoURL);
         mExoPlayerView.getPlayer().prepare(videoSource);
         mExoPlayerView.getPlayer().setPlayWhenReady(true);
@@ -229,11 +305,13 @@ public class VideoPlayer {
         }
     }
 
-    private void postThumbnailIntoExoplayer(String png) {
+    private String mPng;
 
+    private void postThumbnailIntoExoplayer(String png) {
+        mPng = png;
         if (png != null && !png.isEmpty()) {
             Picasso.get().load(png).into(target);
-        }else{
+        } else {
 
         }
     }

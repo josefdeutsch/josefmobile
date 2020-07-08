@@ -26,12 +26,6 @@ import androidx.work.Data;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
-import com.google.android.exoplayer2.ExoPlaybackException;
-import com.google.android.exoplayer2.PlaybackParameters;
-import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.Timeline;
-import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.material.snackbar.Snackbar;
 import com.josef.josefmobile.R;
@@ -54,13 +48,11 @@ import static com.josef.mobile.util.Config.WORKREQUEST_KEYTAST_OUTPUT;
 import static com.josef.mobile.util.Config.VIEWPAGERDETAILKEY;
 import static com.josef.mobile.util.Config.WORKREQUEST_DOWNLOADID;
 
-public class ContentDetailFragment extends Fragment {
+public class AdFragment extends Fragment {
 
     private FavouriteViewModel mFavouriteViewMode;
     public ToggleButton mButtonFavorite;
     public ToggleButton mButtonDataBase;
-    public TextView mArticle;
-    public TextView mArticleByLine;
     public View layoutInflater;
     private com.josef.mobile.free.util.VideoPlayer videoPlayer;
     private String mDownloadId;
@@ -80,7 +72,7 @@ public class ContentDetailFragment extends Fragment {
     private AtomicBoolean atomicBoolean = new AtomicBoolean();
     private SharedPreferences mPrefs;
 
-    public ContentDetailFragment() {
+    public AdFragment() {
     }
 
     public static ContentDetailFragment newInstance(String which, int index) {
@@ -103,28 +95,23 @@ public class ContentDetailFragment extends Fragment {
             mResumeWindow = savedInstanceState.getInt(STATE_RESUME_WINDOW);
             mResumePosition = savedInstanceState.getLong(STATE_RESUME_POSITION);
         }
-         mPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        layoutInflater = inflater.inflate(R.layout.fragment_content_detail, container, false);
+        layoutInflater = inflater.inflate(R.layout.fragment_ad, container, false);
 
         setupUi();
 
-        videoPlayer = new com.josef.mobile.free.util.VideoPlayer(getActivity(),
-                layoutInflater, mExoPlayerView, mResumePosition, mResumeWindow);
-        mArticle.setText("Sculpture: " + index);
+        videoPlayer = new com.josef.mobile.free.util.VideoPlayer(getActivity(), layoutInflater, mExoPlayerView, mResumePosition, mResumeWindow);
 
         setupExoPlayer(mDownloadId, index);
 
-        setupSubHeader(mDownloadId, index);
-
         setupPlayButton(mDownloadId, index);
-        setupToggleDatabase(mDownloadId, index);
 
-        mExoPlayerView.setControllerAutoShow(false);
+        //mExoPlayerView.setControllerAutoShow(false);
 
         return layoutInflater;
     }
@@ -165,11 +152,7 @@ public class ContentDetailFragment extends Fragment {
     }
 
     private void setupUi() {
-        mFavouriteViewMode = ViewModelProviders.of(this).get(FavouriteViewModel.class);
-        mExoPlayerView = layoutInflater.findViewById(R.id.exoplayer);
-        mArticle = layoutInflater.findViewById(R.id.article_title);
-        mArticleByLine = layoutInflater.findViewById(R.id.article_byline);
-        mButtonDataBase = layoutInflater.findViewById(R.id.button_favorite2);
+        mExoPlayerView = layoutInflater.findViewById(R.id.exoplayers);
         mPlayButton = layoutInflater.findViewById(R.id.exo_play);
     }
 
@@ -236,104 +219,10 @@ public class ContentDetailFragment extends Fragment {
     }
 
 
-    public void setupToggleDatabase(final String downloadId, final int index) {
-        if (downloadId != null) {
-            WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(UUID.fromString(downloadId))
-                    .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
-                        @Override
-                        public void onChanged(@Nullable WorkInfo workInfo) {
-                            if (workInfo != null) {
-                                if (workInfo.getState().isFinished()) {
-                                    final String output = getViewPagerContent(workInfo);
-                                    final ScaleAnimation scaleAnimation = new ScaleAnimation(0.7f, 1.0f, 0.7f, 1.0f, Animation.RELATIVE_TO_SELF, 0.7f, Animation.RELATIVE_TO_SELF, 0.7f);
-                                    scaleAnimation.setDuration(500);
-                                    BounceInterpolator bounceInterpolator = new BounceInterpolator();
-                                    scaleAnimation.setInterpolator(bounceInterpolator);
-
-                                    mButtonDataBase.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                        @Override
-                                        public void onCheckedChanged(final CompoundButton compoundButton, boolean isChecked) {
-                                            compoundButton.startAnimation(scaleAnimation);
-                                            if (isChecked) {
-                                               // Boolean lock = mPrefs.getBoolean("locked", false);
-                                               // if(!lock) {
-                                                    final Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.main_content), "save item..?!", Snackbar.LENGTH_LONG)
-                                                            .setAction("OK", new View.OnClickListener() {
-                                                                @Override
-                                                                public void onClick(View view) {
-                                                                    addItemtsToDataBase(output, index);
-                                                                    compoundButton.setChecked(false);
-                                                                }
-                                                            }).setActionTextColor(getResources().getColor(android.R.color.holo_red_light));
-
-                                                    snackbar.setAnchorView(getActivity().findViewById(R.id.fab));
-                                                    snackbar.show();
-                                              //  }
-                                                mPrefs.edit().putBoolean("locked", true).apply();
-
-                                                Handler handler = new Handler();
-                                                handler.postDelayed(new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        compoundButton.setChecked(false);
-                                                    }
-                                                }, 3000);
-                                            } else {
-
-                                            }
-                                        }
-                                    });
-                                }
-                            }
-                        }
-                    });
-        }
-    }
 
 
-    public void addItemtsToDataBase(final String output, final int index) {
-
-        try {
-            JSONArray input = new JSONArray(output);
-            JSONObject container = input.getJSONObject(index);
-            JSONObject metadata = (JSONObject) container.get(JSON_METADATA);
-            String url = (String) metadata.get(JSON_URL);
-            String png = (String) metadata.get(JSON_PNG);
-            Favourite favourite = new Favourite(png, url, 0);
-            mFavouriteViewMode.insert(favourite);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-    }
 
 
-    private void setupSubHeader(final String downloadId, final int index) {
-        if (downloadId != null) {
-            WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(UUID.fromString(downloadId))
-                    .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
-                        @Override
-                        public void onChanged(@Nullable WorkInfo workInfo) {
-                            if (workInfo != null) {
-                                if (workInfo.getState().isFinished()) {
-                                    String output = getViewPagerContent(workInfo);
-                                    try {
-                                        JSONArray input = new JSONArray(output);
-                                        JSONObject container = input.getJSONObject(index);
-                                        JSONObject metadata = (JSONObject) container.get(JSON_METADATA);
-                                        String name = (String) metadata.get(JSON_NAME);
-                                      //  name = removeLastChar(name);
-                                        mArticleByLine.setText(name);
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }
-                        }
-                    });
-        }
-    }
 
     @Nullable
     private String getViewPagerContent(@NotNull WorkInfo workInfo) {
@@ -357,5 +246,4 @@ public class ContentDetailFragment extends Fragment {
     private static String removeLastChar(String str) {
         return str.substring(0, str.length() - 22);
     }
-
 }

@@ -35,6 +35,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.josef.josefmobile.R;
 import com.josef.mobile.data.Favourite;
 import com.josef.mobile.data.FavouriteViewModel;
+import com.josef.mobile.free.ui.AdFragment;
 import com.josef.mobile.free.ui.ContentContainerFragment;
 import com.josef.mobile.free.ui.ModalFragment;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
@@ -73,7 +74,6 @@ public class ContentActivity extends LoginActivity implements View.OnClickListen
         //Boolean lock = mPrefs.getBoolean("locked", false);
         mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         mPrefs.edit().putBoolean("locked", false).apply();
-        // andere Behaviour???
 
         favouriteViewModel = ViewModelProviders.of(ContentActivity.this).get(FavouriteViewModel.class);
 
@@ -81,22 +81,18 @@ public class ContentActivity extends LoginActivity implements View.OnClickListen
         if (savedInstanceState == null) {
             downloadId = getIntent().getStringArrayListExtra(WORKREQUEST_LIST);
             amount = getIntent().getIntExtra(VIEWPAGER_AMOUNT, 0);
-          //  FragmentTransaction fm = getSupportFragmentManager().beginTransaction();
-
-
             for (int index = 0; index <= amount - 1; index++) {
                 if(index==0){
+
                     getSupportFragmentManager().beginTransaction()
                             .add(R.id.ad_fragment, ContentContainerFragment.newInstance(downloadId.get(index)))
                             .commit();
-
                 }else{
                     getSupportFragmentManager().beginTransaction()
                             .add(R.id.container, ContentContainerFragment.newInstance(downloadId.get(index)))
                             .commit();
                 }
             }
-           // fm.commit();
         }
 
         if (savedInstanceState != null)

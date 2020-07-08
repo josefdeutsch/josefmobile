@@ -16,7 +16,7 @@
         android:id="@+id/main_media_frame"
         android:layout_width="match_parent"
         android:layout_height="256dp"
-        android:background="@color/brown">
+        android:background="@color/colorWhite">
 
         <com.google.android.exoplayer2.ui.SimpleExoPlayerView
             android:id="@+id/exoplayer"
