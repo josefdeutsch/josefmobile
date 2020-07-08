@@ -4,14 +4,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
@@ -23,7 +22,6 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.test.espresso.IdlingResource;
-
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -40,16 +38,12 @@ import com.josef.mobile.data.FavouriteViewModel;
 import com.josef.mobile.free.ui.ContentContainerFragment;
 import com.josef.mobile.free.ui.ModalFragment;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import static com.josef.mobile.util.Config.JOSEPHOPENINGSTATEMENT;
 import static com.josef.mobile.util.Config.VIEWPAGER_AMOUNT;
 import static com.josef.mobile.util.Config.WORKREQUEST_LIST;
 
@@ -87,13 +81,22 @@ public class ContentActivity extends LoginActivity implements View.OnClickListen
         if (savedInstanceState == null) {
             downloadId = getIntent().getStringArrayListExtra(WORKREQUEST_LIST);
             amount = getIntent().getIntExtra(VIEWPAGER_AMOUNT, 0);
-            FragmentTransaction fm = getSupportFragmentManager().beginTransaction();
+          //  FragmentTransaction fm = getSupportFragmentManager().beginTransaction();
+
+
             for (int index = 0; index <= amount - 1; index++) {
-                getSupportFragmentManager().beginTransaction()
-                        .add(R.id.container, ContentContainerFragment.newInstance(downloadId.get(index)))
-                        .commit();
+                if(index==0){
+                    getSupportFragmentManager().beginTransaction()
+                            .add(R.id.ad_fragment, ContentContainerFragment.newInstance(downloadId.get(index)))
+                            .commit();
+
+                }else{
+                    getSupportFragmentManager().beginTransaction()
+                            .add(R.id.container, ContentContainerFragment.newInstance(downloadId.get(index)))
+                            .commit();
+                }
             }
-            fm.commit();
+           // fm.commit();
         }
 
         if (savedInstanceState != null)

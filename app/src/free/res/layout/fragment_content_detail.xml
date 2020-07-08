@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -15,14 +16,15 @@
         android:id="@+id/main_media_frame"
         android:layout_width="match_parent"
         android:layout_height="256dp"
-
         android:background="@color/brown">
 
         <com.google.android.exoplayer2.ui.SimpleExoPlayerView
             android:id="@+id/exoplayer"
             android:layout_width="match_parent"
             android:layout_height="256dp"
-            android:gravity="center"></com.google.android.exoplayer2.ui.SimpleExoPlayerView>
+            android:gravity="center"
+            app:default_artwork="@drawable/ic_webdesignsvg_02"
+            app:use_artwork="true"></com.google.android.exoplayer2.ui.SimpleExoPlayerView>
     </FrameLayout>
 
     <com.josef.mobile.util.MaxWidthLinearLayout

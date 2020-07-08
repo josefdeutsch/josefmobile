@@ -117,7 +117,7 @@ public class ContentDetailFragment extends Fragment {
         setupPlayButton(mDownloadId, index);
         setupToggleDatabase(mDownloadId, index);
 
-        mExoPlayerView.setControllerAutoShow(false);
+        //mExoPlayerView.setControllerAutoShow(false);
 
         return layoutInflater;
     }
@@ -315,7 +315,7 @@ public class ContentDetailFragment extends Fragment {
                                         JSONObject container = input.getJSONObject(index);
                                         JSONObject metadata = (JSONObject) container.get(JSON_METADATA);
                                         String name = (String) metadata.get(JSON_NAME);
-                                        name = removeLastChar(name);
+                                      //  name = removeLastChar(name);
                                         mArticleByLine.setText(name);
 
                                     } catch (JSONException e) {

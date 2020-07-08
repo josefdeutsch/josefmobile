@@ -112,10 +112,11 @@ public class Echo {
     // [END echo_api_key]
 
     private Message doEcho(Message message, Integer n) {
-        if(n == 0){message.setMessage("3");}
-        else if(n == 1){message.setMessage(Data.project3gold);}
-        else if(n == 2){message.setMessage(Data.project2silver);}
-        else if(n == 3){message.setMessage(Data.project1bronze);}
+        if(n == 0){message.setMessage("4");}
+        else if(n == 1){message.setMessage(Data.adFragment);}
+        else if(n == 2){message.setMessage(Data.project3gold);}
+        else if(n == 3){message.setMessage(Data.project2silver);}
+        else if(n == 4){message.setMessage(Data.project1bronze);}
         return message;
     }
 

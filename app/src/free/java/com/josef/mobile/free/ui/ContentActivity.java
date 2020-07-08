@@ -57,8 +57,10 @@ public class ContentActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             downloadId = getIntent().getStringArrayListExtra(WORKREQUEST_LIST);
             amount = getIntent().getIntExtra(VIEWPAGER_AMOUNT, 0);
+
             FragmentTransaction fm = getSupportFragmentManager().beginTransaction();
             for (int index = 0; index <= amount - 1; index++) {
+
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.container, ContentContainerFragment.newInstance(downloadId.get(index)))
                         .commit();
@@ -84,7 +86,7 @@ public class ContentActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_settings:
-                        Log.d(TAG, "onOptionsItemSelected: " + "hellobottombar");
+
                         break;
                     case R.id.app_bar_archieve:
 
@@ -92,11 +94,12 @@ public class ContentActivity extends AppCompatActivity {
                 return true;
             }
         });
-        setupNestedScrollView();
 
+        setupNestedScrollView();
         AppPreferences.clearNameList(this);
         ArrayList<String> meta = new ArrayList<>(AppPreferences.getName(this));
         meta.add(JOSEPHOPENINGSTATEMENT + System.lineSeparator());
+
     }
 
     @Override
@@ -225,9 +228,6 @@ public class ContentActivity extends AppCompatActivity {
      * }
      * };
      **/
-
-
-
 
 
     @Nullable
