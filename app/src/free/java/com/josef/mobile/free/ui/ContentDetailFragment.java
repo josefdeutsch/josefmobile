@@ -94,7 +94,6 @@ public class ContentDetailFragment extends VideoPlayer {
     private SharedPreferences mPrefs;
 
 
-
     public ContentDetailFragment() {
     }
 
@@ -119,6 +118,8 @@ public class ContentDetailFragment extends VideoPlayer {
             mResumePosition = savedInstanceState.getLong(STATE_RESUME_POSITION);
             mExoPlayerFullscreen = savedInstanceState.getBoolean(STATE_BOOLEAN_VALUE);
         }
+        initFullscreenDialog();
+
         mPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
     }
 
@@ -130,15 +131,25 @@ public class ContentDetailFragment extends VideoPlayer {
 
         setupUi();
 
-        mArticle.setText("Sculpture: " + index);
+        if (mExoPlayerFullscreen) {
+            // initFullscreenDialog();
+            openFullscreenDialog();
+            matchesExoPlayerFullScreenConfig();
+        }
 
+        mArticle.setText("Sculpture: " + index);
         //setupSubHeader(mDownloadId, index);
+
+        initFullScreenButton();
 
         setupExoPlayer(mDownloadId, index);
 
         setupPlayButton(mDownloadId, index);
 
         setupToggleDatabase(mDownloadId, index);
+
+       // verifyFullscreen(mDownloadId, index);
+
 
         return layoutInflater;
     }
@@ -156,7 +167,12 @@ public class ContentDetailFragment extends VideoPlayer {
     @Override
     public void onStart() {
         super.onStart();
-        matchesExoPlayerFullScreenConfig();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
     }
 
     @Override
@@ -177,28 +193,14 @@ public class ContentDetailFragment extends VideoPlayer {
                 mPlayer.setPlayWhenReady(false);
         }
     }
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        //mExoPlayerFullscreen=false;
-        //setupExoPlayer(mDownloadId, index);
-        //openFullscreenDialog();
-
-    }
 
 
     private void setupUi() {
         mFavouriteViewMode = ViewModelProviders.of(this).get(FavouriteViewModel.class);
-
         mPlayerView = layoutInflater.findViewById(R.id.player);
-
-        //  mFullScreenIcon = mPlayerView.findViewById(R.id.exo_fullscreen_icon);
-//        mFullScreenButton = mPlayerView.findViewById(R.id.exo_fullscreen_button);
-
+        mFullScreenIcon = mPlayerView.findViewById(R.id.exo_fullscreen_icon);
+        mFullScreenButton = mPlayerView.findViewById(R.id.exo_fullscreen_button);
         mPlayButton = layoutInflater.findViewById(R.id.exo_play);
-
-        //  playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_HEIGHT);
-
         mArticle = layoutInflater.findViewById(R.id.article_title);
         mArticleByLine = layoutInflater.findViewById(R.id.article_byline);
         mButtonDataBase = layoutInflater.findViewById(R.id.button_favorite2);
@@ -263,8 +265,7 @@ public class ContentDetailFragment extends VideoPlayer {
                                 if (workInfo.getState().isFinished()) {
                                     // final String output = getViewPagerContent(workInfo);
                                     initExoPlayer(getContext());
-                                    initFullscreenDialog();
-                                    initFullScreenButton();
+
                                 }
                             }
                         }
@@ -368,6 +369,9 @@ public class ContentDetailFragment extends VideoPlayer {
                     });
         }
     }
+
+
+
 
     @Nullable
     private String getViewPagerContent(@NotNull WorkInfo workInfo) {

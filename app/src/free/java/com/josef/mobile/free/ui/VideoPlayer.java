@@ -58,7 +58,6 @@ public class VideoPlayer extends Fragment {
             mFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_fullscreen_skrink));
             mFullScreenDialog.show();
         }
-
     }
 
     protected void withdrawExoPlayer() {
