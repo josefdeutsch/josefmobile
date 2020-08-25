@@ -1,5 +1,6 @@
 package com.josef.mobile.free;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,22 +12,26 @@ import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.widget.NestedScrollView;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.test.espresso.IdlingResource;
+
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseUser;
@@ -35,16 +40,20 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.josef.josefmobile.R;
 import com.josef.mobile.data.Favourite;
 import com.josef.mobile.data.FavouriteViewModel;
-import com.josef.mobile.free.ui.AdFragment;
 import com.josef.mobile.free.ui.ContentContainerFragment;
 import com.josef.mobile.free.ui.ModalFragment;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
+import com.josef.mobile.ui.SplashActivity;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.josef.mobile.util.Config.VIEWPAGER_AMOUNT;
 import static com.josef.mobile.util.Config.WORKREQUEST_LIST;
 
@@ -77,19 +86,17 @@ public class ContentActivity extends LoginActivity implements View.OnClickListen
 
         favouriteViewModel = ViewModelProviders.of(ContentActivity.this).get(FavouriteViewModel.class);
 
-
         if (savedInstanceState == null) {
             downloadId = getIntent().getStringArrayListExtra(WORKREQUEST_LIST);
             amount = getIntent().getIntExtra(VIEWPAGER_AMOUNT, 0);
             for (int index = 0; index <= amount - 1; index++) {
-                if(index==0){
-
-                    getSupportFragmentManager().beginTransaction()
-                            .add(R.id.ad_fragment, ContentContainerFragment.newInstance(downloadId.get(index)))
-                            .commit();
-                }else{
+                if (index >= 1) {
                     getSupportFragmentManager().beginTransaction()
                             .add(R.id.container, ContentContainerFragment.newInstance(downloadId.get(index)))
+                            .commit();
+                } else {
+                    getSupportFragmentManager().beginTransaction()
+                            .add(R.id.ad_fragment, ContentContainerFragment.newInstance(downloadId.get(index)))
                             .commit();
                 }
             }
@@ -231,17 +238,35 @@ public class ContentActivity extends LoginActivity implements View.OnClickListen
 
 
     public void performFloatingAction(View view) {
+        /**   if (atomicBoolean.get() == true) {
+         CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.main_content);
+         final Snackbar snackbar = Snackbar.make(coordinatorLayout, "share items..?! ", Snackbar.LENGTH_LONG)
+         .setAction("OK", new View.OnClickListener() {
+        @Override public void onClick(View view) {
+        push();
+        }
+        }).setActionTextColor(getResources().getColor(android.R.color.holo_red_light));
+         snackbar.setAnchorView(R.id.fab);
+         snackbar.show();
+         atomicBoolean.set(false);
+         }**/
         if (atomicBoolean.get() == true) {
-            CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.main_content);
-            final Snackbar snackbar = Snackbar.make(coordinatorLayout, "share items..?! ", Snackbar.LENGTH_LONG)
-                    .setAction("OK", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            push();
-                        }
-                    }).setActionTextColor(getResources().getColor(android.R.color.holo_red_light));
-            snackbar.setAnchorView(R.id.fab);
-            snackbar.show();
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.setMessage(R.string.sync);
+            alert.setCancelable(false);
+            alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    push();
+                }
+            });
+            alert.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+            alert.show();
             atomicBoolean.set(false);
         }
     }

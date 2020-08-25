@@ -11,12 +11,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        >
 
         <activity android:name="com.josef.mobile.free.GoogleSignInActivity"></activity>
 
         <activity android:name="com.josef.mobile.free.ui.ContentActivity"
-            android:parentActivityName="com.josef.mobile.free.ui.ContentActivity"></activity>
+            android:parentActivityName="com.josef.mobile.free.ui.ContentActivity"
+            ></activity>
 
         <activity android:name="com.josef.mobile.free.ContentActivity"
             android:parentActivityName="com.josef.mobile.free.ContentActivity"></activity>

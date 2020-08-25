@@ -28,7 +28,6 @@ public class ModalFragment extends BottomSheetDialogFragment {
 
     private FavouriteViewModel favouriteViewModel;
 
-
     private final ArchiveActivityAdapter.OnDeleteCallBack onDeleteCallBack = new ArchiveActivityAdapter.OnDeleteCallBack() {
         @Override
         public void delete(final Favourite note) {

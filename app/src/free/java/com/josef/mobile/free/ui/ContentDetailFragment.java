@@ -1,9 +1,14 @@
 package com.josef.mobile.free.ui;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,13 +16,16 @@ import android.view.animation.Animation;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -26,16 +34,26 @@ import androidx.work.Data;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
-import com.google.android.exoplayer2.ExoPlaybackException;
-import com.google.android.exoplayer2.PlaybackParameters;
-import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.Timeline;
-import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.DefaultRenderersFactory;
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.LoadControl;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.ProgressiveMediaSource;
+import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.ui.PlayerControlView;
+import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.exoplayer2.upstream.BandwidthMeter;
+import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.util.Util;
 import com.google.android.material.snackbar.Snackbar;
 import com.josef.josefmobile.R;
-import com.josef.mobile.util.AppPreferences;
 import com.josef.mobile.data.Favourite;
 import com.josef.mobile.data.FavouriteViewModel;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
@@ -45,40 +63,37 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static com.josef.mobile.util.Config.JOSEPHOPENINGSTATEMENT;
+import static com.josef.mobile.ui.ErrorActivity.TAG;
 import static com.josef.mobile.util.Config.WORKREQUEST_KEYTAST_OUTPUT;
 import static com.josef.mobile.util.Config.VIEWPAGERDETAILKEY;
 import static com.josef.mobile.util.Config.WORKREQUEST_DOWNLOADID;
 
-public class ContentDetailFragment extends Fragment {
+public class ContentDetailFragment extends VideoPlayer {
 
     private FavouriteViewModel mFavouriteViewMode;
     public ToggleButton mButtonFavorite;
     public ToggleButton mButtonDataBase;
     public TextView mArticle;
     public TextView mArticleByLine;
-    public View layoutInflater;
-    private com.josef.mobile.free.util.VideoPlayer videoPlayer;
     private String mDownloadId;
     private int index;
-    private SimpleExoPlayerView mExoPlayerView;
-    private int mResumeWindow;
-    private long mResumePosition;
     public ImageButton mPlayButton;
     private Object lock;
+
     public static final String JSON_METADATA = "metadata";
     public static final String JSON_NAME = "name";
     public static final String JSON_PNG = "png";
     public static final String JSON_URL = "url";
     public static final String STATE_RESUME_WINDOW = "com.josef.mobile.free.ui.ContentDetailFragment.resumeWindow";
     public static final String STATE_RESUME_POSITION = "com.josef.mobile.free.ui.ContentDetailFragment.resumePosition";
+    public static final String STATE_BOOLEAN_VALUE = "com.josef.mobile.free.ui.ContentDetailFragment.value";
 
-    private AtomicBoolean atomicBoolean = new AtomicBoolean();
     private SharedPreferences mPrefs;
+
+
 
     public ContentDetailFragment() {
     }
@@ -102,8 +117,9 @@ public class ContentDetailFragment extends Fragment {
         if (savedInstanceState != null) {
             mResumeWindow = savedInstanceState.getInt(STATE_RESUME_WINDOW);
             mResumePosition = savedInstanceState.getLong(STATE_RESUME_POSITION);
+            mExoPlayerFullscreen = savedInstanceState.getBoolean(STATE_BOOLEAN_VALUE);
         }
-         mPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
     }
 
     @Override
@@ -111,20 +127,18 @@ public class ContentDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         layoutInflater = inflater.inflate(R.layout.fragment_content_detail, container, false);
 
+
         setupUi();
 
-        videoPlayer = new com.josef.mobile.free.util.VideoPlayer(getActivity(),
-                layoutInflater, mExoPlayerView, mResumePosition, mResumeWindow);
         mArticle.setText("Sculpture: " + index);
+
+        //setupSubHeader(mDownloadId, index);
 
         setupExoPlayer(mDownloadId, index);
 
-        setupSubHeader(mDownloadId, index);
-
         setupPlayButton(mDownloadId, index);
-        setupToggleDatabase(mDownloadId, index);
 
-        mExoPlayerView.setControllerAutoShow(false);
+        setupToggleDatabase(mDownloadId, index);
 
         return layoutInflater;
     }
@@ -134,6 +148,7 @@ public class ContentDetailFragment extends Fragment {
 
         outState.putInt(STATE_RESUME_WINDOW, mResumeWindow);
         outState.putLong(STATE_RESUME_POSITION, mResumePosition);
+        outState.putBoolean(STATE_BOOLEAN_VALUE, mExoPlayerFullscreen);
 
         super.onSaveInstanceState(outState);
     }
@@ -141,36 +156,52 @@ public class ContentDetailFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        videoPlayer.matchesExoPlayerFullScreenConfig();
+        matchesExoPlayerFullScreenConfig();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (videoPlayer != null) videoPlayer.withdrawExoPlayer();
-        mResumePosition = videoPlayer.getmResumePosition();
-        mResumeWindow = videoPlayer.getmResumeWindow();
-
+        withdrawExoPlayer();
     }
 
-    public void onDestroyView() {
-        super.onDestroyView();
-
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mPlayer.release();
     }
 
     public void onPlayerBackState() {
         if (lock != null) {
-            videoPlayer.onPlayerBackState();
+            if (mPlayer.getPlayWhenReady())
+                mPlayer.setPlayWhenReady(false);
         }
     }
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        //mExoPlayerFullscreen=false;
+        //setupExoPlayer(mDownloadId, index);
+        //openFullscreenDialog();
+
+    }
+
 
     private void setupUi() {
         mFavouriteViewMode = ViewModelProviders.of(this).get(FavouriteViewModel.class);
-        mExoPlayerView = layoutInflater.findViewById(R.id.exoplayer);
+
+        mPlayerView = layoutInflater.findViewById(R.id.player);
+
+        //  mFullScreenIcon = mPlayerView.findViewById(R.id.exo_fullscreen_icon);
+//        mFullScreenButton = mPlayerView.findViewById(R.id.exo_fullscreen_button);
+
+        mPlayButton = layoutInflater.findViewById(R.id.exo_play);
+
+        //  playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_HEIGHT);
+
         mArticle = layoutInflater.findViewById(R.id.article_title);
         mArticleByLine = layoutInflater.findViewById(R.id.article_byline);
         mButtonDataBase = layoutInflater.findViewById(R.id.button_favorite2);
-        mPlayButton = layoutInflater.findViewById(R.id.exo_play);
     }
 
 
@@ -182,7 +213,8 @@ public class ContentDetailFragment extends Fragment {
                     lock = new Object();
                     setupMediaSource(downloadId, index);
                 } else {
-                    videoPlayer.onPlay();
+                    if (!mPlayer.getPlayWhenReady())
+                        mPlayer.setPlayWhenReady(true);
                 }
             }
         });
@@ -198,7 +230,18 @@ public class ContentDetailFragment extends Fragment {
                                 if (workInfo.getState().isFinished()) {
                                     final String output = getViewPagerContent(workInfo);
                                     try {
-                                        videoPlayer.setupMediaSource(output, index);
+                                        JSONArray input = new JSONArray(output);
+                                        JSONObject container = input.getJSONObject(index);
+                                        JSONObject metadata = (JSONObject) container.get("metadata");
+                                        String url = (String) metadata.get("url");
+                                        DataSource.Factory dataSourceFactory =
+                                                new DefaultDataSourceFactory(getActivity(), Util.getUserAgent(getActivity(), getActivity().getString(R.string.app_name)));
+                                        MediaSource videoSource = new ProgressiveMediaSource.Factory(dataSourceFactory)
+                                                .createMediaSource(Uri.parse(url));
+                                        mPlayer.prepare(videoSource);
+                                        mPlayer.seekTo(mResumePosition);
+                                        mPlayer.setPlayWhenReady(true);
+
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -218,23 +261,16 @@ public class ContentDetailFragment extends Fragment {
                         public void onChanged(@Nullable WorkInfo workInfo) {
                             if (workInfo != null) {
                                 if (workInfo.getState().isFinished()) {
-                                    final String output = getViewPagerContent(workInfo);
-                                    try {
-                                        videoPlayer.setupThumbNailSource(output, index);
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                    videoPlayer.initExoPlayer();
-                                    videoPlayer.initFullscreenButton();
-                                    videoPlayer.initFullscreenDialog();
-
+                                    // final String output = getViewPagerContent(workInfo);
+                                    initExoPlayer(getContext());
+                                    initFullscreenDialog();
+                                    initFullScreenButton();
                                 }
                             }
                         }
                     });
         }
     }
-
 
     public void setupToggleDatabase(final String downloadId, final int index) {
         if (downloadId != null) {
@@ -255,32 +291,32 @@ public class ContentDetailFragment extends Fragment {
                                         public void onCheckedChanged(final CompoundButton compoundButton, boolean isChecked) {
                                             compoundButton.startAnimation(scaleAnimation);
                                             if (isChecked) {
-                                               // Boolean lock = mPrefs.getBoolean("locked", false);
-                                               // if(!lock) {
-                                                    final Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.main_content), "save item..?!", Snackbar.LENGTH_LONG)
-                                                            .setAction("OK", new View.OnClickListener() {
-                                                                @Override
-                                                                public void onClick(View view) {
-                                                                    addItemtsToDataBase(output, index);
-                                                                    compoundButton.setChecked(false);
-                                                                }
-                                                            }).setActionTextColor(getResources().getColor(android.R.color.holo_red_light));
+                                                //     Boolean lock = mPrefs.getBoolean("locked", false);
+                                                //   if(!lock) {
+                                                final Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.main_content), "save item..?!", Snackbar.LENGTH_LONG)
+                                                        .setAction("OK", new View.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(View view) {
+                                                                addItemtsToDataBase(output, index);
+                                                                compoundButton.setChecked(false);
+                                                            }
+                                                        }).setActionTextColor(getResources().getColor(android.R.color.holo_red_light));
 
-                                                    snackbar.setAnchorView(getActivity().findViewById(R.id.fab));
-                                                    snackbar.show();
-                                              //  }
-                                                mPrefs.edit().putBoolean("locked", true).apply();
-
-                                                Handler handler = new Handler();
-                                                handler.postDelayed(new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        compoundButton.setChecked(false);
-                                                    }
-                                                }, 3000);
-                                            } else {
-
+                                                snackbar.setAnchorView(getActivity().findViewById(R.id.fab));
+                                                snackbar.show();
                                             }
+                                            // mPrefs.edit().putBoolean("locked", true).apply();
+
+                                            Handler handler = new Handler();
+                                            handler.postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    compoundButton.setChecked(false);
+                                                }
+                                            }, 3000);
+                                            // } else {
+
+                                            //}
                                         }
                                     });
                                 }
@@ -289,7 +325,6 @@ public class ContentDetailFragment extends Fragment {
                     });
         }
     }
-
 
     public void addItemtsToDataBase(final String output, final int index) {
 
@@ -307,7 +342,6 @@ public class ContentDetailFragment extends Fragment {
 
     }
 
-
     private void setupSubHeader(final String downloadId, final int index) {
         if (downloadId != null) {
             WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(UUID.fromString(downloadId))
@@ -322,7 +356,7 @@ public class ContentDetailFragment extends Fragment {
                                         JSONObject container = input.getJSONObject(index);
                                         JSONObject metadata = (JSONObject) container.get(JSON_METADATA);
                                         String name = (String) metadata.get(JSON_NAME);
-                                      //  name = removeLastChar(name);
+                                        name = removeLastChar(name);
                                         mArticleByLine.setText(name);
 
                                     } catch (JSONException e) {
@@ -357,5 +391,4 @@ public class ContentDetailFragment extends Fragment {
     private static String removeLastChar(String str) {
         return str.substring(0, str.length() - 22);
     }
-
 }
