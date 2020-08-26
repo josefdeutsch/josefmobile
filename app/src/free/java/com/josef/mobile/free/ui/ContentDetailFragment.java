@@ -130,6 +130,7 @@ public class ContentDetailFragment extends VideoPlayer {
 
 
         setupUi();
+      //
 
         if (mExoPlayerFullscreen) {
             // initFullscreenDialog();
@@ -140,17 +141,21 @@ public class ContentDetailFragment extends VideoPlayer {
         mArticle.setText("Sculpture: " + index);
         //setupSubHeader(mDownloadId, index);
 
-        initFullScreenButton();
+       // initFullScreenButton();
+
+        setupThumbnailSource(mDownloadId,index);
 
         setupExoPlayer(mDownloadId, index);
 
         setupPlayButton(mDownloadId, index);
 
-        setupToggleDatabase(mDownloadId, index);
+       // setupToggleDatabase(mDownloadId, index);
 
-       // verifyFullscreen(mDownloadId, index);
+        //verifyFullscreen(mDownloadId, index);
 
+      //  setupThumbnailSource(mDownloadId,index);
 
+       // mPlayerView.setDefaultArtwork(getContext().getResources().getDrawable(R.drawable.ic_webdesignsvg_02),0);
         return layoutInflater;
     }
 
@@ -184,7 +189,7 @@ public class ContentDetailFragment extends VideoPlayer {
     @Override
     public void onDetach() {
         super.onDetach();
-        mPlayer.release();
+        if(mPlayer!=null) mPlayer.release();
     }
 
     public void onPlayerBackState() {
@@ -204,6 +209,7 @@ public class ContentDetailFragment extends VideoPlayer {
         mArticle = layoutInflater.findViewById(R.id.article_title);
         mArticleByLine = layoutInflater.findViewById(R.id.article_byline);
         mButtonDataBase = layoutInflater.findViewById(R.id.button_favorite2);
+        mArtWork = layoutInflater.findViewById(R.id.exo_artwork);
     }
 
 
@@ -231,23 +237,7 @@ public class ContentDetailFragment extends VideoPlayer {
                             if (workInfo != null) {
                                 if (workInfo.getState().isFinished()) {
                                     final String output = getViewPagerContent(workInfo);
-                                    try {
-                                        JSONArray input = new JSONArray(output);
-                                        JSONObject container = input.getJSONObject(index);
-                                        JSONObject metadata = (JSONObject) container.get("metadata");
-                                        String url = (String) metadata.get("url");
-                                        DataSource.Factory dataSourceFactory =
-                                                new DefaultDataSourceFactory(getActivity(), Util.getUserAgent(getActivity(), getActivity().getString(R.string.app_name)));
-                                        MediaSource videoSource = new ProgressiveMediaSource.Factory(dataSourceFactory)
-                                                .createMediaSource(Uri.parse(url));
-                                        mPlayer.prepare(videoSource);
-                                        mPlayer.seekTo(mResumePosition);
-                                        mPlayer.setPlayWhenReady(true);
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-
+                                      setupMediaSource2(output,index);
                                 }
                             }
                         }
@@ -266,6 +256,28 @@ public class ContentDetailFragment extends VideoPlayer {
                                     // final String output = getViewPagerContent(workInfo);
                                     initExoPlayer(getContext());
 
+                                }
+                            }
+                        }
+                    });
+        }
+    }
+    public void setupThumbnailSource(final String downloadId, final int index) {
+        if (downloadId != null) {
+            WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(UUID.fromString(downloadId))
+                    .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
+                        @Override
+                        public void onChanged(@Nullable WorkInfo workInfo) {
+                            if (workInfo != null) {
+                                if (workInfo.getState().isFinished()) {
+                                    final String output = getViewPagerContent(workInfo);
+                                 //   Log.d(TAG, "onChanged: "+" thumbnailchanged");
+                                    try {
+                                        setupThumbNailSource2(output,index);
+                                    Log.d(TAG, "onChanged: "+" thumbnailchanged");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             }
                         }
