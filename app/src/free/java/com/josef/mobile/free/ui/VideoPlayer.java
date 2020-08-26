@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -54,6 +55,7 @@ public class VideoPlayer extends Fragment {
     protected ImageView mArtWork;
     protected SimpleExoPlayer mPlayer;
     protected PlayerView mPlayerView;
+    protected ProgressBar mProgressBar;
     protected boolean mExoPlayerFullscreen = false;
     protected int mResumeWindow;
     protected long mResumePosition;
@@ -68,7 +70,7 @@ public class VideoPlayer extends Fragment {
         TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
         LoadControl loadControl = new DefaultLoadControl();
         mPlayer = ExoPlayerFactory.newSimpleInstance(context,new DefaultRenderersFactory(context), trackSelector, loadControl,null,bandwidthMeters);
-        mPlayerView.showController();
+
 
     }
 
@@ -185,10 +187,7 @@ public class VideoPlayer extends Fragment {
         @Override
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
             Log.d(TAG, "onBitmapLoaded: ");
-            Drawable d = new BitmapDrawable(getActivity().getResources(), bitmap);
             mArtWork.setImageBitmap(bitmap);
-          //  mPlayerView.setDefaultArtwork(d);
-            //mPlayerView.setDefaultArtwork(BitmapFactory.decodeResource(getResources()),bitmap);
         }
 
         @Override

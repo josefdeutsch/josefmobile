@@ -3,7 +3,9 @@ package com.josef.mobile.free.ui;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -118,7 +120,9 @@ public class ContentDetailFragment extends VideoPlayer {
             mResumePosition = savedInstanceState.getLong(STATE_RESUME_POSITION);
             mExoPlayerFullscreen = savedInstanceState.getBoolean(STATE_BOOLEAN_VALUE);
         }
+
         initFullscreenDialog();
+
 
         mPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
     }
@@ -130,10 +134,8 @@ public class ContentDetailFragment extends VideoPlayer {
 
 
         setupUi();
-      //
-
+        setupExoPlayer(mDownloadId, index);
         if (mExoPlayerFullscreen) {
-            // initFullscreenDialog();
             openFullscreenDialog();
             matchesExoPlayerFullScreenConfig();
         }
@@ -141,21 +143,12 @@ public class ContentDetailFragment extends VideoPlayer {
         mArticle.setText("Sculpture: " + index);
         //setupSubHeader(mDownloadId, index);
 
-       // initFullScreenButton();
-
-        setupThumbnailSource(mDownloadId,index);
-
-        setupExoPlayer(mDownloadId, index);
+        setupThumbnailSource(mDownloadId, index);
 
         setupPlayButton(mDownloadId, index);
 
-       // setupToggleDatabase(mDownloadId, index);
+        setupToggleDatabase(mDownloadId, index);
 
-        //verifyFullscreen(mDownloadId, index);
-
-      //  setupThumbnailSource(mDownloadId,index);
-
-       // mPlayerView.setDefaultArtwork(getContext().getResources().getDrawable(R.drawable.ic_webdesignsvg_02),0);
         return layoutInflater;
     }
 
@@ -189,7 +182,7 @@ public class ContentDetailFragment extends VideoPlayer {
     @Override
     public void onDetach() {
         super.onDetach();
-        if(mPlayer!=null) mPlayer.release();
+        if (mPlayer != null) mPlayer.release();
     }
 
     public void onPlayerBackState() {
@@ -210,6 +203,7 @@ public class ContentDetailFragment extends VideoPlayer {
         mArticleByLine = layoutInflater.findViewById(R.id.article_byline);
         mButtonDataBase = layoutInflater.findViewById(R.id.button_favorite2);
         mArtWork = layoutInflater.findViewById(R.id.exo_artwork);
+        mProgressBar = layoutInflater.findViewById(R.id.progress);
     }
 
 
@@ -230,6 +224,7 @@ public class ContentDetailFragment extends VideoPlayer {
 
     public void setupMediaSource(final String downloadId, final int index) {
         if (downloadId != null) {
+            mProgressBar.setVisibility(View.VISIBLE);
             WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(UUID.fromString(downloadId))
                     .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
                         @Override
@@ -237,32 +232,52 @@ public class ContentDetailFragment extends VideoPlayer {
                             if (workInfo != null) {
                                 if (workInfo.getState().isFinished()) {
                                     final String output = getViewPagerContent(workInfo);
-                                      setupMediaSource2(output,index);
+                                    setupMediaSource2(output, index);
+                                    mProgressBar.setVisibility(View.INVISIBLE);
                                 }
                             }
                         }
                     });
+
+
         }
     }
 
     public void setupExoPlayer(final String downloadId, final int index) {
         if (downloadId != null) {
+            mProgressBar.setVisibility(View.VISIBLE);
             WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(UUID.fromString(downloadId))
                     .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
                         @Override
                         public void onChanged(@Nullable WorkInfo workInfo) {
                             if (workInfo != null) {
                                 if (workInfo.getState().isFinished()) {
-                                    // final String output = getViewPagerContent(workInfo);
                                     initExoPlayer(getContext());
-
+                                    mProgressBar.setVisibility(View.INVISIBLE);
                                 }
                             }
                         }
                     });
         }
     }
+
     public void setupThumbnailSource(final String downloadId, final int index) {
+
+        mArtWork.setOnClickListener(new View.OnClickListener() {
+            int button01pos = 0;
+
+            @Override
+            public void onClick(View v) {
+                if (button01pos == 0) {
+                    mPlayerView.showController();
+                    button01pos = 1;
+                } else if (button01pos == 1) {
+                    mPlayerView.hideController();
+                    button01pos = 0;
+                }
+            }
+        });
+
         if (downloadId != null) {
             WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(UUID.fromString(downloadId))
                     .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
@@ -271,10 +286,9 @@ public class ContentDetailFragment extends VideoPlayer {
                             if (workInfo != null) {
                                 if (workInfo.getState().isFinished()) {
                                     final String output = getViewPagerContent(workInfo);
-                                 //   Log.d(TAG, "onChanged: "+" thumbnailchanged");
                                     try {
-                                        setupThumbNailSource2(output,index);
-                                    Log.d(TAG, "onChanged: "+" thumbnailchanged");
+                                        setupThumbNailSource2(output, index);
+                                        Log.d(TAG, "onChanged: " + " thumbnailchanged");
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -381,8 +395,6 @@ public class ContentDetailFragment extends VideoPlayer {
                     });
         }
     }
-
-
 
 
     @Nullable

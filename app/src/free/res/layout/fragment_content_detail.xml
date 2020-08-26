@@ -23,16 +23,26 @@
             android:layout_width="match_parent"
             android:layout_height="256dp"
             android:gravity="center"
-            app:player_layout_id="@layout/exo_simple_player_view"
             app:controller_layout_id="@layout/exo_playback_control_view"
-            />
+            app:player_layout_id="@layout/exo_simple_player_view">
+
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:visibility="invisible"></ProgressBar>
+
+        </com.google.android.exoplayer2.ui.PlayerView>
+
+
     </FrameLayout>
 
     <com.josef.mobile.util.MaxWidthLinearLayout
         android:id="@+id/maxwidthlayout_container"
-        android:layout_below="@id/main_media_frame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/main_media_frame"
         android:layout_gravity="center_horizontal"
         android:elevation="2dp"
         android:orientation="vertical">
@@ -41,15 +51,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorWhite"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/article_title"
                 style="?android:attr/textAppearanceLarge"
-                android:fontFamily="@font/robotolight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/robotolight"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 android:textColor="@color/colorBlack"
                 android:textStyle="bold" />
@@ -57,24 +66,24 @@
             <TextView
                 android:id="@+id/article_byline"
                 style="?android:attr/textAppearanceMedium"
-                android:fontFamily="@font/robotolight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/robotolight"
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                 android:textColor="@color/colorBlack" />
         </LinearLayout>
 
 
-
     </com.josef.mobile.util.MaxWidthLinearLayout>
+
     <ToggleButton
         android:id="@+id/button_favorite2"
         android:layout_width="32dp"
         android:layout_height="32dp"
+        android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_marginTop="32dp"
         android:layout_marginRight="8dp"
-        android:layout_alignParentRight="true"
         android:background="@drawable/ic_button_favourite"
         android:checked="false"
         android:text=""
