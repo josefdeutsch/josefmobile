@@ -21,14 +21,20 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
+import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
+import com.google.android.exoplayer2.PlaybackParameters;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
+import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
@@ -78,6 +84,9 @@ public class VideoPlayer extends Fragment {
 
         try {
             mPlayerView.setPlayer(mPlayer);
+            Player.EventListener playerListener = buildPlayerEventListener();
+            mPlayerView.getPlayer().addListener(playerListener);
+
             JSONArray input = new JSONArray(output);
             JSONObject container = null;
             container = input.getJSONObject(index);
@@ -200,6 +209,11 @@ public class VideoPlayer extends Fragment {
 
         }
     };
+
+   protected Player.EventListener buildPlayerEventListener(){
+
+       return null;
+   }
 
 }
 

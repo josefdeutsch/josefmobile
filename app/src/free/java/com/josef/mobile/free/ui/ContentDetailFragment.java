@@ -38,14 +38,19 @@ import androidx.work.WorkManager;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
+import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
+import com.google.android.exoplayer2.PlaybackParameters;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
+import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
@@ -206,6 +211,10 @@ public class ContentDetailFragment extends VideoPlayer {
         mProgressBar = layoutInflater.findViewById(R.id.progress);
     }
 
+    @Override
+    protected Player.EventListener buildPlayerEventListener() {
+        return playerListener;
+    }
 
     private void setupPlayButton(final String downloadId, final int index) {
         mPlayButton.setOnClickListener(new View.OnClickListener() {
@@ -418,4 +427,48 @@ public class ContentDetailFragment extends VideoPlayer {
     private static String removeLastChar(String str) {
         return str.substring(0, str.length() - 22);
     }
+    private Player.EventListener playerListener = new Player.EventListener() {
+
+
+        @Override
+        public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+
+        }
+
+        @Override
+        public void onLoadingChanged(boolean isLoading) {
+
+        }
+
+        @Override
+        public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+            if (playbackState == Player.STATE_READY && playWhenReady) {
+
+
+            } else if (playbackState == Player.STATE_READY) {
+
+
+            } else if (playbackState == Player.STATE_ENDED) {
+                mPlayerView.getPlayer().release();
+            }
+
+        }
+
+        @Override
+        public void onRepeatModeChanged(int repeatMode) {
+
+        }
+
+        @Override
+        public void onPlayerError(ExoPlaybackException error) {
+
+        }
+
+
+        @Override
+        public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
+
+        }
+    };
+
 }
