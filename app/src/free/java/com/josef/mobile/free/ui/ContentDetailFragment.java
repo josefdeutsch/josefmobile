@@ -265,7 +265,6 @@ public class ContentDetailFragment extends VideoPlayer {
 
         mArtWork.setOnClickListener(new View.OnClickListener() {
             int button01pos = 0;
-
             @Override
             public void onClick(View v) {
                 if (button01pos == 0) {
