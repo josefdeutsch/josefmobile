@@ -1,95 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/colorWhite"
-    android:clickable="true"
-    android:foreground="?android:attr/selectableItemBackground"
-    card_view:cardElevation="1dp"
-    card_view:cardMaxElevation="1dp"
-    card_view:cardUseCompatPadding="true">
+    android:layout_height="wrap_content">
 
-    <FrameLayout
-        android:id="@+id/main_media_frame"
-        android:layout_width="match_parent"
-        android:layout_height="256dp"
-        android:background="@color/colorWhite">
-
-        <com.google.android.exoplayer2.ui.PlayerView
-            android:id="@+id/player"
-            android:layout_width="match_parent"
-            android:layout_height="256dp"
-            android:gravity="center"
-            app:controller_layout_id="@layout/exo_playback_control_view"
-            app:player_layout_id="@layout/exo_simple_player_view">
-
-            <ProgressBar
-                android:id="@+id/progress"
-                android:layout_width="52dp"
-                android:layout_height="52dp"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:visibility="invisible">
-            </ProgressBar>
-
-        </com.google.android.exoplayer2.ui.PlayerView>
-
-    </FrameLayout>
-
-    <com.josef.mobile.util.MaxWidthLinearLayout
-        android:id="@+id/maxwidthlayout_container"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/main_media_frame"
-        android:layout_gravity="center_horizontal"
-        android:elevation="2dp"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorWhite"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="16dp">
 
-            <TextView
-                android:id="@+id/article_title"
-                style="?android:attr/textAppearanceLarge"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/robotolight"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textColor="@color/colorBlack"
-                android:textStyle="bold" />
+                android:orientation="horizontal">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/thumbnail_image_view"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:adjustViewBounds="true"
+                    android:background="@color/colorRed"
+                    android:scaleType="centerCrop"
+                    app:shapeAppearanceOverlay="@style/circleImageView"
+                    app:srcCompat="@drawable/florenzwappen" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/article_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?attr/textAppearanceHeadline6" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Lorem ipsum dolor"
+                        android:textAppearance="?attr/textAppearanceBody2"
+                        android:textColor="?android:attr/textColorSecondary" />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+        <!-- Media -->
+        <FrameLayout
+            android:id="@+id/main_media_frame"
+            android:layout_width="match_parent"
+            android:layout_height="256dp"
+            android:background="@color/colorWhite">
+
+            <com.google.android.exoplayer2.ui.PlayerView
+                android:id="@+id/player"
+                android:layout_width="match_parent"
+                android:layout_height="256dp"
+                android:gravity="center"
+                app:controller_layout_id="@layout/exo_playback_control_view"
+                app:player_layout_id="@layout/exo_simple_player_view">
+
+                <ProgressBar
+                    android:id="@+id/progress"
+                    android:layout_width="52dp"
+                    android:layout_height="52dp"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:visibility="invisible"></ProgressBar>
+
+            </com.google.android.exoplayer2.ui.PlayerView>
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <TextView
-                android:id="@+id/article_byline"
-                style="?android:attr/textAppearanceMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/robotolight"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                android:textColor="@color/colorBlack" />
+                android:text="Lorem ipsum dolor sit amet, consetetur sadipscing elitr,Lorem ipsum dolor sit amet, consetetur sadipscing elitr,"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textColor="?android:attr/textColorSecondary" />
+
+            <!-- Buttons -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/textButton"
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="     " />
+
+                <com.google.android.material.button.MaterialButton
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="     " />
+
+                <com.google.android.material.button.MaterialButton
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="     " />
+
+                <com.google.android.material.button.MaterialButton
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="     " />
+
+            </LinearLayout>
+
+
+            <ToggleButton
+
+                android:id="@+id/button_favorite2"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="@drawable/ic_button_favourite"
+                android:checked="false"
+                android:text=""
+                android:textOff=""
+                android:textOn="" />
+
         </LinearLayout>
+    </LinearLayout>
 
-
-    </com.josef.mobile.util.MaxWidthLinearLayout>
-
-    <ToggleButton
-        android:id="@+id/button_favorite2"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="32dp"
-        android:layout_marginRight="8dp"
-        android:background="@drawable/ic_button_favourite"
-        android:checked="false"
-        android:text=""
-        android:textOff=""
-        android:textOn="" />
-
-
-</RelativeLayout>
-
+</com.google.android.material.card.MaterialCardView>
