@@ -96,11 +96,10 @@ public class ContentDetailFragment extends VideoPlayerFragment {
             mResumePosition = savedInstanceState.getLong(STATE_RESUME_POSITION);
             mExoPlayerFullscreen = savedInstanceState.getBoolean(STATE_BOOLEAN_VALUE);
         }
+    }
 
-
-
-
-
+    private void setupPlayButton(final String downloadId, final int index, View.OnClickListener listener) {
+        if (listener != null) mPlayButton.setOnClickListener(listener);
     }
 
     @Override
@@ -109,30 +108,61 @@ public class ContentDetailFragment extends VideoPlayerFragment {
         layoutInflater = inflater.inflate(R.layout.fragment_content_detail, container, false);
 
         setupUi();
-
-       /** setupExoPlayer(mDownloadId, index);
-
-        if (mExoPlayerFullscreen) {
-            openFullscreenDialog();
-            matchesExoPlayerFullScreenConfig();
-        }
-
-        mArticle.setText("Sculpture: " + index);
-        //setupSubHeader(mDownloadId, index);
-
-
         setupThumbnailSource(mDownloadId, index);
 
         setupArtWork();
-       // initFullscreenDialog();
-        setupPlayButton(mDownloadId, index,new Worker() {
+
+
+        /** setupPlayButton(mDownloadId, index,new Worker() {
+        @Override public void execute(String input, int index) {
+        initExoPlayer(getContext());
+        setupMediaSource2(input,index);
+        initFullscreenDialog();
+        }
+        });*/
+
+        setupPlayButton(mDownloadId, index, new View.OnClickListener() {
             @Override
-            public void execute(String input, int index) {
-                setupMediaSource2(input,index);
+            public void onClick(View v) {
+                if (lock == null) {
+                    lock = new Object();
+                    doWork(mDownloadId, index, new Worker() {
+                        @Override
+                        public void execute(String input, int index) {
+                            initExoPlayer(getContext());
+                            setupMediaSource2(input, index);
+                            initFullscreenDialog();
+                        }
+                    });
+                } else {
+                    if (!mPlayer.getPlayWhenReady()) mPlayer.setPlayWhenReady(true);
+                }
             }
+        });
+
+
+        /** setupExoPlayer(mDownloadId, index);
+
+         if (mExoPlayerFullscreen) {
+         openFullscreenDialog();
+         matchesExoPlayerFullScreenConfig();
+         }
+
+         mArticle.setText("Sculpture: " + index);
+         //setupSubHeader(mDownloadId, index);
+
+
+         setupThumbnailSource(mDownloadId, index);
+
+         setupArtWork();
+         // initFullscreenDialog();
+         setupPlayButton(mDownloadId, index,new Worker() {
+        @Override public void execute(String input, int index) {
+        setupMediaSource2(input,index);
+        }
         });**/
 
-       // setupToggleDatabase(mDownloadId, index);
+        // setupToggleDatabase(mDownloadId, index);
 
         return layoutInflater;
     }
@@ -194,21 +224,6 @@ public class ContentDetailFragment extends VideoPlayerFragment {
         return playerListener;
     }
 
-    private void setupPlayButton(final String downloadId, final int index, final Worker worker) {
-        mPlayButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (lock == null) {
-                    lock = new Object();
-                    doWork(downloadId, index, worker);
-                    //setupMediaSource(downloadId, index);
-                } else {
-                    if (!mPlayer.getPlayWhenReady())
-                        mPlayer.setPlayWhenReady(true);
-                }
-            }
-        });
-    }
 
     public void setupMediaSource(final String downloadId, final int index) {
         if (downloadId != null) {
@@ -261,6 +276,7 @@ public class ContentDetailFragment extends VideoPlayerFragment {
                                     final String output = getViewPagerContent(workInfo);
                                     try {
                                         setupThumbNailSource2(output, index);
+                                        mProgressBar.setVisibility(View.INVISIBLE);
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -274,6 +290,7 @@ public class ContentDetailFragment extends VideoPlayerFragment {
     private void setupArtWork() {
         mArtWork.setOnClickListener(new View.OnClickListener() {
             int button01pos = 0;
+
             @Override
             public void onClick(View v) {
                 if (button01pos == 0) {

@@ -1,5 +1,7 @@
 package com.josef.mobile.free.ui.detail;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -25,9 +27,12 @@ public class BaseDetailFragment extends Fragment {
 
     protected ProgressBar mProgressBar;
 
-    public final void doWork(final String downloadId, final int index, final Worker worker) {
+    public void doWork(final String downloadId, final int index, final Worker worker) {
         if (downloadId != null) {
+
+            mProgressBar.setVisibility(View.INVISIBLE);
             mProgressBar.setVisibility(View.VISIBLE);
+
             WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(UUID.fromString(downloadId))
                     .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
                         @Override
@@ -35,13 +40,21 @@ public class BaseDetailFragment extends Fragment {
                             if (workInfo != null) {
                                 if (workInfo.getState().isFinished()) {
                                     final String output = getViewPagerContent(workInfo);
-                                    worker.execute(output,index);
-                                    mProgressBar.setVisibility(View.INVISIBLE);
+                                    if (worker != null) {
+                                        worker.execute(output, index);
+                                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                mProgressBar.setVisibility(View.INVISIBLE);
+                                            }
+                                        });
+                                    }
                                 }
                             }
                         }
                     });
             }
+
     }
 
     @Nullable
@@ -50,6 +63,7 @@ public class BaseDetailFragment extends Fragment {
         String output = data.getString(WORKREQUEST_KEYTAST_OUTPUT);
         return output;
     }
+
     @Nullable
     private IdlingResource mIdlingResource;
 

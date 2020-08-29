@@ -13,9 +13,8 @@
     <View android:id="@id/exo_shutter"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/black"
-
-        />
+        android:background="@android:color/black">
+    </View>
 
     <ImageView android:id="@id/exo_artwork"
         android:layout_width="match_parent"
