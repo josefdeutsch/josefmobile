@@ -96,9 +96,6 @@ public class ContentActivity extends AppCompatActivity {
         });
 
         setupNestedScrollView();
-        AppPreferences.clearNameList(this);
-        ArrayList<String> meta = new ArrayList<>(AppPreferences.getName(this));
-        meta.add(JOSEPHOPENINGSTATEMENT + System.lineSeparator());
 
     }
 
@@ -162,7 +159,6 @@ public class ContentActivity extends AppCompatActivity {
 
         if (item.getItemId() == android.R.id.home) {
         } else if (item.getItemId() == R.id.action_settings) {
-            Log.d(TAG, "onOptionsItemSelected: " + "hellotoolbar");
             //    Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
             //   intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             //   startActivity(intent);

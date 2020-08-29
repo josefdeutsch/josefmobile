@@ -27,9 +27,8 @@
                     android:layout_height="56dp"
                     android:adjustViewBounds="true"
                     android:background="@color/colorRed"
-                    android:scaleType="centerCrop"
                     app:shapeAppearanceOverlay="@style/circleImageView"
-                    app:srcCompat="@drawable/florenzwappen" />
+                   />
 
 
                 <LinearLayout

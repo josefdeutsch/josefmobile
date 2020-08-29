@@ -1,11 +1,8 @@
-package com.josef.mobile.free.ui;
+package com.josef.mobile.free.ui.detail;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.Log;
@@ -17,24 +14,18 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
-import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
-import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
-import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
@@ -53,7 +44,7 @@ import org.json.JSONObject;
 
 import static com.josef.mobile.ui.ErrorActivity.TAG;
 
-public class VideoPlayer extends Fragment {
+public class VideoPlayerFragment extends BaseDetailFragment {
 
     protected Dialog mFullScreenDialog;
     protected FrameLayout mFullScreenButton;
@@ -61,7 +52,7 @@ public class VideoPlayer extends Fragment {
     protected ImageView mArtWork;
     protected SimpleExoPlayer mPlayer;
     protected PlayerView mPlayerView;
-    protected ProgressBar mProgressBar;
+
     protected boolean mExoPlayerFullscreen = false;
     protected int mResumeWindow;
     protected long mResumePosition;
@@ -76,8 +67,6 @@ public class VideoPlayer extends Fragment {
         TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
         LoadControl loadControl = new DefaultLoadControl();
         mPlayer = ExoPlayerFactory.newSimpleInstance(context,new DefaultRenderersFactory(context), trackSelector, loadControl,null,bandwidthMeters);
-
-
     }
 
     protected void setupMediaSource2(final String output,final int index) {
@@ -177,7 +166,6 @@ public class VideoPlayer extends Fragment {
     private void postThumbnailIntoExoplayer(String png) {
         mPng = png;
         if (png != null && !png.isEmpty()) {
-            Log.d(TAG, "postThumbnailIntoExoplayer: "+"after");
             Picasso.get().load(png).into(target);
         } else {
 
@@ -188,20 +176,17 @@ public class VideoPlayer extends Fragment {
         JSONObject container = input.getJSONObject(index);
         JSONObject metadata = (JSONObject) container.get("metadata");
         String png = (String) metadata.get("png");
-        Log.d(TAG, "setupThumbNailSource: "+"before");
         postThumbnailIntoExoplayer(png);
     }
 
     private Target target = new Target() {
         @Override
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-            Log.d(TAG, "onBitmapLoaded: ");
             mArtWork.setImageBitmap(bitmap);
         }
 
         @Override
         public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-            Log.d(TAG, "onBitmapFailed: ");
         }
 
         @Override

@@ -1,12 +1,6 @@
-package com.josef.mobile.free.ui;
+package com.josef.mobile.free.ui.detail;
 
-import android.app.Dialog;
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
-import android.content.res.Configuration;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -18,17 +12,13 @@ import android.view.animation.Animation;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.widget.CompoundButton;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.test.espresso.IdlingResource;
@@ -36,29 +26,11 @@ import androidx.work.Data;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
-import com.google.android.exoplayer2.DefaultLoadControl;
-import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
-import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
-import com.google.android.exoplayer2.trackselection.TrackSelector;
-import com.google.android.exoplayer2.ui.PlayerControlView;
-import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.upstream.BandwidthMeter;
-import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.util.Util;
 import com.google.android.material.snackbar.Snackbar;
 import com.josef.josefmobile.R;
 import com.josef.mobile.data.Favourite;
@@ -71,14 +43,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.josef.mobile.ui.ErrorActivity.TAG;
 import static com.josef.mobile.util.Config.WORKREQUEST_KEYTAST_OUTPUT;
 import static com.josef.mobile.util.Config.VIEWPAGERDETAILKEY;
 import static com.josef.mobile.util.Config.WORKREQUEST_DOWNLOADID;
 
-public class ContentDetailFragment extends VideoPlayer {
+public class ContentDetailFragment extends VideoPlayerFragment {
 
     private FavouriteViewModel mFavouriteViewMode;
     public ToggleButton mButtonFavorite;
@@ -94,9 +65,9 @@ public class ContentDetailFragment extends VideoPlayer {
     public static final String JSON_NAME = "name";
     public static final String JSON_PNG = "png";
     public static final String JSON_URL = "url";
-    public static final String STATE_RESUME_WINDOW = "com.josef.mobile.free.ui.ContentDetailFragment.resumeWindow";
-    public static final String STATE_RESUME_POSITION = "com.josef.mobile.free.ui.ContentDetailFragment.resumePosition";
-    public static final String STATE_BOOLEAN_VALUE = "com.josef.mobile.free.ui.ContentDetailFragment.value";
+    public static final String STATE_RESUME_WINDOW = "com.josef.mobile.free.ui.detail.ContentDetailFragment.resumeWindow";
+    public static final String STATE_RESUME_POSITION = "com.josef.mobile.free.ui.detail.ContentDetailFragment.resumePosition";
+    public static final String STATE_BOOLEAN_VALUE = "com.josef.mobile.free.ui.detail.ContentDetailFragment.value";
 
     private SharedPreferences mPrefs;
 
@@ -126,10 +97,10 @@ public class ContentDetailFragment extends VideoPlayer {
             mExoPlayerFullscreen = savedInstanceState.getBoolean(STATE_BOOLEAN_VALUE);
         }
 
-        initFullscreenDialog();
 
 
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+
     }
 
     @Override
@@ -137,9 +108,10 @@ public class ContentDetailFragment extends VideoPlayer {
                              Bundle savedInstanceState) {
         layoutInflater = inflater.inflate(R.layout.fragment_content_detail, container, false);
 
-
         setupUi();
-        setupExoPlayer(mDownloadId, index);
+
+       /** setupExoPlayer(mDownloadId, index);
+
         if (mExoPlayerFullscreen) {
             openFullscreenDialog();
             matchesExoPlayerFullScreenConfig();
@@ -148,11 +120,19 @@ public class ContentDetailFragment extends VideoPlayer {
         mArticle.setText("Sculpture: " + index);
         //setupSubHeader(mDownloadId, index);
 
+
         setupThumbnailSource(mDownloadId, index);
 
-        setupPlayButton(mDownloadId, index);
+        setupArtWork();
+       // initFullscreenDialog();
+        setupPlayButton(mDownloadId, index,new Worker() {
+            @Override
+            public void execute(String input, int index) {
+                setupMediaSource2(input,index);
+            }
+        });**/
 
-        setupToggleDatabase(mDownloadId, index);
+       // setupToggleDatabase(mDownloadId, index);
 
         return layoutInflater;
     }
@@ -175,19 +155,18 @@ public class ContentDetailFragment extends VideoPlayer {
     @Override
     public void onResume() {
         super.onResume();
-
     }
 
     @Override
     public void onStop() {
         super.onStop();
         withdrawExoPlayer();
+        if (mPlayer != null) mPlayer.release();
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        if (mPlayer != null) mPlayer.release();
     }
 
     public void onPlayerBackState() {
@@ -196,7 +175,6 @@ public class ContentDetailFragment extends VideoPlayer {
                 mPlayer.setPlayWhenReady(false);
         }
     }
-
 
     private void setupUi() {
         mFavouriteViewMode = ViewModelProviders.of(this).get(FavouriteViewModel.class);
@@ -216,13 +194,14 @@ public class ContentDetailFragment extends VideoPlayer {
         return playerListener;
     }
 
-    private void setupPlayButton(final String downloadId, final int index) {
+    private void setupPlayButton(final String downloadId, final int index, final Worker worker) {
         mPlayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (lock == null) {
                     lock = new Object();
-                    setupMediaSource(downloadId, index);
+                    doWork(downloadId, index, worker);
+                    //setupMediaSource(downloadId, index);
                 } else {
                     if (!mPlayer.getPlayWhenReady())
                         mPlayer.setPlayWhenReady(true);
@@ -272,6 +251,27 @@ public class ContentDetailFragment extends VideoPlayer {
 
     public void setupThumbnailSource(final String downloadId, final int index) {
 
+        if (downloadId != null) {
+            WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(UUID.fromString(downloadId))
+                    .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
+                        @Override
+                        public void onChanged(@Nullable WorkInfo workInfo) {
+                            if (workInfo != null) {
+                                if (workInfo.getState().isFinished()) {
+                                    final String output = getViewPagerContent(workInfo);
+                                    try {
+                                        setupThumbNailSource2(output, index);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        }
+                    });
+        }
+    }
+
+    private void setupArtWork() {
         mArtWork.setOnClickListener(new View.OnClickListener() {
             int button01pos = 0;
             @Override
@@ -285,26 +285,6 @@ public class ContentDetailFragment extends VideoPlayer {
                 }
             }
         });
-
-        if (downloadId != null) {
-            WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(UUID.fromString(downloadId))
-                    .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
-                        @Override
-                        public void onChanged(@Nullable WorkInfo workInfo) {
-                            if (workInfo != null) {
-                                if (workInfo.getState().isFinished()) {
-                                    final String output = getViewPagerContent(workInfo);
-                                    try {
-                                        setupThumbNailSource2(output, index);
-                                        Log.d(TAG, "onChanged: " + " thumbnailchanged");
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }
-                        }
-                    });
-        }
     }
 
     public void setupToggleDatabase(final String downloadId, final int index) {
@@ -349,9 +329,6 @@ public class ContentDetailFragment extends VideoPlayer {
                                                     compoundButton.setChecked(false);
                                                 }
                                             }, 3000);
-                                            // } else {
-
-                                            //}
                                         }
                                     });
                                 }
@@ -405,28 +382,10 @@ public class ContentDetailFragment extends VideoPlayer {
     }
 
 
-    @Nullable
-    private String getViewPagerContent(@NotNull WorkInfo workInfo) {
-        Data data = workInfo.getOutputData();
-        String output = data.getString(WORKREQUEST_KEYTAST_OUTPUT);
-        return output;
-    }
-
-    @Nullable
-    private IdlingResource mIdlingResource;
-
-    @VisibleForTesting
-    @NonNull
-    public IdlingResource getIdlingResource() {
-        if (mIdlingResource == null) {
-            mIdlingResource = EspressoIdlingResource.getIdlingResource();
-        }
-        return mIdlingResource;
-    }
-
     private static String removeLastChar(String str) {
         return str.substring(0, str.length() - 22);
     }
+
     private Player.EventListener playerListener = new Player.EventListener() {
 
 

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -69,26 +70,23 @@ public class ContentActivity extends LoginActivity implements View.OnClickListen
     private ArrayList<String> downloadId;
     private int mScrollY;
     public static final String SCROLLVIEWYPOSITION = "com.josef.mobile.free.ui.ContentActivity.scroll_view_y_position";
-    private AtomicBoolean atomicBoolean = new AtomicBoolean();
-    private SharedPreferences mPrefs;
+    public static final String BOOLEANVALUE = "com.josef.mobile.free.ui.ContentActivity.booleanValue";
+    private boolean mBoolean = true;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content);
-        atomicBoolean.set(true);
         mContentLayout = findViewById(R.id.main_content);
         mContentLayout.setVisibility(LinearLayout.GONE);
         mSignInLayout = findViewById(R.id.signIn_layout);
-
-        //Boolean lock = mPrefs.getBoolean("locked", false);
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        mPrefs.edit().putBoolean("locked", false).apply();
 
         favouriteViewModel = ViewModelProviders.of(ContentActivity.this).get(FavouriteViewModel.class);
 
         if (savedInstanceState == null) {
             downloadId = getIntent().getStringArrayListExtra(WORKREQUEST_LIST);
             amount = getIntent().getIntExtra(VIEWPAGER_AMOUNT, 0);
+
             for (int index = 0; index <= amount - 1; index++) {
                 if (index >= 1) {
                     getSupportFragmentManager().beginTransaction()
@@ -102,8 +100,11 @@ public class ContentActivity extends LoginActivity implements View.OnClickListen
             }
         }
 
-        if (savedInstanceState != null)
+        if (savedInstanceState != null) {
             mScrollY = savedInstanceState.getInt(SCROLLVIEWYPOSITION, 0);
+            mBoolean = savedInstanceState.getBoolean(BOOLEANVALUE, true);
+        }
+
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -132,29 +133,34 @@ public class ContentActivity extends LoginActivity implements View.OnClickListen
         signInButton.setSize(SignInButton.SIZE_WIDE);
         signInButton.setOnClickListener(this);
 
+
         GoogleSignInOptions gso = setupGoogleSignInOptions();
-
         buildGoogleApiClient(gso);
-
         setupFirebaseAuth();
+
+
     }
+
+    private static final String TAG = "ContentActivity";
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(SCROLLVIEWYPOSITION, mScrollY);
+        outState.putBoolean(BOOLEANVALUE, false);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
+        if (mAuthListener != null) {
+            mAuth.addAuthStateListener(mAuthListener);
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mAuth.addAuthStateListener(mAuthListener);
     }
 
     @Override
@@ -238,37 +244,23 @@ public class ContentActivity extends LoginActivity implements View.OnClickListen
 
 
     public void performFloatingAction(View view) {
-        /**   if (atomicBoolean.get() == true) {
-         CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.main_content);
-         final Snackbar snackbar = Snackbar.make(coordinatorLayout, "share items..?! ", Snackbar.LENGTH_LONG)
-         .setAction("OK", new View.OnClickListener() {
-        @Override public void onClick(View view) {
-        push();
-        }
-        }).setActionTextColor(getResources().getColor(android.R.color.holo_red_light));
-         snackbar.setAnchorView(R.id.fab);
-         snackbar.show();
-         atomicBoolean.set(false);
-         }**/
-        if (atomicBoolean.get() == true) {
-            AlertDialog.Builder alert = new AlertDialog.Builder(this);
-            alert.setMessage(R.string.sync);
-            alert.setCancelable(false);
-            alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    push();
-                }
-            });
-            alert.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
-                }
-            });
-            alert.show();
-            atomicBoolean.set(false);
-        }
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setMessage(R.string.sync);
+        alert.setCancelable(false);
+        alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                push();
+            }
+        });
+        alert.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        alert.show();
     }
 
     private void push() {

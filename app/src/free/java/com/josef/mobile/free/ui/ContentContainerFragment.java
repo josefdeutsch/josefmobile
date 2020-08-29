@@ -16,6 +16,7 @@ import androidx.test.espresso.IdlingResource;
 import androidx.viewpager.widget.ViewPager;
 
 import com.josef.josefmobile.R;
+import com.josef.mobile.free.ui.detail.ContentDetailFragment;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
 
 

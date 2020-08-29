@@ -20,7 +20,6 @@
     <ImageView android:id="@id/exo_artwork"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_webdesignsvg_03"
         android:scaleType="centerCrop"
         xmlns:android="http://schemas.android.com/apk/res/android" />
 
