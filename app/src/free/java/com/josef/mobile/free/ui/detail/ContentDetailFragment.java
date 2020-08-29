@@ -3,8 +3,6 @@ package com.josef.mobile.free.ui.detail;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,13 +14,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.test.espresso.IdlingResource;
-import androidx.work.Data;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
@@ -35,17 +29,13 @@ import com.google.android.material.snackbar.Snackbar;
 import com.josef.josefmobile.R;
 import com.josef.mobile.data.Favourite;
 import com.josef.mobile.data.FavouriteViewModel;
-import com.josef.mobile.idlingres.EspressoIdlingResource;
 
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.UUID;
 
-import static com.josef.mobile.ui.ErrorActivity.TAG;
-import static com.josef.mobile.util.Config.WORKREQUEST_KEYTAST_OUTPUT;
 import static com.josef.mobile.util.Config.VIEWPAGERDETAILKEY;
 import static com.josef.mobile.util.Config.WORKREQUEST_DOWNLOADID;
 
@@ -56,10 +46,9 @@ public class ContentDetailFragment extends VideoPlayerFragment {
     public ToggleButton mButtonDataBase;
     public TextView mArticle;
     public TextView mArticleByLine;
-    private String mDownloadId;
-    private int index;
+
     public ImageButton mPlayButton;
-    private Object lock;
+
 
     public static final String JSON_METADATA = "metadata";
     public static final String JSON_NAME = "name";
@@ -98,9 +87,6 @@ public class ContentDetailFragment extends VideoPlayerFragment {
         }
     }
 
-    private void setupPlayButton(final String downloadId, final int index, View.OnClickListener listener) {
-        if (listener != null) mPlayButton.setOnClickListener(listener);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -121,12 +107,12 @@ public class ContentDetailFragment extends VideoPlayerFragment {
         }
         });*/
 
-        setupPlayButton(mDownloadId, index, new View.OnClickListener() {
+        setupView(mPlayButton , new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (lock == null) {
                     lock = new Object();
-                    doWork(mDownloadId, index, new Worker() {
+                    doWork(new Worker() {
                         @Override
                         public void execute(String input, int index) {
                             initExoPlayer(getContext());

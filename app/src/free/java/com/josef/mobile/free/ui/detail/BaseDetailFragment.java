@@ -3,6 +3,7 @@ package com.josef.mobile.free.ui.detail;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
@@ -26,14 +27,18 @@ import static com.josef.mobile.util.Config.WORKREQUEST_KEYTAST_OUTPUT;
 public class BaseDetailFragment extends Fragment {
 
     protected ProgressBar mProgressBar;
+    protected String mDownloadId;
+    protected int index;
+    protected volatile Object lock;
 
-    public void doWork(final String downloadId, final int index, final Worker worker) {
-        if (downloadId != null) {
+
+    protected void doWork(final Worker worker) {
+        if (mDownloadId != null) {
 
             mProgressBar.setVisibility(View.INVISIBLE);
             mProgressBar.setVisibility(View.VISIBLE);
 
-            WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(UUID.fromString(downloadId))
+            WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(UUID.fromString(mDownloadId))
                     .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
                         @Override
                         public void onChanged(@Nullable WorkInfo workInfo) {
@@ -55,6 +60,11 @@ public class BaseDetailFragment extends Fragment {
                     });
             }
 
+    }
+
+
+    protected void setupView(View which, View.OnClickListener listener) {
+        if (listener != null && which != null) which.setOnClickListener(listener);
     }
 
     @Nullable
