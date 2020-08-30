@@ -81,7 +81,6 @@ public class ContentDetailFragment extends VideoPlayerFragment {
         setupUi();
 
         mArticle.setText("Sculpture: " + index);
-        
 
         setupView(mArticleByLine, new Supplier() {
             @Override
@@ -163,11 +162,7 @@ public class ContentDetailFragment extends VideoPlayerFragment {
                 doWork(new Worker() {
                     @Override
                     public void execute(final String input, final int index) {
-                        final ScaleAnimation scaleAnimation = new ScaleAnimation(0.7f, 1.0f, 0.7f, 1.0f,
-                                Animation.RELATIVE_TO_SELF, 0.7f, Animation.RELATIVE_TO_SELF, 0.7f);
-                        scaleAnimation.setDuration(500);
-                        BounceInterpolator bounceInterpolator = new BounceInterpolator();
-                        scaleAnimation.setInterpolator(bounceInterpolator);
+                        ScaleAnimation scaleAnimation = mViewModelDetail.getScaleAnimation();
                         buttonView.startAnimation(scaleAnimation);
                         if (isChecked) {
                             final Snackbar snackbar = Snackbar.make(
@@ -175,7 +170,16 @@ public class ContentDetailFragment extends VideoPlayerFragment {
                                     .setAction("OK", new View.OnClickListener() {
                                         @Override
                                         public void onClick(View view) {
-                                            addItemtsToDataBase(input, index);
+                                            String png = null;
+                                            String url = null;
+                                            try {
+                                                png = mViewModelDetail.getJsonPng(input,index);
+                                                url = mViewModelDetail.getJsonUrl(input,index);
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                            Favourite favourite = new Favourite(png, url, 0);
+                                            mFavouriteViewMode.insert(favourite);
                                             buttonView.setChecked(false);
                                         }
                                     }).setActionTextColor(getResources().getColor(android.R.color.holo_red_light));
@@ -249,22 +253,6 @@ public class ContentDetailFragment extends VideoPlayerFragment {
         mProgressBar = layoutInflater.findViewById(R.id.progress);
     }
 
-
-    public void addItemtsToDataBase(final String output, final int index) {
-
-        try {
-            JSONArray input = new JSONArray(output);
-            JSONObject container = input.getJSONObject(index);
-            JSONObject metadata = (JSONObject) container.get(JSON_METADATA);
-            String url = (String) metadata.get(JSON_URL);
-            String png = (String) metadata.get(JSON_PNG);
-            Favourite favourite = new Favourite(png, url, 0);
-            mFavouriteViewMode.insert(favourite);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-    }
 
 
     private Player.EventListener playerListener = new Player.EventListener() {
