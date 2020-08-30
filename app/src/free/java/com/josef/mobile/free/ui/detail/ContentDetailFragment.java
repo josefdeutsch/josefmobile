@@ -81,6 +81,7 @@ public class ContentDetailFragment extends VideoPlayerFragment {
         setupUi();
 
         mArticle.setText("Sculpture: " + index);
+        
 
         setupView(mArticleByLine, new Supplier() {
             @Override
