@@ -4,7 +4,10 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,6 +29,7 @@ import static com.josef.mobile.util.Config.WORKREQUEST_KEYTAST_OUTPUT;
 
 public class BaseDetailFragment extends Fragment {
 
+    protected ViewModelDetail mViewModelDetail;
     protected ProgressBar mProgressBar;
     protected String mDownloadId;
     protected int index;
@@ -61,10 +65,16 @@ public class BaseDetailFragment extends Fragment {
             }
 
     }
-
+    protected void setupView(View which, Supplier supplier) {
+        if (supplier != null && which != null) supplier.supply();
+    }
 
     protected void setupView(View which, View.OnClickListener listener) {
         if (listener != null && which != null) which.setOnClickListener(listener);
+    }
+
+    protected void setupView(ToggleButton which, CompoundButton.OnCheckedChangeListener listener) {
+        if (listener != null && which != null) which.setOnCheckedChangeListener(listener);
     }
 
     @Nullable

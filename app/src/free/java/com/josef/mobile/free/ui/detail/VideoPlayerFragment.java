@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
@@ -52,6 +53,7 @@ public class VideoPlayerFragment extends BaseDetailFragment {
     protected ImageView mArtWork;
     protected SimpleExoPlayer mPlayer;
     protected PlayerView mPlayerView;
+    protected ImageButton mPlayButton;
 
     protected boolean mExoPlayerFullscreen = false;
     protected int mResumeWindow;
@@ -60,27 +62,22 @@ public class VideoPlayerFragment extends BaseDetailFragment {
 
 
     protected void initExoPlayer(Context context) {
-
         DefaultBandwidthMeter.Builder bandwidthMeter = new DefaultBandwidthMeter.Builder(context);
         BandwidthMeter bandwidthMeters = bandwidthMeter.build();
         TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory();
         TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
         LoadControl loadControl = new DefaultLoadControl();
-        mPlayer = ExoPlayerFactory.newSimpleInstance(context,new DefaultRenderersFactory(context), trackSelector, loadControl,null,bandwidthMeters);
+        mPlayer = ExoPlayerFactory.newSimpleInstance(context, new DefaultRenderersFactory(context), trackSelector, loadControl, null, bandwidthMeters);
     }
 
-    protected void setupMediaSource2(final String output,final int index) {
+    protected void setupMediaSource2(final String output, final int index) {
 
         try {
             mPlayerView.setPlayer(mPlayer);
             Player.EventListener playerListener = buildPlayerEventListener();
             mPlayerView.getPlayer().addListener(playerListener);
 
-            JSONArray input = new JSONArray(output);
-            JSONObject container = null;
-            container = input.getJSONObject(index);
-            JSONObject metadata = (JSONObject) container.get("metadata");
-            String url = (String) metadata.get("url");
+            String url = mViewModelDetail.getJsonUrl(output,index);
             DataSource.Factory dataSourceFactory =
                     new DefaultDataSourceFactory(getActivity(), Util.getUserAgent(getActivity(), getActivity().getString(R.string.app_name)));
             MediaSource videoSource = new ProgressiveMediaSource.Factory(dataSourceFactory)
@@ -115,21 +112,23 @@ public class VideoPlayerFragment extends BaseDetailFragment {
         }
     }
 
-    protected void initFullScreenButton() {
-        PlayerControlView controlView = mPlayerView.findViewById(R.id.exo_controller);
-        mFullScreenIcon = controlView.findViewById(R.id.exo_fullscreen_icon);
-        mFullScreenButton = controlView.findViewById(R.id.exo_fullscreen_button);
-        mFullScreenButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!mExoPlayerFullscreen){
-                    openFullscreenDialog();
-                }
-                else
-                    closeFullscreenDialog();
-            }
-        });
-    }
+    /**
+     * protected void initFullScreenButton() {
+     * PlayerControlView controlView = mPlayerView.findViewById(R.id.exo_controller);
+     * mFullScreenIcon = controlView.findViewById(R.id.exo_fullscreen_icon);
+     * mFullScreenButton = controlView.findViewById(R.id.exo_fullscreen_button);
+     * mFullScreenButton.setOnClickListener(new View.OnClickListener() {
+     *
+     * @Override public void onClick(View v) {
+     * if (!mExoPlayerFullscreen){
+     * openFullscreenDialog();
+     * }
+     * else
+     * closeFullscreenDialog();
+     * }
+     * });
+     * }
+     **/
 
     @Nullable
     protected void initFullscreenDialog() {
@@ -171,11 +170,14 @@ public class VideoPlayerFragment extends BaseDetailFragment {
 
         }
     }
-    public void setupThumbNailSource2(final String output, final int index) throws JSONException {
-        JSONArray input = new JSONArray(output);
-        JSONObject container = input.getJSONObject(index);
-        JSONObject metadata = (JSONObject) container.get("metadata");
-        String png = (String) metadata.get("png");
+
+    public void setupThumbNailSource2(final String output, final int index) {
+        String png = null;
+        try {
+            png = mViewModelDetail.getJsonPng(output, index);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         postThumbnailIntoExoplayer(png);
     }
 
@@ -195,10 +197,10 @@ public class VideoPlayerFragment extends BaseDetailFragment {
         }
     };
 
-   protected Player.EventListener buildPlayerEventListener(){
+    protected Player.EventListener buildPlayerEventListener() {
 
-       return null;
-   }
+        return null;
+    }
 
 }
 
