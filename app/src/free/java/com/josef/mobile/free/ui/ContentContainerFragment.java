@@ -1,5 +1,6 @@
 package com.josef.mobile.free.ui;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -66,10 +67,9 @@ public class ContentContainerFragment extends Fragment {
 
         layoutInflater = inflater.inflate(R.layout.fragment_content_container, container, false);
         viewPager = layoutInflater.findViewById(R.id.viewidpager);
-        adapters = new ViewPagerFragmentAdapters(getChildFragmentManager(), which);
-        viewPager.setAdapter(adapters);
+        //adapters = new ViewPagerFragmentAdapters(getChildFragmentManager(), which);
 
-        viewPager.setOffscreenPageLimit(3);
+        viewPager.setOffscreenPageLimit(1);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -96,6 +96,14 @@ public class ContentContainerFragment extends Fragment {
             }
         });
         viewPager.setCurrentItem(mPosition);
+
+        new AsyncTask<Void,Void,Void>(){
+            @Override
+            protected Void doInBackground(Void... voids) {
+                viewPager.setAdapter(new ViewPagerFragmentAdapters(getChildFragmentManager(), which));
+                return null;
+            }
+        }.execute();
 
         return layoutInflater;
     }

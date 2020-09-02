@@ -82,7 +82,7 @@ public class ContentDetailFragment extends VideoPlayerFragment {
 
         mArticle.setText("Sculpture: " + index);
 
-        setupView(mArticleByLine, new Supplier() {
+       /** setupView(mArticleByLine, new Supplier() {
             @Override
             public void supply() {
                 doWork(new Worker() {
@@ -98,8 +98,8 @@ public class ContentDetailFragment extends VideoPlayerFragment {
                 });
             }
         });
-
-        setupView(mArtWork, new Supplier() {
+**/
+     /**   setupView(mArtWork, new Supplier() {
             @Override
             public void supply() {
                 doWork(new Worker() {
@@ -124,9 +124,9 @@ public class ContentDetailFragment extends VideoPlayerFragment {
                     button01pos = 0;
                 }
             }
-        });
+        });**/
 
-        setupView(mPlayButton, new View.OnClickListener() {
+     /**   setupView(mPlayButton, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (lock == null) {
@@ -144,9 +144,9 @@ public class ContentDetailFragment extends VideoPlayerFragment {
                         mPlayer.setPlayWhenReady(true);
                 }
             }
-        });
+        });**/
 
-        setupView(mFullScreenButton, new View.OnClickListener() {
+      /**  setupView(mFullScreenButton, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!mExoPlayerFullscreen) {
@@ -154,9 +154,9 @@ public class ContentDetailFragment extends VideoPlayerFragment {
                 } else
                     closeFullscreenDialog();
             }
-        });
+        });**/
 
-        setupView(mButtonDataBase, new CompoundButton.OnCheckedChangeListener() {
+       /** setupView(mButtonDataBase, new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
                 doWork(new Worker() {
@@ -197,7 +197,7 @@ public class ContentDetailFragment extends VideoPlayerFragment {
                 });
             }
         });
-
+**/
         return layoutInflater;
     }
 

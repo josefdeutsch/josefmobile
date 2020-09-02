@@ -61,9 +61,9 @@ public class ContentActivity extends AppCompatActivity {
             FragmentTransaction fm = getSupportFragmentManager().beginTransaction();
             for (int index = 0; index <= amount - 1; index++) {
 
-                getSupportFragmentManager().beginTransaction()
-                        .add(R.id.container, ContentContainerFragment.newInstance(downloadId.get(index)))
-                        .commit();
+               // ContentContainerFragment contentContainerFragment = ContentContainerFragment.newInstance(downloadId.get(index));
+                        fm.add(R.id.container, ContentContainerFragment.newInstance(downloadId.get(index)));
+
             }
             fm.commit();
         }
@@ -197,33 +197,6 @@ public class ContentActivity extends AppCompatActivity {
         snackbar.show();
     }
 
-    /**
-     * InterstitialAdsRequest mArchiveActivity = new InterstitialAdsRequest() {
-     *
-     * @Override public void execute() {
-     * mInterstitialAd = new InterstitialAd(getApplicationContext());
-     * mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
-     * mInterstitialAd.loadAd(new AdRequest.Builder().build());
-     * mInterstitialAd.setAdListener(new AdListener() {
-     * @Override public void onAdLoaded() {
-     * if (mDialog != null) {
-     * mDialog.hide();
-     * }
-     * mInterstitialAd.show();
-     * }
-     * @Override public void onAdFailedToLoad(int errorCode) {
-     * if (mDialog != null) {
-     * mDialog.hide();
-     * }
-     * startActivity(getApplicationContext(), ArchiveActivity.class);
-     * }
-     * @Override public void onAdClosed() {
-     * startActivity(getApplicationContext(), ArchiveActivity.class);
-     * }
-     * });
-     * }
-     * };
-     **/
 
 
     @Nullable

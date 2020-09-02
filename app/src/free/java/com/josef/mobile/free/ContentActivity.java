@@ -3,7 +3,10 @@ package com.josef.mobile.free;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
@@ -22,6 +25,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.widget.NestedScrollView;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.test.espresso.IdlingResource;
@@ -78,33 +82,11 @@ public class ContentActivity extends LoginActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content);
         mContentLayout = findViewById(R.id.main_content);
-        mContentLayout.setVisibility(LinearLayout.GONE);
-        mSignInLayout = findViewById(R.id.signIn_layout);
+        Log.d(TAG, "onCreate: "+"main activity entry");
+        //mContentLayout.setVisibility(LinearLayout.GONE);
+        //mSignInLayout = findViewById(R.id.signIn_layout);
 
         favouriteViewModel = ViewModelProviders.of(ContentActivity.this).get(FavouriteViewModel.class);
-
-        if (savedInstanceState == null) {
-            downloadId = getIntent().getStringArrayListExtra(WORKREQUEST_LIST);
-            amount = getIntent().getIntExtra(VIEWPAGER_AMOUNT, 0);
-
-            for (int index = 0; index <= amount - 1; index++) {
-                if (index >= 1) {
-                    getSupportFragmentManager().beginTransaction()
-                            .add(R.id.container, ContentContainerFragment.newInstance(downloadId.get(index)))
-                            .commit();
-                } else {
-                    getSupportFragmentManager().beginTransaction()
-                            .add(R.id.ad_fragment, ContentContainerFragment.newInstance(downloadId.get(index)))
-                            .commit();
-                }
-            }
-        }
-
-        if (savedInstanceState != null) {
-            mScrollY = savedInstanceState.getInt(SCROLLVIEWYPOSITION, 0);
-            mBoolean = savedInstanceState.getBoolean(BOOLEANVALUE, true);
-        }
-
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -129,14 +111,34 @@ public class ContentActivity extends LoginActivity implements View.OnClickListen
 
         setupNestedScrollView(bar);
 
-        SignInButton signInButton = findViewById(R.id.sign_in_button);
-        signInButton.setSize(SignInButton.SIZE_WIDE);
-        signInButton.setOnClickListener(this);
+      //  SignInButton signInButton = findViewById(R.id.sign_in_button);
+      //  signInButton.setSize(SignInButton.SIZE_WIDE);
+      //  signInButton.setOnClickListener(this);
 
 
-        GoogleSignInOptions gso = setupGoogleSignInOptions();
-        buildGoogleApiClient(gso);
-        setupFirebaseAuth();
+     //   GoogleSignInOptions gso = setupGoogleSignInOptions();
+       // buildGoogleApiClient(gso);
+       // setupFirebaseAuth();
+
+
+        if (savedInstanceState == null) {
+
+            downloadId = getIntent().getStringArrayListExtra(WORKREQUEST_LIST);
+            amount = getIntent().getIntExtra(VIEWPAGER_AMOUNT, 0);
+
+           // FragmentTransaction fm = getSupportFragmentManager().beginTransaction();
+
+
+           // fm.commit();
+        }
+
+        for (int i = 0; i <= 10 - 1; i++) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.container, ContentContainerFragment.newInstance(null))
+                    .commit();
+
+        }
 
 
     }
@@ -156,6 +158,7 @@ public class ContentActivity extends LoginActivity implements View.OnClickListen
         if (mAuthListener != null) {
             mAuth.addAuthStateListener(mAuthListener);
         }
+
     }
 
     @Override
@@ -175,7 +178,7 @@ public class ContentActivity extends LoginActivity implements View.OnClickListen
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == RC_SIGN_IN) {
+       /** if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
                 GoogleSignInAccount account = result.getSignInAccount();
@@ -184,7 +187,7 @@ public class ContentActivity extends LoginActivity implements View.OnClickListen
                 updateUI(null);
                 Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show();
             }
-        }
+        }**/
     }
 
     @Override
@@ -316,6 +319,8 @@ public class ContentActivity extends LoginActivity implements View.OnClickListen
         }
         return mIdlingResource;
     }
+
+
 
 
 }
