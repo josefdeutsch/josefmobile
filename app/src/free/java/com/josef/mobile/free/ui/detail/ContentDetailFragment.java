@@ -83,12 +83,12 @@ public class ContentDetailFragment extends ContentComponentFragment {
     public void onStop() {
         super.onStop();
         releaseExoPlayer();
-        if (mPlayer != null) mPlayer.release();
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+
     }
 
 }

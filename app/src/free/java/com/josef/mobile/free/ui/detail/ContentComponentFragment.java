@@ -19,7 +19,6 @@ import org.json.JSONException;
 
 public class ContentComponentFragment extends ContentPlayerFragment {
 
-    private FavouriteViewModel mFavouriteViewMode;
 
     public ToggleButton mButtonDataBase;
     public TextView mArticle;
@@ -31,13 +30,9 @@ public class ContentComponentFragment extends ContentPlayerFragment {
         public void supply() {
             doWork(new Worker() {
                 @Override
-                public void execute(String input, int index) {
-                    try {
-                        String name = mViewModelDetail.getJsonName(input, index);
-                        mArticleByLine.setText(name);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                public void execute(String input, int index) throws JSONException {
+                    String name = mViewModelDetail.getJsonName(input, index);
+                    mArticleByLine.setText(name);
                 }
             });
         }
@@ -48,7 +43,7 @@ public class ContentComponentFragment extends ContentPlayerFragment {
         public void supply() {
             doWork(new Worker() {
                 @Override
-                public void execute(String input, int index) {
+                public void execute(String input, int index) throws JSONException {
                     setupThumbNailSource(input, index);
                 }
             });
@@ -87,7 +82,7 @@ public class ContentComponentFragment extends ContentPlayerFragment {
 
             doWork(new Worker() {
                 @Override
-                public void execute(String input, int index) {
+                public void execute(String input, int index) throws JSONException {
                     initExoPlayer(getContext());
                     initFullscreenDialog();
                     setupMediaSource(input, index);
@@ -110,42 +105,36 @@ public class ContentComponentFragment extends ContentPlayerFragment {
     protected CompoundButton.OnCheckedChangeListener mToggleButtonOnClickListener = new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
+            if (isChecked == false) return;
+
             doWork(new Worker() {
                 @Override
                 public void execute(final String input, final int index) {
                     ScaleAnimation scaleAnimation = mViewModelDetail.getScaleAnimation();
-                    buttonView.startAnimation(scaleAnimation);
-                    if (isChecked) {
-                        final Snackbar snackbar = Snackbar.make(
-                                getActivity().findViewById(R.id.main_content), "save item..?!", Snackbar.LENGTH_LONG)
-                                .setAction("OK", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        String png = null;
-                                        String url = null;
-                                        try {
-                                            png = mViewModelDetail.getJsonPng(input, index);
-                                            url = mViewModelDetail.getJsonUrl(input, index);
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                        }
-                                        Favourite favourite = new Favourite(png, url, 0);
-                                        mFavouriteViewMode.insert(favourite);
-                                        buttonView.setChecked(false);
-                                    }
-                                }).setActionTextColor(getResources().getColor(android.R.color.holo_red_light));
-                        snackbar.setAnchorView(getActivity().findViewById(R.id.fab));
-                        snackbar.show();
-                    }
 
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
+                    buttonView.startAnimation(scaleAnimation);
+                    buildSnackBar().setAction("OK", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            try {
+                                String png = mViewModelDetail.getJsonPng(input, index);
+                                String url = mViewModelDetail.getJsonUrl(input, index);
+                                Favourite favourite = new Favourite(png, url, 0);
+                                mFavouriteViewModel.insert(favourite);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }).setActionTextColor(getResources().getColor(android.R.color.holo_red_light))
+                            .setAnchorView(getActivity().findViewById(R.id.fab))
+                            .show();
+
+                    buildHandler(null,new Runnable() {
                         @Override
                         public void run() {
                             buttonView.setChecked(false);
                         }
-                    }, 3000);
-
+                    },3000l);
                 }
             });
         }
@@ -153,7 +142,7 @@ public class ContentComponentFragment extends ContentPlayerFragment {
 
 
     protected void setupUi() {
-        mFavouriteViewMode = ViewModelProviders.of(this).get(FavouriteViewModel.class);
+        mFavouriteViewModel = ViewModelProviders.of(this).get(FavouriteViewModel.class);
         mPlayerView = layoutInflater.findViewById(R.id.player);
         mFullScreenIcon = mPlayerView.findViewById(R.id.exo_fullscreen_icon);
         mFullScreenButton = mPlayerView.findViewById(R.id.exo_fullscreen_button);

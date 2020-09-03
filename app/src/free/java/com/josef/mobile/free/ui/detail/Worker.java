@@ -3,6 +3,6 @@ package com.josef.mobile.free.ui.detail;
 import android.widget.ProgressBar;
 
 public interface Worker {
-     void execute(final String input, final int index);
+     void execute(final String input, final int index) throws Exception;
 }
 

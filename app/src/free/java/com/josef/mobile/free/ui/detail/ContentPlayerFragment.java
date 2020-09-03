@@ -85,7 +85,7 @@ public class ContentPlayerFragment extends ContentBaseFragment {
 
     protected void matchesExoPlayerFullScreenConfig() {
         if (!mExoPlayerFullscreen) return;
-        
+
         ((ViewGroup) mPlayerView.getParent()).removeView(mPlayerView);
         mFullScreenDialog.addContentView(mPlayerView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         mFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_fullscreen_skrink));
