@@ -83,8 +83,8 @@ public class ContentActivity extends LoginActivity implements View.OnClickListen
         setContentView(R.layout.activity_content);
         mContentLayout = findViewById(R.id.main_content);
         Log.d(TAG, "onCreate: "+"main activity entry");
-        //mContentLayout.setVisibility(LinearLayout.GONE);
-        //mSignInLayout = findViewById(R.id.signIn_layout);
+        mContentLayout.setVisibility(LinearLayout.GONE);
+        mSignInLayout = findViewById(R.id.signIn_layout);
 
         favouriteViewModel = ViewModelProviders.of(ContentActivity.this).get(FavouriteViewModel.class);
 
@@ -111,31 +111,30 @@ public class ContentActivity extends LoginActivity implements View.OnClickListen
 
         setupNestedScrollView(bar);
 
-      //  SignInButton signInButton = findViewById(R.id.sign_in_button);
-      //  signInButton.setSize(SignInButton.SIZE_WIDE);
-      //  signInButton.setOnClickListener(this);
+        SignInButton signInButton = findViewById(R.id.sign_in_button);
+        signInButton.setSize(SignInButton.SIZE_WIDE);
+        signInButton.setOnClickListener(this);
 
 
-     //   GoogleSignInOptions gso = setupGoogleSignInOptions();
-       // buildGoogleApiClient(gso);
-       // setupFirebaseAuth();
+        GoogleSignInOptions gso = setupGoogleSignInOptions();
+        buildGoogleApiClient(gso);
+        setupFirebaseAuth();
 
 
         if (savedInstanceState == null) {
-
             downloadId = getIntent().getStringArrayListExtra(WORKREQUEST_LIST);
             amount = getIntent().getIntExtra(VIEWPAGER_AMOUNT, 0);
-
-           // FragmentTransaction fm = getSupportFragmentManager().beginTransaction();
-
-
-           // fm.commit();
         }
 
-        for (int i = 0; i <= 10 - 1; i++) {
+             getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.ad_fragment, ContentContainerFragment.newInstance(downloadId.get(0)))
+                .commit();
+
+        for (int i = 1; i <= 4 - 1; i++) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.container, ContentContainerFragment.newInstance(null))
+                    .add(R.id.container, ContentContainerFragment.newInstance(downloadId.get(i)))
                     .commit();
 
         }
@@ -178,7 +177,7 @@ public class ContentActivity extends LoginActivity implements View.OnClickListen
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-       /** if (requestCode == RC_SIGN_IN) {
+        if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
                 GoogleSignInAccount account = result.getSignInAccount();
@@ -187,7 +186,7 @@ public class ContentActivity extends LoginActivity implements View.OnClickListen
                 updateUI(null);
                 Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show();
             }
-        }**/
+        }
     }
 
     @Override

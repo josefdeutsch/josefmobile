@@ -12,6 +12,7 @@ import android.widget.ToggleButton;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.test.espresso.IdlingResource;
@@ -27,7 +28,7 @@ import java.util.UUID;
 
 import static com.josef.mobile.util.Config.WORKREQUEST_KEYTAST_OUTPUT;
 
-public class BaseDetailFragment extends Fragment {
+public class ContentBaseFragment extends Fragment {
 
     protected ViewModelDetail mViewModelDetail;
     protected ProgressBar mProgressBar;
@@ -65,23 +66,16 @@ public class BaseDetailFragment extends Fragment {
             }
 
     }
-    protected void setupView(View which, Supplier supplier) {
-        if (supplier != null && which != null) supplier.supply();
-    }
-
-    protected void setupView(View which, View.OnClickListener listener) {
-        if (listener != null && which != null) which.setOnClickListener(listener);
-    }
-
-    protected void setupView(ToggleButton which, CompoundButton.OnCheckedChangeListener listener) {
-        if (listener != null && which != null) which.setOnCheckedChangeListener(listener);
-    }
 
     @Nullable
     protected String getViewPagerContent(@NotNull WorkInfo workInfo) {
         Data data = workInfo.getOutputData();
         String output = data.getString(WORKREQUEST_KEYTAST_OUTPUT);
         return output;
+    }
+    void showDialog() {
+        DialogFragment newFragment = DetailDialogFragment.newInstance(null,null);
+        newFragment.show(getFragmentManager(), "dialog");
     }
 
     @Nullable

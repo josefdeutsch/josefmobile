@@ -110,43 +110,6 @@
             android:orientation="vertical"
             android:padding="12dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center_horizontal">
-
-                <ImageButton
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_baseline_thumb_up_24">
-                </ImageButton>
-                <ImageButton
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginLeft="48dp"
-                    android:src="@drawable/ic_baseline_thumb_up_24">
-                </ImageButton>
-                <ImageButton
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginLeft="48dp"
-                    android:src="@drawable/ic_baseline_thumb_up_24">
-                </ImageButton>
-                <ImageButton
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginLeft="48dp"
-                    android:src="@drawable/ic_baseline_thumb_up_24">
-                </ImageButton>
-                <ImageButton
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginLeft="48dp"
-                    android:src="@drawable/ic_baseline_thumb_up_24">
-                </ImageButton>
-
-            </LinearLayout>
 
             <TextView
                 android:layout_marginTop="16dp"
@@ -165,7 +128,7 @@
                >
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/textButton2"
+                    android:id="@+id/colorbutton"
                     style="@style/Widget.MaterialComponents.Button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

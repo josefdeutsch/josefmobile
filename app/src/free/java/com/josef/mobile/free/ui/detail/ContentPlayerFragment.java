@@ -5,30 +5,31 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
+import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
+import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
+import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
-import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DataSource;
@@ -39,13 +40,9 @@ import com.josef.josefmobile.R;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
-import static com.josef.mobile.ui.ErrorActivity.TAG;
-
-public class VideoPlayerFragment extends BaseDetailFragment {
+public class ContentPlayerFragment extends ContentBaseFragment {
 
     protected Dialog mFullScreenDialog;
     protected FrameLayout mFullScreenButton;
@@ -70,12 +67,12 @@ public class VideoPlayerFragment extends BaseDetailFragment {
         mPlayer = ExoPlayerFactory.newSimpleInstance(context, new DefaultRenderersFactory(context), trackSelector, loadControl, null, bandwidthMeters);
     }
 
-    protected void setupMediaSource2(final String output, final int index) {
+    protected void setupMediaSource(final String output, final int index) {
 
         try {
             mPlayerView.setPlayer(mPlayer);
-            Player.EventListener playerListener = buildPlayerEventListener();
-            mPlayerView.getPlayer().addListener(playerListener);
+            //Player.EventListener playerListener = buildPlayerEventListener();
+            //mPlayerView.getPlayer().addListener(playerListener);
 
             String url = mViewModelDetail.getJsonUrl(output,index);
             DataSource.Factory dataSourceFactory =
@@ -112,23 +109,6 @@ public class VideoPlayerFragment extends BaseDetailFragment {
         }
     }
 
-    /**
-     * protected void initFullScreenButton() {
-     * PlayerControlView controlView = mPlayerView.findViewById(R.id.exo_controller);
-     * mFullScreenIcon = controlView.findViewById(R.id.exo_fullscreen_icon);
-     * mFullScreenButton = controlView.findViewById(R.id.exo_fullscreen_button);
-     * mFullScreenButton.setOnClickListener(new View.OnClickListener() {
-     *
-     * @Override public void onClick(View v) {
-     * if (!mExoPlayerFullscreen){
-     * openFullscreenDialog();
-     * }
-     * else
-     * closeFullscreenDialog();
-     * }
-     * });
-     * }
-     **/
 
     @Nullable
     protected void initFullscreenDialog() {
@@ -170,8 +150,14 @@ public class VideoPlayerFragment extends BaseDetailFragment {
 
         }
     }
+    protected void onPlayerBackState() {
+        if (lock != null) {
+            if (mPlayer.getPlayWhenReady())
+                mPlayer.setPlayWhenReady(false);
+        }
+    }
 
-    public void setupThumbNailSource2(final String output, final int index) {
+    public void setupThumbNailSource(final String output, final int index) {
         String png = null;
         try {
             png = mViewModelDetail.getJsonPng(output, index);
@@ -196,11 +182,6 @@ public class VideoPlayerFragment extends BaseDetailFragment {
 
         }
     };
-
-    protected Player.EventListener buildPlayerEventListener() {
-
-        return null;
-    }
 
 }
 
