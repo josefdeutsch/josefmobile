@@ -56,6 +56,7 @@ public class ContentDetailFragment extends ContentComponentFragment {
         mArticle.setText("Sculpture: " + index);
         mArtWorkSupplier.supply();
 
+        // fullscreen reload...
 
         return layoutInflater;
     }

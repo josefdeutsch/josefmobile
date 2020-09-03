@@ -111,14 +111,15 @@ public class ContentComponentFragment extends ContentPlayerFragment {
                 @Override
                 public void execute(final String input, final int index) {
                     ScaleAnimation scaleAnimation = mViewModelDetail.getScaleAnimation();
-
                     buttonView.startAnimation(scaleAnimation);
+
                     buildSnackBar().setAction("OK", new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             try {
                                 String png = mViewModelDetail.getJsonPng(input, index);
                                 String url = mViewModelDetail.getJsonUrl(input, index);
+
                                 Favourite favourite = new Favourite(png, url, 0);
                                 mFavouriteViewModel.insert(favourite);
                             } catch (JSONException e) {
