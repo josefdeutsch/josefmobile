@@ -38,43 +38,40 @@ public class ContentBaseFragment extends Fragment {
 
 
     protected void doWork(final Worker worker) {
-        if (mDownloadId != null) {
+        if (mDownloadId == null || worker == null) return;
 
-            mProgressBar.setVisibility(View.INVISIBLE);
-            mProgressBar.setVisibility(View.VISIBLE);
+        mProgressBar.setVisibility(View.VISIBLE);
 
-            WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(UUID.fromString(mDownloadId))
-                    .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
-                        @Override
-                        public void onChanged(@Nullable WorkInfo workInfo) {
-                            if (workInfo != null) {
-                                if (workInfo.getState().isFinished()) {
-                                    final String output = getViewPagerContent(workInfo);
-                                    if (worker != null) {
-                                        worker.execute(output, index);
-                                        new Handler(Looper.getMainLooper()).post(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                mProgressBar.setVisibility(View.INVISIBLE);
-                                            }
-                                        });
-                                    }
+        WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(UUID.fromString(mDownloadId))
+                .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
+                    @Override
+                    public void onChanged(@Nullable WorkInfo workInfo) {
+                        if (workInfo == null) return;
+                        if (workInfo.getState().isFinished()){
+                            final String output = getViewPagerContent(workInfo);
+                            worker.execute(output, index);
+                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mProgressBar.setVisibility(View.INVISIBLE);
                                 }
-                            }
+                            });
                         }
-                    });
-            }
+                    }
+                });
+
 
     }
 
-    @Nullable
-    protected String getViewPagerContent(@NotNull WorkInfo workInfo) {
+    protected String getViewPagerContent(@NotNull WorkInfo workInfo) throws IllegalArgumentException {
         Data data = workInfo.getOutputData();
         String output = data.getString(WORKREQUEST_KEYTAST_OUTPUT);
+        if(data == null || output.isEmpty()) throw new IllegalArgumentException("workinfo is empty");
         return output;
     }
+
     void showDialog() {
-        DialogFragment newFragment = DetailDialogFragment.newInstance(null,null);
+        DialogFragment newFragment = DetailDialogFragment.newInstance(null, null);
         newFragment.show(getFragmentManager(), "dialog");
     }
 

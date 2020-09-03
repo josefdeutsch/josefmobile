@@ -67,63 +67,59 @@ public class ContentPlayerFragment extends ContentBaseFragment {
         mPlayer = ExoPlayerFactory.newSimpleInstance(context, new DefaultRenderersFactory(context), trackSelector, loadControl, null, bandwidthMeters);
     }
 
-    protected void setupMediaSource(final String output, final int index) {
+    protected void setupMediaSource(final String output, final int index) throws JSONException {
+        mPlayerView.setPlayer(mPlayer);
+        //Player.EventListener playerListener = buildPlayerEventListener();
+        //mPlayerView.getPlayer().addListener(playerListener);
+        String url = mViewModelDetail.getJsonUrl(output, index);
+        DataSource.Factory dataSourceFactory =
+                new DefaultDataSourceFactory(getActivity(), Util.getUserAgent(getActivity(), getActivity().getString(R.string.app_name)));
+        MediaSource videoSource = new ProgressiveMediaSource.Factory(dataSourceFactory)
+                .createMediaSource(Uri.parse(url));
+        mPlayer.prepare(videoSource);
+        mPlayer.seekTo(mResumePosition);
+        mPlayer.setPlayWhenReady(true);
 
-        try {
-            mPlayerView.setPlayer(mPlayer);
-            //Player.EventListener playerListener = buildPlayerEventListener();
-            //mPlayerView.getPlayer().addListener(playerListener);
-
-            String url = mViewModelDetail.getJsonUrl(output,index);
-            DataSource.Factory dataSourceFactory =
-                    new DefaultDataSourceFactory(getActivity(), Util.getUserAgent(getActivity(), getActivity().getString(R.string.app_name)));
-            MediaSource videoSource = new ProgressiveMediaSource.Factory(dataSourceFactory)
-                    .createMediaSource(Uri.parse(url));
-            mPlayer.prepare(videoSource);
-            mPlayer.seekTo(mResumePosition);
-            mPlayer.setPlayWhenReady(true);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
     }
 
     protected void matchesExoPlayerFullScreenConfig() {
-        if (mExoPlayerFullscreen) {
-            ((ViewGroup) mPlayerView.getParent()).removeView(mPlayerView);
-            mFullScreenDialog.addContentView(mPlayerView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            mFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_fullscreen_skrink));
-            mFullScreenDialog.show();
-        }
+        if (!mExoPlayerFullscreen) return;
+        
+        ((ViewGroup) mPlayerView.getParent()).removeView(mPlayerView);
+        mFullScreenDialog.addContentView(mPlayerView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        mFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_fullscreen_skrink));
+        mFullScreenDialog.show();
+
     }
 
-    protected void withdrawExoPlayer() {
+    protected void releaseExoPlayer() {
+        if (mPlayerView == null && mPlayer == null) return;
 
-        if (mPlayerView != null && mPlayer != null) {
-            mResumeWindow = mPlayer.getCurrentWindowIndex();
-            mResumePosition = Math.max(0, mPlayer.getContentPosition());
-            mPlayer.release();
-        }
-        if (mFullScreenDialog != null) {
-            mFullScreenDialog.dismiss();
-        }
+        mResumeWindow = mPlayer.getCurrentWindowIndex();
+        mResumePosition = Math.max(0, mPlayer.getContentPosition());
+        mPlayer.release();
+
+        releaseFullScreenDialog();
+    }
+
+    protected void releaseFullScreenDialog() {
+        if (mFullScreenDialog == null) return;
+        mFullScreenDialog.dismiss();
     }
 
 
-    @Nullable
     protected void initFullscreenDialog() {
 
         mFullScreenDialog = new Dialog(getActivity(), android.R.style.Theme_Black_NoTitleBar_Fullscreen) {
             public void onBackPressed() {
-                if (mExoPlayerFullscreen)
-                    closeFullscreenDialog();
+                if (mExoPlayerFullscreen) closeFullscreenDialog();
                 super.onBackPressed();
             }
         };
     }
 
     protected void openFullscreenDialog() {
-
         ((ViewGroup) mPlayerView.getParent()).removeView(mPlayerView);
         mFullScreenDialog.addContentView(mPlayerView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         mFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_fullscreen_skrink));
@@ -132,7 +128,6 @@ public class ContentPlayerFragment extends ContentBaseFragment {
     }
 
     protected void closeFullscreenDialog() {
-
         ((ViewGroup) mPlayerView.getParent()).removeView(mPlayerView);
         ((FrameLayout) layoutInflater.findViewById(R.id.main_media_frame)).addView(mPlayerView);
         mExoPlayerFullscreen = false;
@@ -140,31 +135,13 @@ public class ContentPlayerFragment extends ContentBaseFragment {
         mFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_fullscreen_expand));
     }
 
-    private String mPng;
-
-    private void postThumbnailIntoExoplayer(String png) {
-        mPng = png;
-        if (png != null && !png.isEmpty()) {
-            Picasso.get().load(png).into(target);
-        } else {
-
-        }
-    }
-    protected void onPlayerBackState() {
-        if (lock != null) {
-            if (mPlayer.getPlayWhenReady())
-                mPlayer.setPlayWhenReady(false);
-        }
+    public void onPlayerBackState() {
+        if (lock != null && mPlayer.getPlayWhenReady()) mPlayer.setPlayWhenReady(false);
     }
 
-    public void setupThumbNailSource(final String output, final int index) {
-        String png = null;
-        try {
-            png = mViewModelDetail.getJsonPng(output, index);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        postThumbnailIntoExoplayer(png);
+    public void setupThumbNailSource(final String output, final int index) throws JSONException {
+        String png = mViewModelDetail.getJsonPng(output, index);
+        Picasso.get().load(png).into(target);
     }
 
     private Target target = new Target() {
@@ -175,12 +152,14 @@ public class ContentPlayerFragment extends ContentBaseFragment {
 
         @Override
         public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
         }
 
         @Override
         public void onPrepareLoad(Drawable placeHolderDrawable) {
 
         }
+
     };
 
 }

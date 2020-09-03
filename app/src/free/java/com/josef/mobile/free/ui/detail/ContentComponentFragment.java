@@ -55,7 +55,7 @@ public class ContentComponentFragment extends ContentPlayerFragment {
         }
     };
 
-    protected View.OnClickListener mColorButtonOnClickListener = new View.OnClickListener(){
+    protected View.OnClickListener mColorButtonOnClickListener = new View.OnClickListener() {
 
         @Override
         public void onClick(View v) {
@@ -64,47 +64,46 @@ public class ContentComponentFragment extends ContentPlayerFragment {
     };
 
     protected View.OnClickListener mArtWorkOnClickListener = new View.OnClickListener() {
-        boolean verify = true;
-
         @Override
         public void onClick(View v) {
-            if (verify) {
-                mPlayerView.showController();
-                verify = false;
-            } else if (!verify) {
+            if (mPlayerView.isControllerVisible()) {
                 mPlayerView.hideController();
-                verify = true;
+                return;
             }
+            mPlayerView.hideController();
         }
     };
 
     protected View.OnClickListener mPlayButtonOnClickListener = new View.OnClickListener() {
+
         @Override
         public void onClick(View v) {
-            if (lock == null) {
-                lock = new Object();
-                doWork(new Worker() {
-                    @Override
-                    public void execute(String input, int index) {
-                        initExoPlayer(getContext());
-                        initFullscreenDialog();
-                        setupMediaSource(input, index);
-                    }
-                });
-            } else {
-                if (!mPlayer.getPlayWhenReady())
-                    mPlayer.setPlayWhenReady(true);
+            if (lock != null && !mPlayer.getPlayWhenReady()) {
+                mPlayer.setPlayWhenReady(true);
+                return;
             }
+
+            lock = new Object();
+
+            doWork(new Worker() {
+                @Override
+                public void execute(String input, int index) {
+                    initExoPlayer(getContext());
+                    initFullscreenDialog();
+                    setupMediaSource(input, index);
+                }
+            });
         }
     };
 
     protected View.OnClickListener mFullScreenButtonOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (!mExoPlayerFullscreen) {
-                openFullscreenDialog();
-            } else
+            if (mExoPlayerFullscreen) {
                 closeFullscreenDialog();
+                return;
+            }
+            openFullscreenDialog();
         }
     };
 
@@ -125,8 +124,8 @@ public class ContentComponentFragment extends ContentPlayerFragment {
                                         String png = null;
                                         String url = null;
                                         try {
-                                            png = mViewModelDetail.getJsonPng(input,index);
-                                            url = mViewModelDetail.getJsonUrl(input,index);
+                                            png = mViewModelDetail.getJsonPng(input, index);
+                                            url = mViewModelDetail.getJsonUrl(input, index);
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
@@ -168,4 +167,4 @@ public class ContentComponentFragment extends ContentPlayerFragment {
     }
 
 
-}
+};

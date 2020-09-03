@@ -54,6 +54,7 @@ public class ContentDetailFragment extends ContentComponentFragment {
         setupUi();
 
         mArticle.setText("Sculpture: " + index);
+        mArtWorkSupplier.supply();
 
 
         return layoutInflater;
@@ -81,7 +82,7 @@ public class ContentDetailFragment extends ContentComponentFragment {
     @Override
     public void onStop() {
         super.onStop();
-        withdrawExoPlayer();
+        releaseExoPlayer();
         if (mPlayer != null) mPlayer.release();
     }
 
