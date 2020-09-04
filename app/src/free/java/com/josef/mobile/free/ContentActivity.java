@@ -82,7 +82,6 @@ public class ContentActivity extends LoginActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content);
         mContentLayout = findViewById(R.id.main_content);
-        Log.d(TAG, "onCreate: "+"main activity entry");
         mContentLayout.setVisibility(LinearLayout.GONE);
         mSignInLayout = findViewById(R.id.signIn_layout);
 
@@ -124,23 +123,24 @@ public class ContentActivity extends LoginActivity implements View.OnClickListen
         if (savedInstanceState == null) {
             downloadId = getIntent().getStringArrayListExtra(WORKREQUEST_LIST);
             amount = getIntent().getIntExtra(VIEWPAGER_AMOUNT, 0);
-        }
 
-             getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.ad_fragment, ContentContainerFragment.newInstance(downloadId.get(0)))
-                .commit();
-
-        for (int i = 1; i <= 4 - 1; i++) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.container, ContentContainerFragment.newInstance(downloadId.get(i)))
+                    .add(R.id.ad_fragment, ContentContainerFragment.newInstance(downloadId.get(0)))
                     .commit();
 
+           for (int i = 1; i <= amount - 1; i++) {
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.container, ContentContainerFragment.newInstance(downloadId.get(i)))
+                        .commit();
+
+
+            }
         }
 
-
     }
+
 
     private static final String TAG = "ContentActivity";
 
@@ -318,8 +318,6 @@ public class ContentActivity extends LoginActivity implements View.OnClickListen
         }
         return mIdlingResource;
     }
-
-
 
 
 }

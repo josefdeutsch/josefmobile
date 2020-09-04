@@ -25,6 +25,10 @@ public class ContentComponentFragment extends ContentPlayerFragment {
     public TextView mArticleByLine;
     public MaterialButton mColorButton;
 
+    protected void supplyView(View view,Supplier supplier) {
+        supplier.supply();
+    }
+
     protected Supplier mArticleSupplier = new Supplier() {
         @Override
         public void supply() {
@@ -37,6 +41,7 @@ public class ContentComponentFragment extends ContentPlayerFragment {
             });
         }
     };
+
 
     protected Supplier mArtWorkSupplier = new Supplier() {
         @Override
@@ -102,7 +107,7 @@ public class ContentComponentFragment extends ContentPlayerFragment {
         }
     };
 
-    protected CompoundButton.OnCheckedChangeListener mToggleButtonOnClickListener = new CompoundButton.OnCheckedChangeListener() {
+    protected CompoundButton.OnCheckedChangeListener mButtonDataBaseOnClickListener = new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
             if (isChecked == false) return;
@@ -130,12 +135,12 @@ public class ContentComponentFragment extends ContentPlayerFragment {
                             .setAnchorView(getActivity().findViewById(R.id.fab))
                             .show();
 
-                    buildHandler(null,new Runnable() {
+                    buildHandler(null, new Runnable() {
                         @Override
                         public void run() {
                             buttonView.setChecked(false);
                         }
-                    },3000l);
+                    }, 3000l);
                 }
             });
         }

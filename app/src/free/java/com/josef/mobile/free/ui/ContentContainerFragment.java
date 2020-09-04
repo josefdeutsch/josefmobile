@@ -67,7 +67,6 @@ public class ContentContainerFragment extends Fragment {
 
         layoutInflater = inflater.inflate(R.layout.fragment_content_container, container, false);
         viewPager = layoutInflater.findViewById(R.id.viewidpager);
-        //adapters = new ViewPagerFragmentAdapters(getChildFragmentManager(), which);
 
         viewPager.setOffscreenPageLimit(1);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -96,8 +95,7 @@ public class ContentContainerFragment extends Fragment {
             }
         });
         viewPager.setCurrentItem(mPosition);
-
-        new AsyncTask<Void,Void,Void>(){
+        viewPager.setAdapter(new ViewPagerFragmentAdapters(getChildFragmentManager(), which));new AsyncTask<Void,Void,Void>(){
             @Override
             protected Void doInBackground(Void... voids) {
                 viewPager.setAdapter(new ViewPagerFragmentAdapters(getChildFragmentManager(), which));

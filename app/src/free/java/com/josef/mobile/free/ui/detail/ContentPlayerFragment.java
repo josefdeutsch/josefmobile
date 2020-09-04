@@ -94,11 +94,12 @@ public class ContentPlayerFragment extends ContentBaseFragment {
     }
 
     protected void releaseExoPlayer() {
-        if (mPlayerView == null && mPlayer == null) return;
+        if (mPlayerView != null && mPlayer != null){
+            mResumeWindow = mPlayer.getCurrentWindowIndex();
+            mResumePosition = Math.max(0, mPlayer.getContentPosition());
+            mPlayer.release();
+        }
 
-        mResumeWindow = mPlayer.getCurrentWindowIndex();
-        mResumePosition = Math.max(0, mPlayer.getContentPosition());
-        mPlayer.release();
 
         releaseFullScreenDialog();
     }
