@@ -70,7 +70,7 @@ public class ContentComponentFragment extends ContentPlayerFragment {
                 mPlayerView.hideController();
                 return;
             }
-            mPlayerView.hideController();
+            mPlayerView.showController();
         }
     };
 
