@@ -65,7 +65,6 @@ public class SplashActivity extends AppCompatActivity {
        // supplySharedPreferences();
       //  onUpdateAppWidgetProvider();
 
-
         mData = buildData();
         mConstraints = buildConstraints();
         mDownload = buildOneTimeWorkRequest(CallBackWorker.class,

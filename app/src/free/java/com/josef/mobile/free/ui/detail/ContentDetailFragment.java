@@ -55,16 +55,15 @@ public class ContentDetailFragment extends ContentComponentFragment {
 
         mArticle.setText("Sculpture: " + index);
 
-      /**  supplyView(mArtWork,mArtWorkSupplier);
+        supplyView(mArtWork,mArtWorkSupplier);
         supplyView(mArticleByLine,mArticleSupplier);
-
 
         mArtWork.setOnClickListener(mArtWorkOnClickListener);
         mColorButton.setOnClickListener(mColorButtonOnClickListener);
         mPlayButton.setOnClickListener(mPlayButtonOnClickListener);
         mFullScreenButton.setOnClickListener(mFullScreenButtonOnClickListener);
         mButtonDataBase.setOnCheckedChangeListener(mButtonDataBaseOnClickListener);
-**/
+
         // fullscreen reload...
 
         return layoutInflater;

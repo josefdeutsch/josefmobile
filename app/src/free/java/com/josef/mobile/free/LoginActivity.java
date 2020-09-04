@@ -34,7 +34,7 @@ import org.jetbrains.annotations.NotNull;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
-public class LoginActivity extends AppCompatActivity
+public class LoginActivity extends ContentBaseActivity
         implements GoogleApiClient.OnConnectionFailedListener{
 
     public AlertDialog mDialog;
@@ -95,6 +95,7 @@ public class LoginActivity extends AppCompatActivity
         });
     }
 
+    @Override
     public void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -130,11 +131,7 @@ public class LoginActivity extends AppCompatActivity
         alert.show();
     }
 
-    public void updateUI(FirebaseUser user)
-
-    {
-
-    }
+    public void updateUI(FirebaseUser user) { }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {

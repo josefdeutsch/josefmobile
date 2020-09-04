@@ -10,12 +10,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static com.josef.mobile.free.ViewModelContent.JSON_METADATA;
+import static com.josef.mobile.free.ViewModelContent.JSON_NAME;
+import static com.josef.mobile.free.ViewModelContent.JSON_PNG;
+import static com.josef.mobile.free.ViewModelContent.JSON_URL;
+
 public class ViewModelDetail extends ViewModel {
 
-    public static final String JSON_METADATA = "metadata";
-    public static final String JSON_NAME = "name";
-    public static final String JSON_PNG = "png";
-    public static final String JSON_URL = "url";
 
     public static final String STATE_RESUME_WINDOW = "com.josef.mobile.free.ui.detail.ContentDetailFragment.resumeWindow";
     public static final String STATE_RESUME_POSITION = "com.josef.mobile.free.ui.detail.ContentDetailFragment.resumePosition";
