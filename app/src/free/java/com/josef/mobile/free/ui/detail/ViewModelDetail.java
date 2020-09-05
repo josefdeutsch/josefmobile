@@ -22,6 +22,9 @@ public class ViewModelDetail extends ViewModel {
     public static final String STATE_RESUME_POSITION = "com.josef.mobile.free.ui.detail.ContentDetailFragment.resumePosition";
     public static final String STATE_BOOLEAN_VALUE = "com.josef.mobile.free.ui.detail.ContentDetailFragment.value";
 
+    protected int getIndex(int index){
+        return index;
+    }
 
     protected String getJsonPng(String output, int index) throws JSONException {
         JSONArray input = new JSONArray(output);

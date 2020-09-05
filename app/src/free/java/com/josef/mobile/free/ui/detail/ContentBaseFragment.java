@@ -2,10 +2,8 @@ package com.josef.mobile.free.ui.detail;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
-
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
@@ -14,26 +12,21 @@ import androidx.lifecycle.Observer;
 import androidx.work.Data;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
-
 import com.google.android.material.snackbar.Snackbar;
 import com.josef.josefmobile.R;
-import com.josef.mobile.data.Favourite;
 import com.josef.mobile.data.FavouriteViewModel;
-
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONException;
-
 import java.util.UUID;
-
 import static android.os.Looper.getMainLooper;
-import static com.josef.mobile.ui.ErrorActivity.TAG;
+import static com.josef.mobile.free.ui.detail.ContentDetailFragment.DIALOG_FRAGMENT;
 import static com.josef.mobile.util.Config.WORKREQUEST_KEYTAST_OUTPUT;
 
-public class ContentBaseFragment extends Fragment {
+public class ContentBaseFragment extends DialogFragment {
 
 
     private static final String TAG = "ContentBaseFragment";
 
+    public String mDialogIndex;
     protected ViewModelDetail mViewModelDetail;
     protected FavouriteViewModel mFavouriteViewModel;
     protected ProgressBar mProgressBar;
@@ -85,6 +78,7 @@ public class ContentBaseFragment extends Fragment {
         return Snackbar.make(
                 getActivity().findViewById(R.id.main_content), "save item..?!", Snackbar.LENGTH_LONG);
     }
+
     protected void buildDialog(){
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         Fragment prev = getFragmentManager().findFragmentByTag("dialog");
@@ -93,6 +87,7 @@ public class ContentBaseFragment extends Fragment {
         }
         ft.addToBackStack(null);
         DialogFragment dialogFragment = new ContentDialogFragment();
+        dialogFragment.setTargetFragment(this, DIALOG_FRAGMENT);
         dialogFragment.show(ft, "dialog");
     }
 

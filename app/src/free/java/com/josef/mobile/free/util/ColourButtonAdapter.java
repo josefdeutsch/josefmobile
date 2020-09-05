@@ -11,12 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 import com.josef.josefmobile.R;
 import com.josef.mobile.free.Data;
 import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 public class ColourButtonAdapter extends RecyclerView.Adapter<ColourButtonAdapter.FavoriteHolder> {
@@ -24,11 +26,16 @@ public class ColourButtonAdapter extends RecyclerView.Adapter<ColourButtonAdapte
     private ArrayList<Data> arrayList;
     private static final String TAG = "FavouriteAdapter";
     private Context context;
+    private ColourButtonAdapterOnClickHander onClickHander;
 
+    public interface ColourButtonAdapterOnClickHander {
+        void onClick(String string);
+    }
 
-    public ColourButtonAdapter(Context conext, ArrayList<Data> arrayList){
-        this.arrayList=arrayList;
-        this.context= conext;
+    public ColourButtonAdapter(Context conext,ColourButtonAdapterOnClickHander onClickHander, ArrayList<Data> arrayList) {
+        this.arrayList = arrayList;
+        this.context = conext;
+        this.onClickHander = onClickHander;
     }
 
     @NonNull
@@ -46,7 +53,7 @@ public class ColourButtonAdapter extends RecyclerView.Adapter<ColourButtonAdapte
     public void onBindViewHolder(@NonNull FavoriteHolder noteHolder, int i) {
         Data currentNote = arrayList.get(i);
         String color = currentNote.getColor();
-        noteHolder.imageButton.setBackgroundColor(Color.parseColor(color));
+        noteHolder.imageButton.setBackgroundColor(Color.BLACK);
     }
 
     @Override
@@ -59,18 +66,25 @@ public class ColourButtonAdapter extends RecyclerView.Adapter<ColourButtonAdapte
         notifyDataSetChanged();
     }
 
-    class FavoriteHolder extends RecyclerView.ViewHolder  {
+    class FavoriteHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-       public MaterialButton imageButton;
+        public MaterialButton imageButton;
 
         public FavoriteHolder(View itemView) {
             super(itemView);
             imageButton = itemView.findViewById(R.id.gridcolorbutton);
+            itemView.setOnClickListener(this);
         }
+
         public MaterialButton getImageButton() {
             return imageButton;
         }
 
+        @Override
+        public void onClick(View v) {
+            int adapterPosition = getAdapterPosition();
+            onClickHander.onClick(Integer.toString(adapterPosition));
+        }
     }
 
 }

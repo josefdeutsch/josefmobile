@@ -13,12 +13,21 @@ public class FavouriteViewModel extends AndroidViewModel {
     private static final String TAG = "FavouriteViewModel";
     private FavouriteRepository repository;
     private LiveData<List<Favourite>> allNotes;
+    private String string;
 
     public FavouriteViewModel(@NonNull Application application) {
         super(application);
         repository = new FavouriteRepository(application);
         allNotes = repository.getAllNotes();
         metadata = new MutableLiveData<>();
+    }
+
+    public void setString(String string){
+       this.string=string;
+    }
+
+    public String getString(){
+        return string;
     }
 
     public void insert(Favourite note) {

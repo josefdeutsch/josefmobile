@@ -5,4 +5,7 @@
     <string name="question">more info..?</string>
     <string name="OK">OK</string>
     <string name="sync">synchronize with TV</string>
+    <string name="ERROR">error</string>
+    <string name="ok_button">ok</string>
+    <string name="cancel_button">cancel</string>
 </resources>
