@@ -7,9 +7,14 @@ public class Data {
     String png;
     String url;
     String email;
+    String color;
 
     public Data() {
 
+    }
+
+    public Data(String color) {
+        this.color = color;
     }
 
     public Data(String png, String url, String email) {
@@ -42,6 +47,16 @@ public class Data {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String png) {
+        this.color = color;
+    }
+
+
 
 
 }

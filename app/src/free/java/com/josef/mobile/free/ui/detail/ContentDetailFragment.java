@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.josef.josefmobile.R;
+import com.josef.mobile.data.FavouriteViewModel;
 
 import static com.josef.mobile.free.ui.detail.ViewModelDetail.STATE_BOOLEAN_VALUE;
 import static com.josef.mobile.free.ui.detail.ViewModelDetail.STATE_RESUME_POSITION;
@@ -16,7 +17,6 @@ import static com.josef.mobile.util.Config.VIEWPAGERDETAILKEY;
 import static com.josef.mobile.util.Config.WORKREQUEST_DOWNLOADID;
 
 public class ContentDetailFragment extends ContentComponentFragment {
-
 
     public ContentDetailFragment() {
     }
@@ -43,6 +43,7 @@ public class ContentDetailFragment extends ContentComponentFragment {
             mExoPlayerFullscreen = savedInstanceState.getBoolean(STATE_BOOLEAN_VALUE);
         }
         mViewModelDetail = ViewModelProviders.of(this).get(ViewModelDetail.class);
+        mFavouriteViewModel = ViewModelProviders.of(this).get(FavouriteViewModel.class);
     }
 
 
@@ -61,9 +62,8 @@ public class ContentDetailFragment extends ContentComponentFragment {
         mArtWork.setOnClickListener(mArtWorkOnClickListener);
         mColorButton.setOnClickListener(mColorButtonOnClickListener);
         mPlayButton.setOnClickListener(mPlayButtonOnClickListener);
-        mFullScreenButton.setOnClickListener(mFullScreenButtonOnClickListener);
         mButtonDataBase.setOnCheckedChangeListener(mButtonDataBaseOnClickListener);
-
+        mFullScreenButton.setOnClickListener(mFullScreenButtonOnClickListener);
         // fullscreen reload...
 
         return layoutInflater;

@@ -52,8 +52,8 @@ public class ContentActivity extends LoginActivity {
             mDownloadId = getIntent().getStringArrayListExtra(WORKREQUEST_LIST);
             mAmount = getIntent().getIntExtra(VIEWPAGER_AMOUNT, 0);
             addFragmentToLayout(0, R.id.ad_fragment);
-            for (int i = 1; i <= mAmount - 1; i++) {
-               addFragmentToLayout(i, R.id.container);
+            for (int index = 1; index <= 2 - 1; index++) {
+               addFragmentToLayout(index, R.id.container);
            }
         }
     }

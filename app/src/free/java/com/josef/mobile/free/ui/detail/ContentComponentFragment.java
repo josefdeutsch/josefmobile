@@ -1,6 +1,7 @@
 package com.josef.mobile.free.ui.detail;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.ScaleAnimation;
 import android.widget.CompoundButton;
@@ -11,11 +12,14 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.internal.$Gson$Types;
 import com.josef.josefmobile.R;
 import com.josef.mobile.data.Favourite;
 import com.josef.mobile.data.FavouriteViewModel;
 
 import org.json.JSONException;
+
+import static android.os.Looper.getMainLooper;
 
 public class ContentComponentFragment extends ContentPlayerFragment {
 
@@ -59,7 +63,7 @@ public class ContentComponentFragment extends ContentPlayerFragment {
 
         @Override
         public void onClick(View v) {
-            //...
+           buildDialog();
         }
     };
 
@@ -107,6 +111,8 @@ public class ContentComponentFragment extends ContentPlayerFragment {
         }
     };
 
+    private static final String TAG = "ContentComponentFragmen";
+
     protected CompoundButton.OnCheckedChangeListener mButtonDataBaseOnClickListener = new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
@@ -148,7 +154,6 @@ public class ContentComponentFragment extends ContentPlayerFragment {
 
 
     protected void setupUi() {
-        mFavouriteViewModel = ViewModelProviders.of(this).get(FavouriteViewModel.class);
         mPlayerView = layoutInflater.findViewById(R.id.player);
         mFullScreenIcon = mPlayerView.findViewById(R.id.exo_fullscreen_icon);
         mFullScreenButton = mPlayerView.findViewById(R.id.exo_fullscreen_button);
@@ -160,6 +165,4 @@ public class ContentComponentFragment extends ContentPlayerFragment {
         mProgressBar = layoutInflater.findViewById(R.id.progress);
         mColorButton = layoutInflater.findViewById(R.id.colorbutton);
     }
-
-
 };

@@ -4,7 +4,7 @@
     <color name="colorRed">#FF3333</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorAccent">#D81B60</color>
-    <color name="transparent_statusbar">#00000000</color>
+    <color name="transparent">#00000000</color>
     <color name="brown">#333333</color>
     <color name="green">#FF8BC34A</color>
 </resources>
