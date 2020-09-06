@@ -31,7 +31,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.josef.josefmobile.R;
-import com.josef.mobile.free.ContentActivity;
+import com.josef.mobile.free.ui.content.ContentActivity;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
 import com.josef.mobile.util.CallBackWorker;
 

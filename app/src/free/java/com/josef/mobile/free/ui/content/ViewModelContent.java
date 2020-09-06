@@ -1,10 +1,11 @@
-package com.josef.mobile.free;
+package com.josef.mobile.free.ui.content;
 
 import androidx.lifecycle.ViewModel;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.josef.mobile.data.Favourite;
+import com.josef.mobile.free.ui.body.Data;
 
 import org.json.JSONArray;
 import org.json.JSONException;

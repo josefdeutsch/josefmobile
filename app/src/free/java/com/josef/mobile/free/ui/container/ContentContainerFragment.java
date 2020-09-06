@@ -1,4 +1,4 @@
-package com.josef.mobile.free.ui;
+package com.josef.mobile.free.ui.container;
 
 import android.os.Bundle;
 import android.util.SparseArray;
@@ -10,12 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.test.espresso.IdlingResource;
 import androidx.viewpager.widget.ViewPager;
 
 import com.josef.josefmobile.R;
+import com.josef.mobile.free.ui.adapter.ViewPagerFragmentAdapters;
 import com.josef.mobile.free.ui.detail.ContentDetailFragment;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
 
@@ -30,6 +29,8 @@ public class ContentContainerFragment extends Fragment {
     private ViewPager viewPager;
     private int mPosition;
     private View layoutInflater;
+    private ViewPagerFragmentAdapters adapters;
+
     private ContentDetailFragment mHomeFragment;
 
     //
@@ -58,7 +59,7 @@ public class ContentContainerFragment extends Fragment {
     }
 
 
-    ViewPagerFragmentAdapters adapters;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -113,48 +114,6 @@ public class ContentContainerFragment extends Fragment {
         outState.putInt(VIEWPAGERDETAILKEY, mPosition);
     }
 
-    public class ViewPagerFragmentAdapters extends FragmentStatePagerAdapter {
-
-        public String downloadid;
-        SparseArray<Fragment> registeredFragments = new SparseArray<>();
-
-        public ViewPagerFragmentAdapters(FragmentManager fm, final String id) {
-            super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-            downloadid = id;
-        }
-
-        public Fragment getRegisteredFragment(int position) {
-            return registeredFragments.get(position);
-        }
-
-        public SparseArray<Fragment> getRegisteredFragments() {
-            return registeredFragments;
-        }
-
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            Fragment fragment = (Fragment) super.instantiateItem(container, position);
-            registeredFragments.put(position, fragment);
-            return fragment;
-        }
-
-        @Override
-        public int getCount() {
-            return 50;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            if (registeredFragments.get(position) != null) return registeredFragments.get(position);
-            return ContentDetailFragment.newInstance(downloadid, position);
-        }
-
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            registeredFragments.remove(position);
-            super.destroyItem(container, position, object);
-        }
-    }
 
     @Nullable
     private IdlingResource mIdlingResource;

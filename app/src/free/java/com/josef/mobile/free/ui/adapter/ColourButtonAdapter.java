@@ -1,23 +1,19 @@
-package com.josef.mobile.free.util;
+package com.josef.mobile.free.ui.adapter;
 
 import android.content.Context;
 
 import androidx.annotation.NonNull;
 
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 import com.josef.josefmobile.R;
-import com.josef.mobile.free.Data;
-import com.squareup.picasso.Picasso;
+import com.josef.mobile.free.ui.body.Data;
 
 import java.util.ArrayList;
 
@@ -53,7 +49,7 @@ public class ColourButtonAdapter extends RecyclerView.Adapter<ColourButtonAdapte
     public void onBindViewHolder(@NonNull FavoriteHolder noteHolder, int i) {
         Data currentNote = arrayList.get(i);
         String color = currentNote.getColor();
-        noteHolder.imageButton.setBackgroundColor(Color.BLACK);
+        noteHolder.imageButton.setBackgroundColor(Color.parseColor(color));
     }
 
     @Override

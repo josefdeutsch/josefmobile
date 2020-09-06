@@ -10,10 +10,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static com.josef.mobile.free.ViewModelContent.JSON_METADATA;
-import static com.josef.mobile.free.ViewModelContent.JSON_NAME;
-import static com.josef.mobile.free.ViewModelContent.JSON_PNG;
-import static com.josef.mobile.free.ViewModelContent.JSON_URL;
+import static com.josef.mobile.free.ui.content.ViewModelContent.JSON_METADATA;
+import static com.josef.mobile.free.ui.content.ViewModelContent.JSON_NAME;
+import static com.josef.mobile.free.ui.content.ViewModelContent.JSON_PNG;
+import static com.josef.mobile.free.ui.content.ViewModelContent.JSON_URL;
 
 public class ViewModelDetail extends ViewModel {
 

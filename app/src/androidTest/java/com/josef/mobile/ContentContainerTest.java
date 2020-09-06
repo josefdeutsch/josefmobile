@@ -4,12 +4,11 @@ import android.os.Bundle;
 import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.testing.FragmentScenario;
-import androidx.test.espresso.IdlingResource;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.josef.josefmobile.R;
-import com.josef.mobile.free.ui.ContentContainerFragment;
+import com.josef.mobile.free.ui.container.ContentContainerFragment;
 
 import org.hamcrest.Matcher;
 import org.junit.Test;

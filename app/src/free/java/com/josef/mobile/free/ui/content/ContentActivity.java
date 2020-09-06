@@ -1,4 +1,4 @@
-package com.josef.mobile.free;
+package com.josef.mobile.free.ui.content;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,8 +7,6 @@ import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.gms.auth.api.Auth;
@@ -19,8 +17,6 @@ import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.firebase.auth.FirebaseUser;
 import com.josef.josefmobile.R;
 import com.josef.mobile.data.FavouriteViewModel;
-
-import java.util.ArrayList;
 
 import static com.josef.mobile.util.Config.VIEWPAGER_AMOUNT;
 import static com.josef.mobile.util.Config.WORKREQUEST_LIST;

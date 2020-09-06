@@ -1,10 +1,9 @@
-package com.josef.mobile.free.ui;
+package com.josef.mobile.free.ui.content;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +15,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.android.material.snackbar.Snackbar;
 import com.josef.josefmobile.R;
 import com.josef.mobile.data.Favourite;
 import com.josef.mobile.data.FavouriteViewModel;
-import com.josef.mobile.free.util.ArchiveActivityAdapter;
+import com.josef.mobile.free.ui.adapter.ArchiveActivityAdapter;
 
 import java.util.List;
 

@@ -13,13 +13,15 @@ import androidx.lifecycle.ViewModelProviders;
 import com.josef.josefmobile.R;
 import com.josef.mobile.data.FavouriteViewModel;
 
+import org.json.JSONException;
+
 import static com.josef.mobile.free.ui.detail.ViewModelDetail.STATE_BOOLEAN_VALUE;
 import static com.josef.mobile.free.ui.detail.ViewModelDetail.STATE_RESUME_POSITION;
 import static com.josef.mobile.free.ui.detail.ViewModelDetail.STATE_RESUME_WINDOW;
 import static com.josef.mobile.util.Config.VIEWPAGERDETAILKEY;
 import static com.josef.mobile.util.Config.WORKREQUEST_DOWNLOADID;
 
-public class ContentDetailFragment extends ContentDialogFragment {
+public class ContentDetailFragment extends ContentComponentFragment {
 
     public static final int DIALOG_FRAGMENT = 1;
     private static final String TAG = "ContentDetailFragment";
@@ -61,7 +63,7 @@ public class ContentDetailFragment extends ContentDialogFragment {
         setupUi();
         mArticle.setText("Sculpture: " + index);
 
-       // supplyView(mArtWork,mArtWorkSupplier);
+        supplyView(mArtWork,mArtWorkSupplier);
         supplyView(mArticleByLine,mArticleSupplier);
 
         mArtWork.setOnClickListener(mArtWorkOnClickListener);
@@ -77,11 +79,30 @@ public class ContentDetailFragment extends ContentDialogFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+      //  if(data.getExtras()==null) return;
+
         switch(requestCode) {
             case DIALOG_FRAGMENT:
                 if (resultCode == Activity.RESULT_OK) {
-                    Log.d(TAG, "onActivityResult: "+  mFavouriteViewModel.getString());
+
+                    Bundle bundle = data.getExtras();
+                    String index = bundle.getString("recylerindex", null);
+                    Log.d(TAG, "onActivityResult: "+index);
+
+                    doWork(new Worker() {
+                        @Override
+                        public void execute(String input, int index) throws JSONException {
+                            setupThumbNailSource(input, index);
+                            Log.d(TAG, "execute: "+input);
+                            initExoPlayer(getContext());
+                            initFullscreenDialog();
+                            setupMediaSource(input, index);
+                            Log.d(TAG, "execute: "+input);
+                        }
+                    });
+
                 } else if (resultCode == Activity.RESULT_CANCELED){
+
                 }
                 break;
         }

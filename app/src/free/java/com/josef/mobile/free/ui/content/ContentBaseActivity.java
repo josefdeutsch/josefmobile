@@ -1,4 +1,4 @@
-package com.josef.mobile.free;
+package com.josef.mobile.free.ui.content;
 
 import android.content.DialogInterface;
 import android.view.MenuItem;
@@ -23,8 +23,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.josef.josefmobile.R;
 import com.josef.mobile.data.Favourite;
 import com.josef.mobile.data.FavouriteViewModel;
-import com.josef.mobile.free.ui.ContentContainerFragment;
-import com.josef.mobile.free.ui.ModalFragment;
+import com.josef.mobile.free.ui.container.ContentContainerFragment;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
 
 import org.json.JSONException;

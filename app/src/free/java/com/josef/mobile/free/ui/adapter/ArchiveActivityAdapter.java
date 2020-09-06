@@ -1,4 +1,4 @@
-package com.josef.mobile.free.util;
+package com.josef.mobile.free.ui.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -15,10 +15,8 @@ import android.widget.ToggleButton;
 import androidx.recyclerview.widget.RecyclerView;
 import com.josef.josefmobile.R;
 import com.josef.mobile.data.Favourite;
-import com.josef.mobile.data.FavouriteViewModel;
 import com.squareup.picasso.Picasso;
 import java.util.List;
-
 
 public class ArchiveActivityAdapter extends RecyclerView.Adapter<ArchiveActivityAdapter.ViewHolder> {
     private Context mContext;

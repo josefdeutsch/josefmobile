@@ -1,4 +1,4 @@
-package com.josef.mobile.free;
+package com.josef.mobile.free.ui.body;
 
 import com.google.android.exoplayer2.Player;
 

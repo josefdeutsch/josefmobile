@@ -1,17 +1,13 @@
-package com.josef.mobile.free;
+package com.josef.mobile.free.ui.content;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
-import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -28,6 +24,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.josef.josefmobile.R;
+import com.josef.mobile.free.ui.content.ContentBaseActivity;
 import com.josef.mobile.ui.SplashActivity;
 
 import org.jetbrains.annotations.NotNull;
