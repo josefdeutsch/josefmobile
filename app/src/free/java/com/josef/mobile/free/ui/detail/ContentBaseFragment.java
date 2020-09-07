@@ -19,7 +19,7 @@ import com.josef.mobile.free.ui.dialog.DialogColorFragment;
 import org.jetbrains.annotations.NotNull;
 import java.util.UUID;
 import static android.os.Looper.getMainLooper;
-import static com.josef.mobile.free.ui.detail.ContentDetailFragment.DIALOG_FRAGMENT;
+import static com.josef.mobile.free.ui.detail.ViewModelDetail.DIALOG_FRAGMENT;
 import static com.josef.mobile.util.Config.WORKREQUEST_KEYTAST_OUTPUT;
 
 public class ContentBaseFragment extends Fragment {
@@ -27,19 +27,21 @@ public class ContentBaseFragment extends Fragment {
     private static final String TAG = "ContentBaseFragment";
 
     public String mDialogIndex;
+
     protected ViewModelDetail mViewModelDetail;
     protected FavouriteViewModel mFavouriteViewModel;
     protected ProgressBar mProgressBar;
-    protected String mDownloadId;
-    protected int index;
-    protected volatile Object lock;
 
+    protected String mDownloadId;
+    protected int mQuery;
+    protected int index;
+
+    protected volatile Object lock;
 
     protected void doWork(final Worker worker) {
         if (mDownloadId == null || worker == null) return;
-       // mProgressBar.setVisibility(View.INVISIBLE);
-        mProgressBar.setVisibility(View.VISIBLE);
 
+        mProgressBar.setVisibility(View.VISIBLE);
         WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(UUID.fromString(mDownloadId))
                 .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
                     @Override

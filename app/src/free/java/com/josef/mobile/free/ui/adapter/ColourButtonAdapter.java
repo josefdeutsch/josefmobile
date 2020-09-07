@@ -1,20 +1,15 @@
 package com.josef.mobile.free.ui.adapter;
 
 import android.content.Context;
-
 import androidx.annotation.NonNull;
-
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.android.material.button.MaterialButton;
 import com.josef.josefmobile.R;
 import com.josef.mobile.free.ui.body.Data;
-
 import java.util.ArrayList;
 
 public class ColourButtonAdapter extends RecyclerView.Adapter<ColourButtonAdapter.FavoriteHolder> {

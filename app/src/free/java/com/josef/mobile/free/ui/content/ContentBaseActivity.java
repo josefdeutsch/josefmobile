@@ -139,7 +139,13 @@ public class ContentBaseActivity extends AppCompatActivity {
     protected void addFragmentToLayout(int i, int p) {
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(p, ContentContainerFragment.newInstance(mDownloadId.get(i)))
+                .add(p, ContentContainerFragment.newInstance(mDownloadId.get(i),0))
+                .commit();
+    }
+    protected void replaceFragmentToLayout(int i, int p, int query){
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(p, ContentContainerFragment.newInstance(mDownloadId.get(i),query))
                 .commit();
     }
 
@@ -170,6 +176,4 @@ public class ContentBaseActivity extends AppCompatActivity {
         }
         return mIdlingResource;
     }
-
-
 }

@@ -7,14 +7,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.lifecycle.ViewModelProviders;
-
 import com.josef.josefmobile.R;
 import com.josef.mobile.data.FavouriteViewModel;
+import com.josef.mobile.free.ui.content.ContentActivity;
 
-import org.json.JSONException;
-
+import static com.josef.mobile.free.ui.detail.ViewModelDetail.DIALOG_FRAGMENT;
+import static com.josef.mobile.free.ui.detail.ViewModelDetail.QUERY_PARAM;
 import static com.josef.mobile.free.ui.detail.ViewModelDetail.STATE_BOOLEAN_VALUE;
 import static com.josef.mobile.free.ui.detail.ViewModelDetail.STATE_RESUME_POSITION;
 import static com.josef.mobile.free.ui.detail.ViewModelDetail.STATE_RESUME_WINDOW;
@@ -23,17 +22,17 @@ import static com.josef.mobile.util.Config.WORKREQUEST_DOWNLOADID;
 
 public class ContentDetailFragment extends ContentComponentFragment {
 
-    public static final int DIALOG_FRAGMENT = 1;
     private static final String TAG = "ContentDetailFragment";
 
     public ContentDetailFragment() {
     }
 
-    public static ContentDetailFragment newInstance(String which, int index) {
+    public static ContentDetailFragment newInstance(String which, int index, int query) {
         ContentDetailFragment fragment = new ContentDetailFragment();
         Bundle args = new Bundle();
         args.putString(WORKREQUEST_DOWNLOADID, which);
         args.putInt(VIEWPAGERDETAILKEY, index);
+        args.putInt(QUERY_PARAM, query);
         fragment.setArguments(args);
         return fragment;
     }
@@ -41,15 +40,19 @@ public class ContentDetailFragment extends ContentComponentFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             mDownloadId = getArguments().getString(WORKREQUEST_DOWNLOADID);
             index = getArguments().getInt(VIEWPAGERDETAILKEY);
+            mQuery = getArguments().getInt(QUERY_PARAM);
         }
         if (savedInstanceState != null) {
+            mQuery = savedInstanceState.getInt(QUERY_PARAM);
             mResumeWindow = savedInstanceState.getInt(STATE_RESUME_WINDOW);
             mResumePosition = savedInstanceState.getLong(STATE_RESUME_POSITION);
             mExoPlayerFullscreen = savedInstanceState.getBoolean(STATE_BOOLEAN_VALUE);
         }
+
         mViewModelDetail = ViewModelProviders.of(this).get(ViewModelDetail.class);
         mFavouriteViewModel = ViewModelProviders.of(this).get(FavouriteViewModel.class);
     }
@@ -89,17 +92,7 @@ public class ContentDetailFragment extends ContentComponentFragment {
                     String index = bundle.getString("recylerindex", null);
                     Log.d(TAG, "onActivityResult: "+index);
 
-                    doWork(new Worker() {
-                        @Override
-                        public void execute(String input, int index) throws JSONException {
-                            setupThumbNailSource(input, index);
-                            Log.d(TAG, "execute: "+input);
-                            initExoPlayer(getContext());
-                            initFullscreenDialog();
-                            setupMediaSource(input, index);
-                            Log.d(TAG, "execute: "+input);
-                        }
-                    });
+
 
                 } else if (resultCode == Activity.RESULT_CANCELED){
 
@@ -110,6 +103,7 @@ public class ContentDetailFragment extends ContentComponentFragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
+        outState.putInt(QUERY_PARAM,mQuery);
         outState.putInt(STATE_RESUME_WINDOW, mResumeWindow);
         outState.putLong(STATE_RESUME_POSITION, mResumePosition);
         outState.putBoolean(STATE_BOOLEAN_VALUE, mExoPlayerFullscreen);

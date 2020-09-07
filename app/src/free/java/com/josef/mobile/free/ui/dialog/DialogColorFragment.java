@@ -1,7 +1,5 @@
 package com.josef.mobile.free.ui.dialog;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +8,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.josef.josefmobile.R;
 import com.josef.mobile.free.ui.body.Data;
+import com.josef.mobile.free.ui.content.ContentActivity;
 import com.josef.mobile.free.ui.detail.Worker;
 import com.josef.mobile.free.ui.adapter.ColourButtonAdapter;
 import java.util.ArrayList;
@@ -47,6 +46,7 @@ public class DialogColorFragment extends DialogBaseFragment implements ColourBut
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
+
         doWork(new Worker() {
             @Override
             public void execute(String input, int index) throws Exception {
@@ -68,11 +68,13 @@ public class DialogColorFragment extends DialogBaseFragment implements ColourBut
 
     @Override
     public void onClick(String string) {
-       // Log.d(TAG, "onClick: ");
-    //    if (getTargetFragment() == null) return;
+        int query = Integer.parseInt(string);
+       /** if (getTargetFragment() == null) return;
         Intent intent = new Intent().putExtra("recylerindex", string);
         getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
-        dismiss();
+        dismiss();**/
+        ((ContentActivity)getActivity()).replaceLayout(query);
+        }
     }
 
-}
+

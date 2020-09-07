@@ -19,6 +19,7 @@ import com.josef.mobile.free.ui.detail.ContentDetailFragment;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
 
 
+import static com.josef.mobile.free.ui.detail.ViewModelDetail.QUERY_PARAM;
 import static com.josef.mobile.util.Config.VIEWPAGERDETAILKEY;
 import static com.josef.mobile.util.Config.WORKREQUEST_DOWNLOADID;
 
@@ -26,6 +27,7 @@ public class ContentContainerFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
     private String which;
+    private int query;
     private ViewPager viewPager;
     private int mPosition;
     private View layoutInflater;
@@ -40,10 +42,11 @@ public class ContentContainerFragment extends Fragment {
     }
 
     @Nullable
-    public static ContentContainerFragment newInstance(String which) {
+    public static ContentContainerFragment newInstance(String which, int query) {
         ContentContainerFragment fragment = new ContentContainerFragment();
         Bundle args = new Bundle();
         args.putString(WORKREQUEST_DOWNLOADID, which);
+        args.putInt(QUERY_PARAM, query);
         fragment.setArguments(args);
         return fragment;
     }
@@ -53,13 +56,11 @@ public class ContentContainerFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             which = getArguments().getString(WORKREQUEST_DOWNLOADID);
+            query = getArguments().getInt(QUERY_PARAM);
         }
         if (savedInstanceState != null)
             mPosition = savedInstanceState.getInt(VIEWPAGERDETAILKEY, 0);
     }
-
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,7 +68,7 @@ public class ContentContainerFragment extends Fragment {
 
         layoutInflater = inflater.inflate(R.layout.fragment_content_container, container, false);
         viewPager = layoutInflater.findViewById(R.id.viewidpager);
-        adapters = new ViewPagerFragmentAdapters(getChildFragmentManager(), which);
+        adapters = new ViewPagerFragmentAdapters(getChildFragmentManager(), which, query);
         viewPager.setAdapter(adapters);
 
         viewPager.setOffscreenPageLimit(3);

@@ -2,6 +2,7 @@ package com.josef.mobile.free.ui.content;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
@@ -43,23 +44,31 @@ public class ContentActivity extends LoginActivity {
         buildGoogleApiClient(gso);
         setupFirebaseAuth();
 
-
         if (savedInstanceState == null) {
             mDownloadId = getIntent().getStringArrayListExtra(WORKREQUEST_LIST);
             mAmount = getIntent().getIntExtra(VIEWPAGER_AMOUNT, 0);
             addFragmentToLayout(0, R.id.ad_fragment);
             for (int index = 1; index <= 2 - 1; index++) {
-               addFragmentToLayout(index, R.id.container);
-           }
+                addFragmentToLayout(index, R.id.container);
+            }
         }
     }
 
+    private static final String TAG = "ContentActivity";
+
+    public void replaceLayout(int query) {
+        replaceFragmentToLayout(0, R.id.ad_fragment, query);
+        for (int index = 1; index <= 2 - 1; index++) {
+            replaceFragmentToLayout(index, R.id.container, query);
+        }
+    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(SCROLLVIEWYPOSITION, mScrollY);
     }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -67,10 +76,12 @@ public class ContentActivity extends LoginActivity {
             mAuth.addAuthStateListener(mAuthListener);
         }
     }
+
     @Override
     public void onResume() {
         super.onResume();
     }
+
     @Override
     public void onStop() {
         super.onStop();
@@ -78,6 +89,7 @@ public class ContentActivity extends LoginActivity {
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -97,9 +109,9 @@ public class ContentActivity extends LoginActivity {
     @Override
     public void updateUI(FirebaseUser user) {
         if (user == null) return;
-            mUserId = user.getUid();
-            mSignInLayout.setVisibility(LinearLayout.GONE);
-            mContentLayout.setVisibility(LinearLayout.VISIBLE);
+        mUserId = user.getUid();
+        mSignInLayout.setVisibility(LinearLayout.GONE);
+        mContentLayout.setVisibility(LinearLayout.VISIBLE);
     }
 
     @Override

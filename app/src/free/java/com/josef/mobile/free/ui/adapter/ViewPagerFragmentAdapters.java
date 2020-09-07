@@ -11,12 +11,16 @@ import com.josef.mobile.free.ui.detail.ContentDetailFragment;
 
 public class ViewPagerFragmentAdapters extends FragmentStatePagerAdapter {
 
-    public String downloadid;
+    private String downloadid;
+    private int query;
+
     SparseArray<Fragment> registeredFragments = new SparseArray<>();
 
-    public ViewPagerFragmentAdapters(FragmentManager fm, final String id) {
+    public ViewPagerFragmentAdapters(FragmentManager fm, final String downloadid, final int query) {
         super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        downloadid = id;
+        this.downloadid = downloadid;
+        this.query = query;
+
     }
 
     public Fragment getRegisteredFragment(int position) {
@@ -42,7 +46,7 @@ public class ViewPagerFragmentAdapters extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (registeredFragments.get(position) != null) return registeredFragments.get(position);
-        return ContentDetailFragment.newInstance(downloadid, position);
+        return ContentDetailFragment.newInstance(downloadid, position, query);
     }
 
     @Override
