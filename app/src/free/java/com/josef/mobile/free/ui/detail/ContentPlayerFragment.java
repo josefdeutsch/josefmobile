@@ -67,7 +67,7 @@ public class ContentPlayerFragment extends ContentBaseFragment {
         mPlayer = ExoPlayerFactory.newSimpleInstance(context, new DefaultRenderersFactory(context), trackSelector, loadControl, null, bandwidthMeters);
     }
 
-    protected void setupMediaSource(final String output, final int index) throws JSONException {
+    protected void setupMediaSource(final String output, final int index, final int query) throws JSONException {
         mPlayerView.setPlayer(mPlayer);
         //Player.EventListener playerListener = buildPlayerEventListener();
         //mPlayerView.getPlayer().addListener(playerListener);
@@ -140,8 +140,8 @@ public class ContentPlayerFragment extends ContentBaseFragment {
         if (lock != null && mPlayer.getPlayWhenReady()) mPlayer.setPlayWhenReady(false);
     }
 
-    public void setupThumbNailSource(final String output, final int index) throws JSONException {
-        String png = mViewModelDetail.getJsonPng(output, index);
+    public void setupThumbNailSource(final String output, final int index, final int query) throws JSONException {
+        String png = mViewModelDetail.getJsonPng(output, index,query);
         Picasso.get().load(png).into(target);
     }
 

@@ -33,7 +33,7 @@ public class ContentBaseFragment extends Fragment {
     protected ProgressBar mProgressBar;
 
     protected String mDownloadId;
-    protected int mQuery;
+    protected int query;
     protected int index;
 
     protected volatile Object lock;
@@ -58,7 +58,7 @@ public class ContentBaseFragment extends Fragment {
                             },0l);
 
                             try {
-                                worker.execute(output, index);
+                                worker.execute(output,index,query);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }

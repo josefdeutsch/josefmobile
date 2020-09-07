@@ -44,10 +44,10 @@ public class ContentDetailFragment extends ContentComponentFragment {
         if (getArguments() != null) {
             mDownloadId = getArguments().getString(WORKREQUEST_DOWNLOADID);
             index = getArguments().getInt(VIEWPAGERDETAILKEY);
-            mQuery = getArguments().getInt(QUERY_PARAM);
+            query = getArguments().getInt(QUERY_PARAM);
         }
         if (savedInstanceState != null) {
-            mQuery = savedInstanceState.getInt(QUERY_PARAM);
+            query = savedInstanceState.getInt(QUERY_PARAM);
             mResumeWindow = savedInstanceState.getInt(STATE_RESUME_WINDOW);
             mResumePosition = savedInstanceState.getLong(STATE_RESUME_POSITION);
             mExoPlayerFullscreen = savedInstanceState.getBoolean(STATE_BOOLEAN_VALUE);
@@ -103,7 +103,7 @@ public class ContentDetailFragment extends ContentComponentFragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putInt(QUERY_PARAM,mQuery);
+        outState.putInt(QUERY_PARAM,query);
         outState.putInt(STATE_RESUME_WINDOW, mResumeWindow);
         outState.putLong(STATE_RESUME_POSITION, mResumePosition);
         outState.putBoolean(STATE_BOOLEAN_VALUE, mExoPlayerFullscreen);

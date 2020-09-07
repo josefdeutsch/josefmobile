@@ -38,7 +38,7 @@ public class ContentComponentFragment extends ContentPlayerFragment {
         public void supply() {
             doWork(new Worker() {
                 @Override
-                public void execute(String input, int index) throws JSONException {
+                public void execute(String input, int index, final int query) throws JSONException {
                     String name = mViewModelDetail.getJsonName(input, index);
                     mArticleByLine.setText(name);
                 }
@@ -52,8 +52,8 @@ public class ContentComponentFragment extends ContentPlayerFragment {
         public void supply() {
             doWork(new Worker() {
                 @Override
-                public void execute(String input, int index) throws JSONException {
-                    setupThumbNailSource(input, index);
+                public void execute(String input, int index, final int query) throws JSONException {
+                    setupThumbNailSource(input, index,query);
                 }
             });
         }
@@ -91,10 +91,10 @@ public class ContentComponentFragment extends ContentPlayerFragment {
 
             doWork(new Worker() {
                 @Override
-                public void execute(String input, int index) throws JSONException {
+                public void execute(String input, int index, final int query) throws JSONException {
                     initExoPlayer(getContext());
                     initFullscreenDialog();
-                    setupMediaSource(input, index);
+                    setupMediaSource(input, index, query);
                 }
             });
         }
@@ -120,7 +120,7 @@ public class ContentComponentFragment extends ContentPlayerFragment {
 
             doWork(new Worker() {
                 @Override
-                public void execute(final String input, final int index) {
+                public void execute(final String input, final int index, final int query) {
                     ScaleAnimation scaleAnimation = mViewModelDetail.getScaleAnimation();
                     buttonView.startAnimation(scaleAnimation);
 
@@ -128,7 +128,7 @@ public class ContentComponentFragment extends ContentPlayerFragment {
                         @Override
                         public void onClick(View view) {
                             try {
-                                String png = mViewModelDetail.getJsonPng(input, index);
+                                String png = mViewModelDetail.getJsonPng(input, index,query);
                                 String url = mViewModelDetail.getJsonUrl(input, index);
 
                                 Favourite favourite = new Favourite(png, url, 0);

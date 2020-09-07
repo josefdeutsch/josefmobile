@@ -49,7 +49,7 @@ public class DialogColorFragment extends DialogBaseFragment implements ColourBut
 
         doWork(new Worker() {
             @Override
-            public void execute(String input, int index) throws Exception {
+            public void execute(String input, int index, int query) throws Exception {
                 ArrayList<Data> datalist = new ArrayList<>();
                 datalist.add(new Data("#C8C8C8"));
                 datalist.add(new Data("#180000"));

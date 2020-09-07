@@ -47,7 +47,7 @@ public class DialogBaseFragment extends DialogFragment {
                             },0l);
 
                             try {
-                                worker.execute(output, index);
+                                worker.execute(output, index,0);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
