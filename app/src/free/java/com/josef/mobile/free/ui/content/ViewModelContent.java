@@ -21,6 +21,10 @@ public class ViewModelContent extends ViewModel {
     public static final String JSON_PNG = "png";
     public static final String JSON_URL = "url";
 
+    public static final String JSON_ENPOINTS = "endpoints";
+    public static final String JSON_COLORS = "colors";
+    public static final String JSON_COLOR = "color";
+
 
     protected void addData(List<Favourite> favourites, final String id) throws JSONException {
         FirebaseDatabase database = FirebaseDatabase.getInstance();//

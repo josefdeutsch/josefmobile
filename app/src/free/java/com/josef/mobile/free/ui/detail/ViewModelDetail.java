@@ -11,6 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static com.josef.mobile.free.ui.content.ViewModelContent.JSON_ENPOINTS;
 import static com.josef.mobile.free.ui.content.ViewModelContent.JSON_METADATA;
 import static com.josef.mobile.free.ui.content.ViewModelContent.JSON_NAME;
 import static com.josef.mobile.free.ui.content.ViewModelContent.JSON_PNG;
@@ -31,7 +32,8 @@ public class ViewModelDetail extends ViewModel {
     }
 
     protected String getJsonPng(String output, int index, final int query) throws JSONException {
-        JSONArray input = new JSONArray(output);
+        JSONObject object = new JSONObject(output);
+        JSONArray input = object.getJSONArray(JSON_ENPOINTS);
         JSONObject container = input.getJSONObject(index);
         JSONObject metadata = (JSONObject) container.get(JSON_METADATA);
         String png = (String) metadata.get(JSON_PNG);
@@ -43,8 +45,8 @@ public class ViewModelDetail extends ViewModel {
     }
 
     protected String getJsonUrl(String output, int index) throws JSONException {
-        JSONArray input = new JSONArray(output);
-
+        JSONObject object = new JSONObject(output);
+        JSONArray input = object.getJSONArray(JSON_ENPOINTS);
         JSONObject container = null;
         container = input.getJSONObject(index);
         JSONObject metadata = (JSONObject) container.get(JSON_METADATA);
@@ -53,9 +55,9 @@ public class ViewModelDetail extends ViewModel {
     }
 
     protected String getJsonName(String output, int index) throws JSONException {
-        JSONArray txt = new JSONArray(output);
-
-        JSONObject container = txt.getJSONObject(index);
+        JSONObject object = new JSONObject(output);
+        JSONArray input = object.getJSONArray(JSON_ENPOINTS);
+        JSONObject container = input.getJSONObject(index);
         JSONObject metadata = (JSONObject) container.get(JSON_METADATA);
         String name = (String) metadata.get(JSON_NAME);
         return name;
