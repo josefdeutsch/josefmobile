@@ -3,6 +3,7 @@ package com.josef.mobile.free.ui.adapter;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 
 public class ColourButtonAdapter extends RecyclerView.Adapter<ColourButtonAdapter.FavoriteHolder> {
 
-    private ArrayList<Data> arrayList;
+    private ArrayList<String> arrayList;
     private static final String TAG = "FavouriteAdapter";
     private Context context;
     private ColourButtonAdapterOnClickHander onClickHander;
@@ -23,7 +24,7 @@ public class ColourButtonAdapter extends RecyclerView.Adapter<ColourButtonAdapte
         void onClick(String string);
     }
 
-    public ColourButtonAdapter(Context conext,ColourButtonAdapterOnClickHander onClickHander, ArrayList<Data> arrayList) {
+    public ColourButtonAdapter(Context conext,ColourButtonAdapterOnClickHander onClickHander, ArrayList<String> arrayList) {
         this.arrayList = arrayList;
         this.context = conext;
         this.onClickHander = onClickHander;
@@ -42,9 +43,8 @@ public class ColourButtonAdapter extends RecyclerView.Adapter<ColourButtonAdapte
 
     @Override
     public void onBindViewHolder(@NonNull FavoriteHolder noteHolder, int i) {
-        Data currentNote = arrayList.get(i);
-        String color = currentNote.getColor();
-        noteHolder.imageButton.setBackgroundColor(Color.parseColor(color));
+        String currentNote = arrayList.get(i);
+        noteHolder.imageButton.setBackgroundColor(Color.parseColor(currentNote));
     }
 
     @Override
@@ -52,7 +52,7 @@ public class ColourButtonAdapter extends RecyclerView.Adapter<ColourButtonAdapte
         return arrayList.size();
     }
 
-    public void setNotes(ArrayList<Data> arrayList) {
+    public void setNotes(ArrayList<String> arrayList) {
         this.arrayList = arrayList;
         notifyDataSetChanged();
     }

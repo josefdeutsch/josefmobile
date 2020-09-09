@@ -12,6 +12,7 @@ import androidx.work.Data;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
+import com.josef.mobile.free.ui.detail.ViewModelDetail;
 import com.josef.mobile.free.ui.detail.Worker;
 
 import org.jetbrains.annotations.NotNull;
@@ -24,7 +25,7 @@ public class DialogBaseFragment extends DialogFragment {
     protected ProgressBar mProgressBar;
     protected String mDownloadId;
     protected int index;
-
+    protected ViewModelDetail mViewModelDetail;
 
     protected void doWork(final Worker worker) {
         if (mDownloadId == null || worker == null) return;

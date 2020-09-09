@@ -4,11 +4,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.josef.josefmobile.R;
 import com.josef.mobile.free.ui.body.Data;
 import com.josef.mobile.free.ui.content.ContentActivity;
+import com.josef.mobile.free.ui.detail.ViewModelDetail;
 import com.josef.mobile.free.ui.detail.Worker;
 import com.josef.mobile.free.ui.adapter.ColourButtonAdapter;
 import java.util.ArrayList;
@@ -36,11 +39,13 @@ public class DialogColorFragment extends DialogBaseFragment implements ColourBut
             mDownloadId = getArguments().getString(WORKREQUEST_DOWNLOADID);
             index = getArguments().getInt(VIEWPAGERDETAILKEY);
         }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View layoutInflater = inflater.inflate(R.layout.fragment_detail_dialog, container, false);
+        mViewModelDetail = ViewModelProviders.of(this).get(ViewModelDetail.class);
         mProgressBar = layoutInflater.findViewById(R.id.progress);
         mRecyclerView = layoutInflater.findViewById(R.id.dialogrecycler_view);
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
@@ -50,7 +55,7 @@ public class DialogColorFragment extends DialogBaseFragment implements ColourBut
         doWork(new Worker() {
             @Override
             public void execute(String input, int index, int query) throws Exception {
-                ArrayList<Data> datalist = new ArrayList<>();
+               /** ArrayList<Data> datalist = new ArrayList<>();
                 datalist.add(new Data("#C8C8C8"));
                 datalist.add(new Data("#180000"));
                 datalist.add(new Data("#ffff00"));
@@ -59,8 +64,9 @@ public class DialogColorFragment extends DialogBaseFragment implements ColourBut
                 datalist.add(new Data("#ffff00"));
                 datalist.add(new Data("#C8C8C8"));
                 datalist.add(new Data("#180000"));
-                datalist.add(new Data("#ffff00"));
-                mRecyclerView.setAdapter(new ColourButtonAdapter(getContext(), DialogColorFragment.this, datalist));
+                datalist.add(new Data("#ffff00"));**/
+               // mViewModelDetail.getColors(input);
+                mRecyclerView.setAdapter(new ColourButtonAdapter(getContext(), DialogColorFragment.this,mViewModelDetail.getColors(input)));
             }
         });
         return layoutInflater;

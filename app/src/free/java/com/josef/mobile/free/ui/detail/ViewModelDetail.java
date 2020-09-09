@@ -11,6 +11,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
+import static com.josef.mobile.free.ui.content.ViewModelContent.JSON_COLORS;
 import static com.josef.mobile.free.ui.content.ViewModelContent.JSON_ENPOINTS;
 import static com.josef.mobile.free.ui.content.ViewModelContent.JSON_METADATA;
 import static com.josef.mobile.free.ui.content.ViewModelContent.JSON_NAME;
@@ -31,6 +34,18 @@ public class ViewModelDetail extends ViewModel {
         return index;
     }
 
+    public ArrayList<String> getColors(String output) throws JSONException {
+        ArrayList<String> colors = new ArrayList<>();
+        JSONObject object = new JSONObject(output);
+        JSONArray input = object.getJSONArray(JSON_COLORS);
+        for (int i = 0; i < input.length(); i++) {
+            JSONObject object1 = input.getJSONObject(i);
+            String string = object1.optString("color");
+            colors.add(string);
+        }
+        return colors;
+    }
+
     protected String getJsonPng(String output, int index, final int query) throws JSONException {
         JSONObject object = new JSONObject(output);
         JSONArray input = object.getJSONArray(JSON_ENPOINTS);
@@ -38,9 +53,9 @@ public class ViewModelDetail extends ViewModel {
         JSONObject metadata = (JSONObject) container.get(JSON_METADATA);
         String png = (String) metadata.get(JSON_PNG);
         png = removeLastChar(png);
-        String number = String.valueOf(query)+".png";
-        png+=number;
-        Log.d(TAG, "getJsonPng: "+png);
+        String number = String.valueOf(query) + ".png";
+        png += number;
+        Log.d(TAG, "getJsonPng: " + png);
         return png;
     }
 
