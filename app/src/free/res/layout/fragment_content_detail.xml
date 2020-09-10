@@ -21,14 +21,12 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <com.google.android.material.imageview.ShapeableImageView
+                <ImageView
                     android:id="@+id/thumbnail_image_view"
                     android:layout_width="56dp"
                     android:layout_height="56dp"
-                    android:adjustViewBounds="true"
-                    android:src="@drawable/florenzwappen"
-                    app:shapeAppearanceOverlay="@style/circleImageView"
-                   />
+                    android:scaleType="fitCenter"
+                    />
 
 
                 <LinearLayout

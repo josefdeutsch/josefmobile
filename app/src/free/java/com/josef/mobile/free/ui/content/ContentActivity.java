@@ -57,7 +57,7 @@ public class ContentActivity extends LoginActivity {
     private static final String TAG = "ContentActivity";
 
     public void replaceLayout(int query) {
-//        replaceFragmentToLayout(0, R.id.ad_fragment, query);
+        replaceFragmentToLayout(0, R.id.ad_fragment, query);
         for (int index = 1; index <= 2 - 1; index++) {
             replaceFragmentToLayout(index, R.id.container, query);
         }

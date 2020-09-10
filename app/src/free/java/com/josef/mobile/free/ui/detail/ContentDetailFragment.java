@@ -71,8 +71,6 @@ public class ContentDetailFragment extends ContentComponentFragment {
         supplyView(mArtWork,mArtWorkSupplier);
         supplyView(mArticle,mHeaderSupplier);
         supplyView(mArticleByLine,mSubHeaderSupplier);
-
-
         supplyView(mShapeImageView,mThumbNailSupplier);
 
         mArtWork.setOnClickListener(mArtWorkOnClickListener);
@@ -80,6 +78,7 @@ public class ContentDetailFragment extends ContentComponentFragment {
         mPlayButton.setOnClickListener(mPlayButtonOnClickListener);
         mButtonDataBase.setOnCheckedChangeListener(mButtonDataBaseOnClickListener);
         mFullScreenButton.setOnClickListener(mFullScreenButtonOnClickListener);
+        mLearnButton.setOnClickListener(mLearnButtonOnClickListener);
         // fullscreen reload...
         return layoutInflater;
 

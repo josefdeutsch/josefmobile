@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.ScaleAnimation;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -33,7 +34,8 @@ public class ContentComponentFragment extends ContentPlayerFragment {
     public TextView mArticle;
     public TextView mArticleByLine;
     public MaterialButton mColorButton;
-    public ShapeableImageView mShapeImageView;
+    public MaterialButton mLearnButton;
+    public ImageView mShapeImageView;
 
     protected void supplyView(View view,Supplier supplier) {
         supplier.supply();
@@ -81,26 +83,21 @@ public class ContentComponentFragment extends ContentPlayerFragment {
             doWork(new Worker() {
                 @Override
                 public void execute(String input, int index, final int query) throws JSONException {
-                  String src = mViewModelDetail.getThumbnail(input,index,query);
-                  Log.d(TAG, "execute: "+src);
-                  Picasso.get().load(src).into(new Target() {
-                      @Override
-                      public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                          mShapeImageView.setImageBitmap(bitmap);
-                      }
-
-                      @Override
-                      public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-
-                      }
-
-                      @Override
-                      public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-                      }
-                  });
+                   String src = mViewModelDetail.getThumbnail(input,index,query);
+                   Log.d(TAG, "execute: "+src);
+                    Picasso.get().load(src).into(mShapeImageView);
                 }
             });
+        }
+    };
+
+    protected View.OnClickListener mLearnButtonOnClickListener = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+           buildSnackBar().setText("www.facebook.com..").setActionTextColor(getResources().getColor(android.R.color.holo_red_light))
+                   .setAnchorView(getActivity().findViewById(R.id.fab))
+                   .show();;
         }
     };
 
@@ -199,6 +196,7 @@ public class ContentComponentFragment extends ContentPlayerFragment {
 
 
     protected void setupUi() {
+        mLearnButton = layoutInflater.findViewById(R.id.textButton);
         mShapeImageView = layoutInflater.findViewById(R.id.thumbnail_image_view);
         mPlayerView = layoutInflater.findViewById(R.id.player);
         mFullScreenIcon = mPlayerView.findViewById(R.id.exo_fullscreen_icon);
