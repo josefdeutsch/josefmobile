@@ -1,5 +1,7 @@
 package com.josef.mobile.free.ui.detail;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
@@ -11,11 +13,14 @@ import android.widget.ToggleButton;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.internal.$Gson$Types;
 import com.josef.josefmobile.R;
 import com.josef.mobile.data.Favourite;
 import com.josef.mobile.data.FavouriteViewModel;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import org.json.JSONException;
 
@@ -28,12 +33,13 @@ public class ContentComponentFragment extends ContentPlayerFragment {
     public TextView mArticle;
     public TextView mArticleByLine;
     public MaterialButton mColorButton;
+    public ShapeableImageView mShapeImageView;
 
     protected void supplyView(View view,Supplier supplier) {
         supplier.supply();
     }
 
-    protected Supplier mArticleSupplier = new Supplier() {
+    protected Supplier mSubHeaderSupplier = new Supplier() {
         @Override
         public void supply() {
             doWork(new Worker() {
@@ -45,8 +51,18 @@ public class ContentComponentFragment extends ContentPlayerFragment {
             });
         }
     };
-
-
+    protected Supplier mHeaderSupplier = new Supplier() {
+        @Override
+        public void supply() {
+            doWork(new Worker() {
+                @Override
+                public void execute(String input, int index, final int query) throws JSONException {
+                    String name = mViewModelDetail.getJsonName(input, index);
+                    mArticle.setText(name);
+                }
+            });
+        }
+    };
     protected Supplier mArtWorkSupplier = new Supplier() {
         @Override
         public void supply() {
@@ -54,6 +70,35 @@ public class ContentComponentFragment extends ContentPlayerFragment {
                 @Override
                 public void execute(String input, int index, final int query) throws JSONException {
                     setupThumbNailSource(input, index,query);
+                }
+            });
+        }
+    };
+
+    protected Supplier mThumbNailSupplier = new Supplier() {
+        @Override
+        public void supply() {
+            doWork(new Worker() {
+                @Override
+                public void execute(String input, int index, final int query) throws JSONException {
+                  String src = mViewModelDetail.getThumbnail(input,index,query);
+                  Log.d(TAG, "execute: "+src);
+                  Picasso.get().load(src).into(new Target() {
+                      @Override
+                      public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                          mShapeImageView.setImageBitmap(bitmap);
+                      }
+
+                      @Override
+                      public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+                      }
+
+                      @Override
+                      public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                      }
+                  });
                 }
             });
         }
@@ -154,6 +199,7 @@ public class ContentComponentFragment extends ContentPlayerFragment {
 
 
     protected void setupUi() {
+        mShapeImageView = layoutInflater.findViewById(R.id.thumbnail_image_view);
         mPlayerView = layoutInflater.findViewById(R.id.player);
         mFullScreenIcon = mPlayerView.findViewById(R.id.exo_fullscreen_icon);
         mFullScreenButton = mPlayerView.findViewById(R.id.exo_fullscreen_button);

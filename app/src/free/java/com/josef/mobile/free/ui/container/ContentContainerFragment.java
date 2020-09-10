@@ -1,6 +1,9 @@
 package com.josef.mobile.free.ui.container;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +23,7 @@ import com.josef.mobile.idlingres.EspressoIdlingResource;
 
 
 import static com.josef.mobile.free.ui.detail.ViewModelDetail.QUERY_PARAM;
+import static com.josef.mobile.ui.ErrorActivity.TAG;
 import static com.josef.mobile.util.Config.VIEWPAGERDETAILKEY;
 import static com.josef.mobile.util.Config.WORKREQUEST_DOWNLOADID;
 
@@ -32,6 +36,7 @@ public class ContentContainerFragment extends Fragment {
     private int mPosition;
     private View layoutInflater;
     private ViewPagerFragmentAdapters adapters;
+    protected static final int DIALOG_FRAGMENT = 1;
 
     private ContentDetailFragment mHomeFragment;
 
@@ -71,7 +76,7 @@ public class ContentContainerFragment extends Fragment {
         adapters = new ViewPagerFragmentAdapters(getChildFragmentManager(), which, query);
         viewPager.setAdapter(adapters);
 
-        viewPager.setOffscreenPageLimit(3);
+        viewPager.setOffscreenPageLimit(1);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -102,6 +107,7 @@ public class ContentContainerFragment extends Fragment {
         return layoutInflater;
     }
 
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -127,4 +133,5 @@ public class ContentContainerFragment extends Fragment {
         }
         return mIdlingResource;
     }
+
 }

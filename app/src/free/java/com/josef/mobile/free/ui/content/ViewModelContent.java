@@ -17,7 +17,8 @@ import java.util.List;
 public class ViewModelContent extends ViewModel {
 
     public static final String JSON_METADATA = "metadata";
-    public static final String JSON_NAME = "name";
+    public static final String JSON_SUBHEADER = "subheader";
+    public static final String JSON_HEADER = "header";
     public static final String JSON_PNG = "png";
     public static final String JSON_URL = "url";
 

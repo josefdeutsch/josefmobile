@@ -4,18 +4,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.josef.josefmobile.R;
-import com.josef.mobile.free.ui.body.Data;
 import com.josef.mobile.free.ui.content.ContentActivity;
 import com.josef.mobile.free.ui.detail.ViewModelDetail;
 import com.josef.mobile.free.ui.detail.Worker;
 import com.josef.mobile.free.ui.adapter.ColourButtonAdapter;
-import java.util.ArrayList;
-
 import static com.josef.mobile.util.Config.VIEWPAGERDETAILKEY;
 import static com.josef.mobile.util.Config.WORKREQUEST_DOWNLOADID;
 
@@ -55,18 +51,8 @@ public class DialogColorFragment extends DialogBaseFragment implements ColourBut
         doWork(new Worker() {
             @Override
             public void execute(String input, int index, int query) throws Exception {
-               /** ArrayList<Data> datalist = new ArrayList<>();
-                datalist.add(new Data("#C8C8C8"));
-                datalist.add(new Data("#180000"));
-                datalist.add(new Data("#ffff00"));
-                datalist.add(new Data("#C8C8C8"));
-                datalist.add(new Data("#180000"));
-                datalist.add(new Data("#ffff00"));
-                datalist.add(new Data("#C8C8C8"));
-                datalist.add(new Data("#180000"));
-                datalist.add(new Data("#ffff00"));**/
-               // mViewModelDetail.getColors(input);
-                mRecyclerView.setAdapter(new ColourButtonAdapter(getContext(), DialogColorFragment.this,mViewModelDetail.getColors(input)));
+                mRecyclerView.setAdapter(new ColourButtonAdapter(getContext(), DialogColorFragment.this,
+                        mViewModelDetail.getColors(input)));
             }
         });
         return layoutInflater;
@@ -75,10 +61,6 @@ public class DialogColorFragment extends DialogBaseFragment implements ColourBut
     @Override
     public void onClick(String string) {
         int query = Integer.parseInt(string);
-       /** if (getTargetFragment() == null) return;
-        Intent intent = new Intent().putExtra("recylerindex", string);
-        getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
-        dismiss();**/
         ((ContentActivity)getActivity()).replaceLayout(query);
         }
     }

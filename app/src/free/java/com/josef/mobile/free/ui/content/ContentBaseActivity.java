@@ -14,6 +14,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.widget.NestedScrollView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.test.espresso.IdlingResource;
 
@@ -143,10 +145,17 @@ public class ContentBaseActivity extends AppCompatActivity {
                 .commit();
     }
     protected void replaceFragmentToLayout(int i, int p, int query){
-        getSupportFragmentManager()
+      getSupportFragmentManager()
                 .beginTransaction()
                 .replace(p, ContentContainerFragment.newInstance(mDownloadId.get(i),query))
                 .commit();
+
+
+       /** getSupportFragmentManager()
+                .beginTransaction()
+                .detach(ContentContainerFragment.newInstance(mDownloadId.get(i),query))
+                .attach(ContentContainerFragment.newInstance(mDownloadId.get(i),query))
+                .commit();**/
     }
 
     protected void signIn() {

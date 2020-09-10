@@ -1,5 +1,6 @@
 package com.josef.mobile.free.ui.adapter;
 
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
@@ -43,8 +44,10 @@ public class ViewPagerFragmentAdapters extends FragmentStatePagerAdapter {
         return 50;
     }
 
+    private static final String TAG = "ViewPagerFragmentAdapte";
     @Override
     public Fragment getItem(int position) {
+        Log.d(TAG, "getItem: ");
         if (registeredFragments.get(position) != null) return registeredFragments.get(position);
         return ContentDetailFragment.newInstance(downloadid, position, query);
     }

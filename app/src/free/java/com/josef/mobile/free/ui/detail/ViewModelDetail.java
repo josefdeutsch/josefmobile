@@ -1,6 +1,5 @@
 package com.josef.mobile.free.ui.detail;
 
-import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.ScaleAnimation;
@@ -16,15 +15,14 @@ import java.util.ArrayList;
 import static com.josef.mobile.free.ui.content.ViewModelContent.JSON_COLORS;
 import static com.josef.mobile.free.ui.content.ViewModelContent.JSON_ENPOINTS;
 import static com.josef.mobile.free.ui.content.ViewModelContent.JSON_METADATA;
-import static com.josef.mobile.free.ui.content.ViewModelContent.JSON_NAME;
+import static com.josef.mobile.free.ui.content.ViewModelContent.JSON_SUBHEADER;
 import static com.josef.mobile.free.ui.content.ViewModelContent.JSON_PNG;
 import static com.josef.mobile.free.ui.content.ViewModelContent.JSON_URL;
-import static com.josef.mobile.ui.ErrorActivity.TAG;
 
 public class ViewModelDetail extends ViewModel {
 
     public static final String QUERY_PARAM = "queryparam";
-
+    private static final String SERVER_REQUEST = "http://joseph3d.com/wp-content/uploads/";
     public static final String STATE_RESUME_WINDOW = "com.josef.mobile.free.ui.detail.ContentDetailFragment.resumeWindow";
     public static final String STATE_RESUME_POSITION = "com.josef.mobile.free.ui.detail.ContentDetailFragment.resumePosition";
     public static final String STATE_BOOLEAN_VALUE = "com.josef.mobile.free.ui.detail.ContentDetailFragment.value";
@@ -46,26 +44,40 @@ public class ViewModelDetail extends ViewModel {
         return colors;
     }
 
+    protected String getThumbnail(String output, int index, final int query) throws JSONException {
+        String url = SERVER_REQUEST;
+        JSONObject object = new JSONObject(output);
+        String string = object.optString("blazon");
+        url = url + string;
+        return url;
+    }
+
     protected String getJsonPng(String output, int index, final int query) throws JSONException {
+        String url = SERVER_REQUEST;
+
         JSONObject object = new JSONObject(output);
         JSONArray input = object.getJSONArray(JSON_ENPOINTS);
         JSONObject container = input.getJSONObject(index);
         JSONObject metadata = (JSONObject) container.get(JSON_METADATA);
         String png = (String) metadata.get(JSON_PNG);
-        png = removeLastChar(png);
         String number = String.valueOf(query) + ".png";
-        png += number;
-        Log.d(TAG, "getJsonPng: " + png);
-        return png;
+        png = removeLastChar(png);
+        url = url + png + number;
+
+        return url;
     }
 
     protected String getJsonUrl(String output, int index) throws JSONException {
+        String url = SERVER_REQUEST;
+
         JSONObject object = new JSONObject(output);
         JSONArray input = object.getJSONArray(JSON_ENPOINTS);
         JSONObject container = null;
         container = input.getJSONObject(index);
         JSONObject metadata = (JSONObject) container.get(JSON_METADATA);
-        String url = (String) metadata.get(JSON_URL);
+        String urls = (String) metadata.get(JSON_URL);
+        url = url + urls;
+
         return url;
     }
 
@@ -74,7 +86,7 @@ public class ViewModelDetail extends ViewModel {
         JSONArray input = object.getJSONArray(JSON_ENPOINTS);
         JSONObject container = input.getJSONObject(index);
         JSONObject metadata = (JSONObject) container.get(JSON_METADATA);
-        String name = (String) metadata.get(JSON_NAME);
+        String name = (String) metadata.get(JSON_SUBHEADER);
         return name;
     }
 

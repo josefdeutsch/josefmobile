@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import androidx.lifecycle.ViewModelProviders;
 import com.josef.josefmobile.R;
 import com.josef.mobile.data.FavouriteViewModel;
+import com.josef.mobile.free.ui.container.ContentContainerFragment;
 import com.josef.mobile.free.ui.content.ContentActivity;
 
 import static com.josef.mobile.free.ui.detail.ViewModelDetail.DIALOG_FRAGMENT;
@@ -17,6 +18,7 @@ import static com.josef.mobile.free.ui.detail.ViewModelDetail.QUERY_PARAM;
 import static com.josef.mobile.free.ui.detail.ViewModelDetail.STATE_BOOLEAN_VALUE;
 import static com.josef.mobile.free.ui.detail.ViewModelDetail.STATE_RESUME_POSITION;
 import static com.josef.mobile.free.ui.detail.ViewModelDetail.STATE_RESUME_WINDOW;
+import static com.josef.mobile.ui.ErrorActivity.TAG;
 import static com.josef.mobile.util.Config.VIEWPAGERDETAILKEY;
 import static com.josef.mobile.util.Config.WORKREQUEST_DOWNLOADID;
 
@@ -64,10 +66,14 @@ public class ContentDetailFragment extends ContentComponentFragment {
         layoutInflater = inflater.inflate(R.layout.fragment_content_detail, container, false);
 
         setupUi();
-        mArticle.setText("Sculpture: " + index);
+      //  mArticle.setText("Sculpture: " + index);
 
         supplyView(mArtWork,mArtWorkSupplier);
-        supplyView(mArticleByLine,mArticleSupplier);
+        supplyView(mArticle,mHeaderSupplier);
+        supplyView(mArticleByLine,mSubHeaderSupplier);
+
+
+        supplyView(mShapeImageView,mThumbNailSupplier);
 
         mArtWork.setOnClickListener(mArtWorkOnClickListener);
         mColorButton.setOnClickListener(mColorButtonOnClickListener);
@@ -77,28 +83,6 @@ public class ContentDetailFragment extends ContentComponentFragment {
         // fullscreen reload...
         return layoutInflater;
 
-    }
-
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-      //  if(data.getExtras()==null) return;
-
-        switch(requestCode) {
-            case DIALOG_FRAGMENT:
-                if (resultCode == Activity.RESULT_OK) {
-
-                    Bundle bundle = data.getExtras();
-                    String index = bundle.getString("recylerindex", null);
-                    Log.d(TAG, "onActivityResult: "+index);
-
-
-
-                } else if (resultCode == Activity.RESULT_CANCELED){
-
-                }
-                break;
-        }
     }
 
     @Override
