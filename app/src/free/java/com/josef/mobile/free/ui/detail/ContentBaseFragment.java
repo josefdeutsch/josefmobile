@@ -41,6 +41,7 @@ public class ContentBaseFragment extends Fragment {
     protected void doWork(final Worker worker) {
         if (mDownloadId == null || worker == null) return;
 
+        mProgressBar.setVisibility(View.INVISIBLE);
         mProgressBar.setVisibility(View.VISIBLE);
         WorkManager.getInstance(getActivity()).getWorkInfoByIdLiveData(UUID.fromString(mDownloadId))
                 .observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {

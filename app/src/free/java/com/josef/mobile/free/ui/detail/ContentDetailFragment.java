@@ -69,6 +69,7 @@ public class ContentDetailFragment extends ContentComponentFragment {
       //  mArticle.setText("Sculpture: " + index);
 
         supplyView(mArtWork,mArtWorkSupplier);
+
         supplyView(mArticle,mHeaderSupplier);
         supplyView(mArticleByLine,mSubHeaderSupplier);
         supplyView(mShapeImageView,mThumbNailSupplier);
