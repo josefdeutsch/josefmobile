@@ -12,21 +12,6 @@ What exactly is digital space and how does it show itself?
 The way to reinterpret an exhibition space captivates me and has motivated me so much to implement and complete joseph according to my ideas.
 In the end, Joseph itself became a work of art and the metaphor: “The expression wanders through space” is the message that emanates from the heart of the matter.
 
-<br />
-<br />
-<br />
-<br />
-<p align="center">
-<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/login.gif" width="200"/>
-<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/updown.gif" width="200"/>
-<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/rightleft.gif" width="200"/>
-<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/confirmselect.gif" width="200"/>
-</p>
-<br />
-<br />
-<br />
-<br />
-
 ## What have I learned?
 In this project you will:
 * Firebase Database, Google Authentication
