@@ -1,7 +1,7 @@
 # JosephMobile - Digital art is true.
 
 ## Project Overview
-Joseph is an Artproject consiting of two separete applications, josephMobile and josephTV.
+Joseph is an Artproject consiting of two applications, josephMobile and josephTV.
 Its goal is to provide my digital artworks to television.
 
 ## Why this Project?
