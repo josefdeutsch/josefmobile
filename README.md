@@ -49,27 +49,6 @@ In this project you will:
 - [OkHttp](http://square.github.io/retrofit/) 
 - [Picasso](http://square.github.io/picasso/)
 
-
-# JosephTV - Digital art is true.
-
-## Project Overview
-Joseph is an Artproject consiting of two separete applications, josephMobile and josephTV.
-Its goal is to provide my digital artworks to television.
-
-## Why this Project?
-Ive made this project because i was looking for alternative ways to present my digital artworks. 
-Rather than thinking of digital art in abstract terms, i think its time to accept it as a true entity.
-
-## What have I learned?
-In this project you will:
-* AndroidTV Leanback Framework
-* Firebase Database, Google Authentication
-
-## Libraries
-- [Gilde](http://square.github.io/retrofit/) 
-- [Exoplayer](http://square.github.io/picasso/)
-- [Gson](http://square.github.io/picasso/)
-
 <br />
 <br />
 <br />
