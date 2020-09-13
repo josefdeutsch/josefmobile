@@ -20,7 +20,6 @@ In this project you will:
 <br />
 <br />
 <br />
-<p align="center">
 <img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/login.gif" width="200"/>
 <img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/updown.gif" width="200"/>
 <img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/rightleft.gif" width="200"/>
@@ -30,6 +29,7 @@ In this project you will:
 <br />
 <br />
 <br />
+
 ## Libraries
 - [Android Architecture Components](https://developer.android.com/topic/libraries/architecture/) 
     * [Room](https://developer.android.com/topic/libraries/architecture/room)
