@@ -10,12 +10,10 @@ Gradle to manage apps of increasing complexity.
 
 ## What have I learned?
 In this project you will:
-* Use MediaPlayer/Exoplayer to display videos.
-* Handle error cases in Android.
-* Add a widget to your app experience.
-* Leverage a third-party library in your app.
-* Use Fragments to create a responsive design that works on phones and tablets.
-
+* Firebase with Google Auth.
+* Usage of Workermanager KEEP.Policy
+* Google Cloud Endpoints provided with Gradle
+* Test UI Components with AndroidX- Testing- Framework
 
 ## Libraries
 - [Android Architecture Components](https://developer.android.com/topic/libraries/architecture/) 
