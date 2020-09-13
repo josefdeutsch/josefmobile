@@ -10,7 +10,7 @@ Rather than thinking of digital art in abstract terms, i think its time to accep
 
 ## What have I learned?
 In this project you will:
-* Firebase with Google Auth.
+* Firebase Database, Google Authentication
 * Usage of Workermanager KEEP.Policy
 * Google Cloud Endpoints provided with Gradle
 * Test UI Components with AndroidX- Testing- Framework
