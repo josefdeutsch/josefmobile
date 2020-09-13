@@ -49,7 +49,7 @@ In this project you will:
 Das Ansichtsfenster (Viewport) zeigt ein Szenario von, rotierender Skulptur auf Spiegeloberfäche 
 mit variablen graphischen Parametern. 
 Die Skulptur wurde mit Zbrush R.8 - "Dynamesh- Feature" modelliert und anschliessend als OBJ mit dem Modus "Triangulated Faces" exportiert.
-Ein GLSL Shader beleuchtet die Oberfläche die eine Umgebung reflektiert.
+Ein GLSL Shader beleuchtet die Oberfläche die eine Umgebung reflektiert (Environment mapping).
 
 
 ## Project Overview
