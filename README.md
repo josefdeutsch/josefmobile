@@ -23,6 +23,7 @@ In this project you will:
     * [Workermanager](https://developer.android.com/topic/libraries/architecture/workermanager)
     * [Espresso](https://developer.android.com/topic/libraries/architecture/espresso)
     * [ExoPlayer](https://developer.android.com/topic/libraries/architecture/activity)
+    * [Mockito](https://developer.android.com/topic/libraries/architecture/activity)
     * [ActivityScenario](https://developer.android.com/topic/libraries/architecture/activity)
     * [FragmentScenario](https://developer.android.com/topic/libraries/architecture/fragment)
      
