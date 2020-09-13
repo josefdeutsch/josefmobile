@@ -1,12 +1,12 @@
 # JosephMobile - Digital art is true.
 
 ## Project Overview
-Make Your App Material is the sixth project in Udacity's Android Developer Nanodegree.
-A simple app that tells jokes. Building it bigger with Gradle. 
+Joseph is an Artproject consiting of two separete applications, josephMobile and josephTV.
+Its goal is to provide my digital artworks to television.
 
 ## Why this Project?
-This project gives you the opportunity to learn the role of Gradle in building Android Apps and how to use
-Gradle to manage apps of increasing complexity.
+Ive made this project because i was looking for alternative ways to present my digital artworks. 
+Rather than thinking of digital art in abstract terms, i think its time to accept it as a true entity.
 
 ## What have I learned?
 In this project you will:
