@@ -28,7 +28,7 @@ In the end, Joseph itself became a work of art and the metaphor: “The expressi
 <br />
 <br />
 
-## Josphmobile explained
+## Josphmobile 
 JosephMobile is a simple application programmed with the Android SDK.
 Figur one shows a login window for the verification of the provision of user data.
 Figure two and Figure three show the operational dynamics of the application. Whereby scrolling up and down the screen brings up different art series and swiping right and left shows different works of a series.
@@ -39,7 +39,7 @@ A review window is supposed to create a remedy during the synchronization in Fig
 ## What have I learned?
 In this project you will:
 * Firebase Database, Google Authentication
-* Usage of Workermanager KEEP.Policy
+* Usage of Workermanager in detail
 * Google Cloud Endpoints provided with Gradle
 * Test UI Components with AndroidX- Testing- Framework
 
