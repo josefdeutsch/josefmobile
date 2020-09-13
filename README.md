@@ -2,7 +2,7 @@
 
 ## Project Overview
 Joseph is an Artproject consiting of two applications, josephMobile and josephTV.
-Its goal is to provide my digital artworks to television.
+With your mobile phone, you select and synchronize with your account. Download josephtv and show great art on your TV. 
 
 ## Why this Project?
 I developed Joseph because I was looking for alternative ways to present my art.
