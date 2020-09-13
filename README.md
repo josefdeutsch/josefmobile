@@ -52,7 +52,7 @@ The viewport shows a scenario of rotating sculpture on a mirror surface with var
 The sculpture was modeled with Zbrush R.8 - "Dynamesh-Feature" and then exported as an OBJ with the "Triangulated Faces" mode.
 A GLSL shader illuminates the surface that reflects an environment (environment mapping).
 Below the sculpture there is a frame buffer that correctly interpolates the object. The mirror effect should serve as a constant reference to the viewer by reflecting the sculpture.
-In order to guarantee effective accessibility of the individual components, the scenario fades in and out.
+In order to guarantee effective accessibility of the individual parts, the scenario fades in and out.
 
 ## Libraries
 - [OpenGl4.5.0](https://www.opengl.org//) 
