@@ -27,13 +27,6 @@ In the end, Joseph itself became a work of art and the metaphor: “The expressi
 <br />
 <br />
 
-## JosephMobile
-I developed Joseph because I was looking for alternative ways to present my art.
-During my work I was confronted more and more with the idea of digital space.
-What exactly is digital space and how does it show itself?
-The way to reinterpret an exhibition space captivates me and has motivated me so much to implement and complete joseph according to my ideas.
-In the end, Joseph itself became a work of art and the metaphor: “The expression wanders through space” is the message that emanates from the heart of the matter.
-
 ## What have I learned?
 In this project you will:
 * Firebase Database, Google Authentication
