@@ -111,6 +111,7 @@ In order to guarantee effective accessibility of the individual parts, the scena
 
 <br />
 <br />
+<p align="center">
 <a href=http://joseph3d.com/wp-content/uploads/2019/06/b0047.mp4><img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/b0047.gif" width="400"/></a>
 <a href=http://joseph3d.com/wp-content/uploads/2019/06/g0010.mp4><img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/g0010.gif" width="400"/></a>
 <a href=http://joseph3d.com/wp-content/uploads/2019/06/s0023.mp4><img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/s0023.gif" width="400"/></a>
