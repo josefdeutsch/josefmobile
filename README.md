@@ -3,7 +3,7 @@
 ## Project Overview
 Joseph - “an app for providing art on smart TV”
 The task was to give users an interactive selection of digital works of art in the form of videos
-which can then be combined to a movie on JosephTV.
+which can then be combined to a movie on SMART TV.
 
 ## Why this Project?
 I developed Joseph because I was looking for alternative ways to present my art.
