@@ -1,7 +1,7 @@
 # JosephMobile - Digital art is true.
 
 ## Project Overview
-Joseph is a work of art, consisting of two applications and artworks.
+Joseph is a work of art, consisting of two applications and 150 artworks.
 With your mobile phone, you select and synchronize with your account. Download josephtv and show great art on your TV. 
 
 ## Why this Project?
