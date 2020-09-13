@@ -49,9 +49,6 @@ Apache, see the [LICENSE](LICENSE) file.
 
 <a href="https://play.google.com/store/apps/details?id=com.owncloud.android"><img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" height="75"></a>
 
-<img align="left" width="560" src="res/screenshottablet.png"><img align="right" width="280" src="res/screenshotsplash.png">
-
-<img src="res/screenshotwide.png" width="560"/> 
 
 ## Join development!
 
