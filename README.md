@@ -16,19 +16,6 @@ In this project you will:
 * Leverage a third-party library in your app.
 * Use Fragments to create a responsive design that works on phones and tablets.
 
-<br />
-<br />
-<br />
-<br />
-<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/login.gif" width="200"/>
-<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/updown.gif" width="200"/>
-<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/rightleft.gif" width="200"/>
-<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/confirmselect.gif" width="200"/>
-</p>
-<br />
-<br />
-<br />
-<br />
 
 ## Libraries
 - [Android Architecture Components](https://developer.android.com/topic/libraries/architecture/) 
@@ -42,6 +29,22 @@ In this project you will:
      
 - [Retrofit](http://square.github.io/retrofit/) for REST api communication
 - [Picasso](http://square.github.io/picasso/) for image loading
+
+<br />
+<br />
+<br />
+<br />
+<p align="center">
+<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/login.gif" width="200"/>
+<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/updown.gif" width="200"/>
+<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/rightleft.gif" width="200"/>
+<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/confirmselect.gif" width="200"/>
+</p>
+<br />
+<br />
+<br />
+<br />
+
 
 ## License
 Apache, see the [LICENSE](LICENSE) file.
