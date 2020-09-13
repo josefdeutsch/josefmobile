@@ -46,11 +46,14 @@ In this project you will:
 <br />
 
 ## Joseph Artworks
+Das Ansichtsfenster (Viewport) zeigt ein Szenario von, rotierender Skulptur auf Spiegeloberfäche 
+mit variablen graphischen Parametern. 
+Die Skulptur wurde mit Zbrush R.8 - "Dynamesh- Feature" modelliert und anschliessend als OBJ mit dem Modus "Triangulated Faces" exportiert.
+Ein GLSL Shader beleuchtet die Oberfläche die eine Umgebung reflektiert.
 
 
 ## Project Overview
-Joseph is an Artproject consiting of two separete applications, josephMobile and josephTV.
-Its goal is to provide my digital artworks to television.
+Joseph Artworks uz
 
 ## Libraries
 - [OpenGl4.5.0](https://www.opengl.org//) 
