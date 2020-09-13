@@ -5,8 +5,12 @@ Joseph is an Artproject consiting of two separete applications, josephMobile and
 Its goal is to provide my digital artworks to television.
 
 ## Why this Project?
-Joseph is a work of art and “The expression wanders through space” is the message that comes from the heart of the matter. The artwork Joseph declares space and there are sculptures in this space. It is a digital space with and there is. I'm sure you're in a room right now too. Can you imagine that you are looking from one room to the other? Joseph makes it possible. With your mobile phone, you select and synchronize with your account. Download josephtv and show great art on your TV. 
+I developed Joseph because I was looking for alternative ways to present my art.
+During my work I was confronted more and more with the idea of digital space.
+What exactly is digital space and how does it show itself?
 
+The way of reinterpreting an exhibition space captivates me and has motivated me so much to implement and complete joseph according to my ideas.
+In the end, Joseph himself became a work of art and “The expression wanders through space” is the message that emanates from the heart of the matter.
 
 ## What have I learned?
 In this project you will:
