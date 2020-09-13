@@ -27,6 +27,7 @@ In the end, Joseph itself became a work of art and the metaphor: “The expressi
 <br />
 <br />
 <br />
+
 ## What have I learned?
 In this project you will:
 * Firebase Database, Google Authentication
