@@ -1,4 +1,4 @@
-# josephMobile - Digital art is true.
+# JosephMobile - Digital art is true.
 
 ## Project Overview
 Make Your App Material is the sixth project in Udacity's Android Developer Nanodegree.
