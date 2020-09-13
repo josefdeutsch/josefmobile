@@ -46,14 +46,13 @@ In this project you will:
 <br />
 
 ## Joseph Artworks
-Das Ansichtsfenster (Viewport) zeigt ein Szenario von, rotierender Skulptur auf Spiegeloberfäche 
-mit variablen graphischen Parametern. 
-Die Skulptur wurde mit Zbrush R.8 - "Dynamesh- Feature" modelliert und anschliessend als OBJ mit dem Modus "Triangulated Faces" exportiert.
-Ein GLSL Shader beleuchtet die Oberfläche die eine Umgebung reflektiert (Environment mapping).
 
-
-## Project Overview
-Joseph Artworks uz
+## Project Overview:
+The viewport shows a scenario of rotating sculpture on a mirror surface with variable graphic parameters.
+The sculpture was modeled with Zbrush R.8 - "Dynamesh-Feature" and then exported as an OBJ with the "Triangulated Faces" mode.
+A GLSL shader illuminates the surface that reflects an environment (environment mapping).
+Below the sculpture there is a frame buffer that correctly interpolates the object. The mirror effect should serve as a constant reference to the viewer by reflecting the sculpture.
+In order to guarantee effective accessibility of the individual components, the scenario fades in and out.
 
 ## Libraries
 - [OpenGl4.5.0](https://www.opengl.org//) 
