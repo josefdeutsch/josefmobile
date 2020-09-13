@@ -8,15 +8,14 @@ A simple app that tells jokes. Building it bigger with Gradle.
 This project gives you the opportunity to learn the role of Gradle in building Android Apps and how to use
 Gradle to manage apps of increasing complexity.
 
-## What Will I Learn?
-Through this project, you will:
+## What have I learned?
+In this project you will:
+* Use MediaPlayer/Exoplayer to display videos.
+* Handle error cases in Android.
+* Add a widget to your app experience.
+* Leverage a third-party library in your app.
+* Use Fragments to create a responsive design that works on phones and tablets.
 
-* Add free and paid flavors to an app, and set up your build to share code between them
-* Factor reusable functionality into a Java library
-* Factor reusable Android functionality into an Android library
-* Configure a multi project build to compile your libraries and app
-* Use the Gradle App Engine plugin to deploy a backend
-* Configure an integration test suite that runs against the local App Engine development server
 <br />
 <br />
 <br />
@@ -31,3 +30,33 @@ Through this project, you will:
 <br />
 <br />
 <br />
+## Libraries
+- [Android Architecture Components](https://developer.android.com/topic/libraries/architecture/) 
+    * [Room](https://developer.android.com/topic/libraries/architecture/room)
+    * [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel)
+    * [LiveData](https://developer.android.com/topic/libraries/architecture/livedata)
+    * [Workermanager](https://developer.android.com/topic/libraries/architecture/workermanager)
+    * [Espresso](https://developer.android.com/topic/libraries/architecture/espresso)
+    * [ActivityScenario](https://developer.android.com/topic/libraries/architecture/activity)
+    * [FragmentScenario](https://developer.android.com/topic/libraries/architecture/fragment)
+     
+- [Retrofit](http://square.github.io/retrofit/) for REST api communication
+- [Picasso](http://square.github.io/picasso/) for image loading
+
+## License
+Apache, see the [LICENSE](LICENSE) file.
+
+
+<a href="https://play.google.com/store/apps/details?id=com.owncloud.android"><img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" height="75"></a>
+
+<img align="left" width="560" src="res/screenshottablet.png"><img align="right" width="280" src="res/screenshotsplash.png">
+
+<img src="res/screenshotwide.png" width="560"/> 
+
+## Join development!
+
+**Build status:** master ![](https://api.travis-ci.org/owncloud/android.svg?branch=master) stable ![](https://api.travis-ci.org/owncloud/android.svg?branch=stable)
+
+**Start contributing:** Make sure you read [SETUP.md](https://github.com/owncloud/android/blob/master/SETUP.md) when you start working on this project. Basically: Fork this repository and contribute back using pull requests to the master branch.
+
+**License:** [GPLv2](https://github.com/josefdeutsch/udacitybakingapp/blob/master/LICENSE.txt)
