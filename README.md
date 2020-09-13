@@ -45,10 +45,15 @@ In this project you will:
 <br />
 <br />
 
+## Joseph Artworks
+Joseph is an Artproject consiting of two separete applications, josephMobile and josephTV.
+Its goal is to provide my digital artworks to television.
+<a href=http://joseph3d.com/wp-content/uploads/2019/06/b0047.mp4><img src="https://github.com/josefdeutsch/josef/blob/master/app/src/main/res/img/b0047.gif" width="400"/></a>
+<a href=http://joseph3d.com/wp-content/uploads/2019/06/g0010.mp4><img src="https://github.com/josefdeutsch/josef/blob/master/app/src/main/res/img/g0010.gif" width="400"/></a>
+<a href=http://joseph3d.com/wp-content/uploads/2019/06/s0023.mp4><img src="https://github.com/josefdeutsch/josef/blob/master/app/src/main/res/img/s0023.gif" width="400"/></a>
 
 ## License
 Apache, see the [LICENSE](LICENSE) file.
-
 
 <a href="https://play.google.com/store/apps/details?id=com.owncloud.android"><img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" height="75"></a>
 
