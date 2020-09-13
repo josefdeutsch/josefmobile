@@ -53,19 +53,11 @@ Joseph is an Artproject consiting of two separete applications, josephMobile and
 Its goal is to provide my digital artworks to television.
 
 ## Libraries
-- [Android Architecture Components](https://developer.android.com/topic/libraries/architecture/) 
-    * [Room](https://developer.android.com/topic/libraries/architecture/room)
-    * [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel)
-    * [LiveData](https://developer.android.com/topic/libraries/architecture/livedata)
-    * [Workermanager](https://developer.android.com/topic/libraries/architecture/workermanager)
-    * [Espresso](https://developer.android.com/topic/libraries/architecture/espresso)
-    * [ExoPlayer](https://developer.android.com/topic/libraries/architecture/activity)
-    * [Mockito](https://developer.android.com/topic/libraries/architecture/activity)
-    * [ActivityScenario](https://developer.android.com/topic/libraries/architecture/activity)
-    * [FragmentScenario](https://developer.android.com/topic/libraries/architecture/fragment)
-     
-- [OkHttp](http://square.github.io/retrofit/) 
-- [Picasso](http://square.github.io/picasso/)
+- [OpenGl4.5.0](https://www.opengl.org//) 
+- [GLSL3.6.0](https://www.khronos.org/opengl/wiki/OpenGL_Shading_Language) 
+- [LWJGL2](https://www.lwjgl.org/)
+- [JOML](https://github.com/JOML-CI/JOML)
+
 
 <br />
 <br />
