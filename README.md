@@ -1,4 +1,4 @@
-# JosephMobile - Digital art is true.
+# Joseph - Digital art is true.
 
 ## Project Overview
 Joseph - “an app for providing art on smart TV”
@@ -55,6 +55,43 @@ In this project you will:
      
 - [OkHttp](http://square.github.io/retrofit/) 
 - [Picasso](http://square.github.io/picasso/)
+
+
+# JosephTV - Digital art is true.
+
+## Project Overview
+Joseph is an Artproject consiting of two separete applications, josephMobile and josephTV.
+Its goal is to provide my digital artworks to television.
+
+## Why this Project?
+Ive made this project because i was looking for alternative ways to present my digital artworks. 
+Rather than thinking of digital art in abstract terms, i think its time to accept it as a true entity.
+
+## What have I learned?
+In this project you will:
+* AndroidTV Leanback Framework
+* Firebase Database, Google Authentication
+
+## Libraries
+- [Gilde](http://square.github.io/retrofit/) 
+- [Exoplayer](http://square.github.io/picasso/)
+- [Gson](http://square.github.io/picasso/)
+
+<br />
+<br />
+<br />
+<br />
+<p align="center">
+<img src="https://github.com/josefdeutsch/joseftv/blob/master/app/src/main/res/img/loginTV.gif" width="400"/>
+<img src="https://github.com/josefdeutsch/joseftv/blob/master/app/src/main/res/img/main.gif" width="400"/>
+<img src="https://github.com/josefdeutsch/joseftv/blob/master/app/src/main/res/img/presenter.gif" width="400"/>
+<img src="https://github.com/josefdeutsch/joseftv/blob/master/app/src/main/res/img/video.gif" width="400"/>
+</p>
+<br />
+<br />
+<br />
+<br />
+
 
 ## Joseph Artworks
 
