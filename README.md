@@ -28,15 +28,6 @@ In the end, Joseph itself became a work of art and the metaphor: “The expressi
 <br />
 <br />
 
-## Josphmobile explained
-JosephMobile is a simple application programmed with the Android SDK.
-The first figure shows a login window for the verification of the provision of user data.
-Figure two and Figure three show the operational dynamics of the application. Whereby scrolling up and down the screen brings up different art series and swiping right and left shows different works of a series.
-The user has the option of pressing the heart button to save the desired content in order to be able to call it up on the television.
-A ModalFragment is supposed to create a remedy during the synchronization in Figure 4 by clarifying the selection made again.
-
-
-
 ## What have I learned?
 In this project you will:
 * Firebase Database, Google Authentication
