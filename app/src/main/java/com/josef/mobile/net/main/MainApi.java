@@ -9,6 +9,7 @@ import io.reactivex.Flowable;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 
 public interface MainApi {
     //"/storage/browser/capstone-272303.appspot.com"
@@ -20,4 +21,9 @@ public interface MainApi {
 
     @POST("_ah/api/echo/v1/echo?n=1")
     Flowable<com.josef.mobile.models.Change> getPostsFromUser();
+
+    @POST
+    Flowable<com.josef.mobile.models.Change> getChange(@Url String url);
+
+
 }

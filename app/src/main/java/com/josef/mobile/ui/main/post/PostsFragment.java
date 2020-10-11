@@ -10,14 +10,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.josef.mobile.R;
 import com.josef.mobile.models.Change;
+import com.josef.mobile.models.Container;
 import com.josef.mobile.ui.main.Resource;
-import com.josef.mobile.util.VerticalSpaceItemDecoration;
 import com.josef.mobile.viewmodels.ViewModelProviderFactory;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.inject.Inject;
 
@@ -52,8 +58,8 @@ public class PostsFragment extends DaggerFragment {
     }
 
     private void subscribeObservers() {
-        viewModel.observePosts().removeObservers(getViewLifecycleOwner());
-        viewModel.observePosts().observe(getViewLifecycleOwner(), new Observer<Resource<Change>>() {
+        viewModel.observePosts(1).removeObservers(getViewLifecycleOwner());
+        viewModel.observePosts(1).observe(getViewLifecycleOwner(), new Observer<Resource<Change>>() {
             @Override
             public void onChanged(Resource<Change> listResource) {
                 if (listResource != null) {
@@ -64,14 +70,16 @@ public class PostsFragment extends DaggerFragment {
                         }
 
                         case SUCCESS: {
-                            Log.d(TAG, "onChanged: PostsFragment: got posts.");
-                            Log.d(TAG, "onChanged: " + listResource.data);
                             Change list = listResource.data;
                             Log.d(TAG, "onChanged: " + listResource.data.message);
-                            /**   for (JsonObject object : list) {
-                             Log.d(TAG, "onChanged: " + object.getString("text"));
-                             }**/
-                            //adapter.setPosts(listResource.data);
+                            Gson gson = new Gson();
+                            Type userListType = new TypeToken<ArrayList<Container>>() {
+                            }.getType();
+                            ArrayList<Container> userArray = gson.fromJson(listResource.data.message, userListType);
+                            Log.d(TAG, "onChanged: " + userArray.size());
+                            Collections.shuffle(userArray);
+                            adapter.setPosts(userArray);
+
                             break;
                         }
 
@@ -86,9 +94,9 @@ public class PostsFragment extends DaggerFragment {
     }
 
     private void initRecyclerView() {
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        VerticalSpaceItemDecoration itemDecoration = new VerticalSpaceItemDecoration(15);
-        recyclerView.addItemDecoration(itemDecoration);
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        // VerticalSpaceItemDecoration itemDecoration = new VerticalSpaceItemDecoration(15);
+        // recyclerView.addItemDecoration(itemDecoration);
         recyclerView.setAdapter(adapter);
     }
 
