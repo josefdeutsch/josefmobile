@@ -30,7 +30,7 @@ public class AppModule {
     @Provides
     static Retrofit provideRetrofitInstance() {
         return new Retrofit.Builder()
-                .baseUrl(Constants.BASE_URL2)
+                .baseUrl(Constants.BASE_URL3)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();

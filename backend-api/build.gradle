@@ -26,7 +26,7 @@ buildscript {
 }
 
 repositories {
-    jcenter();
+    jcenter()
 }
 
 apply plugin: 'java'
@@ -53,7 +53,7 @@ dependencies {
 // [START endpoints_server_configuration]
 // You must replace YOUR_PROJECT_ID with your Google Cloud Project Id
 
-def projectIds = 'capstone-272303'
+def projectIds = 'josef-292214'
 endpointsServer {
     // Endpoints Framework Plugin server-side configuration
     hostname = "${projectIds}.appspot.com"
@@ -61,7 +61,7 @@ endpointsServer {
 // [END endpoints_server_configuration]
 def gcpProject = project.findProperty('stageName') ?: 'a'
 
-appengine.deploy.projectId = 'capstone-272303'
+appengine.deploy.projectId = 'josef-292214'
 appengine {  // App Engine tasks configuration
     deploy {   // deploy configuration
         version = "GCLOUD_CONFIG"
