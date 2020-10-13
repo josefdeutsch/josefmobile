@@ -1,4 +1,4 @@
-package com.josef.mobile.ui.auth;
+package com.josef.mobile.ui.intro;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

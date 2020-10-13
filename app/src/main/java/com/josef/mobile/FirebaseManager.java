@@ -7,7 +7,7 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Observer;
 
 import com.google.firebase.auth.FirebaseUser;
-import com.josef.mobile.ui.auth.AuthResource;
+import com.josef.mobile.ui.intro.AuthResource;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -26,7 +26,7 @@ public class FirebaseManager {
 
     public void authenticateWithId(final LiveData<AuthResource<FirebaseUser>> source) {
         if (cachedUser != null) {
-            cachedUser.setValue(AuthResource.loading((FirebaseUser) null));
+            cachedUser.setValue(AuthResource.loading(null));
             cachedUser.addSource(source, new Observer<AuthResource<FirebaseUser>>() {
                 @Override
                 public void onChanged(AuthResource<FirebaseUser> userAuthResource) {

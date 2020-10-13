@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -42,8 +43,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.josef.mobile.R;
-import com.josef.mobile.ui.auth.AuthResource;
-import com.josef.mobile.ui.main.MainActivity;
+import com.josef.mobile.ui.intro.AuthResource;
+import com.josef.mobile.ui.intro.IntroActivity;
 import com.josef.mobile.viewmodels.ViewModelProviderFactory;
 
 import javax.inject.Inject;
@@ -57,6 +58,8 @@ public class GoogleSignInActivity extends BaseActivity implements
     public static final int RC_SIGN_OUT = 9001;
     private static final String TAG = "GoogleActivity";
     private static final int RC_SIGN_IN = 9001;
+
+    private ConstraintLayout white, black;
     // [START declare_auth]
     @Inject
     FirebaseAuth mAuth;
@@ -81,9 +84,12 @@ public class GoogleSignInActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_google2);
 
+        white = findViewById(R.id.white);
+        black = findViewById(R.id.black);
         mProgressBar = findViewById(R.id.progressBar);
         signInButton = findViewById(R.id.sign_in_button);
         signOutButton = findViewById(R.id.signOutButton);
+
         //   disconnectButton = findViewById(R.id.disconnectButton);
         //   status = findViewById(R.id.status);
         //   detail = findViewById(R.id.detail);
@@ -96,7 +102,15 @@ public class GoogleSignInActivity extends BaseActivity implements
 
         viewModel = new ViewModelProvider(this, providerFactory).get(GoogleSignInViewModel.class);
 
-        //subscribeObservers();
+        subscribeObservers();
+    }
+
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        // white.setVisibility(View.VISIBLE);
+        // black.setVisibility(View.GONE);
+        // Log.d(TAG, "onRestart: "+"restartet");
     }
 
     private void subscribeObservers() {
@@ -107,28 +121,28 @@ public class GoogleSignInActivity extends BaseActivity implements
                     switch (userAuthResource.status) {
 
                         case LOADING: {
-                            showProgressBar(true);
+                            //showProgressBar(true);
                             Log.d(TAG, "onChanged: LOGIN LOADING: ");
                             break;
                         }
 
                         case AUTHENTICATED: {
                             showProgressBar(false);
-                            updateUI(userAuthResource.data);
+                            //updateUI(userAuthResource.data);
                             Log.d(TAG, "onChanged: LOGIN SUCCESS: " + userAuthResource.data.getEmail());
 
                             break;
                         }
 
                         case ERROR: {
-                            showProgressBar(false);
+                            //showProgressBar(false);
                             Toast.makeText(GoogleSignInActivity.this, userAuthResource.message
                                     + "\nDid you enter a number between 1 and 10?", Toast.LENGTH_SHORT).show();
                             break;
                         }
 
                         case NOT_AUTHENTICATED: {
-                            showProgressBar(false);
+                            //showProgressBar(false);
                             break;
                         }
                     }
@@ -163,6 +177,8 @@ public class GoogleSignInActivity extends BaseActivity implements
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 Log.w(TAG, "Google sign in failed", e);
+                white.setVisibility(View.VISIBLE);
+                black.setVisibility(View.GONE);
                 // [START_EXCLUDE]
                 updateUI(null);
                 // [END_EXCLUDE]
@@ -188,7 +204,7 @@ public class GoogleSignInActivity extends BaseActivity implements
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             viewModel.authenticateWithId(0);
-                            startActivity(new Intent(GoogleSignInActivity.this, MainActivity.class));
+                            startActivity(new Intent(GoogleSignInActivity.this, IntroActivity.class));
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -206,6 +222,8 @@ public class GoogleSignInActivity extends BaseActivity implements
 
     // [START signin]
     private void signIn() {
+        white.setVisibility(View.GONE);
+        black.setVisibility(View.VISIBLE);
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
         Log.d(TAG, "signIn: ");

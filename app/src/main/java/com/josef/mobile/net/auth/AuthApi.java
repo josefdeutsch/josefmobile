@@ -1,16 +1,11 @@
 package com.josef.mobile.net.auth;
 
 
-import com.josef.mobile.models.User;
-
 import io.reactivex.Flowable;
-import retrofit2.http.GET;
-import retrofit2.http.Path;
+import retrofit2.http.POST;
 
 public interface AuthApi {
 
-    @GET("users/{id}")
-    Flowable<User> getUser(
-            @Path("id") int id
-    );
+    @POST("_ah/api/echo/v1/echo?n=1")
+    Flowable<com.josef.mobile.models.Change> getPostsFromUser();
 }

@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.josef.mobile.SessionManager;
 import com.josef.mobile.models.User;
-import com.josef.mobile.ui.auth.AuthResource;
+import com.josef.mobile.ui.intro.AuthResource;
 
 import javax.inject.Inject;
 

@@ -1,8 +1,8 @@
 package com.josef.mobile.di;
 
-import com.josef.mobile.di.auth.AuthModule;
-import com.josef.mobile.di.auth.AuthScope;
-import com.josef.mobile.di.auth.AuthViewModelsModule;
+import com.josef.mobile.di.auth.IntroModule;
+import com.josef.mobile.di.auth.IntroScope;
+import com.josef.mobile.di.auth.IntroViewModelsModule;
 import com.josef.mobile.di.log.LogModule;
 import com.josef.mobile.di.log.LogScope;
 import com.josef.mobile.di.log.LogViewModelsModule;
@@ -10,8 +10,8 @@ import com.josef.mobile.di.main.MainFragmentBuildersModule;
 import com.josef.mobile.di.main.MainModule;
 import com.josef.mobile.di.main.MainScope;
 import com.josef.mobile.di.main.MainViewModelsModule;
-import com.josef.mobile.ui.auth.AuthActivity;
 import com.josef.mobile.ui.googlesignin.GoogleSignInActivity;
+import com.josef.mobile.ui.intro.IntroActivity;
 import com.josef.mobile.ui.main.MainActivity;
 
 import dagger.Module;
@@ -20,14 +20,14 @@ import dagger.android.ContributesAndroidInjector;
 @Module
 public abstract class ActivitysBuildersModule {
 
-    @AuthScope
+    @IntroScope
     @ContributesAndroidInjector(
             modules = {
-                    AuthViewModelsModule.class,
-                    AuthModule.class
+                    IntroViewModelsModule.class,
+                    IntroModule.class
             }
     )
-    abstract AuthActivity contributeAuthActivity();
+    abstract IntroActivity contributeAuthActivity();
 
     @LogScope
     @ContributesAndroidInjector(

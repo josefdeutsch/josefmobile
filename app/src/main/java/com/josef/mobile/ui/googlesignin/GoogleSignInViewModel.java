@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.josef.mobile.FirebaseManager;
-import com.josef.mobile.ui.auth.AuthResource;
+import com.josef.mobile.ui.intro.AuthResource;
 
 import javax.inject.Inject;
 
@@ -45,8 +45,6 @@ public class GoogleSignInViewModel extends ViewModel {
     }
 
     private LiveData<AuthResource<FirebaseUser>> queryUserId(int userId) {
-
-
         Flowable<FirebaseUser> flowable = Observable.just(authApi.getCurrentUser())
                 .subscribeOn(Schedulers.io())
                 .toFlowable(BackpressureStrategy.BUFFER);
@@ -56,19 +54,16 @@ public class GoogleSignInViewModel extends ViewModel {
                 .onErrorReturn(new Function<Throwable, FirebaseUser>() {
                     @Override
                     public FirebaseUser apply(Throwable throwable) throws Exception {
-                        FirebaseUser errorUser = (FirebaseUser) new Object();
-                        // errorUser.setId(-1);
+                        Log.e(TAG, "apply: " + throwable.toString());
+                        FirebaseUser errorUser = null;
                         return errorUser;
                     }
                 })
-
                 // wrap User object in AuthResource
                 .map(new Function<FirebaseUser, AuthResource<FirebaseUser>>() {
                     @Override
                     public AuthResource<FirebaseUser> apply(FirebaseUser user) throws Exception {
-                        /**  if(user.getId() == -1){
-                         return AuthResource.error("Could not authenticate", null);
-                         }**/
+                        if (user == null) return AuthResource.error("Could not authenticate", null);
                         return AuthResource.authenticated(user);
                     }
                 })

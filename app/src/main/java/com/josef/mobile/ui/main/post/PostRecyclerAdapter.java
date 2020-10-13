@@ -5,8 +5,10 @@ import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,6 +31,14 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     RequestManager requestManager;
     private List<Container> posts = new ArrayList<>();
 
+    ChangeOnCheckedListener changeOnCheckedListener;
+
+    public void setPosts(List<Container> posts, ChangeOnCheckedListener changeOnCheckedListener) {
+        this.posts = posts;
+        this.changeOnCheckedListener = changeOnCheckedListener;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -46,26 +56,40 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return posts.size();
     }
 
-    public void setPosts(List<Container> posts) {
-        this.posts = posts;
-        notifyDataSetChanged();
+    public interface ChangeOnCheckedListener {
+        void onItemCheckedListener();
     }
 
     public class PostViewHolder extends RecyclerView.ViewHolder {
 
         TextView title;
         ImageView imageView;
+        ToggleButton toggleButton;
 
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.title);
             imageView = itemView.findViewById(R.id.image);
+            toggleButton = itemView.findViewById(R.id.toggle);
+            //toggleButton.setChecked(true);
+
+
         }
 
-        public void bind(Container container) {
+        public void bind(final Container container) {
             //Log.d(TAG, "bind: "+container.getUrl());
             Picasso.get().load(container.getPng()).config(Bitmap.Config.ARGB_8888)
                     .fit().centerCrop().into(imageView);
+
+            toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+
+                    // Favourite favourite = new Favourite(container.getPng(), container.getUrl(), 0);
+                    //  mFavouriteViewModel.insert(favourite);
+                }
+            });
         }
     }
 }

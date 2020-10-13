@@ -3,16 +3,14 @@ package com.josef.mobile.ui.main.post;
 
 import android.util.Log;
 
-import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.LiveDataReactiveStreams;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
-import com.josef.mobile.SessionManager;
 import com.josef.mobile.models.Change;
-import com.josef.mobile.net.main.MainApi;
+import com.josef.mobile.net.auth.AuthApi;
 import com.josef.mobile.ui.main.Resource;
 
 import javax.inject.Inject;
@@ -20,32 +18,27 @@ import javax.inject.Inject;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
-import static com.josef.mobile.util.Constants.BASE_URL3;
 
-public class PostsViewModel extends ViewModel {
+public class IntroViewModel extends ViewModel {
 
     private static final String TAG = "PostsViewModel";
 
-    // inject
-    private final SessionManager sessionManager;
-    private final MainApi mainApi;
+    private AuthApi authApi;
 
     private MediatorLiveData<Resource<Change>> posts;
 
     @Inject
-    public PostsViewModel(SessionManager sessionManager, MainApi mainApi) {
-        this.sessionManager = sessionManager;
-        this.mainApi = mainApi;
+    public IntroViewModel(AuthApi authApi) {
+        this.authApi = authApi;
         Log.d(TAG, "PostsViewModel: viewmodel is working...");
     }
 
-
-    public LiveData<Resource<Change>> observePosts(@Nullable Integer i) {
+    public LiveData<Resource<Change>> observePosts() {
         if (posts == null) {
             posts = new MediatorLiveData<>();
             posts.setValue(Resource.loading(null));
             final LiveData<Resource<Change>> source = LiveDataReactiveStreams.fromPublisher(
-                    mainApi.getChange(BASE_URL3 + "_ah/api/echo/v1/echo?n=" + i)
+                    authApi.getPostsFromUser()
                             .onErrorReturn(new Function<Throwable, Change>() {
                                 @Override
                                 public Change apply(Throwable throwable) throws Exception {

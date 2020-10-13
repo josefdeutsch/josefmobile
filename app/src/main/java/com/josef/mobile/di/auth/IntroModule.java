@@ -8,9 +8,9 @@ import dagger.Provides;
 import retrofit2.Retrofit;
 
 @Module
-public abstract class AuthModule {
+public abstract class IntroModule {
 
-    @AuthScope
+    @IntroScope
     @Provides
     static AuthApi provideSessionApi(Retrofit retrofit) {
         return retrofit.create(AuthApi.class);

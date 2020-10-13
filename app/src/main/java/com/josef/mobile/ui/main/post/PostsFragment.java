@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.josef.mobile.R;
+import com.josef.mobile.data.Favourite;
+import com.josef.mobile.data.FavouriteViewModel;
 import com.josef.mobile.models.Change;
 import com.josef.mobile.models.Container;
 import com.josef.mobile.ui.main.Resource;
@@ -23,7 +25,7 @@ import com.josef.mobile.viewmodels.ViewModelProviderFactory;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -36,8 +38,12 @@ public class PostsFragment extends DaggerFragment {
     PostRecyclerAdapter adapter;
     @Inject
     ViewModelProviderFactory providerFactory;
+
     private PostsViewModel viewModel;
+
     private RecyclerView recyclerView;
+
+    private FavouriteViewModel favouriteViewModel;
 
     @Nullable
     @Override
@@ -53,8 +59,18 @@ public class PostsFragment extends DaggerFragment {
 
         viewModel = new ViewModelProvider(this, providerFactory).get(PostsViewModel.class);
 
+        favouriteViewModel = new ViewModelProvider(this).get(FavouriteViewModel.class);
+
+        favouriteViewModel.getAllNotes().observe(this, new Observer<List<Favourite>>() {
+            @Override
+            public void onChanged(@Nullable List<Favourite> favourites) {
+
+            }
+        });
+
         initRecyclerView();
         subscribeObservers();
+
     }
 
     private void subscribeObservers() {
@@ -76,10 +92,8 @@ public class PostsFragment extends DaggerFragment {
                             Type userListType = new TypeToken<ArrayList<Container>>() {
                             }.getType();
                             ArrayList<Container> userArray = gson.fromJson(listResource.data.message, userListType);
-                            Log.d(TAG, "onChanged: " + userArray.size());
-                            Collections.shuffle(userArray);
-                            adapter.setPosts(userArray);
-
+                            ///   Collections.shuffle(userArray);
+                            adapter.setPosts(userArray, null);
                             break;
                         }
 

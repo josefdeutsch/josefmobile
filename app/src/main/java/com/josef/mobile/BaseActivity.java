@@ -11,8 +11,8 @@ import androidx.lifecycle.Observer;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.josef.mobile.ui.auth.AuthResource;
 import com.josef.mobile.ui.googlesignin.GoogleSignInActivity;
+import com.josef.mobile.ui.intro.AuthResource;
 
 import javax.inject.Inject;
 

@@ -7,7 +7,7 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Observer;
 
 import com.josef.mobile.models.User;
-import com.josef.mobile.ui.auth.AuthResource;
+import com.josef.mobile.ui.intro.AuthResource;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -26,7 +26,7 @@ public class SessionManager {
 
     public void authenticateWithId(final LiveData<AuthResource<User>> source) {
         if (cachedUser != null) {
-            cachedUser.setValue(AuthResource.loading((User) null));
+            cachedUser.setValue(AuthResource.loading(null));
             cachedUser.addSource(source, new Observer<AuthResource<User>>() {
                 @Override
                 public void onChanged(AuthResource<User> userAuthResource) {

@@ -24,6 +24,4 @@ public interface MainApi {
 
     @POST
     Flowable<com.josef.mobile.models.Change> getChange(@Url String url);
-
-
 }
