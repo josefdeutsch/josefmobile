@@ -46,6 +46,7 @@ public class IntroActivity extends DaggerAppCompatActivity {
     MaterialButton skipButton;
     private IntroViewModel viewModel;
 
+    int last;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +69,8 @@ public class IntroActivity extends DaggerAppCompatActivity {
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 Log.e("Selected_Page", String.valueOf(position));
+                last = position;
+
             }
 
             @Override
@@ -76,6 +79,7 @@ public class IntroActivity extends DaggerAppCompatActivity {
             }
         });
         subscribeObservers();
+
     }
 
 
@@ -114,10 +118,15 @@ public class IntroActivity extends DaggerAppCompatActivity {
     public void onClick(View view) {
         int i = view.getId();
         if (i == R.id.buttonPanel) {
-            viewPager2.setCurrentItem(viewPager2.getCurrentItem() + 1, true);
+
+            int current = viewPager2.getCurrentItem() + 1;
+            viewPager2.setCurrentItem(current, true);
+            if (recyclerAdapter.getItemCount() == current)
+                startActivity(new Intent(IntroActivity.this, MainActivity.class));
 
         } else if (i == R.id.textButton) {
             startActivity(new Intent(IntroActivity.this, MainActivity.class));
+            finish();
         }
     }
 
