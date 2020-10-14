@@ -1,5 +1,6 @@
 package com.josef.mobile.ui.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,6 +25,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -112,6 +114,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

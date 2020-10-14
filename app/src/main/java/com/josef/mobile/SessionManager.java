@@ -1,13 +1,11 @@
 package com.josef.mobile;
 
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Observer;
 
-import com.josef.mobile.models.User;
-import com.josef.mobile.ui.intro.AuthResource;
+import com.josef.mobile.models.Player;
+import com.josef.mobile.ui.main.Resource;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -17,19 +15,19 @@ public class SessionManager {
 
     private static final String TAG = "DaggerExample";
     // data
-    private MediatorLiveData<AuthResource<User>> cachedUser = new MediatorLiveData<>();
+    private MediatorLiveData<Resource<Player>> cachedUser = new MediatorLiveData<>();
 
     @Inject
     public SessionManager() {
 
     }
 
-    public void authenticateWithId(final LiveData<AuthResource<User>> source) {
+    public void select(final LiveData<Resource<Player>> source) {
         if (cachedUser != null) {
-            cachedUser.setValue(AuthResource.loading(null));
-            cachedUser.addSource(source, new Observer<AuthResource<User>>() {
+            cachedUser.setValue(Resource.loading(null));
+            cachedUser.addSource(source, new Observer<Resource<Player>>() {
                 @Override
-                public void onChanged(AuthResource<User> userAuthResource) {
+                public void onChanged(Resource<Player> userAuthResource) {
                     cachedUser.setValue(userAuthResource);
                     cachedUser.removeSource(source);
                 }
@@ -37,12 +35,8 @@ public class SessionManager {
         }
     }
 
-    public void logOut() {
-        Log.d(TAG, "logOut: logging out...");
-        cachedUser.setValue(AuthResource.logout());
-    }
 
-    public LiveData<AuthResource<User>> getAuthUser() {
+    public LiveData<Resource<Player>> getAuthUser() {
         return cachedUser;
     }
 

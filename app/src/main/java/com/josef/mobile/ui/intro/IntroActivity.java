@@ -19,7 +19,6 @@ import com.josef.mobile.models.Change;
 import com.josef.mobile.models.ContainerOnBoard;
 import com.josef.mobile.ui.main.MainActivity;
 import com.josef.mobile.ui.main.Resource;
-import com.josef.mobile.ui.main.post.IntroViewModel;
 import com.josef.mobile.viewmodels.ViewModelProviderFactory;
 
 import java.lang.reflect.Type;

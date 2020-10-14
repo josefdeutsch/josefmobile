@@ -32,19 +32,23 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     Drawable logo;
     @Inject
     RequestManager requestManager;
-    OnCheckedListener onCheckedListener;
+    PostRecyclerViewOnClickListener postRecyclerViewOnClickListener;
     Context context;
     SparseArray<Boolean> sparseArray;
     private List<Favourite> posts = new ArrayList<>();
 
-    public PostRecyclerAdapter(Context context, OnCheckedListener onCheckedListener) {
+    public PostRecyclerAdapter(Context context, PostRecyclerViewOnClickListener postRecyclerViewOnClickListener) {
         this.context = context;
-        this.onCheckedListener = onCheckedListener;
+        this.postRecyclerViewOnClickListener = postRecyclerViewOnClickListener;
         sparseArray = new SparseArray<>();
         for (int i = 0; i <= 200; i++) {
             sparseArray.put(i, false);
         }
 
+    }
+
+    interface PostRecyclerViewOnClickListener {
+        void onClick(Favourite favourite);
     }
 
     public void setPosts(List<Favourite> posts) {
@@ -90,7 +94,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return posts.size();
     }
 
-    public class PostViewHolder extends RecyclerView.ViewHolder {
+    public class PostViewHolder extends RecyclerView.ViewHolder implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
 
         TextView title;
         ImageView imageView;
@@ -102,35 +106,12 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             imageView = itemView.findViewById(R.id.image);
             toggleButton = itemView.findViewById(R.id.toggle);
 
-            toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    Log.d(TAG, "onCheckedChanged: ");
+            toggleButton.setOnCheckedChangeListener(this);
+            imageView.setOnClickListener(this);
 
-                    if (isChecked) {
-                        sparseArray.put(getAdapterPosition(), true);
-                    } else {
-                        sparseArray.put(getAdapterPosition(), false);
-                    }
-                    /**   int position = getAdapterPosition();
-
-                     if (onCheckedListener != null && position != RecyclerView.NO_POSITION) {
-                     onCheckedListener.onChecked(isChecked, posts.get(position));
-                     }**/
-                }
-            });
 
         }
 
-        public void setToggleButton() {
-            int position = getAdapterPosition();
-            if (posts.get(position).getPriority() == 1) {
-                toggleButton.setChecked(true);
-            } else {
-                toggleButton.setChecked(false);
-            }
-
-        }
 
         // int getAdapterPosition???
 
@@ -138,7 +119,20 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             Log.d(TAG, "bind: " + container.getTitle());
             Picasso.get().load(container.getDescription()).config(Bitmap.Config.ARGB_8888)
                     .fit().centerCrop().into(imageView);
+        }
 
+        @Override
+        public void onClick(View v) {
+            postRecyclerViewOnClickListener.onClick(posts.get(getAdapterPosition()));
+        }
+
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            if (isChecked) {
+                sparseArray.put(getAdapterPosition(), true);
+            } else {
+                sparseArray.put(getAdapterPosition(), false);
+            }
 
         }
     }

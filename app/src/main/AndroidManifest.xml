@@ -13,9 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ui.main.MainActivity"></activity>
-        <activity android:name=".ui.intro.IntroActivity">
+        <activity android:name=".ui.intro.IntroActivity"></activity>
+        <activity android:name=".ui.player.PlayerActivity"></activity>
 
-        </activity>
         <activity android:name=".ui.googlesignin.GoogleSignInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,4 +1,4 @@
-package com.josef.mobile.ui.main.post;
+package com.josef.mobile.ui.intro;
 
 
 import android.util.Log;

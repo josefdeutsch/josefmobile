@@ -10,7 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.josef.mobile.R;
 import com.josef.mobile.models.User;
@@ -38,13 +37,13 @@ public class ProfileFragment extends DaggerFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         Log.d(TAG, "onViewCreated: ProfileFragment. " + this);
-        email = view.findViewById(R.id.email);
-        username = view.findViewById(R.id.username);
-        website = view.findViewById(R.id.website);
+     /**   email = view.findViewById(R.id.email);
+      username = view.findViewById(R.id.username);
+      website = view.findViewById(R.id.website);
 
-        viewModel = new ViewModelProvider(this, providerFactory).get(ProfileViewModel.class);
+      viewModel = new ViewModelProvider(this, providerFactory).get(ProfileViewModel.class);
 
-        subscribeObservers();
+      subscribeObservers();**/
     }
 
     private void subscribeObservers() {

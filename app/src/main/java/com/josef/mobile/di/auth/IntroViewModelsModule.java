@@ -4,7 +4,7 @@ package com.josef.mobile.di.auth;
 import androidx.lifecycle.ViewModel;
 
 import com.josef.mobile.di.ViewModelKey;
-import com.josef.mobile.ui.main.post.IntroViewModel;
+import com.josef.mobile.ui.intro.IntroViewModel;
 
 import dagger.Binds;
 import dagger.Module;

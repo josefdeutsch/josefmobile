@@ -10,9 +10,13 @@ import com.josef.mobile.di.main.MainFragmentBuildersModule;
 import com.josef.mobile.di.main.MainModule;
 import com.josef.mobile.di.main.MainScope;
 import com.josef.mobile.di.main.MainViewModelsModule;
+import com.josef.mobile.di.player.PlayerModule;
+import com.josef.mobile.di.player.PlayerScope;
+import com.josef.mobile.di.player.PlayerViewModelsModule;
 import com.josef.mobile.ui.googlesignin.GoogleSignInActivity;
 import com.josef.mobile.ui.intro.IntroActivity;
 import com.josef.mobile.ui.main.MainActivity;
+import com.josef.mobile.ui.player.PlayerActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -33,7 +37,7 @@ public abstract class ActivitysBuildersModule {
     @ContributesAndroidInjector(
             modules = {
                     LogModule.class,
-                    LogViewModelsModule.class,
+                    LogViewModelsModule.class
             }
     )
     abstract GoogleSignInActivity contributeGoogleActivity();
@@ -47,5 +51,14 @@ public abstract class ActivitysBuildersModule {
             }
     )
     abstract MainActivity contributeMainActivity();
+
+    @PlayerScope
+    @ContributesAndroidInjector(
+            modules = {
+                    PlayerModule.class,
+                    PlayerViewModelsModule.class
+            }
+    )
+    abstract PlayerActivity contributePlayerActivity();
 
 }
