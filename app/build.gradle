@@ -98,8 +98,6 @@ android {
         //freeImplementation 'com.google.android.gms:play-services-ads:11.0.4'
         implementation "androidx.lifecycle:lifecycle-extensions:2.1.0"
         annotationProcessor "androidx.lifecycle:lifecycle-compiler:2.1.0"
-        implementation "androidx.room:room-runtime:2.2.0-rc01"
-        annotationProcessor "androidx.room:room-compiler:2.2.0-rc01"
         implementation 'androidx.recyclerview:recyclerview:1.1.0'
         implementation 'androidx.legacy:legacy-support-v4:+'
         implementation 'org.jetbrains:annotations-java5:15.0'
@@ -156,7 +154,7 @@ android {
         annotationProcessor "com.google.dagger:dagger-android-processor:$dagger_version"
 
         // Room
-        def room_version = "2.2.0-beta01" // alpha06 has bugs
+        def room_version = "2.2.5" // alpha06 has bugs
         implementation "androidx.room:room-runtime:$room_version"
         implementation "androidx.room:room-rxjava2:$room_version"
         annotationProcessor "androidx.room:room-compiler:$room_version"

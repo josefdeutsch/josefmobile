@@ -31,11 +31,13 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 
-public class PostsFragment extends DaggerFragment {
+public class PostsFragment extends DaggerFragment implements PostRecyclerAdapter.OnCheckedListener {
 
     private static final String TAG = "PostsFragment";
-    @Inject
+
+
     PostRecyclerAdapter adapter;
+
     @Inject
     ViewModelProviderFactory providerFactory;
 
@@ -56,7 +58,7 @@ public class PostsFragment extends DaggerFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.recycler_view);
-
+        adapter = new PostRecyclerAdapter(getActivity(), this);
         viewModel = new ViewModelProvider(this, providerFactory).get(PostsViewModel.class);
 
         favouriteViewModel = new ViewModelProvider(this).get(FavouriteViewModel.class);
@@ -64,7 +66,11 @@ public class PostsFragment extends DaggerFragment {
         favouriteViewModel.getAllNotes().observe(this, new Observer<List<Favourite>>() {
             @Override
             public void onChanged(@Nullable List<Favourite> favourites) {
+                for (Favourite favx : favourites) {
+                    Log.d(TAG, "onChanged: " + favx.getPriority());
+                }
 
+                adapter.setPosts(favourites);
             }
         });
 
@@ -92,8 +98,14 @@ public class PostsFragment extends DaggerFragment {
                             Type userListType = new TypeToken<ArrayList<Container>>() {
                             }.getType();
                             ArrayList<Container> userArray = gson.fromJson(listResource.data.message, userListType);
+                            favouriteViewModel.deleteAllNotes();
+                            for (Container container : userArray) {
+                                favouriteViewModel.insert(new Favourite(container.getPng(), container.getUrl(), 0));
+                            }
+
+
                             ///   Collections.shuffle(userArray);
-                            adapter.setPosts(userArray, null);
+
                             break;
                         }
 
@@ -114,6 +126,22 @@ public class PostsFragment extends DaggerFragment {
         recyclerView.setAdapter(adapter);
     }
 
+    @Override
+    public void onChecked(boolean isChecked, Favourite container) {
+        if (isChecked) {
+            Log.d(TAG, "onChecked: ");
+            //   Favourite container1 = new Favourite(container.getDescription(), container.getTitle(), 1);
+            //   container1.setId(container.getId());
+            //  favouriteViewModel.update(container1);
+//            adapter.notifyDataSetChanged();
+        } else {
+            Log.d(TAG, "onCheckedFalse: ");
+            //   Favourite container1 = new Favourite(container.getDescription(), container.getTitle(), 0);
+            //   container1.setId(container.getId());
+            //   favouriteViewModel.update(container1);
+            //   adapter.notifyDataSetChanged();
+        }
+    }
 }
 
 

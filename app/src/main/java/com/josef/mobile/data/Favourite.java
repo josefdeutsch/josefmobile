@@ -20,6 +20,7 @@ public class Favourite implements Parcelable {
             return new Favourite[size];
         }
     };
+
     @PrimaryKey(autoGenerate = true)
     private int id;
     private String title;
@@ -75,4 +76,15 @@ public class Favourite implements Parcelable {
         dest.writeString(description);
         dest.writeInt(priority);
     }
+    //   @Embedded
+    // Priority prior;
+
 }
+
+/**
+ * class Priority {
+ *
+ * @ColumnInfo(name = "priority")
+ * private int priority;
+ * }
+ **/

@@ -59,4 +59,14 @@ public class Container {
     public void setUrl(String url) {
         this.url = url;
     }
+
+    private boolean isChecked;
+
+    public boolean getChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }
 }

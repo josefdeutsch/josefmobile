@@ -11,13 +11,14 @@ import androidx.room.Update;
 
 import java.util.List;
 
+
 @Dao
 public interface FavouriteDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Favourite note);
 
-    @Update
+    @Update()
     void update(Favourite note);
 
     @Delete
@@ -31,3 +32,9 @@ public interface FavouriteDao {
     LiveData<List<Favourite>> getAllNotes();
 }
 
+/**
+ * @Entity class Favourite {
+ * @ColumnInfo(name = "priority")
+ * private int priority;
+ * }
+ **/

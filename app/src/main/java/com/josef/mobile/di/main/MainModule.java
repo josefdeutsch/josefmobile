@@ -2,7 +2,6 @@ package com.josef.mobile.di.main;
 
 
 import com.josef.mobile.net.main.MainApi;
-import com.josef.mobile.ui.main.post.PostRecyclerAdapter;
 
 import dagger.Module;
 import dagger.Provides;
@@ -17,10 +16,6 @@ public class MainModule {
         return retrofit.create(MainApi.class);
     }
 
-    @MainScope
-    @Provides
-    static PostRecyclerAdapter provideAdapter() {
-        return new PostRecyclerAdapter();
-    }
+
 }
 
