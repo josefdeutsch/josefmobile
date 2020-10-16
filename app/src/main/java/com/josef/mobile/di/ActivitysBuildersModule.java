@@ -3,9 +3,9 @@ package com.josef.mobile.di;
 import com.josef.mobile.di.auth.IntroModule;
 import com.josef.mobile.di.auth.IntroScope;
 import com.josef.mobile.di.auth.IntroViewModelsModule;
-import com.josef.mobile.di.log.LogModule;
-import com.josef.mobile.di.log.LogScope;
-import com.josef.mobile.di.log.LogViewModelsModule;
+import com.josef.mobile.di.log.AuthModule;
+import com.josef.mobile.di.log.AuthScope;
+import com.josef.mobile.di.log.AuthViewModelsModule;
 import com.josef.mobile.di.main.MainFragmentBuildersModule;
 import com.josef.mobile.di.main.MainModule;
 import com.josef.mobile.di.main.MainScope;
@@ -13,7 +13,7 @@ import com.josef.mobile.di.main.MainViewModelsModule;
 import com.josef.mobile.di.player.PlayerModule;
 import com.josef.mobile.di.player.PlayerScope;
 import com.josef.mobile.di.player.PlayerViewModelsModule;
-import com.josef.mobile.ui.googlesignin.GoogleSignInActivity;
+import com.josef.mobile.ui.auth.AuthActivity;
 import com.josef.mobile.ui.intro.IntroActivity;
 import com.josef.mobile.ui.main.MainActivity;
 import com.josef.mobile.ui.player.PlayerActivity;
@@ -31,16 +31,16 @@ public abstract class ActivitysBuildersModule {
                     IntroModule.class
             }
     )
-    abstract IntroActivity contributeAuthActivity();
+    abstract IntroActivity contributeIntroctivity();
 
-    @LogScope
+    @AuthScope
     @ContributesAndroidInjector(
             modules = {
-                    LogModule.class,
-                    LogViewModelsModule.class
+                    AuthModule.class,
+                    AuthViewModelsModule.class
             }
     )
-    abstract GoogleSignInActivity contributeGoogleActivity();
+    abstract AuthActivity contributeAuthActivity();
 
     @MainScope
     @ContributesAndroidInjector(

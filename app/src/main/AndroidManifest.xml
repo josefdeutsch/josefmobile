@@ -16,12 +16,14 @@
         <activity android:name=".ui.intro.IntroActivity"></activity>
         <activity android:name=".ui.player.PlayerActivity"></activity>
 
-        <activity android:name=".ui.googlesignin.GoogleSignInActivity">
+
+        <activity android:name=".ui.auth.AuthActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
     </application>
 

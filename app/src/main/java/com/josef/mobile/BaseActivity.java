@@ -11,14 +11,14 @@ import androidx.lifecycle.Observer;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.josef.mobile.ui.googlesignin.GoogleSignInActivity;
+import com.josef.mobile.ui.auth.AuthActivity;
 import com.josef.mobile.ui.intro.AuthResource;
 
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerAppCompatActivity;
 
-import static com.josef.mobile.ui.googlesignin.GoogleSignInActivity.RC_SIGN_OUT;
+import static com.josef.mobile.ui.auth.AuthActivity.RC_SIGN_OUT;
 
 
 public abstract class BaseActivity extends DaggerAppCompatActivity {
@@ -78,7 +78,7 @@ public abstract class BaseActivity extends DaggerAppCompatActivity {
     }
 
     private void navLoginScreen() {
-        Intent intent = new Intent(this, GoogleSignInActivity.class);
+        Intent intent = new Intent(this, AuthActivity.class);
         startActivityForResult(intent, RC_SIGN_OUT);
         finish();
     }
