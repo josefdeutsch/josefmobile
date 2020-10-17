@@ -6,8 +6,14 @@ import androidx.lifecycle.MutableLiveData;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.josef.mobile.ui.intro.AuthResource;
+
+import java.util.concurrent.CompletableFuture;
 
 import javax.inject.Singleton;
+
+import io.reactivex.Flowable;
+import io.reactivex.Single;
 
 @SuppressWarnings("ConstantConditions")
 @Singleton
@@ -49,5 +55,24 @@ class AuthRepository {
         return new User(uid, name, email, photoUrl);
     }
 
+    public Flowable<AuthResource<User>> firebaseSignInWithGoogleRX(AuthCredential googleAuthCredential) {
 
+        CompletableFuture<AuthResource<User>> completableFuture
+                = CompletableFuture.supplyAsync(() -> {
+            auth.signInWithCredential(googleAuthCredential).addOnCompleteListener(authTask -> {
+                if (authTask.isSuccessful()) {
+                    FirebaseUser firebaseUser = auth.getCurrentUser();
+                    if (firebaseUser != null) {
+                        AuthResource.authenticated(getUser(firebaseUser));
+                        return;
+                    }
+                } else {
+                    // AuthResource.error("error",authTask.getException());
+                }
+            });
+            return AuthResource.authenticated(new User(null, "0", "uschi", "sudfhsd"));
+        });
+
+        return Single.fromFuture(completableFuture).toFlowable();
+    }
 }

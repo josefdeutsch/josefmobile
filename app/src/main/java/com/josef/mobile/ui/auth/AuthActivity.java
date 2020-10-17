@@ -28,6 +28,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -41,6 +42,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.josef.mobile.BaseActivity;
 import com.josef.mobile.R;
+import com.josef.mobile.ui.intro.AuthResource;
 import com.josef.mobile.viewmodels.ViewModelProviderFactory;
 
 import javax.inject.Inject;
@@ -130,15 +132,45 @@ public class AuthActivity extends BaseActivity implements
     private void signInWithGoogleAuthCredential(AuthCredential googleAuthCredential) {
         //   displayProgressBar();
         viewModel.signInWithGoogle(googleAuthCredential);
-        viewModel.authenticatedUserLiveData.observe(this, dataOrException -> {
-            if (dataOrException.data != null) {
-                User authenticatedUser = dataOrException.data;
-                Log.d(TAG, "signInWithGoogleAuthCredential: " + authenticatedUser.email);
-            }
-            if (dataOrException.exception != null) {
-                Log.d(TAG, "signInWithGoogleAuthCredential: " + dataOrException.exception.getMessage());
+        viewModel.getPosts().observe(this, new Observer<AuthResource<User>>() {
+            @Override
+            public void onChanged(AuthResource<User> userAuthResource) {
+                if (userAuthResource != null) {
+                    switch (userAuthResource.status) {
+                        case LOADING: {
+                            Log.d(TAG, "onChanged: PostsFragment: LOADING...");
+                            break;
+                        }
+
+                        case AUTHENTICATED: {
+                            Log.d(TAG, "onChanged: PostsFragment: AUTHENTICATED... " + userAuthResource.data.email);
+                            break;
+                        }
+
+                        case ERROR: {
+                            Log.d(TAG, "onChanged: PostsFragment: ERROR... " + userAuthResource.data.email);
+                            break;
+                        }
+                        case NOT_AUTHENTICATED: {
+                            Log.d(TAG, "onChanged: PostsFragment: NOT_AUTHENTICATED... " + userAuthResource.data.email);
+                            break;
+                        }
+                    }
+                }
+
             }
         });
+        /**viewModel.authenticatedUserLiveData.observe(this, new Observer<DataOrException<User, Exception>>() {
+        @Override public void onChanged(DataOrException<User, Exception> dataOrException) {
+        if (dataOrException.data != null) {
+        User authenticatedUser = dataOrException.data;
+        Log.d(TAG, "signInWithGoogleAuthCredential: " + authenticatedUser.email);
+        }
+        if (dataOrException.exception != null) {
+        Log.d(TAG, "signInWithGoogleAuthCredential: " + dataOrException.exception.getMessage());
+        }
+        }
+        });**/
     }
 
     private void signIn() {
