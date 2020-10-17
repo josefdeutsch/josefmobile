@@ -8,12 +8,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.josef.mobile.ui.intro.AuthResource;
 
-import java.util.concurrent.CompletableFuture;
-
 import javax.inject.Singleton;
 
 import io.reactivex.Flowable;
 import io.reactivex.Single;
+import io.reactivex.SingleEmitter;
+import io.reactivex.SingleOnSubscribe;
+import io.reactivex.functions.Consumer;
 
 @SuppressWarnings("ConstantConditions")
 @Singleton
@@ -54,25 +55,29 @@ class AuthRepository {
         String photoUrl = firebaseUser.getPhotoUrl().toString();
         return new User(uid, name, email, photoUrl);
     }
+    
 
     public Flowable<AuthResource<User>> firebaseSignInWithGoogleRX(AuthCredential googleAuthCredential) {
-
-        CompletableFuture<AuthResource<User>> completableFuture
-                = CompletableFuture.supplyAsync(() -> {
-            auth.signInWithCredential(googleAuthCredential).addOnCompleteListener(authTask -> {
-                if (authTask.isSuccessful()) {
-                    FirebaseUser firebaseUser = auth.getCurrentUser();
-                    if (firebaseUser != null) {
-                        AuthResource.authenticated(getUser(firebaseUser));
-                        return;
+        return Single.create(new SingleOnSubscribe<AuthResource<User>>() {
+            @Override
+            public void subscribe(SingleEmitter<AuthResource<User>> emitter) throws Exception {
+                auth.signInWithCredential(googleAuthCredential).addOnCompleteListener(authTask -> {
+                    if (authTask.isSuccessful()) {
+                        FirebaseUser firebaseUser = auth.getCurrentUser();
+                        if (firebaseUser != null) {
+                            User user = getUser(firebaseUser);
+                            emitter.onSuccess(AuthResource.authenticated(user));
+                        }
+                    } else {
+                        emitter.onError(authTask.getException());
                     }
-                } else {
-                    // AuthResource.error("error",authTask.getException());
-                }
-            });
-            return AuthResource.authenticated(new User(null, "0", "uschi", "sudfhsd"));
-        });
-
-        return Single.fromFuture(completableFuture).toFlowable();
+                });
+            }
+        }).doOnError(new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Exception {
+                AuthResource.error(throwable.getMessage(), null);
+            }
+        }).toFlowable();
     }
 }

@@ -148,29 +148,15 @@ public class AuthActivity extends BaseActivity implements
                         }
 
                         case ERROR: {
-                            Log.d(TAG, "onChanged: PostsFragment: ERROR... " + userAuthResource.data.email);
                             break;
                         }
                         case NOT_AUTHENTICATED: {
-                            Log.d(TAG, "onChanged: PostsFragment: NOT_AUTHENTICATED... " + userAuthResource.data.email);
                             break;
                         }
                     }
                 }
-
             }
         });
-        /**viewModel.authenticatedUserLiveData.observe(this, new Observer<DataOrException<User, Exception>>() {
-        @Override public void onChanged(DataOrException<User, Exception> dataOrException) {
-        if (dataOrException.data != null) {
-        User authenticatedUser = dataOrException.data;
-        Log.d(TAG, "signInWithGoogleAuthCredential: " + authenticatedUser.email);
-        }
-        if (dataOrException.exception != null) {
-        Log.d(TAG, "signInWithGoogleAuthCredential: " + dataOrException.exception.getMessage());
-        }
-        }
-        });**/
     }
 
     private void signIn() {

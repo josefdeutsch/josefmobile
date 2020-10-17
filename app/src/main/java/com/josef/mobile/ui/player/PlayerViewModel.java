@@ -46,6 +46,7 @@ public class PlayerViewModel extends ViewModel {
         Player player = new Player(string, 1);
 
         Flowable<Player> playerFlowable = Observable.just(player)
+                .subs
                 .toFlowable(BackpressureStrategy.BUFFER);
 
         final LiveData<Resource<Player>> source = LiveDataReactiveStreams.fromPublisher(

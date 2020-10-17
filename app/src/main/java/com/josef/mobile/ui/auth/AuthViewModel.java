@@ -16,21 +16,15 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class AuthViewModel extends ViewModel {
-    LiveData<DataOrException<User, Exception>> authenticatedUserLiveData;
-    CompositeDisposable compositeDisposable = new CompositeDisposable();
     private AuthRepository authRepository;
     private MediatorLiveData<AuthResource<User>> posts;
+
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Inject
     AuthViewModel(AuthRepository authRepository) {
         this.authRepository = authRepository;
     }
-
-    //  void signInWithGoogle(AuthCredential googleAuthCredential) {
-    //    authenticatedUserLiveData =
-    //           authRepository.firebaseSignInWithGoogle(googleAuthCredential);
-    // }
-
 
     public MediatorLiveData<AuthResource<User>> getPosts() {
         return posts;
@@ -41,17 +35,28 @@ public class AuthViewModel extends ViewModel {
         if (posts == null) {
             posts = new MediatorLiveData<>();
             posts.setValue(AuthResource.loading(null));
+
             Flowable<AuthResource<User>> flowable = authRepository.firebaseSignInWithGoogleRX(googleAuthCredential);
+            flowable.subscribe();
+            compositeDisposable.add(flowable.subscribe());
 
             final LiveData<AuthResource<User>> source = LiveDataReactiveStreams.fromPublisher(
                     flowable.subscribeOn(Schedulers.io()));
             posts.addSource(source, new Observer<AuthResource<User>>() {
+
                 @Override
-                public void onChanged(AuthResource<User> listResource) {
-                    posts.setValue(listResource);
+                public void onChanged(AuthResource<User> userAuthResource) {
+                    posts.setValue(userAuthResource);
                     posts.removeSource(source);
                 }
             });
         }
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        compositeDisposable.dispose();
+        compositeDisposable.clear();
     }
 }
