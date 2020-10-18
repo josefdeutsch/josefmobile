@@ -3,7 +3,6 @@ package com.josef.mobile.di;
 import android.app.Application;
 
 import com.josef.mobile.BaseApplication;
-import com.josef.mobile.FirebaseManager;
 import com.josef.mobile.SessionManager;
 
 import javax.inject.Singleton;
@@ -25,8 +24,6 @@ import dagger.android.support.AndroidSupportInjectionModule;
 public interface AppComponent extends AndroidInjector<BaseApplication> {
 
     SessionManager sessionManager();
-
-    FirebaseManager sessionFireBaseManager();
 
     @Component.Builder
     interface Builder {

@@ -9,11 +9,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 
-import com.josef.mobile.models.Player;
-import com.josef.mobile.ui.main.Resource;
 import com.josef.mobile.viewmodels.ViewModelProviderFactory;
 
 import javax.inject.Inject;
@@ -50,9 +46,9 @@ public class PlayerActivity extends DaggerAppCompatActivity {
 
         Log.d(TAG, "onCreate: " + requestUrl);
 
-        playerViewModel = new ViewModelProvider(this, providerFactory).get(PlayerViewModel.class);
-        playerViewModel.perfomLiveData(requestUrl);
-        subscribeObservers();
+        // playerViewModel = new ViewModelProvider(this, providerFactory).get(PlayerViewModel.class);
+        // playerViewModel.perfomLiveData(requestUrl);
+        // subscribeObservers();
 
 
     }
@@ -72,28 +68,27 @@ public class PlayerActivity extends DaggerAppCompatActivity {
     }
 
     private void subscribeObservers() {
-        playerViewModel.observeAuthState().observe(this, new Observer<Resource<Player>>() {
-            @Override
-            public void onChanged(Resource<Player> playerResource) {
-                if (playerResource != null) {
-                    switch (playerResource.status) {
-                        case LOADING: {
-                            Log.d(TAG, "onChanged: PostsFragment: LOADING...");
-                            break;
-                        }
+        /**    playerViewModel.observeAuthState().observe(this, new Observer<Resource<Player>>() {
+        @Override public void onChanged(Resource<Player> playerResource) {
+        if (playerResource != null) {
+        switch (playerResource.status) {
+        case LOADING: {
+        Log.d(TAG, "onChanged: PostsFragment: LOADING...");
+        break;
+        }
 
-                        case SUCCESS: {
+        case SUCCESS: {
                             Log.d(TAG, "onChanged: " + playerResource.data.getMessage());
-                            break;
-                        }
+        break;
+        }
 
-                        case ERROR: {
-                            Log.d(TAG, "onChanged: PostsFragment: ERROR... " + playerResource.data.getMessage());
-                            break;
-                        }
-                    }
-                }
-            }
-        });
+        case ERROR: {
+        Log.d(TAG, "onChanged: PostsFragment: ERROR... " + playerResource.data.getMessage());
+        break;
+        }
+        }
+        }
+        }
+        });**/
     }
 }

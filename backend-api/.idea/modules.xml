@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1431032835/app.iml" filepath="$PROJECT_DIR$/.idea/modules/-1431032835/app.iml" group="josefmobile/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/backend-api.iml" filepath="$PROJECT_DIR$/.idea/modules/backend-api.iml" group="josefmobile/backend-api" />
       <module fileurl="file://$PROJECT_DIR$/endpoints-v2-skeleton.iml" filepath="$PROJECT_DIR$/endpoints-v2-skeleton.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1421230571/josefmobile.iml" filepath="$PROJECT_DIR$/.idea/modules/1421230571/josefmobile.iml" group="josefmobile" />
     </modules>
   </component>
 </project>

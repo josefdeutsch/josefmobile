@@ -13,7 +13,7 @@ import androidx.lifecycle.Observer;
 
 import com.josef.mobile.R;
 import com.josef.mobile.models.User;
-import com.josef.mobile.ui.intro.AuthResource;
+import com.josef.mobile.ui.auth.AuthResource;
 import com.josef.mobile.viewmodels.ViewModelProviderFactory;
 
 import javax.inject.Inject;

@@ -13,7 +13,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.josef.mobile.R;
-import com.josef.mobile.ui.auth.AuthRepository;
 import com.josef.mobile.util.Constants;
 
 import javax.inject.Singleton;
@@ -75,11 +74,5 @@ public class AppModule {
         return ContextCompat.getDrawable(application, R.drawable.logo);
     }
 
-
-    @Singleton
-    @Provides
-    static AuthRepository provideAuthRepository() {
-        return new AuthRepository(FirebaseAuth.getInstance());
-    }
 
 }

@@ -25,11 +25,6 @@
     The parent pom defines common style checks and testing strategies for our samples.
     Removing or replacing it should not effect the execution of the samples in anyway.
   -->
-  <parent>
-    <groupId>com.google.cloud.samples</groupId>
-    <artifactId>shared-configuration</artifactId>
-    <version>1.0.13</version>
-  </parent>
 
   <properties>
     <maven.compiler.target>1.8</maven.compiler.target>
@@ -77,20 +72,43 @@
   </dependencies>
 
   <build>
+    <defaultGoal>install</defaultGoal>
     <!-- for hot reload of the web application-->
+
     <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/classes
     </outputDirectory>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-war-plugin</artifactId>
-        <version>3.2.3</version>
-        <configuration>
-          <webResources>
-            <resources>
-              <directory>${basedir}/src/main/webapp/WEB-INF</directory>
-              <filtering>true</filtering>
-              <targetPath>WEB-INF</targetPath>
+      <plugins>
+          <plugin>
+              <groupId>org.codehaus.mojo</groupId>
+              <artifactId>build-helper-maven-plugin</artifactId>
+              <version>3.2.0</version>
+              <executions>
+                  <execution>
+                      <id>add-source</id>
+                      <phase>generate-sources</phase>
+                      <goals>
+                          <goal>add-source</goal>
+                      </goals>
+                      <configuration>
+                          <sources>
+                              <source>
+                                  /Users/philippdeutsch/Documents/josef/josefmobile/backend-api/build/target/generated/
+                              </source>
+                          </sources>
+                      </configuration>
+                  </execution>
+              </executions>
+          </plugin>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-war-plugin</artifactId>
+              <version>3.2.3</version>
+              <configuration>
+                  <webResources>
+                      <resources>
+                          <directory>${basedir}/src/main/webapp/WEB-INF</directory>
+                          <filtering>true</filtering>
+                          <targetPath>WEB-INF</targetPath>
             </resources>
           </webResources>
         </configuration>

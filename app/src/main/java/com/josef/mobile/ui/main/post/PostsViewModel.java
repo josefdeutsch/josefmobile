@@ -10,7 +10,6 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
-import com.josef.mobile.SessionManager;
 import com.josef.mobile.models.Change;
 import com.josef.mobile.net.main.MainApi;
 import com.josef.mobile.ui.main.Resource;
@@ -27,14 +26,12 @@ public class PostsViewModel extends ViewModel {
     private static final String TAG = "PostsViewModel";
 
     // inject
-    private final SessionManager sessionManager;
     private final MainApi mainApi;
 
     private MediatorLiveData<Resource<Change>> posts;
 
     @Inject
-    public PostsViewModel(SessionManager sessionManager, MainApi mainApi) {
-        this.sessionManager = sessionManager;
+    public PostsViewModel(MainApi mainApi) {
         this.mainApi = mainApi;
         Log.d(TAG, "PostsViewModel: viewmodel is working...");
     }

@@ -10,9 +10,9 @@ import androidx.lifecycle.Observer;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.josef.mobile.ui.auth.AuthActivity;
-import com.josef.mobile.ui.intro.AuthResource;
+import com.josef.mobile.ui.auth.AuthResource;
+import com.josef.mobile.ui.auth.User;
 
 import javax.inject.Inject;
 
@@ -25,11 +25,9 @@ public abstract class BaseActivity extends DaggerAppCompatActivity {
 
     private static final String TAG = "DaggerExample";
 
-    @Inject
-    public SessionManager sessionManager;
 
     @Inject
-    public FirebaseManager firebaseManager;
+    public SessionManager sessionManager;
 
     @Inject
     FirebaseAuth authApi;
@@ -44,29 +42,46 @@ public abstract class BaseActivity extends DaggerAppCompatActivity {
     }
 
     private void subscribeObservers() {
-        firebaseManager.getAuthUser().observe(this, new Observer<AuthResource<FirebaseUser>>() {
+        sessionManager.getAuthUser().observe(this, new Observer<AuthResource<User>>() {
             @Override
-            public void onChanged(AuthResource<FirebaseUser> userAuthResource) {
+            public void onChanged(AuthResource<User> userAuthResource) {
                 if (userAuthResource != null) {
                     switch (userAuthResource.status) {
 
                         case LOADING: {
+
+                            // white.setVisibility(View.GONE);
+                            // black.setVisibility(View.VISIBLE);
+
                             Log.d(TAG, "onChanged: BaseActivity: LOADING...");
                             break;
                         }
 
                         case AUTHENTICATED: {
+
+                            // white.setVisibility(View.VISIBLE);
+                            // black.setVisibility(View.GONE);
+                            // navMainScreen();
+
                             Log.d(TAG, "onChanged: BaseActivity: AUTHENTICATED... " +
                                     "Authenticated as: " + userAuthResource.data.getEmail());
                             break;
                         }
 
                         case ERROR: {
+
+                            // white.setVisibility(View.VISIBLE);
+                            // black.setVisibility(View.GONE);
+
                             Log.d(TAG, "onChanged: BaseActivity: ERROR...");
                             break;
                         }
 
                         case NOT_AUTHENTICATED: {
+
+                            //  white.setVisibility(View.VISIBLE);
+                            //  black.setVisibility(View.GONE);
+
                             Log.d(TAG, "onChanged: BaseActivity: NOT AUTHENTICATED. Navigating to Login screen.");
                             navLoginScreen();
                             break;
@@ -82,6 +97,7 @@ public abstract class BaseActivity extends DaggerAppCompatActivity {
         startActivityForResult(intent, RC_SIGN_OUT);
         finish();
     }
+
 }
 
 

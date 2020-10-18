@@ -4,6 +4,8 @@
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.endpoints/endpoints-management-config/1.0.12/8f0bbbf7a64abeb42a1dd1322bb931a0fc6fd286/endpoints-management-config-1.0.12.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.endpoints/endpoints-management-config/1.0.12/dfe2138b554786ab0f434aa449e32bf7b5c77779/endpoints-management-config-1.0.12-sources.jar!/" />
+    </SOURCES>
   </library>
 </component>

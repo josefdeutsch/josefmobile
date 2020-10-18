@@ -100,7 +100,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         switch (item.getItemId()) {
 
             case R.id.logout: {
-                firebaseManager.logOut();
+                sessionManager.logOut();
                 return true;
             }
 

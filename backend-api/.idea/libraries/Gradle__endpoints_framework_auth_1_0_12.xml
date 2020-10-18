@@ -4,6 +4,8 @@
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.endpoints/endpoints-framework-auth/1.0.12/e2838f5b95ddb675831344c36111070edcb419b/endpoints-framework-auth-1.0.12.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.endpoints/endpoints-framework-auth/1.0.12/41e551c994aaa54d226cd13a08c74819ba9dccb8/endpoints-framework-auth-1.0.12-sources.jar!/" />
+    </SOURCES>
   </library>
 </component>

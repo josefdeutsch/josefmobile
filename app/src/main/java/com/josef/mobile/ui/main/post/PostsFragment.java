@@ -94,6 +94,7 @@ public class PostsFragment extends DaggerFragment implements PostRecyclerAdapter
                         }
 
                         case SUCCESS: {
+
                             Change list = listResource.data;
                             Log.d(TAG, "onChanged: " + listResource.data.message);
                             Gson gson = new Gson();
@@ -106,9 +107,7 @@ public class PostsFragment extends DaggerFragment implements PostRecyclerAdapter
                                 favouriteViewModel.insert(new Favourite(container.getPng(), container.getUrl(), 0));
                             }
 
-
                             ///   Collections.shuffle(userArray);
-
                             break;
                         }
 
