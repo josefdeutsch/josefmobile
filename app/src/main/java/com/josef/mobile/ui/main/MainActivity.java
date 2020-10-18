@@ -51,7 +51,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         switch (menuItem.getItemId()) {
 
             case R.id.nav_profile: {
-
                 // nav options to clear backstack
                 NavOptions navOptions = new NavOptions.Builder()
                         .setPopUpTo(R.id.main, true)
@@ -68,6 +67,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             case R.id.nav_posts: {
                 if (isValidDestination(R.id.postsScreen)) {
                     Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.postsScreen);
+                }
+                break;
+            }
+            case R.id.nav_archive: {
+                if (isValidDestination(R.id.archiveScreen)) {
+                    Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.archiveScreen);
                 }
                 break;
             }

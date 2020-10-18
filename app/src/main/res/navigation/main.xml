@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    app:startDestination="@+id/postsScreen">
+    app:startDestination="@+id/profileScreen">
 
     <fragment
         android:id="@+id/profileScreen"
@@ -16,5 +16,11 @@
         android:name="com.josef.mobile.ui.main.post.PostsFragment"
         android:label="@string/fragment_posts"
         tools:layout="@layout/fragment_posts"></fragment>
+
+    <fragment
+        android:id="@+id/archiveScreen"
+        android:name="com.josef.mobile.ui.main.archive.ArchiveFragment"
+        android:label="@string/fragment_archive"
+        tools:layout="@layout/fragment_archive"></fragment>
 
 </navigation>

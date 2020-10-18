@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.RequestManager;
 import com.josef.mobile.R;
 import com.josef.mobile.data.Favourite;
+import com.josef.mobile.models.Container;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -35,7 +36,8 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     PostRecyclerViewOnClickListener postRecyclerViewOnClickListener;
     Context context;
     SparseArray<Boolean> sparseArray;
-    private List<Favourite> posts = new ArrayList<>();
+
+    private List<Container> posts = new ArrayList<>();
 
     public PostRecyclerAdapter(Context context, PostRecyclerViewOnClickListener postRecyclerViewOnClickListener) {
         this.context = context;
@@ -47,13 +49,18 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     }
 
-    interface PostRecyclerViewOnClickListener {
-        void onClick(Favourite favourite);
-    }
-
-    public void setPosts(List<Favourite> posts) {
+    public void setPosts(List<Container> posts) {
         this.posts = posts;
         notifyDataSetChanged();
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        Log.d(TAG, "onBindViewHolder: " + position);
+        if (position != RecyclerView.NO_POSITION) {
+            ((PostViewHolder) holder).toggleButton.setChecked(sparseArray.get(position).booleanValue());
+        }
+        ((PostViewHolder) holder).bind(posts.get(position));
     }
 
     @Override
@@ -64,18 +71,11 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         super.onViewRecycled(holder);
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Log.d(TAG, "onBindViewHolder: " + position);
-        if (position != RecyclerView.NO_POSITION) {
-            if (sparseArray.get(position).booleanValue()) {
-                ((PostViewHolder) holder).toggleButton.setChecked(true);
-            } else {
-                ((PostViewHolder) holder).toggleButton.setChecked(false);
-            }
-        }
+    interface PostRecyclerViewOnClickListener {
+        void onClick(Container favourite);
 
-        ((PostViewHolder) holder).bind(posts.get(position));
+        void onChecked(Boolean isChecked, Container favourite);
+
     }
 
     @NonNull
@@ -115,9 +115,8 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         // int getAdapterPosition???
 
-        public void bind(final Favourite container) {
-            Log.d(TAG, "bind: " + container.getTitle());
-            Picasso.get().load(container.getDescription()).config(Bitmap.Config.ARGB_8888)
+        public void bind(final Container container) {
+            Picasso.get().load(container.getPng()).config(Bitmap.Config.ARGB_8888)
                     .fit().centerCrop().into(imageView);
         }
 
@@ -128,12 +127,8 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            if (isChecked) {
-                sparseArray.put(getAdapterPosition(), true);
-            } else {
-                sparseArray.put(getAdapterPosition(), false);
-            }
-
+            sparseArray.put(getAdapterPosition(), isChecked);
+            postRecyclerViewOnClickListener.onChecked(isChecked, posts.get(getAdapterPosition()));
         }
     }
 }

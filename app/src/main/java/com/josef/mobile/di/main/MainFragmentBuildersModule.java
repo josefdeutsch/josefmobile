@@ -1,6 +1,7 @@
 package com.josef.mobile.di.main;
 
 
+import com.josef.mobile.ui.main.archive.ArchiveFragment;
 import com.josef.mobile.ui.main.post.PostsFragment;
 import com.josef.mobile.ui.main.profile.ProfileFragment;
 
@@ -16,5 +17,9 @@ public abstract class MainFragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract PostsFragment constributePostsFragment();
+
+
+    @ContributesAndroidInjector
+    abstract ArchiveFragment constributeArchiveFragment();
 
 }

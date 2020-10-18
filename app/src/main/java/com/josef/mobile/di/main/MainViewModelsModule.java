@@ -3,6 +3,7 @@ package com.josef.mobile.di.main;
 import androidx.lifecycle.ViewModel;
 
 import com.josef.mobile.di.ViewModelKey;
+import com.josef.mobile.ui.main.archive.ArchiveViewModel;
 import com.josef.mobile.ui.main.post.PostsViewModel;
 import com.josef.mobile.ui.main.profile.ProfileViewModel;
 
@@ -22,5 +23,10 @@ public abstract class MainViewModelsModule {
     @IntoMap
     @ViewModelKey(PostsViewModel.class)
     public abstract ViewModel bindPostsViewModel(PostsViewModel viewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ArchiveViewModel.class)
+    public abstract ViewModel bindArchiveViewModel(ArchiveViewModel viewModel);
 
 }

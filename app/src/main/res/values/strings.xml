@@ -16,4 +16,6 @@
     <string name="posts">posts</string>
     <string name="fragment_profile">profile</string>
     <string name="fragment_posts">posts</string>
+    <string name="fragment_archive">archive</string>
+    <string name="archive">archive</string>
 </resources>

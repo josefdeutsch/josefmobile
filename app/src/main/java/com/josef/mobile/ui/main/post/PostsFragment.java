@@ -27,7 +27,7 @@ import com.josef.mobile.viewmodels.ViewModelProviderFactory;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 
 import javax.inject.Inject;
 
@@ -65,16 +65,10 @@ public class PostsFragment extends DaggerFragment implements PostRecyclerAdapter
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.recycler_view);
         adapter = new PostRecyclerAdapter(getActivity(), this);
-        viewModel = new ViewModelProvider(this, providerFactory).get(PostsViewModel.class);
 
+        viewModel = new ViewModelProvider(this, providerFactory).get(PostsViewModel.class);
         favouriteViewModel = new ViewModelProvider(this).get(FavouriteViewModel.class);
 
-        favouriteViewModel.getAllNotes().observe(this, new Observer<List<Favourite>>() {
-            @Override
-            public void onChanged(@Nullable List<Favourite> favourites) {
-                adapter.setPosts(favourites);
-            }
-        });
 
         initRecyclerView();
         subscribeObservers();
@@ -94,20 +88,13 @@ public class PostsFragment extends DaggerFragment implements PostRecyclerAdapter
                         }
 
                         case SUCCESS: {
-
-                            Change list = listResource.data;
                             Log.d(TAG, "onChanged: " + listResource.data.message);
                             Gson gson = new Gson();
                             Type userListType = new TypeToken<ArrayList<Container>>() {
                             }.getType();
                             ArrayList<Container> userArray = gson.fromJson(listResource.data.message, userListType);
-
-                            favouriteViewModel.deleteAllNotes();
-                            for (Container container : userArray) {
-                                favouriteViewModel.insert(new Favourite(container.getPng(), container.getUrl(), 0));
-                            }
-
-                            ///   Collections.shuffle(userArray);
+                            Collections.shuffle(userArray);
+                            adapter.setPosts(userArray);
                             break;
                         }
 
@@ -123,19 +110,26 @@ public class PostsFragment extends DaggerFragment implements PostRecyclerAdapter
 
     private void initRecyclerView() {
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
-        // VerticalSpaceItemDecoration itemDecoration =! new VerticalSpaceItemDecoration(15);
-        // recyclerView.addItemDecoration(itemDecoration);
         recyclerView.setAdapter(adapter);
     }
 
 
     @Override
-    public void onClick(Favourite favourite) {
-
+    public void onClick(Container container) {
         Intent intent = new Intent(getActivity(), PlayerActivity.class);
-        intent.putExtra(REQUEST_PNG, favourite.getDescription());
-        intent.putExtra(REQUEST_URL, favourite.getTitle());
+        intent.putExtra(REQUEST_PNG, container.getPng());
+        intent.putExtra(REQUEST_URL, container.getUrl());
         startActivityForResult(intent, PLAYERACTIVIY);
+    }
+
+    @Override
+    public void onChecked(Boolean isChecked, Container container) {
+        Favourite favourite = new Favourite(container.getPng(), container.getUrl(), 0);
+        if (isChecked) {
+            favouriteViewModel.insert(favourite);
+        } else {
+            favouriteViewModel.delete(favourite);
+        }
     }
 }
 
