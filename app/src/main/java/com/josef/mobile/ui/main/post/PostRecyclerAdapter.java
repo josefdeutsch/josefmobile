@@ -49,9 +49,25 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     }
 
+    @Override
+    public void onViewRecycled(final RecyclerView.ViewHolder holder) {
+        // ((PostViewHolder) holder).toggleButton.setOnCheckedChangeListener(null);
+        Log.d(TAG, "onViewRecycled: " + "hello");
+
+        super.onViewRecycled(holder);
+    }
+
+
     public void setPosts(List<Container> posts) {
         this.posts = posts;
         notifyDataSetChanged();
+    }
+
+    interface PostRecyclerViewOnClickListener {
+        void onClick(Container favourite);
+
+        void onChecked(Boolean isChecked, Container favourite);
+
     }
 
     @Override
@@ -61,21 +77,6 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ((PostViewHolder) holder).toggleButton.setChecked(sparseArray.get(position).booleanValue());
         }
         ((PostViewHolder) holder).bind(posts.get(position));
-    }
-
-    @Override
-    public void onViewRecycled(final RecyclerView.ViewHolder holder) {
-        // ((PostViewHolder) holder).toggleButton.setOnCheckedChangeListener(null);
-        Log.d(TAG, "onViewRecycled: " + "hello");
-
-        super.onViewRecycled(holder);
-    }
-
-    interface PostRecyclerViewOnClickListener {
-        void onClick(Container favourite);
-
-        void onChecked(Boolean isChecked, Container favourite);
-
     }
 
     @NonNull
@@ -124,6 +125,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         public void onClick(View v) {
             postRecyclerViewOnClickListener.onClick(posts.get(getAdapterPosition()));
         }
+
 
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

@@ -1,5 +1,7 @@
 package com.josef.mobile.ui.auth;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.LiveDataReactiveStreams;
 import androidx.lifecycle.ViewModel;
@@ -24,7 +26,8 @@ public class AuthViewModel extends ViewModel {
 
     private final FirebaseAuth auth;
     private final SessionManager sessionManager;
-
+    private static final String TAG = "AuthViewModel";
+    
     CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Inject
@@ -46,32 +49,14 @@ public class AuthViewModel extends ViewModel {
                 flowable.subscribeOn(Schedulers.io()));
     }
 
-
-    public Single<AuthCredential> getGoogleSignInAccoutn(Task<GoogleSignInAccount> task) {
-        return Single.create(emitter -> {
-            try {
-                GoogleSignInAccount signed = task.getResult(ApiException.class);
-                if (signed != null) {
-                    String googleTokenId = signed.getIdToken();
-                    AuthCredential googleAuthCredential = GoogleAuthProvider.getCredential(googleTokenId, null);
-                    emitter.onSuccess(googleAuthCredential);
-                } else {
-                    emitter.onError(new NullPointerException("googleAuthCredential is null"));
-                }
-            } catch (ApiException e) {
-                emitter.onError(e);
-            }
-        });
-    }
-
-    public Single<AuthResource<User>> getAuthResource(AuthCredential googleAuthCredential) {
+    public Single<User> addOnFirebaseCompletionListener(AuthCredential googleAuthCredential) {
         return Single.create(emitter -> {
             auth.signInWithCredential(googleAuthCredential).addOnCompleteListener(authTask -> {
                 if (authTask.isSuccessful()) {
                     FirebaseUser firebaseUser = auth.getCurrentUser();
                     if (firebaseUser != null) {
                         User user = getUser(firebaseUser);
-                        emitter.onSuccess(AuthResource.authenticated(user));
+                        emitter.onSuccess(user);
                     }
                 } else {
                     emitter.onError(authTask.getException());
@@ -84,15 +69,46 @@ public class AuthViewModel extends ViewModel {
 
     public Flowable<AuthResource<User>> getFlowable(Task<GoogleSignInAccount> googleSignInAccountSingle) {
 
-        Flowable<AuthResource<User>> flowable = getGoogleSignInAccoutn(googleSignInAccountSingle)
-                .flatMap(authCredential -> getAuthResource(authCredential))
-                .doOnError(throwable -> AuthResource.error(throwable.getMessage(), null))
+        Flowable<AuthResource<User>> flowable = getGoogleSignedIn(googleSignInAccountSingle)
+                .flatMap(authCredential -> addOnFirebaseCompletionListener(authCredential))
+                .onErrorReturn(throwable -> {
+                    Log.e(TAG, "apply: " + throwable.getMessage());
+                    User user = new User();
+                    user.setId(-1);
+                    return user;
+                })
+                .map(user -> getAuthResource(user))
                 .toFlowable();
 
         compositeDisposable.add(flowable.subscribe());
 
         return flowable;
 
+    }
+
+    private AuthResource<User> getAuthResource(User user) {
+        if (user.getId() == -1) return AuthResource.error("error", null);
+        return AuthResource.authenticated(user);
+    }
+
+
+    public Single<AuthCredential> getGoogleSignedIn(Task<GoogleSignInAccount> task) {
+        return Single.just(task)
+                .map(tast -> getGoogleAccountResult(tast))
+                .map(googleSignInAccount -> getAuthCredential(googleSignInAccount));
+    }
+
+    private AuthCredential getAuthCredential(GoogleSignInAccount googleSignInAccount) {
+        if (googleSignInAccount != null) {
+            String googleTokenId = googleSignInAccount.getIdToken();
+            return GoogleAuthProvider.getCredential(googleTokenId, null);
+        } else {
+            throw new NullPointerException("googleAuthCredential is null");
+        }
+    }
+
+    private GoogleSignInAccount getGoogleAccountResult(Task<GoogleSignInAccount> task) throws ApiException {
+        return task.getResult(ApiException.class);
     }
 
 

@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class User implements Serializable {
+    public int id;
     public String uid, name, photoUrl;
     @SuppressWarnings("WeakerAccess")
     public String email;
@@ -19,6 +20,14 @@ public class User implements Serializable {
         this.name = name;
         this.email = email;
         this.photoUrl = photoUrl;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getUid() {

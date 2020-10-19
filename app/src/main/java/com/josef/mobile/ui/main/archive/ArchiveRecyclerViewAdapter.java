@@ -23,19 +23,26 @@ import java.util.List;
 
 public class ArchiveRecyclerViewAdapter extends RecyclerView.Adapter<ArchiveRecyclerViewAdapter.ViewHolder> {
     private final Context mContext;
-    private final OnDeleteCallBack mDeleteCallBack;
-    private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-        }
-    };
     private List<Favourite> mValues;
+    private final OnDeleteCallBack mDeleteCallBack;
 
     public ArchiveRecyclerViewAdapter(Context context, List<Favourite> items, OnDeleteCallBack deleteCallBack) {
         mContext = context;
         mValues = items;
         mDeleteCallBack = deleteCallBack;
 
+    }
+
+    private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+        }
+    };
+
+    @Override
+    public int getItemCount() {
+        if (mValues == null) return 0;
+        return mValues.size();
     }
 
     @Override
@@ -53,21 +60,15 @@ public class ArchiveRecyclerViewAdapter extends RecyclerView.Adapter<ArchiveRecy
                 .fit().centerCrop().into(holder.imageView);
     }
 
-    @Override
-    public int getItemCount() {
-        if (mValues == null) return 0;
-        return mValues.size();
+    public void deleteTask(int position) {
+        mValues.remove(position);
+        notifyDataSetChanged();
+
     }
 
     public void setListItems(List<Favourite> arrayList) {
         this.mValues = arrayList;
         notifyDataSetChanged();
-    }
-
-    public void deleteTask(int position) {
-        mValues.remove(position);
-        notifyDataSetChanged();
-
     }
 
     public Context getContext() {

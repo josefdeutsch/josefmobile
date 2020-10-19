@@ -27,7 +27,6 @@ import com.josef.mobile.viewmodels.ViewModelProviderFactory;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collections;
 
 import javax.inject.Inject;
 
@@ -93,7 +92,7 @@ public class PostsFragment extends DaggerFragment implements PostRecyclerAdapter
                             Type userListType = new TypeToken<ArrayList<Container>>() {
                             }.getType();
                             ArrayList<Container> userArray = gson.fromJson(listResource.data.message, userListType);
-                            Collections.shuffle(userArray);
+                           // Collections.shuffle(userArray);
                             adapter.setPosts(userArray);
                             break;
                         }
