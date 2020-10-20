@@ -27,7 +27,7 @@ public class AuthViewModel extends ViewModel {
     private final FirebaseAuth auth;
     private final SessionManager sessionManager;
     private static final String TAG = "AuthViewModel";
-    
+
     CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Inject
@@ -72,7 +72,7 @@ public class AuthViewModel extends ViewModel {
         Flowable<AuthResource<User>> flowable = getGoogleSignedIn(googleSignInAccountSingle)
                 .flatMap(authCredential -> addOnFirebaseCompletionListener(authCredential))
                 .onErrorReturn(throwable -> {
-                    Log.e(TAG, "apply: " + throwable.getMessage());
+                    Log.e(TAG, "onErrorReturn: " + throwable.getMessage());
                     User user = new User();
                     user.setId(-1);
                     return user;

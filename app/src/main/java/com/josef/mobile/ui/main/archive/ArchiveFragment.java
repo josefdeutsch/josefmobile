@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -25,7 +26,7 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 
-public class ArchiveFragment extends DaggerFragment {
+public class ArchiveFragment extends DaggerFragment implements View.OnClickListener {
 
     @Inject
     ViewModelProviderFactory providerFactory;
@@ -34,6 +35,8 @@ public class ArchiveFragment extends DaggerFragment {
 
 
     private FavouriteViewModel favouriteViewModel;
+
+    private Button sync;
 
     private final ArchiveRecyclerViewAdapter.OnDeleteCallBack onDeleteCallBack = new ArchiveRecyclerViewAdapter.OnDeleteCallBack() {
         @Override
@@ -64,7 +67,9 @@ public class ArchiveFragment extends DaggerFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         // For the scrolling content, you can use RecyclerView, NestedScrollView or any other
         // View that inherits NestedScrollingChild
-        final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        sync = view.findViewById(R.id.purchasebutton);
+        sync.setOnClickListener(this);
+        final RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         final Context context = recyclerView.getContext();
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         viewModel = new ViewModelProvider(this, providerFactory).get(ArchiveViewModel.class);
@@ -76,6 +81,26 @@ public class ArchiveFragment extends DaggerFragment {
             }
         });
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+        alert.setMessage(R.string.sync);
+        alert.setCancelable(false);
+        alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        alert.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        alert.show();
     }
 }
 

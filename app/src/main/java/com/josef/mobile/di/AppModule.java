@@ -26,6 +26,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 public class AppModule {
 
+
     @Singleton
     @Provides
     static Retrofit provideRetrofitInstance() {
