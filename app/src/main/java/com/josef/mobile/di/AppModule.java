@@ -1,9 +1,11 @@
 package com.josef.mobile.di;
 
 import android.app.Application;
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 
 import androidx.core.content.ContextCompat;
+import androidx.room.Room;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
@@ -13,6 +15,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.josef.mobile.R;
+import com.josef.mobile.data.local.AppDataManager;
+import com.josef.mobile.data.local.DataManager;
+import com.josef.mobile.data.local.db.AppDataBase;
+import com.josef.mobile.data.local.db.AppDbHelper;
+import com.josef.mobile.data.local.db.DbHelper;
 import com.josef.mobile.util.Constants;
 
 import javax.inject.Singleton;
@@ -25,6 +32,38 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 public class AppModule {
+
+
+    @Provides
+    @Singleton
+    AppDataBase provideAppDatabase(@DatabaseInfo String dbName, Context context) {
+        return Room.databaseBuilder(context, AppDataBase.class, dbName).fallbackToDestructiveMigration()
+                .build();
+    }
+
+    @Provides
+    @Singleton
+    DbHelper provideDbHelper(AppDbHelper appDbHelper, Context context) {
+        return appDbHelper;
+    }
+
+    @Provides
+    @Singleton
+    Context provideContext(Application application) {
+        return application;
+    }
+
+    @Provides
+    @DatabaseInfo
+    String provideDatabaseName() {
+        return "my_db.db";
+    }
+
+    @Provides
+    @Singleton
+    DataManager provideDataManager(AppDataManager appDataManager) {
+        return appDataManager;
+    }
 
 
     @Singleton

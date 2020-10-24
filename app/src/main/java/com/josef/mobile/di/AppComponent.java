@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.josef.mobile.BaseApplication;
 import com.josef.mobile.SessionManager;
+import com.josef.mobile.data.local.DataManager;
 
 import javax.inject.Singleton;
 
@@ -24,6 +25,8 @@ import dagger.android.support.AndroidSupportInjectionModule;
 public interface AppComponent extends AndroidInjector<BaseApplication> {
 
     SessionManager sessionManager();
+
+    DataManager dataManager();
 
     @Component.Builder
     interface Builder {

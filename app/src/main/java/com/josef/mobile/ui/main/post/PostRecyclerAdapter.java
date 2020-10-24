@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.RequestManager;
 import com.josef.mobile.R;
-import com.josef.mobile.data.Favourite;
 import com.josef.mobile.models.Container;
 import com.squareup.picasso.Picasso;
 
@@ -86,9 +85,6 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return new PostViewHolder(view);
     }
 
-    interface OnCheckedListener {
-        void onChecked(boolean isChecked, Favourite container);
-    }
 
     @Override
     public int getItemCount() {
@@ -106,15 +102,9 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             title = itemView.findViewById(R.id.title);
             imageView = itemView.findViewById(R.id.image);
             toggleButton = itemView.findViewById(R.id.toggle);
-
             toggleButton.setOnCheckedChangeListener(this);
             imageView.setOnClickListener(this);
-
-
         }
-
-
-        // int getAdapterPosition???
 
         public void bind(final Container container) {
             Picasso.get().load(container.getPng()).config(Bitmap.Config.ARGB_8888)

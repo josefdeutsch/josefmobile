@@ -16,19 +16,18 @@ import android.widget.ToggleButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.josef.mobile.R;
-import com.josef.mobile.data.Favourite;
+import com.josef.mobile.data.local.db.dao.Archive;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class ArchiveRecyclerViewAdapter extends RecyclerView.Adapter<ArchiveRecyclerViewAdapter.ViewHolder> {
     private final Context mContext;
-    private List<Favourite> mValues;
+    private List<Archive> mValues;
     private final OnDeleteCallBack mDeleteCallBack;
 
-    public ArchiveRecyclerViewAdapter(Context context, List<Favourite> items, OnDeleteCallBack deleteCallBack) {
+    public ArchiveRecyclerViewAdapter(Context context, OnDeleteCallBack deleteCallBack) {
         mContext = context;
-        mValues = items;
         mDeleteCallBack = deleteCallBack;
 
     }
@@ -56,17 +55,16 @@ public class ArchiveRecyclerViewAdapter extends RecyclerView.Adapter<ArchiveRecy
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.itemView.setTag(position);
         holder.onDelete(mValues.get(position));
-        Picasso.get().load(mValues.get(position).getDescription()).config(Bitmap.Config.ARGB_8888)
+        Picasso.get().load(mValues.get(position).png).config(Bitmap.Config.ARGB_8888)
                 .fit().centerCrop().into(holder.imageView);
     }
 
     public void deleteTask(int position) {
         mValues.remove(position);
         notifyDataSetChanged();
-
     }
 
-    public void setListItems(List<Favourite> arrayList) {
+    public void setListItems(List<Archive> arrayList) {
         this.mValues = arrayList;
         notifyDataSetChanged();
     }
@@ -76,7 +74,7 @@ public class ArchiveRecyclerViewAdapter extends RecyclerView.Adapter<ArchiveRecy
     }
 
     public interface OnDeleteCallBack {
-        void delete(Favourite note);
+        void delete(Archive archive);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -90,7 +88,7 @@ public class ArchiveRecyclerViewAdapter extends RecyclerView.Adapter<ArchiveRecy
 
         }
 
-        private void onDelete(final Favourite note) {
+        private void onDelete(final Archive archive) {
             final ScaleAnimation scaleAnimation = new ScaleAnimation(0.7f, 1.0f, 0.7f, 1.0f, Animation.RELATIVE_TO_SELF, 0.7f, Animation.RELATIVE_TO_SELF, 0.7f);
             scaleAnimation.setDuration(500);
             BounceInterpolator bounceInterpolator = new BounceInterpolator();
@@ -101,7 +99,7 @@ public class ArchiveRecyclerViewAdapter extends RecyclerView.Adapter<ArchiveRecy
                 public void onCheckedChanged(final CompoundButton compoundButton, boolean isChecked) {
                     compoundButton.startAnimation(scaleAnimation);
                     if (isChecked) {
-                        mDeleteCallBack.delete(note);
+                        mDeleteCallBack.delete(archive);
 
                         Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {
@@ -109,7 +107,7 @@ public class ArchiveRecyclerViewAdapter extends RecyclerView.Adapter<ArchiveRecy
                             public void run() {
                                 compoundButton.setChecked(false);
                             }
-                        }, 3000);
+                        }, 250);
                     } else {
 
                     }

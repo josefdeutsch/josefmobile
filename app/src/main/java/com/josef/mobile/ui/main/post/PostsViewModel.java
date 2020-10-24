@@ -10,6 +10,8 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
+import com.josef.mobile.data.local.DataManager;
+import com.josef.mobile.data.local.db.dao.Archive;
 import com.josef.mobile.models.Change;
 import com.josef.mobile.net.main.MainApi;
 import com.josef.mobile.ui.main.Resource;
@@ -28,10 +30,13 @@ public class PostsViewModel extends ViewModel {
     // inject
     private final MainApi mainApi;
 
+    private final DataManager dataManager;
+
     private MediatorLiveData<Resource<Change>> posts;
 
     @Inject
-    public PostsViewModel(MainApi mainApi) {
+    public PostsViewModel(MainApi mainApi, DataManager dataManager) {
+        this.dataManager = dataManager;
         this.mainApi = mainApi;
         Log.d(TAG, "PostsViewModel: viewmodel is working...");
     }
@@ -71,6 +76,11 @@ public class PostsViewModel extends ViewModel {
             });
         }
         return posts;
+    }
+
+    public void insertArchives(final Archive archive) {
+        Log.d(TAG, "insertArchives: PostViewModel");
+        dataManager.insertArchives(archive);
     }
 
 }

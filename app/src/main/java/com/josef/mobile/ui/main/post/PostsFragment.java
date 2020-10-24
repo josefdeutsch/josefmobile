@@ -17,8 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.josef.mobile.R;
-import com.josef.mobile.data.Favourite;
-import com.josef.mobile.data.FavouriteViewModel;
+import com.josef.mobile.data.local.db.dao.Archive;
 import com.josef.mobile.models.Change;
 import com.josef.mobile.models.Container;
 import com.josef.mobile.ui.main.Resource;
@@ -50,7 +49,6 @@ public class PostsFragment extends DaggerFragment implements PostRecyclerAdapter
 
     private RecyclerView recyclerView;
 
-    private FavouriteViewModel favouriteViewModel;
 
     @Nullable
     @Override
@@ -66,7 +64,6 @@ public class PostsFragment extends DaggerFragment implements PostRecyclerAdapter
         adapter = new PostRecyclerAdapter(getActivity(), this);
 
         viewModel = new ViewModelProvider(this, providerFactory).get(PostsViewModel.class);
-        favouriteViewModel = new ViewModelProvider(this).get(FavouriteViewModel.class);
 
 
         initRecyclerView();
@@ -122,14 +119,18 @@ public class PostsFragment extends DaggerFragment implements PostRecyclerAdapter
     }
 
     @Override
-    public void onChecked(Boolean isChecked, Container container) {
-        Favourite favourite = new Favourite(container.getPng(), container.getUrl(), 0);
+    public void onChecked(Boolean isChecked, Container favourite) {
         if (isChecked) {
-            favouriteViewModel.insert(favourite);
-        } else {
-            favouriteViewModel.delete(favourite);
+            Log.d(TAG, "onChecked: ");
+            viewModel.insertArchives(new Archive("uschi", favourite.getPng(), favourite.getUrl()));
         }
     }
+
+    /**  @Override public void onChecked(Boolean isChecked, Container container) {
+    if (isChecked) {
+    } else {
+    }
+    }**/
 }
 
 

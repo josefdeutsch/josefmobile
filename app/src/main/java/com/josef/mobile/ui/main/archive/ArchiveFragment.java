@@ -3,6 +3,7 @@ package com.josef.mobile.ui.main.archive;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.josef.mobile.R;
-import com.josef.mobile.data.Favourite;
-import com.josef.mobile.data.FavouriteViewModel;
+import com.josef.mobile.data.local.db.dao.Archive;
+import com.josef.mobile.ui.main.Resource;
 import com.josef.mobile.viewmodels.ViewModelProviderFactory;
 
 import java.util.List;
@@ -33,15 +34,12 @@ public class ArchiveFragment extends DaggerFragment implements View.OnClickListe
 
     private ArchiveViewModel viewModel;
 
+    private static final String TAG = "ArchiveFragment";
+    private final ArchiveRecyclerViewAdapter.OnDeleteCallBack onDeleteCallBack
+            = new ArchiveRecyclerViewAdapter.OnDeleteCallBack() {
 
-    private FavouriteViewModel favouriteViewModel;
-
-    private Button sync;
-
-    private final ArchiveRecyclerViewAdapter.OnDeleteCallBack onDeleteCallBack = new ArchiveRecyclerViewAdapter.OnDeleteCallBack() {
         @Override
-        public void delete(final Favourite note) {
-
+        public void delete(final Archive archive) {
             new AlertDialog.Builder(getActivity())
                     .setTitle("Messenger:")
                     .setMessage("delete item..?")
@@ -49,11 +47,15 @@ public class ArchiveFragment extends DaggerFragment implements View.OnClickListe
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            favouriteViewModel.delete(note);
+                            viewModel.deleteArchives(archive);
+
                         }
                     }).show();
         }
     };
+
+    private Button sync;
+    private ArchiveRecyclerViewAdapter adapter;
 
 
     @Nullable
@@ -65,21 +67,40 @@ public class ArchiveFragment extends DaggerFragment implements View.OnClickListe
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        // For the scrolling content, you can use RecyclerView, NestedScrollView or any other
-        // View that inherits NestedScrollingChild
         sync = view.findViewById(R.id.purchasebutton);
         sync.setOnClickListener(this);
         final RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         final Context context = recyclerView.getContext();
+        adapter = new ArchiveRecyclerViewAdapter(getActivity(), onDeleteCallBack);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setAdapter(adapter);
         viewModel = new ViewModelProvider(this, providerFactory).get(ArchiveViewModel.class);
-        favouriteViewModel = new ViewModelProvider(this).get(FavouriteViewModel.class);
-        favouriteViewModel.getAllNotes().observe(this, new Observer<List<Favourite>>() {
+
+        viewModel.observeArchive().observe(this, new Observer<Resource<List<Archive>>>() {
             @Override
-            public void onChanged(@Nullable List<Favourite> favourites) {
-                recyclerView.setAdapter(new ArchiveRecyclerViewAdapter(context, favourites, onDeleteCallBack));
+            public void onChanged(Resource<List<Archive>> listResource) {
+                if (listResource != null) {
+                    switch (listResource.status) {
+                        case LOADING: {
+                            Log.d(TAG, "onChanged: ArchiveFragment: LOADING...");
+                            break;
+                        }
+
+                        case SUCCESS: {
+                            Log.d(TAG, "onChanged: ArchiveFragment: SUCCESS :" + listResource.data.isEmpty());
+                            Log.d(TAG, "onChanged: " + listResource.data.size());
+                            adapter.setListItems(listResource.data);
+                            break;
+                        }
+                        case ERROR: {
+                            Log.d(TAG, "onChanged: PostsFragment: ERROR : " + listResource.data.isEmpty());
+                            break;
+                        }
+                    }
+                }
             }
         });
+
 
     }
 
