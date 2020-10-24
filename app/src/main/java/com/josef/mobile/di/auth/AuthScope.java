@@ -1,4 +1,4 @@
-package com.josef.mobile.di.log;
+package com.josef.mobile.di.auth;
 
 
 import java.lang.annotation.Documented;

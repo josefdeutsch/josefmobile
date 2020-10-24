@@ -1,7 +1,7 @@
 package com.josef.mobile.di.main;
 
 
-import com.josef.mobile.net.main.MainApi;
+import com.josef.mobile.data.remote.Endpoints;
 
 import dagger.Module;
 import dagger.Provides;
@@ -12,8 +12,8 @@ public class MainModule {
 
     @MainScope
     @Provides
-    static MainApi provideMainApi(Retrofit retrofit) {
-        return retrofit.create(MainApi.class);
+    static Endpoints provideMainApi(Retrofit retrofit) {
+        return retrofit.create(Endpoints.class);
     }
 
 

@@ -12,8 +12,8 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 
 import com.josef.mobile.R;
-import com.josef.mobile.models.User;
 import com.josef.mobile.ui.auth.AuthResource;
+import com.josef.mobile.ui.auth.model.User;
 import com.josef.mobile.viewmodels.ViewModelProviderFactory;
 
 import javax.inject.Inject;
@@ -79,7 +79,5 @@ public class ProfileFragment extends DaggerFragment {
 
     private void setUserDetails(User user) {
         email.setText(user.getEmail());
-        username.setText(user.getUsername());
-        website.setText(user.getWebsite());
     }
 }

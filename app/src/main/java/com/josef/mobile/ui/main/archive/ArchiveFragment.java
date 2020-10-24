@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.josef.mobile.R;
-import com.josef.mobile.data.local.db.dao.Archive;
+import com.josef.mobile.data.local.db.model.Archive;
 import com.josef.mobile.ui.main.Resource;
 import com.josef.mobile.viewmodels.ViewModelProviderFactory;
 
@@ -48,7 +48,6 @@ public class ArchiveFragment extends DaggerFragment implements View.OnClickListe
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             viewModel.deleteArchives(archive);
-
                         }
                     }).show();
         }
@@ -88,7 +87,6 @@ public class ArchiveFragment extends DaggerFragment implements View.OnClickListe
 
                         case SUCCESS: {
                             Log.d(TAG, "onChanged: ArchiveFragment: SUCCESS :" + listResource.data.isEmpty());
-                            Log.d(TAG, "onChanged: " + listResource.data.size());
                             adapter.setListItems(listResource.data);
                             break;
                         }

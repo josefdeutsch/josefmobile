@@ -1,4 +1,4 @@
-package com.josef.mobile.ui.auth;
+package com.josef.mobile.ui.auth.model;
 
 
 import java.io.Serializable;
@@ -7,7 +7,6 @@ import java.util.Date;
 public class User implements Serializable {
     public int id;
     public String uid, name, photoUrl;
-    @SuppressWarnings("WeakerAccess")
     public String email;
     public Date createdAt;
     public boolean hasUSER;

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.josef.mobile.data.local.db.dao.Archive;
+import com.josef.mobile.data.local.db.model.Archive;
 
 import java.util.List;
 
@@ -14,7 +14,6 @@ import javax.inject.Singleton;
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Action;
 import io.reactivex.schedulers.Schedulers;
 
 @Singleton
@@ -37,12 +36,7 @@ public class AppDbHelper implements DbHelper {
     }
 
     public void insertArchives(final Archive archive) {
-        Completable.fromAction(new Action() {
-            @Override
-            public void run() throws Exception {
-                mAppDatabase.archiveDao().insert(archive);
-            }
-        })
+        Completable.fromAction(() -> mAppDatabase.archiveDao().insert(archive))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> Toast.makeText(context, "Completed!", Toast.LENGTH_SHORT).show(),

@@ -13,9 +13,4 @@ public abstract class ViewModelFactoryModule {
     @Binds
     public abstract ViewModelProvider.Factory bindViewModelFactory(ViewModelProviderFactory viewModelFactory);
 
-
-    /** @Provides // same thing!!!
-    static ViewModelProvider.Factory bindfactory(ViewModelProviderFactory viewModelProviderFactory){
-    return viewModelProviderFactory;
-    }**/
 }

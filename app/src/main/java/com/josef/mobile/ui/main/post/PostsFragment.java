@@ -1,6 +1,5 @@
 package com.josef.mobile.ui.main.post;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,23 +16,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.josef.mobile.R;
-import com.josef.mobile.data.local.db.dao.Archive;
-import com.josef.mobile.models.Change;
-import com.josef.mobile.models.Container;
+import com.josef.mobile.data.local.db.model.Archive;
+import com.josef.mobile.data.remote.model.Endpoint;
 import com.josef.mobile.ui.main.Resource;
-import com.josef.mobile.ui.player.PlayerActivity;
+import com.josef.mobile.ui.main.post.model.Container;
 import com.josef.mobile.viewmodels.ViewModelProviderFactory;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 
-import static com.josef.mobile.util.Constants.PLAYERACTIVIY;
-import static com.josef.mobile.util.Constants.REQUEST_PNG;
-import static com.josef.mobile.util.Constants.REQUEST_URL;
 
 public class PostsFragment extends DaggerFragment implements PostRecyclerAdapter.PostRecyclerViewOnClickListener {
 
@@ -72,10 +68,10 @@ public class PostsFragment extends DaggerFragment implements PostRecyclerAdapter
     }
 
     private void subscribeObservers() {
-        viewModel.observePosts(1).removeObservers(getViewLifecycleOwner());
-        viewModel.observePosts(1).observe(getViewLifecycleOwner(), new Observer<Resource<Change>>() {
+        viewModel.observePosts().removeObservers(getViewLifecycleOwner());
+        viewModel.observePosts().observe(getViewLifecycleOwner(), new Observer<Resource<Endpoint>>() {
             @Override
-            public void onChanged(Resource<Change> listResource) {
+            public void onChanged(Resource<Endpoint> listResource) {
                 if (listResource != null) {
                     switch (listResource.status) {
                         case LOADING: {
@@ -84,12 +80,11 @@ public class PostsFragment extends DaggerFragment implements PostRecyclerAdapter
                         }
 
                         case SUCCESS: {
-                            Log.d(TAG, "onChanged: " + listResource.data.message);
                             Gson gson = new Gson();
                             Type userListType = new TypeToken<ArrayList<Container>>() {
                             }.getType();
                             ArrayList<Container> userArray = gson.fromJson(listResource.data.message, userListType);
-                           // Collections.shuffle(userArray);
+                            Collections.shuffle(userArray);
                             adapter.setPosts(userArray);
                             break;
                         }
@@ -105,17 +100,14 @@ public class PostsFragment extends DaggerFragment implements PostRecyclerAdapter
     }
 
     private void initRecyclerView() {
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         recyclerView.setAdapter(adapter);
     }
 
 
     @Override
     public void onClick(Container container) {
-        Intent intent = new Intent(getActivity(), PlayerActivity.class);
-        intent.putExtra(REQUEST_PNG, container.getPng());
-        intent.putExtra(REQUEST_URL, container.getUrl());
-        startActivityForResult(intent, PLAYERACTIVIY);
+
     }
 
     @Override

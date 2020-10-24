@@ -32,6 +32,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.josef.mobile.R;
+import com.josef.mobile.ui.auth.model.User;
 import com.josef.mobile.ui.main.MainActivity;
 import com.josef.mobile.viewmodels.ViewModelProviderFactory;
 

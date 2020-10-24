@@ -1,7 +1,7 @@
 package com.josef.mobile.data.local.db;
 
 
-import com.josef.mobile.data.local.db.dao.Archive;
+import com.josef.mobile.data.local.db.model.Archive;
 
 import java.util.List;
 

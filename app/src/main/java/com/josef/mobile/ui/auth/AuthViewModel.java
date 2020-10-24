@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.josef.mobile.SessionManager;
+import com.josef.mobile.ui.auth.model.User;
 
 import javax.inject.Inject;
 

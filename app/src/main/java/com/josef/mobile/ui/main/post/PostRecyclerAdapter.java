@@ -3,7 +3,6 @@ package com.josef.mobile.ui.main.post;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.RequestManager;
 import com.josef.mobile.R;
-import com.josef.mobile.models.Container;
+import com.josef.mobile.ui.main.post.model.Container;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -51,8 +50,6 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public void onViewRecycled(final RecyclerView.ViewHolder holder) {
         // ((PostViewHolder) holder).toggleButton.setOnCheckedChangeListener(null);
-        Log.d(TAG, "onViewRecycled: " + "hello");
-
         super.onViewRecycled(holder);
     }
 
@@ -71,7 +68,6 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Log.d(TAG, "onBindViewHolder: " + position);
         if (position != RecyclerView.NO_POSITION) {
             ((PostViewHolder) holder).toggleButton.setChecked(sparseArray.get(position).booleanValue());
         }

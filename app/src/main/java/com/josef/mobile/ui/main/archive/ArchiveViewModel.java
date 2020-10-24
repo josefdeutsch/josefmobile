@@ -8,8 +8,8 @@ import androidx.lifecycle.LiveDataReactiveStreams;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.josef.mobile.data.local.DataManager;
-import com.josef.mobile.data.local.db.dao.Archive;
+import com.josef.mobile.data.DataManager;
+import com.josef.mobile.data.local.db.model.Archive;
 import com.josef.mobile.ui.main.Resource;
 
 import java.util.ArrayList;
@@ -31,11 +31,9 @@ public class ArchiveViewModel extends ViewModel {
     @Inject
     public ArchiveViewModel(DataManager dataManager) {
         this.dataManager = dataManager;
-        Log.d(TAG, "PostsViewModel: viewmodel is working...");
     }
 
     public LiveData<Resource<List<Archive>>> observeArchive() {
-        Log.d(TAG, "observeArchive: observePosts .... ");
         if (posts == null) posts = new MediatorLiveData<>();
 
         posts.setValue(Resource.loading(null));
@@ -53,7 +51,7 @@ public class ArchiveViewModel extends ViewModel {
 
                             if (archives.size() > 0) {
                                 if (archives.get(0).id == -1l) {
-                                    return Resource.error("Something went wrong", null);
+                                    return Resource.error("Error!", null);
                                 }
                             }
 

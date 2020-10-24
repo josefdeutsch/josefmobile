@@ -1,9 +1,9 @@
-package com.josef.mobile.data.local;
-
-import android.util.Log;
+package com.josef.mobile.data;
 
 import com.josef.mobile.data.local.db.DbHelper;
-import com.josef.mobile.data.local.db.dao.Archive;
+import com.josef.mobile.data.local.db.model.Archive;
+import com.josef.mobile.data.remote.Endpoints;
+import com.josef.mobile.data.remote.model.Endpoint;
 
 import java.util.List;
 
@@ -15,23 +15,22 @@ import io.reactivex.Flowable;
 @Singleton
 public class AppDataManager implements DataManager {
 
-    private static final String TAG = "DataManager";
 
     DbHelper dbHelper;
+    Endpoints endpoints;
 
     @Inject
-    public AppDataManager(DbHelper dbHelper) {
+    public AppDataManager(DbHelper dbHelper, Endpoints endpoints) {
         this.dbHelper = dbHelper;
+        this.endpoints = endpoints;
     }
 
     public Flowable<List<Archive>> getAllArchives() {
-
         return dbHelper.getAllArchives();
     }
 
 
     public void insertArchives(final Archive archive) {
-        Log.d(TAG, "insertArchives: Datamanger ");
         dbHelper.insertArchives(archive);
     }
 
@@ -41,4 +40,8 @@ public class AppDataManager implements DataManager {
     }
 
 
+    @Override
+    public Flowable<Endpoint> getChange(String url) {
+        return endpoints.getChange(url);
+    }
 }

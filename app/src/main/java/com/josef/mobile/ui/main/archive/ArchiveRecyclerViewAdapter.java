@@ -16,7 +16,7 @@ import android.widget.ToggleButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.josef.mobile.R;
-import com.josef.mobile.data.local.db.dao.Archive;
+import com.josef.mobile.data.local.db.model.Archive;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

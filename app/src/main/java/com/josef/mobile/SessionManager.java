@@ -5,7 +5,7 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Observer;
 
 import com.josef.mobile.ui.auth.AuthResource;
-import com.josef.mobile.ui.auth.User;
+import com.josef.mobile.ui.auth.model.User;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -40,6 +40,7 @@ public class SessionManager {
     }
 
     public LiveData<AuthResource<User>> getAuthUser() {
+
         return cachedUser;
     }
 

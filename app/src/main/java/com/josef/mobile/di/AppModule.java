@@ -15,11 +15,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.josef.mobile.R;
-import com.josef.mobile.data.local.AppDataManager;
-import com.josef.mobile.data.local.DataManager;
+import com.josef.mobile.data.AppDataManager;
+import com.josef.mobile.data.DataManager;
 import com.josef.mobile.data.local.db.AppDataBase;
 import com.josef.mobile.data.local.db.AppDbHelper;
 import com.josef.mobile.data.local.db.DbHelper;
+import com.josef.mobile.data.remote.Endpoints;
 import com.josef.mobile.util.Constants;
 
 import javax.inject.Singleton;
@@ -63,6 +64,13 @@ public class AppModule {
     @Singleton
     DataManager provideDataManager(AppDataManager appDataManager) {
         return appDataManager;
+    }
+
+
+    @Provides
+    @Singleton
+    Endpoints provideMainApi(Retrofit retrofit) {
+        return retrofit.create(Endpoints.class);
     }
 
 

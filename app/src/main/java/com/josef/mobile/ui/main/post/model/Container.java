@@ -1,10 +1,9 @@
-package com.josef.mobile.models;
+package com.josef.mobile.ui.main.post.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ContainerOnBoard {
-
+public class Container {
 
     @SerializedName("header")
     @Expose
@@ -21,6 +20,13 @@ public class ContainerOnBoard {
     @SerializedName("url")
     @Expose
     private String url;
+
+    public Container(String header, String subheader, String png, String url) {
+        this.header = header;
+        this.subheader = subheader;
+        this.png = png;
+        this.url = url;
+    }
 
     public String getHeader() {
         return header;
@@ -52,5 +58,15 @@ public class ContainerOnBoard {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    private boolean isChecked;
+
+    public boolean getChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
     }
 }

@@ -12,7 +12,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.josef.mobile.ui.auth.AuthActivity;
 import com.josef.mobile.ui.auth.AuthResource;
-import com.josef.mobile.ui.auth.User;
+import com.josef.mobile.ui.auth.model.User;
 
 import javax.inject.Inject;
 
@@ -20,11 +20,9 @@ import dagger.android.support.DaggerAppCompatActivity;
 
 import static com.josef.mobile.ui.auth.AuthActivity.RC_SIGN_OUT;
 
-
 public abstract class BaseActivity extends DaggerAppCompatActivity {
 
     private static final String TAG = "DaggerExample";
-
 
     @Inject
     public SessionManager sessionManager;
@@ -49,39 +47,22 @@ public abstract class BaseActivity extends DaggerAppCompatActivity {
                     switch (userAuthResource.status) {
 
                         case LOADING: {
-
-                            // white.setVisibility(View.GONE);
-                            // black.setVisibility(View.VISIBLE);
-
                             Log.d(TAG, "onChanged: BaseActivity: LOADING...");
                             break;
                         }
 
                         case AUTHENTICATED: {
-
-                            // white.setVisibility(View.VISIBLE);
-                            // black.setVisibility(View.GONE);
-                            // navMainScreen();
-
                             Log.d(TAG, "onChanged: BaseActivity: AUTHENTICATED... " +
                                     "Authenticated as: " + userAuthResource.data.getEmail());
                             break;
                         }
 
                         case ERROR: {
-
-                            // white.setVisibility(View.VISIBLE);
-                            // black.setVisibility(View.GONE);
-
                             Log.d(TAG, "onChanged: BaseActivity: ERROR...");
                             break;
                         }
 
                         case NOT_AUTHENTICATED: {
-
-                            //  white.setVisibility(View.VISIBLE);
-                            //  black.setVisibility(View.GONE);
-
                             Log.d(TAG, "onChanged: BaseActivity: NOT AUTHENTICATED. Navigating to Login screen.");
                             navLoginScreen();
                             break;

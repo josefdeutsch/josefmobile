@@ -4,18 +4,18 @@ package com.josef.mobile.di.auth;
 import androidx.lifecycle.ViewModel;
 
 import com.josef.mobile.di.ViewModelKey;
-import com.josef.mobile.ui.intro.IntroViewModel;
+import com.josef.mobile.ui.auth.AuthViewModel;
 
 import dagger.Binds;
 import dagger.Module;
 import dagger.multibindings.IntoMap;
 
 @Module
-public abstract class IntroViewModelsModule {
+public abstract class AuthViewModelsModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(IntroViewModel.class)
-    public abstract ViewModel bindAuthViewModel(IntroViewModel viewModel);
+    @ViewModelKey(AuthViewModel.class)
+    public abstract ViewModel bindGoogleViewModel(AuthViewModel viewModel);
 }
 

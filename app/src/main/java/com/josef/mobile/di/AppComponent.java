@@ -4,7 +4,7 @@ import android.app.Application;
 
 import com.josef.mobile.BaseApplication;
 import com.josef.mobile.SessionManager;
-import com.josef.mobile.data.local.DataManager;
+import com.josef.mobile.data.DataManager;
 
 import javax.inject.Singleton;
 
