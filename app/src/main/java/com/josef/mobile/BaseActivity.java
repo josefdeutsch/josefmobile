@@ -40,6 +40,7 @@ public abstract class BaseActivity extends DaggerAppCompatActivity {
     }
 
     private void subscribeObservers() {
+        if (sessionManager.getAuthUser() == null) return;
         sessionManager.getAuthUser().observe(this, new Observer<AuthResource<User>>() {
             @Override
             public void onChanged(AuthResource<User> userAuthResource) {

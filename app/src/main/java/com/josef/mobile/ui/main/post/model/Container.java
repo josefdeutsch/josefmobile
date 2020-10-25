@@ -5,6 +5,17 @@ import com.google.gson.annotations.SerializedName;
 
 public class Container {
 
+
+    private int id;
+
+    public Container() {
+
+    }
+
+    public int getId() {
+        return id;
+    }
+
     @SerializedName("header")
     @Expose
     private String header;
@@ -26,6 +37,10 @@ public class Container {
         this.subheader = subheader;
         this.png = png;
         this.url = url;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getHeader() {

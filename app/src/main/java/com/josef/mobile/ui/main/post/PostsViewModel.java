@@ -5,72 +5,76 @@ import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.LiveDataReactiveStreams;
-import androidx.lifecycle.MediatorLiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
 import com.josef.mobile.data.DataManager;
 import com.josef.mobile.data.local.db.model.Archive;
-import com.josef.mobile.data.remote.model.Endpoint;
+import com.josef.mobile.ui.base.BaseViewModel;
 import com.josef.mobile.ui.main.Resource;
+import com.josef.mobile.ui.main.post.model.Container;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.josef.mobile.util.Constants.BASE_URL3;
 
-public class PostsViewModel extends ViewModel {
+public class PostsViewModel extends BaseViewModel {
 
     private static final String TAG = "PostsViewModel";
 
     private final DataManager dataManager;
 
-    private MediatorLiveData<Resource<Endpoint>> posts;
 
     @Inject
     public PostsViewModel(DataManager dataManager) {
         this.dataManager = dataManager;
         Log.d(TAG, "PostsViewModel: viewmodel is working...");
+        addToResource(observeEndpoints());
     }
 
+    public LiveData<Resource<List<Container>>> observeResource() {
+        return observeResources();
+    }
 
-    public LiveData<Resource<Endpoint>> observePosts() {
-        if (posts == null) posts = new MediatorLiveData<>();
-        posts.setValue(Resource.loading(null));
-        final LiveData<Resource<Endpoint>> source = LiveDataReactiveStreams.fromPublisher(
+    public LiveData<Resource<List<Container>>> observeEndpoints() {
+
+        return LiveDataReactiveStreams.fromPublisher(
                 dataManager.getChange(BASE_URL3 + "_ah/api/echo/v1/echo?n=1")
-                        .onErrorReturn(new Function<Throwable, Endpoint>() {
-                            @Override
-                            public Endpoint apply(@NonNull Throwable throwable) throws Exception {
-                                Log.e(TAG, "apply: " + throwable.toString());
-                                Endpoint endpoint = new Endpoint();
-                                endpoint.id = -1l;
-                                return endpoint;
-                            }
+
+                        .map(endpoint -> {
+                            Gson gson = new Gson();
+                            Type userListType = new TypeToken<ArrayList<Container>>() {
+                            }.getType();
+                            ArrayList<Container> endpoints = gson.fromJson(endpoint.message, userListType);
+                            return endpoints;
                         })
 
-                        .map(new Function<Endpoint, Resource<Endpoint>>() {
-                            @Override
-                            public Resource<Endpoint> apply(Endpoint endpoint) throws Exception {
-                                if (endpoint.id == -1l) {
-                                    return Resource.error("Error!", null);
+                        .onErrorReturn(throwable -> {
+                            Log.e(TAG, "apply: " + throwable.toString());
+                            Container container = new Container();
+                            container.setId(-1);
+                            ArrayList<Container> containers = new ArrayList<>();
+                            containers.add(container);
+                            return containers;
+                        })
+
+                        .map((Function<List<Container>, Resource<List<Container>>>) posts -> {
+                            if (posts.size() > 0) {
+                                if (posts.get(0).getId() == -1) {
+                                    return Resource.error("Something went wrong", null);
                                 }
-                                return Resource.success(endpoint);
                             }
+                            return Resource.success(posts);
                         })
-                            .subscribeOn(Schedulers.io()));
 
-        posts.addSource(source, new Observer<Resource<Endpoint>>() {
-            @Override
-            public void onChanged(Resource<Endpoint> listResource) {
-                posts.setValue(listResource);
-                posts.removeSource(source);
-            }
-        });
-        return posts;
+                        .subscribeOn(Schedulers.io()));
     }
 
     public void insertArchives(final Archive archive) {

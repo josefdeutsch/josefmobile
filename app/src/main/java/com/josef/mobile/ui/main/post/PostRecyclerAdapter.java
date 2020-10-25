@@ -2,7 +2,7 @@ package com.josef.mobile.ui.main.post;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,31 +20,31 @@ import com.josef.mobile.R;
 import com.josef.mobile.ui.main.post.model.Container;
 import com.squareup.picasso.Picasso;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final String TAG = "PostRecyclerAdapter";
-    @Inject
-    Drawable logo;
-    @Inject
+
     RequestManager requestManager;
+
     PostRecyclerViewOnClickListener postRecyclerViewOnClickListener;
     Context context;
     SparseArray<Boolean> sparseArray;
 
     private List<Container> posts = new ArrayList<>();
 
-    public PostRecyclerAdapter(Context context, PostRecyclerViewOnClickListener postRecyclerViewOnClickListener) {
+    public PostRecyclerAdapter(Context context, RequestManager requestManager, PostRecyclerViewOnClickListener postRecyclerViewOnClickListener) {
         this.context = context;
+        this.requestManager = requestManager;
         this.postRecyclerViewOnClickListener = postRecyclerViewOnClickListener;
+
         sparseArray = new SparseArray<>();
         for (int i = 0; i <= 200; i++) {
             sparseArray.put(i, false);
         }
-
     }
 
     @Override
@@ -61,9 +61,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     interface PostRecyclerViewOnClickListener {
         void onClick(Container favourite);
-
         void onChecked(Boolean isChecked, Container favourite);
-
     }
 
     @Override
@@ -103,6 +101,14 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
 
         public void bind(final Container container) {
+            Log.d(TAG, "bind: " + container.getPng());
+            URI uri = null;
+            try {
+                uri = new URI(container.getPng());
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+            //requestManager.load(uri).into(imageView);
             Picasso.get().load(container.getPng()).config(Bitmap.Config.ARGB_8888)
                     .fit().centerCrop().into(imageView);
         }
