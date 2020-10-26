@@ -39,6 +39,8 @@ public class AppPreferencesHelper implements PreferencesHelper {
     private static final String TAG = "AppPreferencesHelper";
     private static final String PREF_KEY_SPARSEARRAY_IDENTIFIER = "PREF_KEY_ACCESS_TOKEN";
     private static final String PREF_STRING_SPARSEARRAY_IDENTIFIER = "PREF_STRING_ACCESS_TOKEN";
+    private static final String ANOTHER_PREF_KEY_SPARSEARRAY_IDENTIFIER = "Anothersdkhfsdlfkds";
+
 
     private final SharedPreferences mPrefs;
     private final Context context;
@@ -50,15 +52,16 @@ public class AppPreferencesHelper implements PreferencesHelper {
         this.context = context;
     }
 
+
     @Override
-    public String getPrefStringSparsearrayIdentifier() {
-        return mPrefs.getString(PREF_STRING_SPARSEARRAY_IDENTIFIER, "uschi");
+    public String getHashString() {
+        return mPrefs.getString(ANOTHER_PREF_KEY_SPARSEARRAY_IDENTIFIER, "uschi");
     }
 
     @Override
-    public void setPrefStringSparsearrayIdentifier(String string) {
+    public void setHashString(String string) {
         Log.d(TAG, "setParceableSparseBooleanArray: ");
-        mPrefs.edit().putString(PREF_STRING_SPARSEARRAY_IDENTIFIER, "hello").commit();
+        mPrefs.edit().putString(ANOTHER_PREF_KEY_SPARSEARRAY_IDENTIFIER, string).commit();
     }
 
     @Override

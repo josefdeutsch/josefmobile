@@ -2,7 +2,6 @@ package com.josef.mobile.ui.main.post;
 
 import android.content.Context;
 import android.util.Log;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,8 +35,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private final Context context;
     private final PreferencesHelper preferencesHelper;
 
-    SparseBooleanArray sparseArray;
-    ArrayList<String> identifer;
+    HashMap<Integer, Boolean> map;
 
     private List<Container> posts = new ArrayList<>();
 
@@ -46,28 +44,30 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         this.requestManager = requestManager;
         this.postRecyclerViewOnClickListener = postRecyclerViewOnClickListener;
         this.preferencesHelper = preferencesHelper;
-        sparseArray = new SparseBooleanArray();
-        //  identifer = getIdentifer();
-        Log.d(TAG, "PostRecyclerAdapter: onCreate");
-
-        HashMap<Integer, Boolean> map = new HashMap<>();
-        for (int i = 0; i <= 50 - 1; i++) {
-            map.put(i, false);
-        }
-
-        Type sparseArrayType = new TypeToken<HashMap<Integer, Boolean>>() {
-        }.getType();
-        Gson gson = new GsonBuilder()
-                .create();
-
-        String string = gson.toJson(map);
-        Log.d(TAG, "PostRecyclerAdapter: " + string);
-        HashMap<Integer, Boolean> map1 = gson.fromJson(string, sparseArrayType);
-        Log.d(TAG, "PostRecyclerAdapter: " + map1.size());
+        map = getMap(map);
+        Log.d(TAG, "PostRecyclerAdapter: ");
 
     }
-    // https://gist.github.com/dmarcato/6455221
 
+    private HashMap<Integer, Boolean> getMap(HashMap<Integer, Boolean> hashmap) {
+        HashMap<Integer, Boolean> map;
+        if (preferencesHelper.getHashString().equals("uschi")) {
+            Log.d(TAG, "getMap: ");
+            map = new HashMap<>();
+            for (int i = 0; i <= 150 - 1; i++) {
+                map.put(i, false);
+            }
+        } else {
+            Type sparseArrayType = new TypeToken<HashMap<Integer, Boolean>>() {
+            }.getType();
+            Gson gson = new GsonBuilder()
+                    .create();
+            String stringmap = preferencesHelper.getHashString();
+            Log.d(TAG, "onsuccuess" + stringmap);
+            map = gson.fromJson(stringmap, sparseArrayType);
+        }
+        return map;
+    }
 
     @Override
     public void onViewRecycled(final RecyclerView.ViewHolder holder) {
@@ -77,9 +77,11 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onDetachedFromRecyclerView(recyclerView);
-
-        Log.d(TAG, "onDetachedFromRecyclerView: onDetach");
-//        Log.d(TAG, "onDetachedFromRecyclerView: " + preferencesHelper.getSparseBooleanArrayParcelable());
+        Gson gson = new GsonBuilder()
+                .create();
+        String string = gson.toJson(map);
+        Log.d(TAG, "onDetachedFromRecyclerView: " + string);
+        preferencesHelper.setHashString(string);
     }
 
 
@@ -91,7 +93,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (position != RecyclerView.NO_POSITION) {
-            ((PostViewHolder) holder).toggleButton.setChecked(sparseArray.get(position));
+            ((PostViewHolder) holder).toggleButton.setChecked(map.get(position));
         }
         ((PostViewHolder) holder).bind(posts.get(position));
     }
@@ -143,7 +145,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            sparseArray.put(getAdapterPosition(), isChecked);
+            map.put(getAdapterPosition(), isChecked);
             postRecyclerViewOnClickListener.onChecked(isChecked, posts.get(getAdapterPosition()));
         }
     }

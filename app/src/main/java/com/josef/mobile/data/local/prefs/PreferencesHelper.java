@@ -33,9 +33,9 @@ public interface PreferencesHelper {
 
     SparseBooleanArray getSparseBooleanArrayParcelable();
 
-    String getPrefStringSparsearrayIdentifier();
+    String getHashString();
 
-    void setPrefStringSparsearrayIdentifier(String string);
+    void setHashString(String string);
 
     public Set<String> getList();
 
