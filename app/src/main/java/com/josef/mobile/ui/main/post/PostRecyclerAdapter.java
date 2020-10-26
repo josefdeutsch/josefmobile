@@ -1,9 +1,8 @@
 package com.josef.mobile.ui.main.post;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.util.Log;
-import android.util.SparseArray;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,41 +15,71 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.RequestManager;
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.josef.mobile.R;
+import com.josef.mobile.data.local.prefs.PreferencesHelper;
 import com.josef.mobile.ui.main.post.model.Container;
-import com.squareup.picasso.Picasso;
 
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
     private static final String TAG = "PostRecyclerAdapter";
 
-    RequestManager requestManager;
+    private final RequestManager requestManager;
+    private final PostRecyclerViewOnClickListener postRecyclerViewOnClickListener;
+    private final Context context;
+    private final PreferencesHelper preferencesHelper;
 
-    PostRecyclerViewOnClickListener postRecyclerViewOnClickListener;
-    Context context;
-    SparseArray<Boolean> sparseArray;
+    SparseBooleanArray sparseArray;
+    ArrayList<String> identifer;
 
     private List<Container> posts = new ArrayList<>();
 
-    public PostRecyclerAdapter(Context context, RequestManager requestManager, PostRecyclerViewOnClickListener postRecyclerViewOnClickListener) {
+    public PostRecyclerAdapter(Context context, RequestManager requestManager, PreferencesHelper preferencesHelper, PostRecyclerViewOnClickListener postRecyclerViewOnClickListener) {
         this.context = context;
         this.requestManager = requestManager;
         this.postRecyclerViewOnClickListener = postRecyclerViewOnClickListener;
+        this.preferencesHelper = preferencesHelper;
+        sparseArray = new SparseBooleanArray();
+        //  identifer = getIdentifer();
+        Log.d(TAG, "PostRecyclerAdapter: onCreate");
 
-        sparseArray = new SparseArray<>();
-        for (int i = 0; i <= 200; i++) {
-            sparseArray.put(i, false);
+        HashMap<Integer, Boolean> map = new HashMap<>();
+        for (int i = 0; i <= 50 - 1; i++) {
+            map.put(i, false);
         }
+
+        Type sparseArrayType = new TypeToken<HashMap<Integer, Boolean>>() {
+        }.getType();
+        Gson gson = new GsonBuilder()
+                .create();
+
+        String string = gson.toJson(map);
+        Log.d(TAG, "PostRecyclerAdapter: " + string);
+        HashMap<Integer, Boolean> map1 = gson.fromJson(string, sparseArrayType);
+        Log.d(TAG, "PostRecyclerAdapter: " + map1.size());
+
     }
+    // https://gist.github.com/dmarcato/6455221
+
 
     @Override
     public void onViewRecycled(final RecyclerView.ViewHolder holder) {
-        // ((PostViewHolder) holder).toggleButton.setOnCheckedChangeListener(null);
         super.onViewRecycled(holder);
+    }
+
+    @Override
+    public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView);
+
+        Log.d(TAG, "onDetachedFromRecyclerView: onDetach");
+//        Log.d(TAG, "onDetachedFromRecyclerView: " + preferencesHelper.getSparseBooleanArrayParcelable());
     }
 
 
@@ -59,17 +88,19 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         notifyDataSetChanged();
     }
 
-    interface PostRecyclerViewOnClickListener {
-        void onClick(Container favourite);
-        void onChecked(Boolean isChecked, Container favourite);
-    }
-
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (position != RecyclerView.NO_POSITION) {
-            ((PostViewHolder) holder).toggleButton.setChecked(sparseArray.get(position).booleanValue());
+            ((PostViewHolder) holder).toggleButton.setChecked(sparseArray.get(position));
         }
         ((PostViewHolder) holder).bind(posts.get(position));
+    }
+
+    interface PostRecyclerViewOnClickListener {
+
+        void onClick(Container favourite);
+
+        void onChecked(Boolean isChecked, Container favourite);
     }
 
     @NonNull
@@ -101,16 +132,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
 
         public void bind(final Container container) {
-            Log.d(TAG, "bind: " + container.getPng());
-            URI uri = null;
-            try {
-                uri = new URI(container.getPng());
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            }
-            //requestManager.load(uri).into(imageView);
-            Picasso.get().load(container.getPng()).config(Bitmap.Config.ARGB_8888)
-                    .fit().centerCrop().into(imageView);
+            requestManager.load(container.getPng()).into(imageView);
         }
 
         @Override

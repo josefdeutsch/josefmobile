@@ -2,6 +2,7 @@ package com.josef.mobile.ui.main.post;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +17,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.RequestManager;
 import com.josef.mobile.R;
 import com.josef.mobile.data.local.db.model.Archive;
+import com.josef.mobile.data.local.prefs.PreferencesHelper;
 import com.josef.mobile.ui.main.Resource;
 import com.josef.mobile.ui.main.post.model.Container;
+import com.josef.mobile.utils.SparseBooleanArrayParcelable;
 import com.josef.mobile.viewmodels.ViewModelProviderFactory;
 
 import java.util.List;
@@ -39,20 +42,21 @@ public class PostsFragment extends DaggerFragment implements PostRecyclerAdapter
     @Inject
     RequestManager requestManager;
 
+    @Inject
+    PreferencesHelper preferencesHelper;
+
     private PostsViewModel viewModel;
 
     private RecyclerView recyclerView;
 
-    private int index = 0;
+    SparseBooleanArray sparseArray;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate: ");
 
-        if (savedInstanceState != null) {
-            index = savedInstanceState.getInt("index");
-        }
     }
 
     @Nullable
@@ -66,15 +70,15 @@ public class PostsFragment extends DaggerFragment implements PostRecyclerAdapter
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.recycler_view);
-        adapter = new PostRecyclerAdapter(getActivity(), requestManager, this);
+        adapter = new PostRecyclerAdapter(getActivity(), requestManager, preferencesHelper, this);
         viewModel = new ViewModelProvider(this, providerFactory).get(PostsViewModel.class);
         initRecyclerView();
         subscribeObservers();
     }
 
-    public void onSaveInstanceState(Bundle bundle) {
-        super.onSaveInstanceState(bundle);
-        bundle.putInt("index", index);
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putParcelable("myBooleanArray", new SparseBooleanArrayParcelable(sparseArray));
     }
 
     private void subscribeObservers() {
@@ -129,14 +133,8 @@ public class PostsFragment extends DaggerFragment implements PostRecyclerAdapter
     @Override
     public void onDestroy() {
         super.onDestroy();
-        recyclerView.clearOnScrollListeners();
+        adapter.onDetachedFromRecyclerView(recyclerView);
     }
-
-    /**  @Override public void onChecked(Boolean isChecked, Container container) {
-    if (isChecked) {
-    } else {
-    }
-    }**/
 }
 
 

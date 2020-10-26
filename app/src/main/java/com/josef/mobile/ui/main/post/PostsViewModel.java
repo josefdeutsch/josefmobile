@@ -23,7 +23,7 @@ import javax.inject.Inject;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
-import static com.josef.mobile.util.Constants.BASE_URL3;
+import static com.josef.mobile.utils.AppConstants.BASE_URL3;
 
 public class PostsViewModel extends BaseViewModel {
 

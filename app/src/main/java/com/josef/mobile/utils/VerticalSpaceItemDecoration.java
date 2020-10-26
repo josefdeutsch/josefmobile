@@ -1,4 +1,4 @@
-package com.josef.mobile.util;
+package com.josef.mobile.utils;
 
 import android.graphics.Rect;
 import android.view.View;

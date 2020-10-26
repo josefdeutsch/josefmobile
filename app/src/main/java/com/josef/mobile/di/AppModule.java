@@ -14,14 +14,18 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.josef.mobile.R;
 import com.josef.mobile.data.AppDataManager;
 import com.josef.mobile.data.DataManager;
 import com.josef.mobile.data.local.db.AppDataBase;
 import com.josef.mobile.data.local.db.AppDbHelper;
 import com.josef.mobile.data.local.db.DbHelper;
+import com.josef.mobile.data.local.prefs.AppPreferencesHelper;
+import com.josef.mobile.data.local.prefs.PreferencesHelper;
 import com.josef.mobile.data.remote.Endpoints;
-import com.josef.mobile.util.Constants;
+import com.josef.mobile.utils.AppConstants;
 
 import javax.inject.Singleton;
 
@@ -78,10 +82,28 @@ public class AppModule {
     @Provides
     static Retrofit provideRetrofitInstance() {
         return new Retrofit.Builder()
-                .baseUrl(Constants.BASE_URL3)
+                .baseUrl(AppConstants.BASE_URL3)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+    }
+
+    @Provides
+    @PreferenceInfo
+    String providePreferenceName() {
+        return AppConstants.PREF_NAME;
+    }
+
+    @Provides
+    @Singleton
+    PreferencesHelper providePreferencesHelper(AppPreferencesHelper appPreferencesHelper) {
+        return appPreferencesHelper;
+    }
+
+    @Provides
+    @Singleton
+    Gson provideGson() {
+        return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
     }
 
     @Singleton

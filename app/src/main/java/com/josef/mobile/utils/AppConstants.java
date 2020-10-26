@@ -1,6 +1,6 @@
-package com.josef.mobile.util;
+package com.josef.mobile.utils;
 
-public final class Constants {
+public final class AppConstants {
 
     public static final String BASE_URL = "https://jsonplaceholder.typicode.com";
 
@@ -12,5 +12,7 @@ public final class Constants {
 
     public static final String REQUEST_PNG = "request_png";
     public static final String REQUEST_URL = "request_url";
+
+    public static final String PREF_NAME = "josef_pref";
 }
 
