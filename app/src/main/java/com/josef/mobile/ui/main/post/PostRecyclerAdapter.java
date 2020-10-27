@@ -15,10 +15,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.RequestManager;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.josef.mobile.R;
 import com.josef.mobile.data.DataManager;
 import com.josef.mobile.ui.main.post.model.Container;
+import com.josef.mobile.utils.Util;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -35,15 +35,18 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private final RequestManager requestManager;
     private final DataManager datamanager;
+    private final Util util;
+
     private PostRecyclerViewOnClickListener postRecyclerViewOnClickListener;
     HashMap<Integer, Boolean> map;
 
     private List<Container> posts = new ArrayList<>();
 
     @Inject
-    public PostRecyclerAdapter(RequestManager requestManager, DataManager datamanager) {
+    public PostRecyclerAdapter(RequestManager requestManager, DataManager datamanager, Util util) {
         this.requestManager = requestManager;
         this.datamanager = datamanager;
+        this.util = util;
         map = getMap(map);
         Log.d(TAG, "PostRecyclerAdapter: ");
 
@@ -64,10 +67,8 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         } else {
             Type sparseArrayType = new TypeToken<HashMap<Integer, Boolean>>() {
             }.getType();
-            Gson gson = new GsonBuilder()
-                    .create();
+            Gson gson = util.getGson();
             String stringmap = datamanager.getHashString();
-            Log.d(TAG, "onsuccuess" + stringmap);
             map = gson.fromJson(stringmap, sparseArrayType);
         }
         return map;
@@ -81,8 +82,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onDetachedFromRecyclerView(recyclerView);
-        Gson gson = new GsonBuilder()
-                .create();
+        Gson gson = util.getGson();
         String string = gson.toJson(map);
         Log.d(TAG, "onDetachedFromRecyclerView: " + string);
         datamanager.setHashString(string);

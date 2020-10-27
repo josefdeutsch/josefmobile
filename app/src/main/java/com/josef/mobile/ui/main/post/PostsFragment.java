@@ -18,7 +18,6 @@ import com.josef.mobile.R;
 import com.josef.mobile.data.local.db.model.Archive;
 import com.josef.mobile.ui.main.Resource;
 import com.josef.mobile.ui.main.post.model.Container;
-import com.josef.mobile.utils.SparseBooleanArrayParcelable;
 import com.josef.mobile.viewmodels.ViewModelProviderFactory;
 
 import java.util.List;
@@ -70,7 +69,7 @@ public class PostsFragment extends DaggerFragment implements PostRecyclerAdapter
 
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putParcelable("myBooleanArray", new SparseBooleanArrayParcelable(sparseArray));
+
     }
 
     private void subscribeObservers() {
@@ -116,9 +115,11 @@ public class PostsFragment extends DaggerFragment implements PostRecyclerAdapter
 
     @Override
     public void onChecked(Boolean isChecked, Container favourite) {
+        Archive archive = new Archive("uschi", favourite.getPng(), favourite.getUrl());
         if (isChecked) {
-            Log.d(TAG, "onChecked: ");
-            viewModel.insertArchives(new Archive("uschi", favourite.getPng(), favourite.getUrl()));
+            viewModel.insertArchives(archive);
+        } else {
+            viewModel.deleteArchives(archive);
         }
     }
 

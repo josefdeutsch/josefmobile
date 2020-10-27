@@ -81,6 +81,10 @@ public class PostsViewModel extends BaseViewModel {
         dataManager.insertArchives(archive);
     }
 
+    public void deleteArchives(final Archive archive) {
+        dataManager.deleteArchives(archive);
+    }
+
 }
 
 

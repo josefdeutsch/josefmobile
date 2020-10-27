@@ -5,6 +5,7 @@ import com.bumptech.glide.RequestManager;
 import com.josef.mobile.data.DataManager;
 import com.josef.mobile.data.remote.Endpoints;
 import com.josef.mobile.ui.main.post.PostRecyclerAdapter;
+import com.josef.mobile.utils.Util;
 
 import dagger.Module;
 import dagger.Provides;
@@ -22,8 +23,8 @@ public class MainModule {
 
     @MainScope
     @Provides
-    static PostRecyclerAdapter providePostRecyclerAdapter(RequestManager requestManager, DataManager dataManager) {
-        return new PostRecyclerAdapter(requestManager, dataManager);
+    static PostRecyclerAdapter providePostRecyclerAdapter(RequestManager requestManager, DataManager dataManager, Util util) {
+        return new PostRecyclerAdapter(requestManager, dataManager, util);
     }
 
 }

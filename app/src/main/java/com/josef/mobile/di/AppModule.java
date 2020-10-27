@@ -26,6 +26,8 @@ import com.josef.mobile.data.local.prefs.AppPreferencesHelper;
 import com.josef.mobile.data.local.prefs.PreferencesHelper;
 import com.josef.mobile.data.remote.Endpoints;
 import com.josef.mobile.utils.AppConstants;
+import com.josef.mobile.utils.AppUtil;
+import com.josef.mobile.utils.Util;
 
 import javax.inject.Singleton;
 
@@ -75,6 +77,13 @@ public class AppModule {
     @Singleton
     Endpoints provideMainApi(Retrofit retrofit) {
         return retrofit.create(Endpoints.class);
+    }
+
+
+    @Provides
+    @Singleton
+    Util provideUtil(AppUtil appUtil) {
+        return appUtil;
     }
 
 
