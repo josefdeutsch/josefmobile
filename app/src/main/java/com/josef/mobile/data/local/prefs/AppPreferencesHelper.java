@@ -19,14 +19,8 @@ package com.josef.mobile.data.local.prefs;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
-import android.util.SparseBooleanArray;
 
-import com.google.gson.Gson;
 import com.josef.mobile.di.PreferenceInfo;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -64,41 +58,4 @@ public class AppPreferencesHelper implements PreferencesHelper {
         mPrefs.edit().putString(ANOTHER_PREF_KEY_SPARSEARRAY_IDENTIFIER, string).commit();
     }
 
-    @Override
-    public void setParceableSparseBooleanArray(SparseBooleanArray sparseBooleanArray) {
-        Log.d(TAG, "setParceableSparseBooleanArray: ");
-        Gson gson = new Gson();
-        mPrefs.edit().putString(PREF_KEY_SPARSEARRAY_IDENTIFIER, gson.toJson(sparseBooleanArray)).commit();
-    }
-
-    @Override
-    public SparseBooleanArray getSparseBooleanArrayParcelable() {
-        Log.d(TAG, "getSparseBooleanArrayParcelable: ");
-        SparseBooleanArray booleanArray;
-        Gson gson = new Gson();
-        booleanArray = gson.fromJson(mPrefs.getString(PREF_KEY_SPARSEARRAY_IDENTIFIER, ""), SparseBooleanArray.class);
-        return booleanArray;
-    }
-
-
-    public Set<String> getList() {
-        return mPrefs.getStringSet(PREF_KEY_SPARSEARRAY_IDENTIFIER, null);
-    }
-
-    public void setList(ArrayList<String> value) {
-        SharedPreferences.Editor editor = mPrefs.edit();
-        Log.d(TAG, "setList: " + value.size());
-        Set<String> set = new HashSet<>();
-        set.addAll(value);
-        editor.putStringSet(PREF_KEY_SPARSEARRAY_IDENTIFIER, set);
-        editor.apply();
-    }
-
-    /** public static void clearNameList(Context ctx) {
-     mPrefs = PreferenceManager.getDefaultSharedPreferences(ctx);
-     mPrefsEditor = mPrefs.edit();
-     Set<String> set = new HashSet<>();
-     mPrefsEditor.putStringSet(PREF_KEY_SPARSEARRAY_IDENTIFIER, set);
-     mPrefsEditor.commit();
-     }**/
 }

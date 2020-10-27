@@ -1,7 +1,10 @@
 package com.josef.mobile.di.main;
 
 
+import com.bumptech.glide.RequestManager;
+import com.josef.mobile.data.DataManager;
 import com.josef.mobile.data.remote.Endpoints;
+import com.josef.mobile.ui.main.post.PostRecyclerAdapter;
 
 import dagger.Module;
 import dagger.Provides;
@@ -16,6 +19,12 @@ public class MainModule {
         return retrofit.create(Endpoints.class);
     }
 
+
+    @MainScope
+    @Provides
+    static PostRecyclerAdapter providePostRecyclerAdapter(RequestManager requestManager, DataManager dataManager) {
+        return new PostRecyclerAdapter(requestManager, dataManager);
+    }
 
 }
 

@@ -1,6 +1,5 @@
 package com.josef.mobile.ui.main.post;
 
-import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +17,7 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.josef.mobile.R;
-import com.josef.mobile.data.local.prefs.PreferencesHelper;
+import com.josef.mobile.data.DataManager;
 import com.josef.mobile.ui.main.post.model.Container;
 
 import java.lang.reflect.Type;
@@ -26,32 +25,37 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+@Singleton
 public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final String TAG = "PostRecyclerAdapter";
 
     private final RequestManager requestManager;
-    private final PostRecyclerViewOnClickListener postRecyclerViewOnClickListener;
-    private final Context context;
-    private final PreferencesHelper preferencesHelper;
-
+    private final DataManager datamanager;
+    private PostRecyclerViewOnClickListener postRecyclerViewOnClickListener;
     HashMap<Integer, Boolean> map;
 
     private List<Container> posts = new ArrayList<>();
 
-    public PostRecyclerAdapter(Context context, RequestManager requestManager, PreferencesHelper preferencesHelper, PostRecyclerViewOnClickListener postRecyclerViewOnClickListener) {
-        this.context = context;
+    @Inject
+    public PostRecyclerAdapter(RequestManager requestManager, DataManager datamanager) {
         this.requestManager = requestManager;
-        this.postRecyclerViewOnClickListener = postRecyclerViewOnClickListener;
-        this.preferencesHelper = preferencesHelper;
+        this.datamanager = datamanager;
         map = getMap(map);
         Log.d(TAG, "PostRecyclerAdapter: ");
 
     }
 
+    public void setOnClickListener(PostRecyclerViewOnClickListener postRecyclerViewOnClickListener) {
+        this.postRecyclerViewOnClickListener = postRecyclerViewOnClickListener;
+    }
+
     private HashMap<Integer, Boolean> getMap(HashMap<Integer, Boolean> hashmap) {
         HashMap<Integer, Boolean> map;
-        if (preferencesHelper.getHashString().equals("uschi")) {
+        if (datamanager.getHashString().equals("uschi")) {
             Log.d(TAG, "getMap: ");
             map = new HashMap<>();
             for (int i = 0; i <= 150 - 1; i++) {
@@ -62,7 +66,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }.getType();
             Gson gson = new GsonBuilder()
                     .create();
-            String stringmap = preferencesHelper.getHashString();
+            String stringmap = datamanager.getHashString();
             Log.d(TAG, "onsuccuess" + stringmap);
             map = gson.fromJson(stringmap, sparseArrayType);
         }
@@ -81,7 +85,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 .create();
         String string = gson.toJson(map);
         Log.d(TAG, "onDetachedFromRecyclerView: " + string);
-        preferencesHelper.setHashString(string);
+        datamanager.setHashString(string);
     }
 
 

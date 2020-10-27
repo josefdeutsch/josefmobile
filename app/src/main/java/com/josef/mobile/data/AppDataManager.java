@@ -2,6 +2,7 @@ package com.josef.mobile.data;
 
 import com.josef.mobile.data.local.db.DbHelper;
 import com.josef.mobile.data.local.db.model.Archive;
+import com.josef.mobile.data.local.prefs.PreferencesHelper;
 import com.josef.mobile.data.remote.Endpoints;
 import com.josef.mobile.data.remote.model.Endpoint;
 
@@ -18,11 +19,13 @@ public class AppDataManager implements DataManager {
 
     DbHelper dbHelper;
     Endpoints endpoints;
+    PreferencesHelper preferencesHelper;
 
     @Inject
-    public AppDataManager(DbHelper dbHelper, Endpoints endpoints) {
+    public AppDataManager(DbHelper dbHelper, Endpoints endpoints, PreferencesHelper preferencesHelper) {
         this.dbHelper = dbHelper;
         this.endpoints = endpoints;
+        this.preferencesHelper = preferencesHelper;
     }
 
     public Flowable<List<Archive>> getAllArchives() {
@@ -43,5 +46,15 @@ public class AppDataManager implements DataManager {
     @Override
     public Flowable<Endpoint> getChange(String url) {
         return endpoints.getChange(url);
+    }
+
+    @Override
+    public String getHashString() {
+        return preferencesHelper.getHashString();
+    }
+
+    @Override
+    public void setHashString(String string) {
+        preferencesHelper.setHashString(string);
     }
 }

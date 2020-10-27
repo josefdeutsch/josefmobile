@@ -17,11 +17,6 @@
 package com.josef.mobile.data.local.prefs;
 
 
-import android.util.SparseBooleanArray;
-
-import java.util.ArrayList;
-import java.util.Set;
-
 /**
  * Created by amitshekhar on 07/07/17.
  */
@@ -29,16 +24,12 @@ import java.util.Set;
 public interface PreferencesHelper {
 
 
-    void setParceableSparseBooleanArray(SparseBooleanArray sparseBooleanArray);
 
-    SparseBooleanArray getSparseBooleanArrayParcelable();
 
     String getHashString();
 
     void setHashString(String string);
 
-    public Set<String> getList();
 
-    public void setList(ArrayList<String> value);
 
 }

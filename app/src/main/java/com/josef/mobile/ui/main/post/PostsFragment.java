@@ -14,10 +14,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.RequestManager;
 import com.josef.mobile.R;
 import com.josef.mobile.data.local.db.model.Archive;
-import com.josef.mobile.data.local.prefs.PreferencesHelper;
 import com.josef.mobile.ui.main.Resource;
 import com.josef.mobile.ui.main.post.model.Container;
 import com.josef.mobile.utils.SparseBooleanArrayParcelable;
@@ -33,17 +31,11 @@ import dagger.android.support.DaggerFragment;
 public class PostsFragment extends DaggerFragment implements PostRecyclerAdapter.PostRecyclerViewOnClickListener {
 
     private static final String TAG = "PostsFragment";
-
+    @Inject
     PostRecyclerAdapter adapter;
 
     @Inject
     ViewModelProviderFactory providerFactory;
-
-    @Inject
-    RequestManager requestManager;
-
-    @Inject
-    PreferencesHelper preferencesHelper;
 
     private PostsViewModel viewModel;
 
@@ -70,7 +62,7 @@ public class PostsFragment extends DaggerFragment implements PostRecyclerAdapter
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.recycler_view);
-        adapter = new PostRecyclerAdapter(getActivity(), requestManager, preferencesHelper, this);
+        adapter.setOnClickListener(this);
         viewModel = new ViewModelProvider(this, providerFactory).get(PostsViewModel.class);
         initRecyclerView();
         subscribeObservers();
