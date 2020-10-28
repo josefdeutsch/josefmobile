@@ -33,10 +33,8 @@ public class PlayerActivity extends DaggerAppCompatActivity {
 
     private static final String TAG = "PlayerActivity";
 
-
     protected FrameLayout mFullScreenButton;
     protected ImageView mFullScreenIcon;
-
     protected PlayerView mPlayerView;
     protected boolean mExoPlayerFullscreen = false;
     protected int mResumeWindow;
@@ -70,13 +68,16 @@ public class PlayerActivity extends DaggerAppCompatActivity {
             mResumePosition = savedInstanceState.getLong(STATE_RESUME_POSITION);
             mExoPlayerFullscreen = savedInstanceState.getBoolean(STATE_BOOLEAN_VALUE);
         }
+        mPlayerView = findViewById(R.id.exoplayer);
+        mFullScreenIcon = mPlayerView.findViewById(R.id.exo_fullscreen_icon);
+        mFullScreenButton = mPlayerView.findViewById(R.id.exo_fullscreen_button);
 
         viewModel = new ViewModelProvider(this, providerFactory).get(PlayerViewModel.class);
 
         subscribeObserver();
-        setupUi();
 
         openFullscreenDialog();
+
     }
 
     @Override
@@ -113,14 +114,9 @@ public class PlayerActivity extends DaggerAppCompatActivity {
         });
     }
 
-    protected void releaseFullScreenDialog() {
-        if (mFullScreenDialog == null) return;
-        mFullScreenDialog.dismiss();
-    }
-
-
     protected void openFullscreenDialog() {
         ((ViewGroup) mPlayerView.getParent()).removeView(mPlayerView);
+        mFullScreenButton.setOnClickListener(v -> finish());
         mFullScreenDialog.addContentView(mPlayerView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         mFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_fullscreen_skrink));
         mFullScreenDialog.show();
@@ -140,20 +136,8 @@ public class PlayerActivity extends DaggerAppCompatActivity {
             mResumePosition = Math.max(0, mPlayer.getContentPosition());
             mPlayer.release();
         }
-        releaseFullScreenDialog();
+        mFullScreenDialog.dismiss();
     }
-
-    protected void setupUi() {
-        mPlayerView = findViewById(R.id.exoplayer);
-        mFullScreenIcon = mPlayerView.findViewById(R.id.exo_fullscreen_icon);
-        mFullScreenButton = mPlayerView.findViewById(R.id.exo_fullscreen_button);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
 
     @Override
     public void onPause() {
