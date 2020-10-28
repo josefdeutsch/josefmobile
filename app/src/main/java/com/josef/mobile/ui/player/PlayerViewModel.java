@@ -29,11 +29,6 @@ public class PlayerViewModel extends BaseViewModel {
         this.dataManager = dataManager;
     }
 
-
-    public LiveData<Resource<Container>> observe_Container() {
-        return observeContainer();
-    }
-
     public void authenticateWithEndpoint(final int index) {
         addToContainer(observeEndpoints(index));
 

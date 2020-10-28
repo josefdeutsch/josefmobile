@@ -39,10 +39,6 @@ public class PostsViewModel extends BaseViewModel {
         addToListOfContainer(observeEndpoints());
     }
 
-    public LiveData<Resource<List<Container>>> observeListOfContainer() {
-        return observeListofContainer();
-    }
-
     public LiveData<Resource<List<Container>>> observeEndpoints() {
 
         return LiveDataReactiveStreams.fromPublisher(

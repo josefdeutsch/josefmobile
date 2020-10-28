@@ -78,8 +78,8 @@ public class PostsFragment extends DaggerFragment implements PostRecyclerAdapter
     }
 
     private void subscribeObservers() {
-        viewModel.observeListOfContainer().removeObservers(getViewLifecycleOwner());
-        viewModel.observeListOfContainer().observe(getViewLifecycleOwner(), new Observer<Resource<List<Container>>>() {
+        viewModel.observeListofContainer().removeObservers(getViewLifecycleOwner());
+        viewModel.observeListofContainer().observe(getViewLifecycleOwner(), new Observer<Resource<List<Container>>>() {
             @Override
             public void onChanged(Resource<List<Container>> listResource) {
                 if (listResource != null) {

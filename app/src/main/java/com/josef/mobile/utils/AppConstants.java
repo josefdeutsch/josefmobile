@@ -14,5 +14,12 @@ public final class AppConstants {
     public static final String REQUEST_INDEX = "request_url";
 
     public static final String PREF_NAME = "josef_pref";
+
+    public static final String STATE_RESUME_WINDOW = "resume_state";
+
+    public static final String STATE_RESUME_POSITION = "resume_position";
+
+    public static final String STATE_BOOLEAN_VALUE = "state_boolean";
+
 }
 

@@ -18,7 +18,7 @@ public abstract class BaseViewModel extends ViewModel {
 
     private final MediatorLiveData<Resource<Container>> container = new MediatorLiveData<>();
 
-    public MediatorLiveData<Resource<List<Container>>> observeListofContainer() {
+    public LiveData<Resource<List<Container>>> observeListofContainer() {
         return containers;
     }
 
@@ -34,7 +34,7 @@ public abstract class BaseViewModel extends ViewModel {
 
     }
 
-    public MediatorLiveData<Resource<Container>> observeContainer() {
+    public LiveData<Resource<Container>> observeContainer() {
         return container;
     }
 
