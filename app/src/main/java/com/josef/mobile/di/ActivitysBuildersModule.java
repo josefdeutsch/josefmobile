@@ -7,8 +7,12 @@ import com.josef.mobile.di.main.MainFragmentBuildersModule;
 import com.josef.mobile.di.main.MainModule;
 import com.josef.mobile.di.main.MainScope;
 import com.josef.mobile.di.main.MainViewModelsModule;
+import com.josef.mobile.di.player.PlayerModule;
+import com.josef.mobile.di.player.PlayerScope;
+import com.josef.mobile.di.player.PlayerViewModelsModule;
 import com.josef.mobile.ui.auth.AuthActivity;
 import com.josef.mobile.ui.main.MainActivity;
+import com.josef.mobile.ui.player.PlayerActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -25,6 +29,15 @@ public abstract class ActivitysBuildersModule {
             }
     )
     abstract AuthActivity contributeAuthActivity();
+
+    @PlayerScope
+    @ContributesAndroidInjector(
+            modules = {
+                    PlayerModule.class,
+                    PlayerViewModelsModule.class
+            }
+    )
+    abstract PlayerActivity contributPlayerActivity();
 
     @MainScope
     @ContributesAndroidInjector(
