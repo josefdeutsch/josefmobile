@@ -11,7 +11,7 @@ public final class AppConstants {
     public static final int PLAYERACTIVIY = 1;
 
     public static final String REQUEST_PNG = "request_png";
-    public static final String REQUEST_URL = "request_url";
+    public static final String REQUEST_INDEX = "request_url";
 
     public static final String PREF_NAME = "josef_pref";
 }

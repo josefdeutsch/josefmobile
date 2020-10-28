@@ -1,5 +1,6 @@
 package com.josef.mobile.ui.main.post;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -18,6 +19,7 @@ import com.josef.mobile.R;
 import com.josef.mobile.data.local.db.model.Archive;
 import com.josef.mobile.ui.main.Resource;
 import com.josef.mobile.ui.main.post.model.Container;
+import com.josef.mobile.ui.player.PlayerActivity;
 import com.josef.mobile.viewmodels.ViewModelProviderFactory;
 
 import java.util.List;
@@ -25,6 +27,9 @@ import java.util.List;
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
+
+import static com.josef.mobile.utils.AppConstants.PLAYERACTIVIY;
+import static com.josef.mobile.utils.AppConstants.REQUEST_INDEX;
 
 
 public class PostsFragment extends DaggerFragment implements PostRecyclerAdapter.PostRecyclerViewOnClickListener {
@@ -73,8 +78,8 @@ public class PostsFragment extends DaggerFragment implements PostRecyclerAdapter
     }
 
     private void subscribeObservers() {
-        viewModel.observeResource().removeObservers(getViewLifecycleOwner());
-        viewModel.observeResource().observe(getViewLifecycleOwner(), new Observer<Resource<List<Container>>>() {
+        viewModel.observeListOfContainer().removeObservers(getViewLifecycleOwner());
+        viewModel.observeListOfContainer().observe(getViewLifecycleOwner(), new Observer<Resource<List<Container>>>() {
             @Override
             public void onChanged(Resource<List<Container>> listResource) {
                 if (listResource != null) {
@@ -109,8 +114,10 @@ public class PostsFragment extends DaggerFragment implements PostRecyclerAdapter
 
 
     @Override
-    public void onClick(Container container) {
-
+    public void onClick(int position) {
+        Intent intent = new Intent(getActivity(), PlayerActivity.class);
+        intent.putExtra(REQUEST_INDEX, position);
+        startActivityForResult(intent, PLAYERACTIVIY);
     }
 
     @Override

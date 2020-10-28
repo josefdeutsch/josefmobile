@@ -36,11 +36,11 @@ public class PostsViewModel extends BaseViewModel {
     public PostsViewModel(DataManager dataManager) {
         this.dataManager = dataManager;
         Log.d(TAG, "PostsViewModel: viewmodel is working...");
-        addToResource(observeEndpoints());
+        addToListOfContainer(observeEndpoints());
     }
 
-    public LiveData<Resource<List<Container>>> observeResource() {
-        return observeResources();
+    public LiveData<Resource<List<Container>>> observeListOfContainer() {
+        return observeListofContainer();
     }
 
     public LiveData<Resource<List<Container>>> observeEndpoints() {

@@ -104,7 +104,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     interface PostRecyclerViewOnClickListener {
 
-        void onClick(Container favourite);
+        void onClick(int position);
 
         void onChecked(Boolean isChecked, Container favourite);
     }
@@ -143,7 +143,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         @Override
         public void onClick(View v) {
-            postRecyclerViewOnClickListener.onClick(posts.get(getAdapterPosition()));
+            postRecyclerViewOnClickListener.onClick(getAdapterPosition());
         }
 
 

@@ -37,7 +37,7 @@ public abstract class ActivitysBuildersModule {
                     PlayerViewModelsModule.class
             }
     )
-    abstract PlayerActivity contributPlayerActivity();
+    abstract PlayerActivity contributePlayerActivity();
 
     @MainScope
     @ContributesAndroidInjector(
