@@ -17,8 +17,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.josef.mobile.R;
-import com.josef.mobile.data.local.db.model.Archive;
+import com.josef.mobile.ui.main.MainActivity;
 import com.josef.mobile.ui.main.Resource;
+import com.josef.mobile.ui.main.archive.model.Archive;
 import com.josef.mobile.viewmodels.ViewModelProviderFactory;
 
 import java.util.List;
@@ -111,7 +112,7 @@ public class ArchiveFragment extends DaggerFragment implements View.OnClickListe
         alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-
+                viewModel.synchronize((MainActivity) getActivity());
             }
         });
         alert.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {

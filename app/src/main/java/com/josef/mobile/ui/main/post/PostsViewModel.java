@@ -10,9 +10,9 @@ import androidx.lifecycle.LiveDataReactiveStreams;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.josef.mobile.data.DataManager;
-import com.josef.mobile.data.local.db.model.Archive;
 import com.josef.mobile.ui.base.BaseViewModel;
 import com.josef.mobile.ui.main.Resource;
+import com.josef.mobile.ui.main.archive.model.Archive;
 import com.josef.mobile.ui.main.post.model.Container;
 
 import java.lang.reflect.Type;

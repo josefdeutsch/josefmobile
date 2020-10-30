@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.josef.mobile.R;
-import com.josef.mobile.data.local.db.model.Archive;
 import com.josef.mobile.ui.main.Resource;
+import com.josef.mobile.ui.main.archive.model.Archive;
 import com.josef.mobile.ui.main.post.model.Container;
 import com.josef.mobile.ui.player.PlayerActivity;
 import com.josef.mobile.viewmodels.ViewModelProviderFactory;
@@ -102,31 +102,6 @@ public class PostsFragment extends DaggerFragment implements PostRecyclerAdapter
         });
     }
 
-    private void subscribeArchives() {
-        viewModel.observeArchives().removeObservers(getViewLifecycleOwner());
-        viewModel.observeArchives().observe(this, new Observer<Resource<Archive>>() {
-            @Override
-            public void onChanged(Resource<Archive> archiveResource) {
-                if (archiveResource != null) {
-                    switch (archiveResource.status) {
-                        case LOADING: {
-                            Log.d(TAG, "onChanged: PostsFragment: LOADING...");
-                            break;
-                        }
-                        case SUCCESS: {
-                            Log.d(TAG, "onChanged: PostFragment: SUCCESS..");
-                            break;
-                        }
-                        case ERROR: {
-                            Log.d(TAG, "onChanged: PostsFragment: ERROR... " + archiveResource.message);
-                            viewModel.insertArchives(archiveResource.data);
-                            break;
-                        }
-                    }
-                }
-            }
-        });
-    }
 
     private void initRecyclerView() {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
@@ -146,8 +121,6 @@ public class PostsFragment extends DaggerFragment implements PostRecyclerAdapter
         startActivityForResult(intent, PLAYERACTIVIY);
     }
 
-
-    // index in database weitergeben.. und dann im on delete callback benützen
     @Override
     public void onChecked(int position, Boolean isChecked, Container favourite) {
 

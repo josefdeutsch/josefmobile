@@ -66,7 +66,6 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
         if (datamanager.getHashString().equals("uschi")) {
-            Log.d(TAG, "getMap: ");
             map = new HashMap<>();
             for (int i = 0; i <= 150 - 1; i++) {
                 map.put(i, false);
@@ -85,7 +84,6 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         super.onDetachedFromRecyclerView(recyclerView);
         Gson gson = util.getGson();
         String string = gson.toJson(map);
-        Log.d(TAG, "onDetachedFromRecyclerView: " + string);
         datamanager.setHashString(string);
     }
 

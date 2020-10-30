@@ -14,11 +14,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.josef.mobile.R;
 import com.josef.mobile.data.AppDataManager;
 import com.josef.mobile.data.DataManager;
+import com.josef.mobile.data.firebase.Firebase;
+import com.josef.mobile.data.firebase.Firedatabase;
 import com.josef.mobile.data.local.db.AppDataBase;
 import com.josef.mobile.data.local.db.AppDbHelper;
 import com.josef.mobile.data.local.db.DbHelper;
@@ -56,6 +59,12 @@ public class AppModule {
 
     @Provides
     @Singleton
+    Firebase provideFirebase(Firedatabase firedatabase) {
+        return firedatabase;
+    }
+
+    @Provides
+    @Singleton
     Context provideContext(Application application) {
         return application;
     }
@@ -86,6 +95,11 @@ public class AppModule {
         return appUtil;
     }
 
+    @Provides
+    @Singleton
+    FirebaseDatabase provideFiredatabase() {
+        return FirebaseDatabase.getInstance();
+    }
 
     @Singleton
     @Provides

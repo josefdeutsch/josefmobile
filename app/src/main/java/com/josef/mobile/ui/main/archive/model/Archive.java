@@ -1,4 +1,4 @@
-package com.josef.mobile.data.local.db.model;
+package com.josef.mobile.ui.main.archive.model;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;

@@ -5,8 +5,8 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
-import com.josef.mobile.data.local.db.model.Archive;
 import com.josef.mobile.ui.main.Resource;
+import com.josef.mobile.ui.main.archive.model.Archive;
 import com.josef.mobile.ui.main.post.model.Container;
 
 import java.util.List;

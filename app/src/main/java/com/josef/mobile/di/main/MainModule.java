@@ -4,6 +4,7 @@ package com.josef.mobile.di.main;
 import com.bumptech.glide.RequestManager;
 import com.josef.mobile.data.DataManager;
 import com.josef.mobile.data.remote.Endpoints;
+import com.josef.mobile.ui.main.MainActivity;
 import com.josef.mobile.ui.main.post.PostRecyclerAdapter;
 import com.josef.mobile.utils.Util;
 
@@ -26,6 +27,13 @@ public class MainModule {
     static PostRecyclerAdapter providePostRecyclerAdapter(RequestManager requestManager, DataManager dataManager, Util util) {
         return new PostRecyclerAdapter(requestManager, dataManager, util);
     }
+
+    @MainScope
+    @Provides
+    static MainActivity provideMainActivity(MainActivity mainActivity) {
+        return mainActivity;
+    }
+
 
     /** @Provides
      @MainScope static PostRecyclerAdapter.PostRecyclerViewOnClickListener getClickListener(PostsFragment postsFragment) {
