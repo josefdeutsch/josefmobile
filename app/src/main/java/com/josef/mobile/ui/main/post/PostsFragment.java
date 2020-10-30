@@ -3,7 +3,6 @@ package com.josef.mobile.ui.main.post;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +34,7 @@ import static com.josef.mobile.utils.AppConstants.REQUEST_INDEX;
 public class PostsFragment extends DaggerFragment implements PostRecyclerAdapter.PostRecyclerViewOnClickListener {
 
     private static final String TAG = "PostsFragment";
+
     @Inject
     PostRecyclerAdapter adapter;
 
@@ -45,7 +45,6 @@ public class PostsFragment extends DaggerFragment implements PostRecyclerAdapter
 
     private RecyclerView recyclerView;
 
-    SparseBooleanArray sparseArray;
 
 
     @Override
@@ -66,10 +65,11 @@ public class PostsFragment extends DaggerFragment implements PostRecyclerAdapter
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.recycler_view);
-        adapter.setOnClickListener(this);
+        adapter.setPostRecyclerViewOnClickListener(this);
         viewModel = new ViewModelProvider(this, providerFactory).get(PostsViewModel.class);
         initRecyclerView();
         subscribeObservers();
+        // subscribeArchives();
     }
 
     public void onSaveInstanceState(Bundle savedInstanceState) {
@@ -102,6 +102,32 @@ public class PostsFragment extends DaggerFragment implements PostRecyclerAdapter
         });
     }
 
+    private void subscribeArchives() {
+        viewModel.observeArchives().removeObservers(getViewLifecycleOwner());
+        viewModel.observeArchives().observe(this, new Observer<Resource<Archive>>() {
+            @Override
+            public void onChanged(Resource<Archive> archiveResource) {
+                if (archiveResource != null) {
+                    switch (archiveResource.status) {
+                        case LOADING: {
+                            Log.d(TAG, "onChanged: PostsFragment: LOADING...");
+                            break;
+                        }
+                        case SUCCESS: {
+                            Log.d(TAG, "onChanged: PostFragment: SUCCESS..");
+                            break;
+                        }
+                        case ERROR: {
+                            Log.d(TAG, "onChanged: PostsFragment: ERROR... " + archiveResource.message);
+                            viewModel.insertArchives(archiveResource.data);
+                            break;
+                        }
+                    }
+                }
+            }
+        });
+    }
+
     private void initRecyclerView() {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(gridLayoutManager);
@@ -120,12 +146,18 @@ public class PostsFragment extends DaggerFragment implements PostRecyclerAdapter
         startActivityForResult(intent, PLAYERACTIVIY);
     }
 
+
+    // index in database weitergeben.. und dann im on delete callback benützen
     @Override
-    public void onChecked(Boolean isChecked, Container favourite) {
-        Archive archive = new Archive("uschi", favourite.getPng(), favourite.getUrl());
+    public void onChecked(int position, Boolean isChecked, Container favourite) {
+
+        long id = favourite.getId();
+        Archive archive = new Archive(id, "default", favourite.getPng(), favourite.getUrl());
+
         if (isChecked) {
             viewModel.insertArchives(archive);
-        } else {
+        }
+        if (!isChecked) {
             viewModel.deleteArchives(archive);
         }
     }

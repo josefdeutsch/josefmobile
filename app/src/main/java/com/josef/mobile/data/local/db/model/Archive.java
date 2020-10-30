@@ -28,14 +28,24 @@ public class Archive {
     @ColumnInfo(name = "updated_at")
     public String updatedAt;
 
+    public Archive(long id, String name, String png, String url) {
+        this.id = id;
+        this.name = name;
+        this.png = png;
+        this.url = url;
+    }
+
     public Archive(String name, String png, String url) {
         this.name = name;
         this.png = png;
         this.url = url;
     }
 
-    public Archive() {
+    public Archive(long id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
-
+    public Archive() {
+    }
 }

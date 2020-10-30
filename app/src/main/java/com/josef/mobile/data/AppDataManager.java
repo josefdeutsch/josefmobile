@@ -11,7 +11,9 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
+import io.reactivex.Single;
 
 @Singleton
 public class AppDataManager implements DataManager {
@@ -32,6 +34,10 @@ public class AppDataManager implements DataManager {
         return dbHelper.getAllArchives();
     }
 
+    @Override
+    public Single<Archive> findbyName(Archive archive) {
+        return dbHelper.findbyName(archive);
+    }
 
     public void insertArchives(final Archive archive) {
         dbHelper.insertArchives(archive);
@@ -40,6 +46,16 @@ public class AppDataManager implements DataManager {
     @Override
     public void deleteArchives(Archive archive) {
         dbHelper.deleteArchives(archive);
+    }
+
+    @Override
+    public Completable insertArchive(Archive archive) {
+        return dbHelper.insertArchive(archive);
+    }
+
+    @Override
+    public Flowable<Archive> getArchive() {
+        return dbHelper.getArchive();
     }
 
 

@@ -8,11 +8,16 @@ import androidx.lifecycle.LiveDataReactiveStreams;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
 import com.josef.mobile.data.DataManager;
 import com.josef.mobile.data.local.db.model.Archive;
 import com.josef.mobile.ui.main.Resource;
+import com.josef.mobile.utils.Util;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -25,12 +30,14 @@ public class ArchiveViewModel extends ViewModel {
     private static final String TAG = "PostsViewModel";
 
     private final DataManager dataManager;
+    private final Util util;
 
     private MediatorLiveData<Resource<List<Archive>>> posts;
 
     @Inject
-    public ArchiveViewModel(DataManager dataManager) {
+    public ArchiveViewModel(DataManager dataManager, Util util) {
         this.dataManager = dataManager;
+        this.util = util;
     }
 
     public LiveData<Resource<List<Archive>>> observeArchive() {
@@ -65,6 +72,20 @@ public class ArchiveViewModel extends ViewModel {
         });
 
         return posts;
+    }
+
+    public void deleteArchivesPref(final Archive archive) {
+        long id = archive.id;
+        Log.d(TAG, "deleteArchivesPref: " + archive.id);
+        HashMap<Integer, Boolean> map;
+        Type sparseArrayType = new TypeToken<HashMap<Integer, Boolean>>() {
+        }.getType();
+        Gson gson = util.getGson();
+        String stringmap = dataManager.getHashString();
+        map = gson.fromJson(stringmap, sparseArrayType);
+        map.replace((int) id, false);
+        String string = gson.toJson(map);
+        dataManager.setHashString(string);
     }
 
     public void deleteArchives(final Archive archive) {

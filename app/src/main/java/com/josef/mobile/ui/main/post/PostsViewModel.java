@@ -1,6 +1,7 @@
 package com.josef.mobile.ui.main.post;
 
 
+import android.content.Context;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -20,6 +21,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
@@ -31,9 +33,11 @@ public class PostsViewModel extends BaseViewModel {
 
     private final DataManager dataManager;
 
+    private final Context context;
 
     @Inject
-    public PostsViewModel(DataManager dataManager) {
+    public PostsViewModel(DataManager dataManager, Context context) {
+        this.context = context;
         this.dataManager = dataManager;
         Log.d(TAG, "PostsViewModel: viewmodel is working...");
         addToListOfContainer(observeEndpoints());
@@ -52,13 +56,16 @@ public class PostsViewModel extends BaseViewModel {
                             return endpoints;
                         })
 
-                        .onErrorReturn(throwable -> {
-                            Log.e(TAG, "apply: " + throwable.toString());
-                            Container container = new Container();
-                            container.setId(-1);
-                            ArrayList<Container> containers = new ArrayList<>();
-                            containers.add(container);
-                            return containers;
+                        .onErrorReturn(new Function<Throwable, ArrayList<Container>>() {
+                            @Override
+                            public ArrayList<Container> apply(@NonNull Throwable throwable) throws Exception {
+                                Log.e(TAG, "apply: " + throwable.toString());
+                                Container container = new Container();
+                                container.setId(-1);
+                                ArrayList<Container> containers = new ArrayList<>();
+                                containers.add(container);
+                                return containers;
+                            }
                         })
 
                         .map((Function<List<Container>, Resource<List<Container>>>) posts -> {
@@ -72,6 +79,7 @@ public class PostsViewModel extends BaseViewModel {
 
                         .subscribeOn(Schedulers.io()));
     }
+
 
     public void insertArchives(final Archive archive) {
         dataManager.insertArchives(archive);

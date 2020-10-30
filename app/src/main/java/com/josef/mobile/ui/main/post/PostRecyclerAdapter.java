@@ -37,6 +37,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private final DataManager datamanager;
     private final Util util;
 
+
     private PostRecyclerViewOnClickListener postRecyclerViewOnClickListener;
     HashMap<Integer, Boolean> map;
 
@@ -47,17 +48,23 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         this.requestManager = requestManager;
         this.datamanager = datamanager;
         this.util = util;
-        map = getMap(map);
         Log.d(TAG, "PostRecyclerAdapter: ");
 
     }
 
-    public void setOnClickListener(PostRecyclerViewOnClickListener postRecyclerViewOnClickListener) {
+    public void setPostRecyclerViewOnClickListener(PostRecyclerViewOnClickListener postRecyclerViewOnClickListener) {
         this.postRecyclerViewOnClickListener = postRecyclerViewOnClickListener;
     }
 
-    private HashMap<Integer, Boolean> getMap(HashMap<Integer, Boolean> hashmap) {
-        HashMap<Integer, Boolean> map;
+
+    @Override
+    public void onViewRecycled(final RecyclerView.ViewHolder holder) {
+        super.onViewRecycled(holder);
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
         if (datamanager.getHashString().equals("uschi")) {
             Log.d(TAG, "getMap: ");
             map = new HashMap<>();
@@ -71,12 +78,6 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             String stringmap = datamanager.getHashString();
             map = gson.fromJson(stringmap, sparseArrayType);
         }
-        return map;
-    }
-
-    @Override
-    public void onViewRecycled(final RecyclerView.ViewHolder holder) {
-        super.onViewRecycled(holder);
     }
 
     @Override
@@ -102,11 +103,11 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         ((PostViewHolder) holder).bind(posts.get(position));
     }
 
-    interface PostRecyclerViewOnClickListener {
+    public interface PostRecyclerViewOnClickListener {
 
         void onClick(int position);
 
-        void onChecked(Boolean isChecked, Container favourite);
+        void onChecked(int position, Boolean isChecked, Container favourite);
     }
 
     @NonNull
@@ -149,8 +150,9 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            Log.d(TAG, "onCheckedChanged: " + getAdapterPosition());
             map.put(getAdapterPosition(), isChecked);
-            postRecyclerViewOnClickListener.onChecked(isChecked, posts.get(getAdapterPosition()));
+            postRecyclerViewOnClickListener.onChecked(getAdapterPosition(), isChecked, posts.get(getAdapterPosition()));
         }
     }
 }

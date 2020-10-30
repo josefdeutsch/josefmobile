@@ -20,7 +20,9 @@ import javax.inject.Inject;
 
 import io.reactivex.Flowable;
 import io.reactivex.Single;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 public class AuthViewModel extends ViewModel {
@@ -70,15 +72,26 @@ public class AuthViewModel extends ViewModel {
 
     public Flowable<AuthResource<User>> getFlowable(Task<GoogleSignInAccount> googleSignInAccountSingle) {
 
-        Flowable<AuthResource<User>> flowable = getGoogleSignedIn(googleSignInAccountSingle)
-                .flatMap(authCredential -> addOnFirebaseCompletionListener(authCredential))
-                .onErrorReturn(throwable -> {
-                    Log.e(TAG, "onErrorReturn: " + throwable.getMessage());
-                    User user = new User();
-                    user.setId(-1);
-                    return user;
-                })
-                .map(user -> getAuthResource(user))
+        Flowable<AuthResource<User>> flowable =
+                getGoogleSignedIn(googleSignInAccountSingle)
+
+                        .flatMap(authCredential -> addOnFirebaseCompletionListener(authCredential))
+
+                        .onErrorReturn(new Function<Throwable, User>() {
+                            @Override
+                            public User apply(@NonNull Throwable throwable) throws Exception {
+                                Log.e(TAG, "onErrorReturn: " + throwable.getMessage());
+                                User user = new User();
+                                user.setId(-1);
+                                return user;
+                            }
+                        })
+                        .map(new Function<User, AuthResource<User>>() {
+                            @Override
+                            public AuthResource<User> apply(@NonNull User user) throws Exception {
+                                return AuthViewModel.this.getAuthResource(user);
+                            }
+                        })
                 .toFlowable();
 
         compositeDisposable.add(flowable.subscribe());

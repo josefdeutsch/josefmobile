@@ -27,5 +27,10 @@ public class MainModule {
         return new PostRecyclerAdapter(requestManager, dataManager, util);
     }
 
+    /** @Provides
+     @MainScope static PostRecyclerAdapter.PostRecyclerViewOnClickListener getClickListener(PostsFragment postsFragment) {
+     return postsFragment;
+     }**/
+
 }
 

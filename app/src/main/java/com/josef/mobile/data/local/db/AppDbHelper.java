@@ -13,6 +13,7 @@ import javax.inject.Singleton;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -32,16 +33,20 @@ public class AppDbHelper implements DbHelper {
 
     @Override
     public Flowable<List<Archive>> getAllArchives() {
+
         return mAppDatabase.archiveDao().loadAll();
     }
 
-    public void insertArchives(final Archive archive) {
-        Completable.fromAction(() -> mAppDatabase.archiveDao().insert(archive))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> Toast.makeText(context, "Completed!", Toast.LENGTH_SHORT).show(),
-                        throwable -> Toast.makeText(context, "Error!", Toast.LENGTH_SHORT).show());
+    public Single<Archive> findbyName(final Archive archive) {
+        return mAppDatabase.archiveDao().findByName(archive.name);
+    }
 
+    public Completable insertArchive(final Archive archive) {
+        return mAppDatabase.archiveDao().insertUser(archive);
+    }
+
+    public Flowable<Archive> getArchive() {
+        return mAppDatabase.archiveDao().getArchive();
     }
 
     @Override
@@ -50,6 +55,15 @@ public class AppDbHelper implements DbHelper {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> Toast.makeText(context, "Deleted!", Toast.LENGTH_SHORT).show(),
+                        throwable -> Toast.makeText(context, "Error!", Toast.LENGTH_SHORT).show());
+    }
+
+    @Override
+    public void insertArchives(Archive archive) {
+        Completable.fromAction(() -> mAppDatabase.archiveDao().insert(archive))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> Toast.makeText(context, "Completed!", Toast.LENGTH_SHORT).show(),
                         throwable -> Toast.makeText(context, "Error!", Toast.LENGTH_SHORT).show());
     }
 

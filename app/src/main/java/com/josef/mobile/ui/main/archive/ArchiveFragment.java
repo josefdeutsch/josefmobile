@@ -47,6 +47,7 @@ public class ArchiveFragment extends DaggerFragment implements View.OnClickListe
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            viewModel.deleteArchivesPref(archive);
                             viewModel.deleteArchives(archive);
                         }
                     }).show();
