@@ -15,8 +15,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.josef.mobile.R;
 import com.josef.mobile.data.AppDataManager;
 import com.josef.mobile.data.DataManager;
@@ -121,12 +119,6 @@ public class AppModule {
     @Singleton
     PreferencesHelper providePreferencesHelper(AppPreferencesHelper appPreferencesHelper) {
         return appPreferencesHelper;
-    }
-
-    @Provides
-    @Singleton
-    Gson provideGson() {
-        return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
     }
 
     @Singleton

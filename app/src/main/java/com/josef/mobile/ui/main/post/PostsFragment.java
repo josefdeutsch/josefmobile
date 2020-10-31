@@ -44,7 +44,11 @@ public class PostsFragment extends BaseFragment implements PostRecyclerAdapter.P
 
     private RecyclerView recyclerView;
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,6 +74,7 @@ public class PostsFragment extends BaseFragment implements PostRecyclerAdapter.P
         subscribeObservers();
     }
 
+
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
 
@@ -84,10 +89,12 @@ public class PostsFragment extends BaseFragment implements PostRecyclerAdapter.P
                     switch (listResource.status) {
                         case LOADING: {
                             Log.d(TAG, "onChanged: PostsFragment: LOADING...");
+                            showProgressbar(getActivity());
                             break;
                         }
                         case SUCCESS: {
                             adapter.setPosts(listResource.data);
+                            hideProgessbar();
                             break;
                         }
                         case ERROR: {
