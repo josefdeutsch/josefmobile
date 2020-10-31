@@ -31,6 +31,7 @@ public class AppDataManager implements DataManager {
         this.dbHelper = dbHelper;
         this.endpoints = endpoints;
         this.preferencesHelper = preferencesHelper;
+        this.firebase = firebase;
     }
 
     public Flowable<List<Archive>> getAllArchives() {
@@ -81,4 +82,5 @@ public class AppDataManager implements DataManager {
     public DatabaseReference getDatabasereference() {
         return firebase.getDatabasereference();
     }
+
 }

@@ -20,12 +20,20 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.josef.mobile.R;
 import com.josef.mobile.ui.player.PlayerActivity;
+import com.josef.mobile.ui.player.helpers.remote.EndpointObserver;
+import com.josef.mobile.ui.player.helpers.remote.EndpointObserverHelper;
 
 import dagger.Module;
 import dagger.Provides;
 
 @Module
 public abstract class PlayerModule {
+
+    @PlayerScope
+    @Provides
+    static EndpointObserver provideEndpointsObserver(EndpointObserverHelper endpointObserverHelper) {
+        return endpointObserverHelper;
+    }
 
     @PlayerScope
     @Provides

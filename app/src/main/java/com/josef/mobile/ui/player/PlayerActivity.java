@@ -90,7 +90,7 @@ public class PlayerActivity extends DaggerAppCompatActivity {
 
     private void subscribeObserver() {
         viewModel.authenticateWithEndpoint(index);
-        viewModel.observeContainer().observe(this, new Observer<Resource<Container>>() {
+        viewModel.observeEndpoints().observe(this, new Observer<Resource<Container>>() {
             @Override
             public void onChanged(Resource<Container> listResource) {
                 if (listResource != null) {
@@ -101,7 +101,7 @@ public class PlayerActivity extends DaggerAppCompatActivity {
                         }
                         case SUCCESS: {
                             setupMediaSource(listResource.data.getUrl());
-                            Log.d(TAG, "onChanged: PlayerActivity: SUCCESS");
+                            Log.d(TAG, "onChanged: PlayerActivity:" + listResource.data.getUrl());
                             break;
                         }
                         case ERROR: {

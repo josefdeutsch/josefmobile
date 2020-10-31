@@ -148,7 +148,6 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            Log.d(TAG, "onCheckedChanged: " + getAdapterPosition());
             map.put(getAdapterPosition(), isChecked);
             postRecyclerViewOnClickListener.onChecked(getAdapterPosition(), isChecked, posts.get(getAdapterPosition()));
         }

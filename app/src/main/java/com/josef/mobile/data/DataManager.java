@@ -7,4 +7,5 @@ import com.josef.mobile.data.remote.Endpoints;
 
 public interface DataManager extends DbHelper, Endpoints, Firebase, PreferencesHelper {
 
+
 }

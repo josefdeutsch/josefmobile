@@ -69,7 +69,6 @@ public class PostsFragment extends DaggerFragment implements PostRecyclerAdapter
         viewModel = new ViewModelProvider(this, providerFactory).get(PostsViewModel.class);
         initRecyclerView();
         subscribeObservers();
-        // subscribeArchives();
     }
 
     public void onSaveInstanceState(Bundle savedInstanceState) {
@@ -78,8 +77,8 @@ public class PostsFragment extends DaggerFragment implements PostRecyclerAdapter
     }
 
     private void subscribeObservers() {
-        viewModel.observeListofContainer().removeObservers(getViewLifecycleOwner());
-        viewModel.observeListofContainer().observe(getViewLifecycleOwner(), new Observer<Resource<List<Container>>>() {
+        viewModel.observeEndpoints().removeObservers(getViewLifecycleOwner());
+        viewModel.observeEndpoints().observe(getViewLifecycleOwner(), new Observer<Resource<List<Container>>>() {
             @Override
             public void onChanged(Resource<List<Container>> listResource) {
                 if (listResource != null) {
