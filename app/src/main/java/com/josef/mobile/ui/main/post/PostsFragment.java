@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.josef.mobile.R;
+import com.josef.mobile.ui.base.BaseFragment;
 import com.josef.mobile.ui.main.Resource;
 import com.josef.mobile.ui.main.archive.model.Archive;
 import com.josef.mobile.ui.main.post.model.Container;
@@ -25,13 +26,11 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import dagger.android.support.DaggerFragment;
-
 import static com.josef.mobile.utils.AppConstants.PLAYERACTIVIY;
 import static com.josef.mobile.utils.AppConstants.REQUEST_INDEX;
 
 
-public class PostsFragment extends DaggerFragment implements PostRecyclerAdapter.PostRecyclerViewOnClickListener {
+public class PostsFragment extends BaseFragment implements PostRecyclerAdapter.PostRecyclerViewOnClickListener {
 
     private static final String TAG = "PostsFragment";
 

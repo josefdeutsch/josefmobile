@@ -14,13 +14,12 @@ import androidx.lifecycle.Observer;
 import com.josef.mobile.R;
 import com.josef.mobile.ui.auth.AuthResource;
 import com.josef.mobile.ui.auth.model.User;
+import com.josef.mobile.ui.base.BaseFragment;
 import com.josef.mobile.viewmodels.ViewModelProviderFactory;
 
 import javax.inject.Inject;
 
-import dagger.android.support.DaggerFragment;
-
-public class ProfileFragment extends DaggerFragment {
+public class ProfileFragment extends BaseFragment {
 
     private static final String TAG = "ProfileFragment";
     @Inject

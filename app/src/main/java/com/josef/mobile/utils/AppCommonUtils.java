@@ -6,12 +6,12 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class AppUtil implements Util {
+public class AppCommonUtils implements CommonUtils {
 
     Gson gson;
 
     @Inject
-    public AppUtil(Gson gson) {
+    public AppCommonUtils(Gson gson) {
         this.gson = gson;
     }
 

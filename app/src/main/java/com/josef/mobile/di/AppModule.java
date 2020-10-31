@@ -28,9 +28,9 @@ import com.josef.mobile.data.local.db.DbHelper;
 import com.josef.mobile.data.local.prefs.AppPreferencesHelper;
 import com.josef.mobile.data.local.prefs.PreferencesHelper;
 import com.josef.mobile.data.remote.Endpoints;
+import com.josef.mobile.utils.AppCommonUtils;
 import com.josef.mobile.utils.AppConstants;
-import com.josef.mobile.utils.AppUtil;
-import com.josef.mobile.utils.Util;
+import com.josef.mobile.utils.CommonUtils;
 
 import javax.inject.Singleton;
 
@@ -91,8 +91,8 @@ public class AppModule {
 
     @Provides
     @Singleton
-    Util provideUtil(AppUtil appUtil) {
-        return appUtil;
+    CommonUtils provideUtil(AppCommonUtils appCommonUtils) {
+        return appCommonUtils;
     }
 
     @Provides

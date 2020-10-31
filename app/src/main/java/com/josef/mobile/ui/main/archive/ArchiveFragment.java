@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.josef.mobile.R;
+import com.josef.mobile.ui.base.BaseFragment;
 import com.josef.mobile.ui.main.MainActivity;
 import com.josef.mobile.ui.main.Resource;
 import com.josef.mobile.ui.main.archive.model.Archive;
@@ -26,9 +27,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import dagger.android.support.DaggerFragment;
-
-public class ArchiveFragment extends DaggerFragment implements View.OnClickListener {
+public class ArchiveFragment extends BaseFragment implements View.OnClickListener {
 
     @Inject
     ViewModelProviderFactory providerFactory;

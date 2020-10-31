@@ -12,7 +12,7 @@ import com.josef.mobile.ui.main.archive.helpers.local.ArchiveDatabaseHelper;
 import com.josef.mobile.ui.main.post.PostRecyclerAdapter;
 import com.josef.mobile.ui.main.post.helpers.remote.EndpointsObserver;
 import com.josef.mobile.ui.main.post.helpers.remote.EndpointsObserverHelper;
-import com.josef.mobile.utils.Util;
+import com.josef.mobile.utils.CommonUtils;
 
 import dagger.Module;
 import dagger.Provides;
@@ -30,8 +30,8 @@ public class MainModule {
 
     @MainScope
     @Provides
-    static PostRecyclerAdapter providePostRecyclerAdapter(RequestManager requestManager, DataManager dataManager, Util util) {
-        return new PostRecyclerAdapter(requestManager, dataManager, util);
+    static PostRecyclerAdapter providePostRecyclerAdapter(RequestManager requestManager, DataManager dataManager, CommonUtils commonUtils) {
+        return new PostRecyclerAdapter(requestManager, dataManager, commonUtils);
     }
 
     @MainScope

@@ -16,8 +16,8 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
-import com.josef.mobile.BaseActivity;
 import com.josef.mobile.R;
+import com.josef.mobile.ui.base.BaseActivity;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 

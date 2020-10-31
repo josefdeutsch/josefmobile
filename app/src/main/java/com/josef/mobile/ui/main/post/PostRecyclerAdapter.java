@@ -18,7 +18,7 @@ import com.google.gson.Gson;
 import com.josef.mobile.R;
 import com.josef.mobile.data.DataManager;
 import com.josef.mobile.ui.main.post.model.Container;
-import com.josef.mobile.utils.Util;
+import com.josef.mobile.utils.CommonUtils;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private final RequestManager requestManager;
     private final DataManager datamanager;
-    private final Util util;
+    private final CommonUtils commonUtils;
 
 
     private PostRecyclerViewOnClickListener postRecyclerViewOnClickListener;
@@ -44,10 +44,10 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private List<Container> posts = new ArrayList<>();
 
     @Inject
-    public PostRecyclerAdapter(RequestManager requestManager, DataManager datamanager, Util util) {
+    public PostRecyclerAdapter(RequestManager requestManager, DataManager datamanager, CommonUtils commonUtils) {
         this.requestManager = requestManager;
         this.datamanager = datamanager;
-        this.util = util;
+        this.commonUtils = commonUtils;
         Log.d(TAG, "PostRecyclerAdapter: ");
 
     }
@@ -73,7 +73,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         } else {
             Type sparseArrayType = new TypeToken<HashMap<Integer, Boolean>>() {
             }.getType();
-            Gson gson = util.getGson();
+            Gson gson = commonUtils.getGson();
             String stringmap = datamanager.getHashString();
             map = gson.fromJson(stringmap, sparseArrayType);
         }
@@ -82,7 +82,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onDetachedFromRecyclerView(recyclerView);
-        Gson gson = util.getGson();
+        Gson gson = commonUtils.getGson();
         String string = gson.toJson(map);
         datamanager.setHashString(string);
     }

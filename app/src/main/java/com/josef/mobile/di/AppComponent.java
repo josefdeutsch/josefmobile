@@ -5,6 +5,7 @@ import android.app.Application;
 import com.josef.mobile.BaseApplication;
 import com.josef.mobile.SessionManager;
 import com.josef.mobile.data.DataManager;
+import com.josef.mobile.utils.CommonUtils;
 
 import javax.inject.Singleton;
 
@@ -27,6 +28,8 @@ public interface AppComponent extends AndroidInjector<BaseApplication> {
     SessionManager sessionManager();
 
     DataManager dataManager();
+
+    CommonUtils commonUtils();
 
     @Component.Builder
     interface Builder {
