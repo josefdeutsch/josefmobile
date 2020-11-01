@@ -5,7 +5,7 @@ import android.app.Application;
 import com.josef.mobile.BaseApplication;
 import com.josef.mobile.SessionManager;
 import com.josef.mobile.data.DataManager;
-import com.josef.mobile.utils.CommonUtils;
+import com.josef.mobile.utils.UtilManager;
 
 import javax.inject.Singleton;
 
@@ -29,7 +29,7 @@ public interface AppComponent extends AndroidInjector<BaseApplication> {
 
     DataManager dataManager();
 
-    CommonUtils commonUtils();
+    UtilManager commonUtils();
 
     @Component.Builder
     interface Builder {

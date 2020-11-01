@@ -26,9 +26,13 @@ import com.josef.mobile.data.local.db.DbHelper;
 import com.josef.mobile.data.local.prefs.AppPreferencesHelper;
 import com.josef.mobile.data.local.prefs.PreferencesHelper;
 import com.josef.mobile.data.remote.Endpoints;
-import com.josef.mobile.utils.AppCommonUtils;
 import com.josef.mobile.utils.AppConstants;
-import com.josef.mobile.utils.CommonUtils;
+import com.josef.mobile.utils.AppUtilManager;
+import com.josef.mobile.utils.UtilManager;
+import com.josef.mobile.utils.common.AppCommonUtils;
+import com.josef.mobile.utils.common.CommonUtils;
+import com.josef.mobile.utils.net.AppNetworkUtils;
+import com.josef.mobile.utils.net.NetworkUtils;
 
 import javax.inject.Singleton;
 
@@ -86,12 +90,24 @@ public class AppModule {
         return retrofit.create(Endpoints.class);
     }
 
+    @Provides
+    @Singleton
+    UtilManager provideUtil(AppUtilManager utilManager) {
+        return utilManager;
+    }
 
     @Provides
     @Singleton
-    CommonUtils provideUtil(AppCommonUtils appCommonUtils) {
+    CommonUtils provideCommonUtil(AppCommonUtils appCommonUtils) {
         return appCommonUtils;
     }
+
+    @Provides
+    @Singleton
+    NetworkUtils provideNetworkUtil(AppNetworkUtils appNetworkUtils) {
+        return appNetworkUtils;
+    }
+
 
     @Provides
     @Singleton

@@ -1,8 +1,7 @@
-package com.josef.mobile.utils;
+package com.josef.mobile.utils.common;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -14,13 +13,11 @@ import javax.inject.Singleton;
 public class AppCommonUtils implements CommonUtils {
 
     Gson gson;
-    Context context;
     Dialog dialog;
-    Activity activity;
 
     @Inject
-    public AppCommonUtils(Context context) {
-        this.context = context;
+    public AppCommonUtils() {
+
     }
 
     @Override
@@ -31,7 +28,6 @@ public class AppCommonUtils implements CommonUtils {
 
     @Override
     public Dialog getDialog(Activity activity) {
-        this.activity = activity;
         if (dialog == null)
             dialog = new Dialog(activity, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         return dialog;

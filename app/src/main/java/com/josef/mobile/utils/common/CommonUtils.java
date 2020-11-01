@@ -1,4 +1,4 @@
-package com.josef.mobile.utils;
+package com.josef.mobile.utils.common;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -10,6 +10,4 @@ public interface CommonUtils {
     Gson getGson();
 
     Dialog getDialog(Activity activity);
-
-
 }

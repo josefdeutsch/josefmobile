@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.josef.mobile.R;
-import com.josef.mobile.utils.CommonUtils;
+import com.josef.mobile.utils.UtilManager;
 
 import javax.inject.Inject;
 
@@ -16,14 +16,16 @@ import dagger.android.support.DaggerFragment;
 public abstract class BaseFragment extends DaggerFragment {
 
     public Activity activity;
+
     @Inject
-    CommonUtils commonUtils;
+    UtilManager utilManager;
+
     Dialog dialog;
 
     public void showProgressbar(Activity activity) {
         LayoutInflater layoutInflater = getLayoutInflater();
         View view = layoutInflater.inflate(R.layout.progress_dialog, null);
-        dialog = commonUtils.getDialog(activity);
+        dialog = utilManager.getDialog(activity);
         dialog.addContentView(view.findViewById(R.id.fullprogressbar), new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         dialog.show();
     }

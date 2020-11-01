@@ -15,7 +15,7 @@ import com.josef.mobile.ui.auth.model.User;
 import com.josef.mobile.ui.main.MainActivity;
 import com.josef.mobile.ui.main.archive.model.Archive;
 import com.josef.mobile.ui.main.archive.model.Data;
-import com.josef.mobile.utils.CommonUtils;
+import com.josef.mobile.utils.UtilManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,15 +41,15 @@ public class FirebaseUploadHelper implements FirebaseUpload {
 
     private static final String TAG = "FirebaseUploadHelper";
     private final DataManager dataManager;
-    private final CommonUtils commonUtils;
+    private final UtilManager utilManager;
     private final SessionManager sessionManager;
     private final Context context;
 
     @Inject
-    public FirebaseUploadHelper(DataManager dataManager, SessionManager sessionManager, Context context, CommonUtils commonUtils) {
+    public FirebaseUploadHelper(DataManager dataManager, SessionManager sessionManager, Context context, UtilManager utilManager) {
         this.dataManager = dataManager;
         this.sessionManager = sessionManager;
-        this.commonUtils = commonUtils;
+        this.utilManager = utilManager;
         this.context = context;
     }
 

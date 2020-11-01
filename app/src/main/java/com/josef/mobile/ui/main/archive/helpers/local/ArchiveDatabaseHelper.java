@@ -13,7 +13,7 @@ import com.google.gson.Gson;
 import com.josef.mobile.data.DataManager;
 import com.josef.mobile.ui.main.Resource;
 import com.josef.mobile.ui.main.archive.model.Archive;
-import com.josef.mobile.utils.CommonUtils;
+import com.josef.mobile.utils.UtilManager;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -35,15 +35,15 @@ public class ArchiveDatabaseHelper implements ArchiveDatabase {
 
     private static final String TAG = "ArchiveDatabaseHelper";
     private final Context context;
-    private final CommonUtils commonUtils;
+    private final UtilManager utilManager;
     private final DataManager dataManager;
     private MediatorLiveData<Resource<List<Archive>>> posts;
 
 
     @Inject
-    public ArchiveDatabaseHelper(DataManager dataManager, CommonUtils commonUtils, Context context) {
+    public ArchiveDatabaseHelper(DataManager dataManager, UtilManager utilManager, Context context) {
         this.dataManager = dataManager;
-        this.commonUtils = commonUtils;
+        this.utilManager = utilManager;
         this.context = context;
     }
 
@@ -98,7 +98,7 @@ public class ArchiveDatabaseHelper implements ArchiveDatabase {
                 Completable.fromAction(() -> {
                     Type sparseArrayType = new TypeToken<HashMap<Integer, Boolean>>() {
                     }.getType();
-                    Gson gson = commonUtils.getGson();
+                    Gson gson = utilManager.getGson();
                     String stringmap = dataManager.getHashString();
                     HashMap<Integer, Boolean> map = gson.fromJson(stringmap, sparseArrayType);
                     map.replace((int) id, false);

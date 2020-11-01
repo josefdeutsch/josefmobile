@@ -22,7 +22,7 @@
     </basic-scaling>
 
     <system-properties>
-        <property name="java.commonUtils.logging.config.file" value="WEB-INF/logging.properties" />
+        <property name="java.utilManager.logging.config.file" value="WEB-INF/logging.properties" />
     </system-properties>
 
     <!-- [START env_variables] -->
