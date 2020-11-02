@@ -39,9 +39,15 @@ public class AppUtilManager implements UtilManager {
     }
 
     @Override
-    public Dialog getNoInternetConnection(Activity activity) {
-        return commonUtils.getNoInternetConnection(activity);
+    public void showNoInternetConnection(Activity activity) {
+        commonUtils.showNoInternetConnection(activity);
     }
+
+    @Override
+    public void hideNoInternetConnection(Activity activity) {
+        commonUtils.hideNoInternetConnection(activity);
+    }
+
 
     @Override
     public Single<Boolean> isInternet() {

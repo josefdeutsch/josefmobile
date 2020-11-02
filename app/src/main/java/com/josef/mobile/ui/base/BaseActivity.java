@@ -2,7 +2,6 @@ package com.josef.mobile.ui.base;
 
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,7 +9,6 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 
-import com.josef.mobile.R;
 import com.josef.mobile.SessionManager;
 import com.josef.mobile.ui.auth.AuthActivity;
 import com.josef.mobile.ui.auth.AuthResource;
@@ -39,26 +37,18 @@ public abstract class BaseActivity extends DaggerAppCompatActivity {
         subscribeObservers();
         activity = this;
 
-        //  Dialog dialog = new Dialog(activity,android.R.style.Theme_Black_NoTitleBar_Fullscreen);
-        // dialog.setContentView(R.layout.nowifi_dialog);
-
         ConnectionLiveData connectionLiveData = new ConnectionLiveData(this);
         connectionLiveData.removeObservers(this);
         connectionLiveData.observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
 
-                Dialog dialog = utilManager.getNoInternetConnection(activity);
-                dialog.setContentView(R.layout.nowifi_dialog);
-
-                Log.d(TAG, "onChanged: " + dialog.toString());
                 if (aBoolean) {
                     Log.d(TAG, "onChanged: " + aBoolean);
-                    dialog.hide();
-                    dialog.dismiss();
+                    utilManager.hideNoInternetConnection(activity);
                 } else {
                     Log.d(TAG, "onChanged: " + aBoolean);
-                    dialog.show();
+                    utilManager.showNoInternetConnection(activity);
                 }
             }
         });
@@ -107,15 +97,6 @@ public abstract class BaseActivity extends DaggerAppCompatActivity {
         finish();
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Dialog dialog = utilManager.getNoInternetConnection(activity);
-        if ((dialog != null) && dialog.isShowing()) {
-            dialog.dismiss();
-            dialog = null;
-        }
-    }
 
 
 }

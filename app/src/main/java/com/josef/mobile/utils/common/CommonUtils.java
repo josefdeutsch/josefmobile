@@ -11,5 +11,8 @@ public interface CommonUtils {
 
     Dialog getDialog(Activity activity);
 
-    Dialog getNoInternetConnection(Activity activity);
+    void showNoInternetConnection(Activity activity);
+
+    void hideNoInternetConnection(Activity activity);
+
 }

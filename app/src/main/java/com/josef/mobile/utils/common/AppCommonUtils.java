@@ -5,6 +5,7 @@ import android.app.Dialog;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.josef.mobile.R;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -33,25 +34,23 @@ public class AppCommonUtils implements CommonUtils {
         return dialog;
     }
 
+
     @Override
-    public Dialog getNoInternetConnection(Activity activity) {
-
-        if (dialog == null)
+    public void showNoInternetConnection(Activity activity) {
+        if (dialog == null) {
             dialog = new Dialog(activity, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
-
-        /** if (activity.equals(this.activity) && dialog == null) {
-         dialog = new Dialog(activity, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
-         return dialog;
-         }
-         if (!activity.equals(this.activity) && dialog == null) {
-         dialog = new Dialog(activity, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
-         return dialog;
-         }
-         if (!activity.equals(this.activity) && dialog != null) {
-         dialog = new Dialog(activity, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
-         return dialog;
-         }**/
-
-        return dialog;
+            dialog.setContentView(R.layout.nowifi_dialog);
+            dialog.show();
+        }
     }
+
+    @Override
+    public void hideNoInternetConnection(Activity activity) {
+        if (dialog != null) {
+            dialog.hide();
+            dialog.dismiss();
+            dialog = null;
+        }
+    }
+
 }
