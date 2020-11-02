@@ -14,8 +14,8 @@ import javax.inject.Singleton;
 public class AppCommonUtils implements CommonUtils {
 
     Gson gson;
-    Activity activity;
-    Dialog dialog;
+    Dialog noNetwork;
+    Dialog progressBar;
 
     @Inject
     public AppCommonUtils() {
@@ -36,20 +36,39 @@ public class AppCommonUtils implements CommonUtils {
 
 
     @Override
-    public void showNoInternetConnection(Activity activity) {
-        if (dialog == null) {
-            dialog = new Dialog(activity, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
-            dialog.setContentView(R.layout.nowifi_dialog);
-            dialog.show();
+    public void showProgressbar(Activity activity) {
+        if (progressBar == null) {
+            progressBar = new Dialog(activity, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+            progressBar.setContentView(R.layout.progress_dialog);
+            progressBar.show();
         }
     }
 
     @Override
-    public void hideNoInternetConnection(Activity activity) {
-        if (dialog != null) {
-            dialog.hide();
-            dialog.dismiss();
-            dialog = null;
+    public void hideProgressbar() {
+        if (progressBar != null) {
+            progressBar.hide();
+            progressBar.dismiss();
+            progressBar = null;
+        }
+    }
+
+
+    @Override
+    public void showNoInternetConnection(Activity activity) {
+        if (noNetwork == null) {
+            noNetwork = new Dialog(activity, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+            noNetwork.setContentView(R.layout.nowifi_dialog);
+            noNetwork.show();
+        }
+    }
+
+    @Override
+    public void hideNoInternetConnection() {
+        if (noNetwork != null) {
+            noNetwork.hide();
+            noNetwork.dismiss();
+            noNetwork = null;
         }
     }
 

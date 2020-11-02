@@ -15,17 +15,13 @@ import io.reactivex.Single;
 @Singleton
 public class AppUtilManager implements UtilManager {
 
-    private CommonUtils commonUtils;
-    private NetworkUtils networkUtils;
+    private final CommonUtils commonUtils;
+    private final NetworkUtils networkUtils;
 
     @Inject
     public AppUtilManager(NetworkUtils networkUtils, CommonUtils commonUtils) {
         this.commonUtils = commonUtils;
         this.networkUtils = networkUtils;
-    }
-
-    public AppUtilManager() {
-
     }
 
     @Override
@@ -44,8 +40,19 @@ public class AppUtilManager implements UtilManager {
     }
 
     @Override
-    public void hideNoInternetConnection(Activity activity) {
-        commonUtils.hideNoInternetConnection(activity);
+    public void hideNoInternetConnection() {
+        commonUtils.hideNoInternetConnection();
+
+    }
+
+    @Override
+    public void showProgressbar(Activity activity) {
+        commonUtils.showProgressbar(activity);
+    }
+
+    @Override
+    public void hideProgressbar() {
+        commonUtils.hideProgressbar();
     }
 
 

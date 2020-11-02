@@ -13,6 +13,10 @@ public interface CommonUtils {
 
     void showNoInternetConnection(Activity activity);
 
-    void hideNoInternetConnection(Activity activity);
+    void hideNoInternetConnection();
+
+    void showProgressbar(Activity activity);
+
+    void hideProgressbar();
 
 }
