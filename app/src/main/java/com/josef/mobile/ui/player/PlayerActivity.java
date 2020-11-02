@@ -105,6 +105,7 @@ public class PlayerActivity extends DaggerAppCompatActivity {
                             break;
                         }
                         case ERROR: {
+                            finish();
                             Log.d(TAG, "onChanged: PlayerActivity: ERROR... " + listResource.message);
                             break;
                         }

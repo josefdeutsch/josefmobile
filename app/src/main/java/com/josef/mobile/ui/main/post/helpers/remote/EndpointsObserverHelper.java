@@ -13,6 +13,7 @@ import com.josef.mobile.data.DataManager;
 import com.josef.mobile.data.remote.model.Endpoint;
 import com.josef.mobile.ui.main.Resource;
 import com.josef.mobile.ui.main.post.model.Container;
+import com.josef.mobile.utils.UtilManager;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -34,11 +35,13 @@ public class EndpointsObserverHelper implements EndpointsObserver {
     private static final String TAG = "EndpointsObserverHelper";
 
     private final DataManager dataManager;
+    private final UtilManager utilManager;
     private MediatorLiveData<Resource<List<Container>>> containers = new MediatorLiveData<>();
 
     @Inject
-    public EndpointsObserverHelper(DataManager dataManager) {
+    public EndpointsObserverHelper(DataManager dataManager, UtilManager utilManager) {
         this.dataManager = dataManager;
+        this.utilManager = utilManager;
 
     }
 
@@ -56,8 +59,12 @@ public class EndpointsObserverHelper implements EndpointsObserver {
 
     public LiveData<Resource<List<Container>>> observeEndpoints() {
         if (containers == null) containers = new MediatorLiveData<>();
+
         Flowable<Endpoint> endpointFlowable = dataManager.getChange(BASE_URL3 + "_ah/api/echo/v1/echo?n=1");
+
+
         containers.setValue(Resource.loading(null));
+
         final LiveData<Resource<List<Container>>> source = LiveDataReactiveStreams.fromPublisher(
                 endpointFlowable
                         .map(endpoint -> {

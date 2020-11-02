@@ -10,11 +10,13 @@ import com.josef.mobile.utils.net.NetworkUtils;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import io.reactivex.Single;
+
 @Singleton
 public class AppUtilManager implements UtilManager {
 
-    private final CommonUtils commonUtils;
-    private final NetworkUtils networkUtils;
+    private CommonUtils commonUtils;
+    private NetworkUtils networkUtils;
 
     @Inject
     public AppUtilManager(NetworkUtils networkUtils, CommonUtils commonUtils) {
@@ -22,6 +24,9 @@ public class AppUtilManager implements UtilManager {
         this.networkUtils = networkUtils;
     }
 
+    public AppUtilManager() {
+
+    }
 
     @Override
     public Gson getGson() {
@@ -34,7 +39,12 @@ public class AppUtilManager implements UtilManager {
     }
 
     @Override
-    public boolean isNetworkAvailable() {
-        return networkUtils.isNetworkAvailable();
+    public Dialog getNoInternetConnection(Activity activity) {
+        return commonUtils.getNoInternetConnection(activity);
+    }
+
+    @Override
+    public Single<Boolean> isInternet() {
+        return networkUtils.isInternet();
     }
 }

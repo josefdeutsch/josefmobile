@@ -13,6 +13,7 @@ import javax.inject.Singleton;
 public class AppCommonUtils implements CommonUtils {
 
     Gson gson;
+    Activity activity;
     Dialog dialog;
 
     @Inject
@@ -28,8 +29,29 @@ public class AppCommonUtils implements CommonUtils {
 
     @Override
     public Dialog getDialog(Activity activity) {
+        Dialog dialog = new Dialog(activity, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        return dialog;
+    }
+
+    @Override
+    public Dialog getNoInternetConnection(Activity activity) {
+
         if (dialog == null)
             dialog = new Dialog(activity, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+
+        /** if (activity.equals(this.activity) && dialog == null) {
+         dialog = new Dialog(activity, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+         return dialog;
+         }
+         if (!activity.equals(this.activity) && dialog == null) {
+         dialog = new Dialog(activity, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+         return dialog;
+         }
+         if (!activity.equals(this.activity) && dialog != null) {
+         dialog = new Dialog(activity, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+         return dialog;
+         }**/
+
         return dialog;
     }
 }

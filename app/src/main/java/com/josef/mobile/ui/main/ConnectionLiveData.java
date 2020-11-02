@@ -1,4 +1,4 @@
-package com.josef.mobile.utils.net;
+package com.josef.mobile.ui.main;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -11,27 +11,17 @@ import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
-import java.util.concurrent.Callable;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-import io.reactivex.Single;
-
 import static android.content.ContentValues.TAG;
 
-@Singleton
-public class AppNetworkUtils extends LiveData<Boolean> implements NetworkUtils {
+public class ConnectionLiveData extends LiveData<Boolean> {
 
     private final Context context;
     private ConnectivityManager connectivityManager;
-
     private final BroadcastReceiver networkReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(final Context context, final Intent intent) {
             if (isNetworkAvailable()) {
                 postValue(true);
-                Log.d(TAG, "onReceive: " + true);
             } else {
                 postValue(false);
                 Log.d(TAG, "onReceive: " + false);
@@ -39,19 +29,15 @@ public class AppNetworkUtils extends LiveData<Boolean> implements NetworkUtils {
         }
     };
 
-
-    @Inject
-    public AppNetworkUtils(Context context) {
+    public ConnectionLiveData(Context context) {
         this.context = context;
     }
-
-    AppNetworkUtils appNetworkUtils;
 
     @Override
     protected void onActive() {
         super.onActive();
-        IntentFilter intentFilter = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");
-        context.registerReceiver(networkReceiver, intentFilter);
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        context.registerReceiver(networkReceiver, filter);
     }
 
     @Override
@@ -72,22 +58,4 @@ public class AppNetworkUtils extends LiveData<Boolean> implements NetworkUtils {
                         actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) ||
                         actNw.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH));
     }
-
-    public Single<Boolean> isInternet() {
-        AppNetworkUtils appNetworkUtils = new AppNetworkUtils(context);
-        return null;
-
-    }
-
-    private Single<Boolean> buildObserver() {
-        return Single.fromCallable(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                return null;
-            }
-        });
-    }
 }
-
-
-

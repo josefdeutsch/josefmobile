@@ -10,4 +10,6 @@ public interface CommonUtils {
     Gson getGson();
 
     Dialog getDialog(Activity activity);
+
+    Dialog getNoInternetConnection(Activity activity);
 }

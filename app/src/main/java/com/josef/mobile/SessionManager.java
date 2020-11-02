@@ -40,7 +40,6 @@ public class SessionManager {
     }
 
     public LiveData<AuthResource<User>> getAuthUser() {
-
         return cachedUser;
     }
 

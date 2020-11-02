@@ -28,12 +28,11 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Observable;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.BiFunction;
+import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
 @Singleton
@@ -65,42 +64,38 @@ public class FirebaseUploadHelper implements FirebaseUpload {
         Observable<List<Archive>> archives = dataManager.getAllArchives().toObservable();
         compositeDisposable.add(archives.subscribe());
 
-        Observable.zip(
-                currentuser,
-                archives,
-                new BiFunction<User, List<Archive>, DatabaseReference>() {
-                    @NonNull
-                    @Override
-                    public DatabaseReference apply(@NonNull User user, @NonNull List<Archive> archives) throws Exception {
-                        return upload(user, archives);
-                    }
-                }
+        compositeDisposable.add(
+                Observable.zip(
+                        currentuser,
+                        archives,
+                        new BiFunction<User, List<Archive>, DatabaseReference>() {
+                            @NonNull
+                            @Override
+                            public DatabaseReference apply(@NonNull User user, @NonNull List<Archive> archives) throws Exception {
+                                return upload(user, archives);
+                            }
+                        }
 
-        ).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DatabaseReference>() {
+                ).subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeWith(new DisposableObserver<DatabaseReference>() {
 
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-                        compositeDisposable.add(d);
-                    }
+                            @Override
+                            public void onNext(@NonNull DatabaseReference reference) {
+                                Toast.makeText(context, "Success !", Toast.LENGTH_SHORT).show();
+                            }
 
-                    @Override
-                    public void onNext(@NonNull DatabaseReference reference) {
-                        Toast.makeText(context, "Success !", Toast.LENGTH_SHORT).show();
-                    }
+                            @Override
+                            public void onError(@NonNull Throwable e) {
+                                Toast.makeText(context, "Error !", Toast.LENGTH_SHORT).show();
+                                Log.e(TAG, "onError: " + e.getMessage());
+                            }
 
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        Toast.makeText(context, "Error !", Toast.LENGTH_SHORT).show();
-                        Log.e(TAG, "onError: " + e.getMessage());
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        Toast.makeText(context, "Completed!", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                            @Override
+                            public void onComplete() {
+                                Toast.makeText(context, "Completed!", Toast.LENGTH_SHORT).show();
+                            }
+                        }));
 
     }
 

@@ -31,6 +31,7 @@ public interface AppComponent extends AndroidInjector<BaseApplication> {
 
     UtilManager commonUtils();
 
+
     @Component.Builder
     interface Builder {
 

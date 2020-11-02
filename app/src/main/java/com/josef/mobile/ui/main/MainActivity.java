@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LifecycleRegistry;
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
@@ -19,10 +21,10 @@ import com.google.android.material.navigation.NavigationView;
 import com.josef.mobile.R;
 import com.josef.mobile.ui.base.BaseActivity;
 
-public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, LifecycleOwner {
 
     private static final String TAG = "MainActivity";
-
+    private LifecycleRegistry lifecycleRegistry;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
 
@@ -33,7 +35,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         setContentView(R.layout.activity_main);
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
-
+        //  lifecycleRegistry = new LifecycleRegistry(this);
         init();
     }
 
@@ -134,6 +136,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             super.onBackPressed();
         }
     }
+
+
 }
 
 

@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.josef.mobile.R;
 import com.josef.mobile.ui.base.BaseFragment;
+import com.josef.mobile.ui.main.ConnectionLiveData;
 import com.josef.mobile.ui.main.Resource;
 import com.josef.mobile.ui.main.archive.model.Archive;
 import com.josef.mobile.ui.main.post.model.Container;
@@ -30,7 +31,8 @@ import static com.josef.mobile.utils.AppConstants.PLAYERACTIVIY;
 import static com.josef.mobile.utils.AppConstants.REQUEST_INDEX;
 
 
-public class PostsFragment extends BaseFragment implements PostRecyclerAdapter.PostRecyclerViewOnClickListener {
+public class PostsFragment extends BaseFragment
+        implements PostRecyclerAdapter.PostRecyclerViewOnClickListener {
 
     private static final String TAG = "PostsFragment";
 
@@ -40,9 +42,12 @@ public class PostsFragment extends BaseFragment implements PostRecyclerAdapter.P
     @Inject
     ViewModelProviderFactory providerFactory;
 
+    ConnectionLiveData connectionLiveData;
+
     private PostsViewModel viewModel;
 
     private RecyclerView recyclerView;
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -53,6 +58,7 @@ public class PostsFragment extends BaseFragment implements PostRecyclerAdapter.P
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         Log.d(TAG, "onCreate: ");
 
     }
@@ -70,8 +76,10 @@ public class PostsFragment extends BaseFragment implements PostRecyclerAdapter.P
         recyclerView = view.findViewById(R.id.recycler_view);
         adapter.setPostRecyclerViewOnClickListener(this);
         viewModel = new ViewModelProvider(this, providerFactory).get(PostsViewModel.class);
+
         initRecyclerView();
         subscribeObservers();
+
     }
 
 
@@ -98,6 +106,8 @@ public class PostsFragment extends BaseFragment implements PostRecyclerAdapter.P
                             break;
                         }
                         case ERROR: {
+                            hideProgessbar();
+                            getActivity().finish();
                             Log.d(TAG, "onChanged: PostsFragment: ERROR... " + listResource.message);
                             break;
                         }
@@ -139,6 +149,7 @@ public class PostsFragment extends BaseFragment implements PostRecyclerAdapter.P
             viewModel.deleteArchives(archive);
         }
     }
+
 
     @Override
     public void onDestroy() {
