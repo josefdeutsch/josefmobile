@@ -1,10 +1,11 @@
 package com.josef.mobile.ui.main.archive.helpers.firebase;
 
+import com.google.firebase.database.DatabaseReference;
 import com.josef.mobile.ui.main.MainActivity;
 
-import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.Observable;
 
 public interface FirebaseUpload {
 
-    void synchronize(MainActivity mainActivity, CompositeDisposable compositeDisposable);
+      Observable<DatabaseReference> synchronize(MainActivity mainActivity);
 }

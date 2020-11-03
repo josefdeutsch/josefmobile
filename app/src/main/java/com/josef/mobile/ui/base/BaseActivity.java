@@ -44,10 +44,8 @@ public abstract class BaseActivity extends DaggerAppCompatActivity {
             public void onChanged(Boolean aBoolean) {
 
                 if (aBoolean) {
-                    Log.d(TAG, "onChanged: " + aBoolean);
                     utilManager.hideNoInternetConnection();
                 } else {
-                    Log.d(TAG, "onChanged: " + aBoolean);
                     utilManager.showNoInternetConnection(activity);
                 }
             }

@@ -95,6 +95,7 @@ public class AuthActivity extends DaggerAppCompatActivity implements
     }
 
     public void subscribeObserver() {
+
         viewModel = new ViewModelProvider(this, providerFactory).get(AuthViewModel.class);
         viewModel.getPosts().observe(this, new Observer<AuthResource<User>>() {
             @Override

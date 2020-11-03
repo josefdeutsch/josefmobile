@@ -1,6 +1,9 @@
 package com.josef.mobile.ui.player;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.LiveDataReactiveStreams;
+import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.Observer;
 
 import com.josef.mobile.data.DataManager;
 import com.josef.mobile.ui.base.BaseViewModel;
@@ -15,6 +18,8 @@ public class PlayerViewModel extends BaseViewModel {
     private final DataManager dataManager;
     private final EndpointObserver endpointObserver;
 
+    private MediatorLiveData<Resource<Container>> container;
+
     @Inject
     public PlayerViewModel(DataManager dataManager, EndpointObserver endpointObserver) {
         this.dataManager = dataManager;
@@ -22,10 +27,21 @@ public class PlayerViewModel extends BaseViewModel {
     }
 
     public void authenticateWithEndpoint(final int index) {
-        endpointObserver.observeEndpoints(index);
+        if (container == null) container = new MediatorLiveData<>();
+        container.setValue(Resource.loading(null));
+        final LiveData<Resource<Container>> source
+                = LiveDataReactiveStreams.fromPublisher(endpointObserver.observeEndpoints(index));
+        container.setValue(Resource.loading(null));
+        container.addSource(source, new Observer<Resource<Container>>() {
+            @Override
+            public void onChanged(Resource<Container> userAuthResource) {
+                container.setValue(userAuthResource);
+                container.removeSource(source);
+            }
+        });
     }
 
     public LiveData<Resource<Container>> observeEndpoints() {
-        return endpointObserver.observeContainer();
+        return container;
     }
 }

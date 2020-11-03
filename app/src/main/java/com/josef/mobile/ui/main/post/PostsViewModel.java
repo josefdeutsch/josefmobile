@@ -2,9 +2,10 @@ package com.josef.mobile.ui.main.post;
 
 
 import android.content.Context;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.LiveDataReactiveStreams;
+import androidx.lifecycle.MediatorLiveData;
 
 import com.josef.mobile.data.DataManager;
 import com.josef.mobile.ui.base.BaseViewModel;
@@ -24,13 +25,13 @@ import io.reactivex.schedulers.Schedulers;
 
 public class PostsViewModel extends BaseViewModel {
 
-    private static final String TAG = "PostsViewModel";
 
     private final DataManager dataManager;
     private final UtilManager utilManager;
     private final EndpointsObserver endpointsObserver;
     private final Context context;
-    private Boolean hasInternet = null;
+
+    private MediatorLiveData<Resource<List<Container>>> containers;
 
     @Inject
     public PostsViewModel(DataManager dataManager,
@@ -43,32 +44,24 @@ public class PostsViewModel extends BaseViewModel {
         this.utilManager = utilManager;
         this.context = context;
 
-        /**   compositeDisposable.add(
-         utilManager.isInternet()
-         .subscribeOn(Schedulers.io())
-         .observeOn(AndroidSchedulers.mainThread())
-         .subscribeWith(new DisposableSingleObserver<Boolean>() {
-        @Override public void onSuccess(@NonNull Boolean aBoolean) {
-        Toast.makeText(context, aBoolean.toString(), Toast.LENGTH_SHORT).show();
-        }
 
-        @Override public void onError(@NonNull Throwable e) {
-
-        }
-        }));**/
     }
 
-    public boolean isHasInternet() {
-        return hasInternet;
-    }
-
-    public void setHasInternet(boolean hasInternet) {
-        this.hasInternet = hasInternet;
-    }
 
     public LiveData<Resource<List<Container>>> observeEndpoints() {
-        Log.d(TAG, "observeEndpoints: " + hasInternet);
-        return endpointsObserver.observeEndpoints();
+        if (containers == null) containers = new MediatorLiveData<>();
+        containers.setValue(Resource.loading(null));
+
+        LiveData<Resource<List<Container>>> source =
+                LiveDataReactiveStreams.fromPublisher(endpointsObserver.getEndpoints());
+
+        containers.setValue(Resource.loading(null));
+        containers.addSource(source, userAuthResource -> {
+            containers.setValue(userAuthResource);
+            containers.removeSource(source);
+        });
+
+        return containers;
     }
 
 
@@ -87,7 +80,6 @@ public class PostsViewModel extends BaseViewModel {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe());
     }
-
 
 }
 

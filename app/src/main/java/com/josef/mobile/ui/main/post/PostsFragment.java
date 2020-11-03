@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.josef.mobile.R;
 import com.josef.mobile.ui.base.BaseFragment;
-import com.josef.mobile.ui.main.ConnectionLiveData;
 import com.josef.mobile.ui.main.Resource;
 import com.josef.mobile.ui.main.archive.model.Archive;
 import com.josef.mobile.ui.main.post.model.Container;
@@ -42,8 +41,6 @@ public class PostsFragment extends BaseFragment
     @Inject
     ViewModelProviderFactory providerFactory;
 
-    ConnectionLiveData connectionLiveData;
-
     private PostsViewModel viewModel;
 
     private RecyclerView recyclerView;
@@ -52,15 +49,11 @@ public class PostsFragment extends BaseFragment
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Log.d(TAG, "onCreate: ");
-
     }
 
     @Nullable
@@ -138,10 +131,8 @@ public class PostsFragment extends BaseFragment
 
     @Override
     public void onChecked(int position, Boolean isChecked, Container favourite) {
-
         long id = favourite.getId();
         Archive archive = new Archive(id, "default", favourite.getPng(), favourite.getUrl());
-
         if (isChecked) {
             viewModel.insertArchives(archive);
         }

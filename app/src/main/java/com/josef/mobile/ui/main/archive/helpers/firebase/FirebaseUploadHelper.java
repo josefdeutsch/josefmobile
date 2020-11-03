@@ -1,8 +1,6 @@
 package com.josef.mobile.ui.main.archive.helpers.firebase;
 
-import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.lifecycle.LiveDataReactiveStreams;
 
@@ -29,10 +27,6 @@ import javax.inject.Singleton;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.BiFunction;
-import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
 @Singleton
@@ -42,61 +36,36 @@ public class FirebaseUploadHelper implements FirebaseUpload {
     private final DataManager dataManager;
     private final UtilManager utilManager;
     private final SessionManager sessionManager;
-    private final Context context;
 
     @Inject
-    public FirebaseUploadHelper(DataManager dataManager, SessionManager sessionManager, Context context, UtilManager utilManager) {
+    public FirebaseUploadHelper(DataManager dataManager, SessionManager sessionManager, UtilManager utilManager) {
         this.dataManager = dataManager;
         this.sessionManager = sessionManager;
         this.utilManager = utilManager;
-        this.context = context;
     }
 
-    public void synchronize(MainActivity mainActivity, CompositeDisposable compositeDisposable) {
-        if (sessionManager == null) return;
+    public Observable<DatabaseReference> synchronize(MainActivity mainActivity) {
+        if (sessionManager == null) return null;
 
-        Publisher<AuthResource<User>> userPublisher = LiveDataReactiveStreams.toPublisher(mainActivity, sessionManager.getAuthUser());
+        Observable<User> currentuser = getUserObservable(mainActivity);
 
-        Observable<User> currentuser = Observable.fromPublisher(userPublisher)
+        Observable<List<Archive>> archives = getListObservable();
+
+        return Observable.zip(currentuser, archives, (user, archives1) -> upload(user, archives1))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    private Observable<List<Archive>> getListObservable() {
+        return dataManager.getAllArchives().toObservable();
+    }
+
+    private Observable<User> getUserObservable(MainActivity mainActivity) {
+        Publisher<AuthResource<User>> userPublisher
+                = LiveDataReactiveStreams.toPublisher(mainActivity, sessionManager.getAuthUser());
+
+        return Observable.fromPublisher(userPublisher)
                 .map(userAuthResource -> userAuthResource.data);
-        compositeDisposable.add(currentuser.subscribe());
-
-        Observable<List<Archive>> archives = dataManager.getAllArchives().toObservable();
-        compositeDisposable.add(archives.subscribe());
-
-        compositeDisposable.add(
-                Observable.zip(
-                        currentuser,
-                        archives,
-                        new BiFunction<User, List<Archive>, DatabaseReference>() {
-                            @NonNull
-                            @Override
-                            public DatabaseReference apply(@NonNull User user, @NonNull List<Archive> archives) throws Exception {
-                                return upload(user, archives);
-                            }
-                        }
-
-                ).subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeWith(new DisposableObserver<DatabaseReference>() {
-
-                            @Override
-                            public void onNext(@NonNull DatabaseReference reference) {
-                                Toast.makeText(context, "Success !", Toast.LENGTH_SHORT).show();
-                            }
-
-                            @Override
-                            public void onError(@NonNull Throwable e) {
-                                Toast.makeText(context, "Error !", Toast.LENGTH_SHORT).show();
-                                Log.e(TAG, "onError: " + e.getMessage());
-                            }
-
-                            @Override
-                            public void onComplete() {
-                                Toast.makeText(context, "Completed!", Toast.LENGTH_SHORT).show();
-                            }
-                        }));
-
     }
 
     private DatabaseReference upload(User user, List<Archive> archives) throws JSONException {

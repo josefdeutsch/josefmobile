@@ -1,16 +1,14 @@
 package com.josef.mobile.ui.player.helpers.remote;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.LiveDataReactiveStreams;
-import androidx.lifecycle.MediatorLiveData;
-import androidx.lifecycle.Observer;
+import android.util.Log;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.josef.mobile.data.DataManager;
-import com.josef.mobile.data.remote.model.Endpoint;
 import com.josef.mobile.ui.main.Resource;
 import com.josef.mobile.ui.main.post.model.Container;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -19,7 +17,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Flowable;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.josef.mobile.utils.AppConstants.BASE_URL3;
@@ -28,61 +25,55 @@ import static com.josef.mobile.utils.AppConstants.BASE_URL3;
 public class EndpointObserverHelper implements EndpointObserver {
 
 
+    private static final String TAG = "EndpointObserverHelper";
+
     final DataManager dataManager;
-    private MediatorLiveData<Resource<Container>> container = new MediatorLiveData<>();
+
 
     @Inject
     public EndpointObserverHelper(DataManager dataManager) {
         this.dataManager = dataManager;
     }
 
-    public LiveData<Resource<Container>> observeContainer() {
-        return container;
-    }
-
-    public void addToContainer(final LiveData<Resource<Container>> source) {
-        container.setValue(Resource.loading(null));
-        container.addSource(source, new Observer<Resource<Container>>() {
-            @Override
-            public void onChanged(Resource<Container> userAuthResource) {
-                container.setValue(userAuthResource);
-                container.removeSource(source);
-            }
-        });
-
-    }
-
     @Override
-    public LiveData<Resource<Container>> observeEndpoints(int index) {
-        if (container == null) container = new MediatorLiveData<>();
-        Flowable<Endpoint> endpointFlowable = dataManager.getChange(BASE_URL3 + "_ah/api/echo/v1/echo?n=1");
-        container.setValue(Resource.loading(null));
-        final LiveData<Resource<Container>> source = LiveDataReactiveStreams.fromPublisher(
-                endpointFlowable
-                        .map(endpoint -> {
-                            Gson gson = new Gson();
-                            Type userListType = new TypeToken<ArrayList<Container>>() {
-                            }.getType();
-                            ArrayList<Container> endpoints = gson.fromJson(endpoint.message, userListType);
-                            return endpoints;
+    public Flowable<Resource<Container>> observeEndpoints(int index) {
 
-                        })
-                        .map(endpoints -> endpoints.get(index))
-                        .onErrorReturn(throwable -> {
-                            Container container = new Container();
-                            container.setId(-1);
-                            return container;
-                        })
-                        .map((Function<Container, Resource<Container>>) container -> {
-                            if (container.getId() == -1) {
-                                return Resource.error("Something went wrong", null);
-                            }
-                            return Resource.success(container);
-                        })
-                        .subscribeOn(Schedulers.io()));
+        Flowable<Integer> value = getIntegerFlowable(index);
 
-        addToContainer(source);
+        Flowable<ArrayList<Container>> list = getFlowableList();
 
-        return container;
+        return Flowable.zip(value, list, (integer, containers) -> containers.get(integer))
+                .subscribeOn(Schedulers.io())
+                .onErrorReturn(throwable -> {
+                    Log.e(TAG, "apply: " + throwable.toString());
+                    Container container = new Container();
+                    container.setId(-1);
+                    return container;
+                })
+                .map(container -> {
+                    if (container.getId() == -1) {
+                        return Resource.error("Something went wrong", null);
+                    }
+                    return Resource.success(container);
+                });
+
     }
+
+    @NotNull
+    private Flowable<Integer> getIntegerFlowable(int index) {
+        return Flowable.just(index);
+    }
+
+    private Flowable<ArrayList<Container>> getFlowableList() {
+        return dataManager.getChange(BASE_URL3 + "_ah/api/echo/v1/echo?n=1")
+                .map(endpoint -> {
+                    Gson gson = new Gson();
+                    Type userListType = new TypeToken<ArrayList<Container>>() {
+                    }.getType();
+                    ArrayList<Container> source = gson.fromJson(endpoint.message, userListType);
+                    return source;
+                });
+    }
+
+
 }

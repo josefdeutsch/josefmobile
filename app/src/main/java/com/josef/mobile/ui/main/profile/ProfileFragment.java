@@ -35,14 +35,7 @@ public class ProfileFragment extends BaseFragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        Log.d(TAG, "onViewCreated: ProfileFragment. " + this);
-     /**   email = view.findViewById(R.id.email);
-      username = view.findViewById(R.id.username);
-      website = view.findViewById(R.id.website);
 
-      viewModel = new ViewModelProvider(this, providerFactory).get(ProfileViewModel.class);
-
-      subscribeObservers();**/
     }
 
     private void subscribeObservers() {
