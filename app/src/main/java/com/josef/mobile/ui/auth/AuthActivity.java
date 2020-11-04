@@ -33,17 +33,16 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.josef.mobile.R;
 import com.josef.mobile.ui.auth.model.User;
+import com.josef.mobile.ui.base.BaseActivity;
 import com.josef.mobile.ui.main.MainActivity;
 import com.josef.mobile.viewmodels.ViewModelProviderFactory;
 
 import javax.inject.Inject;
 
-import dagger.android.support.DaggerAppCompatActivity;
-
 /**
  * Demonstrate Firebase Authentication using a Google ID Token.
  */
-public class AuthActivity extends DaggerAppCompatActivity implements
+public class AuthActivity extends BaseActivity implements
         View.OnClickListener {
 
     public static final int RC_SIGN_OUT = 9001;
@@ -84,45 +83,43 @@ public class AuthActivity extends DaggerAppCompatActivity implements
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+
         if (requestCode == RC_SIGN_IN) {
             Log.d(TAG, "onActivityResult: ");
             task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            viewModel.signInWithGoogle(task);
+            viewModel.authenticateWithGoogle(task);
         }
         if (requestCode == RC_SIGN_OUT) {
             signOut();
         }
+
     }
 
     public void subscribeObserver() {
 
         viewModel = new ViewModelProvider(this, providerFactory).get(AuthViewModel.class);
-        viewModel.getPosts().observe(this, new Observer<AuthResource<User>>() {
+        viewModel.observeAuthenticatedUser().observe(this, new Observer<AuthResource<User>>() {
             @Override
             public void onChanged(AuthResource<User> userAuthResource) {
                 if (userAuthResource != null) {
                     switch (userAuthResource.status) {
                         case LOADING: {
-                            findViewById(R.id.progressauth).setVisibility(View.VISIBLE);
-                            Log.d(TAG, "onChanged: AuthActivity: LOADING...");
                             break;
                         }
 
                         case AUTHENTICATED: {
-                            findViewById(R.id.progressauth).setVisibility(View.GONE);
                             Log.d(TAG, "onChanged: AuthActivity: AUTHENTICATED... " +
                                     "Authenticated as: " + userAuthResource.data.getEmail());
                             break;
                         }
 
                         case ERROR: {
-                            findViewById(R.id.progressauth).setVisibility(View.GONE);
                             Log.d(TAG, "onChanged: AuthActivity: ERROR...");
                             break;
                         }
 
                         case NOT_AUTHENTICATED: {
-                            findViewById(R.id.progressauth).setVisibility(View.GONE);
                             Log.d(TAG, "onChanged: AuthActivity: NOT AUTHENTICATED. Navigating to Login screen.");
                             break;
                         }
@@ -130,6 +127,11 @@ public class AuthActivity extends DaggerAppCompatActivity implements
                 }
             }
         });
+    }
+
+    @Override
+    public void subscribeToSessionManager() {
+
     }
 
     private void signIn() {

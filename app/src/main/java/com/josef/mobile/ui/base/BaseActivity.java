@@ -34,7 +34,7 @@ public abstract class BaseActivity extends DaggerAppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        subscribeObservers();
+        subscribeToSessionManager();
         activity = this;
 
         ConnectionLiveData connectionLiveData = new ConnectionLiveData(this);
@@ -57,7 +57,7 @@ public abstract class BaseActivity extends DaggerAppCompatActivity {
     public UtilManager utilManager;
 
 
-    private void subscribeObservers() {
+    public void subscribeToSessionManager() {
         if (sessionManager.getAuthUser() == null) return;
         sessionManager.getAuthUser().observe(this, new Observer<AuthResource<User>>() {
             @Override
@@ -88,6 +88,7 @@ public abstract class BaseActivity extends DaggerAppCompatActivity {
             }
         });
     }
+
 
     private void navLoginScreen() {
         Intent intent = new Intent(this, AuthActivity.class);

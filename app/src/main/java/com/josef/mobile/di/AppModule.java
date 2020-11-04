@@ -152,11 +152,7 @@ public class AppModule {
                 .setDefaultRequestOptions(requestOptions);
     }
 
-    @Singleton
-    @Provides
-    static FirebaseAuth provideFirebaseAuth() {
-        return FirebaseAuth.getInstance();
-    }
+
 
     @Singleton
     @Provides
@@ -173,6 +169,13 @@ public class AppModule {
     @Provides
     static Drawable provideAppDrawable(Application application) {
         return ContextCompat.getDrawable(application, R.drawable.logo);
+    }
+
+
+    @Singleton
+    @Provides
+    FirebaseAuth provideFirebaseAuth() {
+        return FirebaseAuth.getInstance();
     }
 
 

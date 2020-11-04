@@ -14,7 +14,7 @@ public class Firedatabase implements Firebase {
 
     @Inject
     public Firedatabase(FirebaseDatabase database) {
-        this.database = FirebaseDatabase.getInstance();
+        this.database = database;
     }
 
     public DatabaseReference getDatabasereference() {
