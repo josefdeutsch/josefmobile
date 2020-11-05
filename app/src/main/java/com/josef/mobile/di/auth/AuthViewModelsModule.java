@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.josef.mobile.di.ViewModelKey;
 import com.josef.mobile.ui.auth.AuthViewModel;
+import com.josef.mobile.ui.auth.sign.SignViewModel;
 
 import dagger.Binds;
 import dagger.Module;
@@ -17,5 +18,10 @@ public abstract class AuthViewModelsModule {
     @IntoMap
     @ViewModelKey(AuthViewModel.class)
     public abstract ViewModel bindGoogleViewModel(AuthViewModel viewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SignViewModel.class)
+    public abstract ViewModel bindSignViewModel(SignViewModel viewModel);
 }
 

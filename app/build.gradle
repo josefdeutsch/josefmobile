@@ -116,7 +116,9 @@ android {
         implementation 'androidx.legacy:legacy-support-v4:1.0.0'
         implementation 'com.google.firebase:firebase-auth:16.0.5'
         testImplementation 'junit:junit:4.12'
-      
+
+
+        implementation 'com.jakewharton.rxbinding4:rxbinding:4.0.0'
 
         // AndroidX support design (for nav drawer)
 //    def material_version = "1.0.0-rc02"

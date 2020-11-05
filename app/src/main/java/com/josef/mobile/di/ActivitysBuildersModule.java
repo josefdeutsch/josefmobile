@@ -11,6 +11,7 @@ import com.josef.mobile.di.player.PlayerModule;
 import com.josef.mobile.di.player.PlayerScope;
 import com.josef.mobile.di.player.PlayerViewModelsModule;
 import com.josef.mobile.ui.auth.AuthActivity;
+import com.josef.mobile.ui.auth.sign.SignActivity;
 import com.josef.mobile.ui.main.MainActivity;
 import com.josef.mobile.ui.player.PlayerActivity;
 
@@ -29,6 +30,15 @@ public abstract class ActivitysBuildersModule {
             }
     )
     abstract AuthActivity contributeAuthActivity();
+
+    @AuthScope
+    @ContributesAndroidInjector(
+            modules = {
+                    AuthModule.class,
+                    AuthViewModelsModule.class
+            }
+    )
+    abstract SignActivity contributeSignActivity();
 
     @PlayerScope
     @ContributesAndroidInjector(

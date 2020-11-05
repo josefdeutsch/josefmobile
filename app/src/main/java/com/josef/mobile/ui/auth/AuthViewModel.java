@@ -1,5 +1,7 @@
 package com.josef.mobile.ui.auth;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.LiveDataReactiveStreams;
 
@@ -32,5 +34,10 @@ public class AuthViewModel extends BaseViewModel {
         LiveData<AuthResource<User>> source
                 = LiveDataReactiveStreams.fromPublisher(googleLogin.authenticateWithGoogle(googleSignInAccount));
         sessionManager.observeAuthResource(source);
+    }
+
+    public void authenticateWithEmail() {
+        Log.d(TAG, "authenticateWithEmail: ");
+
     }
 }

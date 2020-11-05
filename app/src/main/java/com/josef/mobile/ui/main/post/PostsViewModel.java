@@ -6,6 +6,7 @@ import android.content.Context;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.LiveDataReactiveStreams;
 import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.Observer;
 
 import com.josef.mobile.data.DataManager;
 import com.josef.mobile.ui.base.BaseViewModel;
@@ -56,9 +57,12 @@ public class PostsViewModel extends BaseViewModel {
                 LiveDataReactiveStreams.fromPublisher(endpointsObserver.getEndpoints());
 
         containers.setValue(Resource.loading(null));
-        containers.addSource(source, userAuthResource -> {
-            containers.setValue(userAuthResource);
-            containers.removeSource(source);
+        containers.addSource(source, new Observer<Resource<List<Container>>>() {
+            @Override
+            public void onChanged(Resource<List<Container>> userAuthResource) {
+                containers.setValue(userAuthResource);
+                containers.removeSource(source);
+            }
         });
 
         return containers;

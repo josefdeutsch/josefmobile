@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -33,6 +34,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.josef.mobile.R;
 import com.josef.mobile.ui.auth.model.User;
+import com.josef.mobile.ui.auth.sign.SignActivity;
 import com.josef.mobile.ui.base.BaseActivity;
 import com.josef.mobile.ui.main.MainActivity;
 import com.josef.mobile.viewmodels.ViewModelProviderFactory;
@@ -42,12 +44,13 @@ import javax.inject.Inject;
 /**
  * Demonstrate Firebase Authentication using a Google ID Token.
  */
-public class AuthActivity extends BaseActivity implements
-        View.OnClickListener {
+public class AuthActivity extends BaseActivity implements View.OnClickListener {
 
     public static final int RC_SIGN_OUT = 9001;
     private static final String TAG = "GoogleActivity";
     private static final int RC_SIGN_IN = 9001;
+    private static final int SU_SIGN_IN = 9002;
+
     @Inject
     FirebaseAuth mAuth;
     @Inject
@@ -59,6 +62,8 @@ public class AuthActivity extends BaseActivity implements
 
     private com.google.android.gms.common.SignInButton signInButton;
 
+    private Button signUp;
+
     Task<GoogleSignInAccount> task;
 
     @Override
@@ -68,10 +73,11 @@ public class AuthActivity extends BaseActivity implements
         signInButton = findViewById(R.id.sign_in_button);
         signInButton.setOnClickListener(this);
 
+        signUp = findViewById(R.id.sign_up_btn);
+        signUp.setOnClickListener(this);
         subscribeObserver();
 
     }
-
 
     @Override
     protected void onResume() {
@@ -84,16 +90,16 @@ public class AuthActivity extends BaseActivity implements
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-
         if (requestCode == RC_SIGN_IN) {
-            Log.d(TAG, "onActivityResult: ");
             task = GoogleSignIn.getSignedInAccountFromIntent(data);
             viewModel.authenticateWithGoogle(task);
+        }
+        if (requestCode == SU_SIGN_IN) {
+            viewModel.authenticateWithEmail();
         }
         if (requestCode == RC_SIGN_OUT) {
             signOut();
         }
-
     }
 
     public void subscribeObserver() {
@@ -134,21 +140,30 @@ public class AuthActivity extends BaseActivity implements
 
     }
 
-    private void signIn() {
+    private void signInWithGoogle() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
+    private void signUp() {
+        Intent signUpIntent = new Intent(this, SignActivity.class);
+        startActivityForResult(signUpIntent, SU_SIGN_IN);
+    }
+
     private void signOut() {
         mAuth.signOut();
-        mGoogleSignInClient.signOut();
+        if (mGoogleSignInClient != null) mGoogleSignInClient.signOut();
     }
 
     @Override
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.sign_in_button) {
-            signIn();
+            signInWithGoogle();
         }
+        if (i == R.id.sign_up_btn) {
+            signUp();
+        }
+
     }
 }
