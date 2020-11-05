@@ -23,6 +23,8 @@ import com.josef.mobile.ui.main.Resource;
 import com.josef.mobile.utils.UtilManager;
 import com.josef.mobile.viewmodels.ViewModelProviderFactory;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -77,59 +79,18 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
 
         signInButton.setOnClickListener(this);
 
-        Observable<CharSequence> charSequenceObservableEmail =
-                RxTextView.textChanges(emailEditText)
-                        .doOnNext(charSequence -> hideEmailError())
-                        .debounce(400, TimeUnit.MILLISECONDS)
-                        .filter(charSequence -> !TextUtils.isEmpty(charSequence))
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread());
-
-
-        Observable<CharSequence> charSequenceObservablepassWord =
-                RxTextView.textChanges(passwordEditText)
-                        .doOnNext(charSequence -> hideEmailError())
-                        .debounce(400, TimeUnit.MILLISECONDS)
-                        .filter(charSequence -> !TextUtils.isEmpty(charSequence))
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread());
-
-
-        Observable.combineLatest(charSequenceObservableEmail, charSequenceObservablepassWord,
-                (email, password) -> {
-
-                    boolean isEmailValid = validateEmail(email.toString());
-                    boolean isPasswordValid = validatePassword(password.toString());
-                    return isEmailValid && isPasswordValid;
-
-                })
-                .subscribeOn(Schedulers.io())
-                .subscribeWith(new DisposableObserver<Boolean>() {
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-
-                    @Override
-                    public void onNext(Boolean validFields) {
-                        if (validFields) {
-                            enableSignIn();
-                        } else {
-                            disableSignIn();
-                        }
-                    }
-                });
+        Observable<CharSequence> charSequenceObservableEmail = getCharSequenceObservable(emailEditText);
+        Observable<CharSequence> charSequenceObservablepassWord = getCharSequenceObservable(passwordEditText);
 
         interruptInvalidEmailInput(charSequenceObservableEmail);
-
         interruptInvalidPasswordInputs(charSequenceObservablepassWord);
 
+        verifyInputResults(charSequenceObservableEmail, charSequenceObservablepassWord);
+
+        subscribeObservers();
+    }
+
+    private void subscribeObservers() {
         viewModel.getContainers().observe(this, new Observer<Resource<Boolean>>() {
             @Override
             public void onChanged(Resource<Boolean> booleanResource) {
@@ -158,6 +119,46 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
                 }
             }
         });
+    }
+
+    private void verifyInputResults(Observable<CharSequence> charSequenceObservableEmail, Observable<CharSequence> charSequenceObservablepassWord) {
+        Observable.combineLatest(charSequenceObservableEmail, charSequenceObservablepassWord,
+                (email, password) -> {
+                    boolean isEmailValid = validateEmail(email.toString());
+                    boolean isPasswordValid = validatePassword(password.toString());
+                    return isEmailValid && isPasswordValid;
+                })
+                .subscribeOn(Schedulers.io())
+                .subscribeWith(new DisposableObserver<Boolean>() {
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                    }
+
+                    @Override
+                    public void onNext(Boolean validFields) {
+                        if (validFields) {
+                            enableSignIn();
+                        } else {
+                            disableSignIn();
+                        }
+                    }
+                });
+    }
+
+
+    @NotNull
+    private Observable<CharSequence> getCharSequenceObservable(EditText emailEditText) {
+        return RxTextView.textChanges(emailEditText)
+                .doOnNext(charSequence -> hideEmailError())
+                .debounce(400, TimeUnit.MILLISECONDS)
+                .filter(charSequence -> !TextUtils.isEmpty(charSequence))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     private void interruptInvalidEmailInput(Observable<CharSequence> charSequenceObservableEmail) {

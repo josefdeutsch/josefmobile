@@ -15,6 +15,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.josef.mobile.ui.base.BaseViewModel;
 import com.josef.mobile.ui.main.Resource;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
 
 import io.reactivex.Flowable;
@@ -58,6 +60,7 @@ public class SignViewModel extends BaseViewModel {
         Flowable<Resource<Boolean>> resourceFlowable =
                 addOnCompletionListener(email, password)
                         .toFlowable()
+                        .timeout(3000, TimeUnit.MILLISECONDS, Flowable.empty())
                         .onErrorReturn(throwable -> {
                             Log.e(TAG, "apply: " + throwable.toString());
                             Boolean completion = null;
@@ -69,6 +72,7 @@ public class SignViewModel extends BaseViewModel {
                             }
                             return Resource.success(completion);
                         })
+
                         .subscribeOn(Schedulers.io());
 
         return resourceFlowable;
