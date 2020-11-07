@@ -64,6 +64,8 @@ public class AuthActivity extends BaseActivity implements View.OnClickListener {
 
     private Button signUp;
 
+    private Button signInWithEmail;
+
     Task<GoogleSignInAccount> task;
 
     @Override
@@ -75,6 +77,9 @@ public class AuthActivity extends BaseActivity implements View.OnClickListener {
 
         signUp = findViewById(R.id.sign_up_btn);
         signUp.setOnClickListener(this);
+
+        signInWithEmail = findViewById(R.id.sign_in_with_email);
+        signInWithEmail.setOnClickListener(this);
         subscribeObserver();
 
     }
@@ -95,7 +100,7 @@ public class AuthActivity extends BaseActivity implements View.OnClickListener {
             viewModel.authenticateWithGoogle(task);
         }
         if (requestCode == SU_SIGN_IN) {
-            viewModel.authenticateWithEmail();
+            //viewModel.authenticateWithEmail();
         }
         if (requestCode == RC_SIGN_OUT) {
             signOut();
@@ -145,7 +150,12 @@ public class AuthActivity extends BaseActivity implements View.OnClickListener {
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-    private void signUp() {
+    private void signInWithEmail() {
+        viewModel.authenticateWithEmail();
+    }
+
+
+    private void signUpWithEmail() {
         Intent signUpIntent = new Intent(this, SignActivity.class);
         startActivityForResult(signUpIntent, SU_SIGN_IN);
     }
@@ -158,11 +168,15 @@ public class AuthActivity extends BaseActivity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         int i = v.getId();
+
         if (i == R.id.sign_in_button) {
             signInWithGoogle();
         }
         if (i == R.id.sign_up_btn) {
-            signUp();
+            signUpWithEmail();
+        }
+        if (i == R.id.sign_in_with_email) {
+            signUpWithEmail();
         }
 
     }

@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.textfield.TextInputLayout;
 import com.jakewharton.rxbinding4.widget.RxTextView;
 import com.josef.mobile.R;
+import com.josef.mobile.ui.auth.model.User;
 import com.josef.mobile.ui.base.BaseActivity;
 import com.josef.mobile.ui.main.Resource;
 import com.josef.mobile.utils.UtilManager;
@@ -91,26 +92,25 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void subscribeObservers() {
-        viewModel.getContainers().observe(this, new Observer<Resource<Boolean>>() {
+        viewModel.getContainers().observe(this, new Observer<Resource<User>>() {
             @Override
-            public void onChanged(Resource<Boolean> booleanResource) {
-                if (booleanResource != null) {
-                    switch (booleanResource.status) {
+            public void onChanged(Resource<User> userResource) {
+                if (userResource != null) {
+                    switch (userResource.status) {
                         case LOADING: {
-                            Log.d(TAG, "onChanged: " + "LOADING");
                             utilManager.showProgressbar(SignActivity.this);
                             break;
                         }
                         case SUCCESS: {
-                            Log.d(TAG, "onChanged: " + "SUCCESS");
                             utilManager.hideProgressbar();
+                            Toast.makeText(SignActivity.this, "We have sent an email with a confirmation link to your email address."
+                                    , Toast.LENGTH_SHORT).show();
                             finish();
                             break;
                         }
                         case ERROR: {
-                            Log.d(TAG, "onChanged: " + "ERROR");
                             utilManager.hideProgressbar();
-                            Toast.makeText(SignActivity.this, "Error !", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignActivity.this, userResource.message, Toast.LENGTH_SHORT).show();
                             emailEditText.getText().clear();
                             passwordEditText.getText().clear();
                             break;
@@ -119,13 +119,14 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
                 }
             }
         });
+
     }
 
     private void verifyInputResults(Observable<CharSequence> charSequenceObservableEmail, Observable<CharSequence> charSequenceObservablepassWord) {
         Observable.combineLatest(charSequenceObservableEmail, charSequenceObservablepassWord,
                 (email, password) -> {
-                    boolean isEmailValid = validateEmail(email.toString());
-                    boolean isPasswordValid = validatePassword(password.toString());
+                    boolean isEmailValid = SignActivity.this.validateEmail(email.toString());
+                    boolean isPasswordValid = SignActivity.this.validatePassword(password.toString());
                     return isEmailValid && isPasswordValid;
                 })
                 .subscribeOn(Schedulers.io())

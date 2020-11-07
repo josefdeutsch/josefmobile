@@ -3,19 +3,14 @@ package com.josef.mobile.ui.auth.sign;
 import android.content.Context;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.LiveDataReactiveStreams;
 import androidx.lifecycle.MediatorLiveData;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.josef.mobile.ui.auth.model.User;
 import com.josef.mobile.ui.base.BaseViewModel;
 import com.josef.mobile.ui.main.Resource;
-
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -31,7 +26,8 @@ public class SignViewModel extends BaseViewModel {
 
     private final Context mContext;
     private final FirebaseAuth firebaseAuth;
-    private final MediatorLiveData<Resource<Boolean>> containers = new MediatorLiveData<>();
+    private final MediatorLiveData<Resource<User>> containers = new MediatorLiveData<>();
+    private final User user = new User();
 
     @Inject
     public SignViewModel(Context context, FirebaseAuth firebaseAuth) {
@@ -39,13 +35,13 @@ public class SignViewModel extends BaseViewModel {
         this.firebaseAuth = firebaseAuth;
     }
 
-    public MediatorLiveData<Resource<Boolean>> getContainers() {
+    public MediatorLiveData<Resource<User>> getContainers() {
         return containers;
     }
 
     public void createUserWithEmailandPassword(String email, String password) {
 
-        LiveData<Resource<Boolean>> source =
+        LiveData<Resource<User>> source =
                 LiveDataReactiveStreams.fromPublisher(getFlowableResourceBoolean(email, password));
 
         containers.setValue(Resource.loading(null));
@@ -56,43 +52,59 @@ public class SignViewModel extends BaseViewModel {
         });
     }
 
-    private Flowable<Resource<Boolean>> getFlowableResourceBoolean(String email, String password) {
-        Flowable<Resource<Boolean>> resourceFlowable =
-                addOnCompletionListener(email, password)
-                        .toFlowable()
-                        .timeout(3000, TimeUnit.MILLISECONDS, Flowable.empty())
-                        .onErrorReturn(throwable -> {
-                            Log.e(TAG, "apply: " + throwable.toString());
-                            Boolean completion = null;
-                            return completion;
-                        })
-                        .map((Function<Boolean, Resource<Boolean>>) completion -> {
-                            if (completion == null) {
-                                return Resource.error("Error!", null);
-                            }
-                            return Resource.success(completion);
-                        })
+    private Flowable<Resource<User>> getFlowableResourceBoolean(String email, String password) {
 
-                        .subscribeOn(Schedulers.io());
+        Single<User> completion = addOnCompletionListenerSingle(email, password);
+        Single<User> verification = addonVerificationListenerSingle();
 
-        return resourceFlowable;
+        return concatOptionsSingles(completion, verification)
+                .onErrorReturn(throwable -> {
+                    Log.e(TAG, "apply: " + throwable.toString());
+                    User user = new User();
+                    user.setId(-1);
+                    user.setThrowable(throwable);
+                    return user;
+                })
+                .map((Function<User, Resource<User>>) user -> {
+                    if (user.getId() == -1) {
+                        Log.d(TAG, "getFlowableResourceBoolean: error");
+                        return Resource.error(user.getThrowable().getMessage(), null);
+                    }
+                    Log.d(TAG, "getFlowableResourceBoolean: ");
+                    return Resource.success(user);
+                })
+                .subscribeOn(Schedulers.io());
     }
 
-    public Single<Boolean> addOnCompletionListener(String email, String password) {
 
-        return Single.create(emitter -> {
-            firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
+    private Flowable<User> concatOptionsSingles(Single<User> completion, Single<User> verification) {
+        return completion.flatMap(completion1 -> verification).toFlowable();
+    }
+
+    private Single<User> addonVerificationListenerSingle() {
+        return Single.create(emitter -> firebaseAuth.getCurrentUser()
+                .sendEmailVerification()
+                .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        emitter.onSuccess(true);
+                        User user = new User();
+                        emitter.onSuccess(user);
                     } else {
-                        emitter.onError(new RuntimeException("an error occured.."));
+                        emitter.onError(task.getException());
                     }
-                }
-            });
-        });
+                }));
+    }
 
+    private Single<User> addOnCompletionListenerSingle(String email, String password) {
+        return Single.create(emitter -> firebaseAuth
+                .createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        User user = new User();
+                        emitter.onSuccess(user);
+                    } else {
+                        emitter.onError(task.getException());
+                    }
+                }));
     }
 
 }

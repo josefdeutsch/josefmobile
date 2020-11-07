@@ -11,6 +11,16 @@ public class User implements Serializable {
     public Date createdAt;
     public boolean hasUSER;
 
+    public Throwable throwable;
+
+    public Throwable getThrowable() {
+        return throwable;
+    }
+
+    public void setThrowable(Throwable throwable) {
+        this.throwable = throwable;
+    }
+
     public User() {
     }
 
