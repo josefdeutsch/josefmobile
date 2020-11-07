@@ -23,6 +23,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -37,6 +39,7 @@ import com.josef.mobile.ui.auth.model.User;
 import com.josef.mobile.ui.auth.sign.SignActivity;
 import com.josef.mobile.ui.base.BaseActivity;
 import com.josef.mobile.ui.main.MainActivity;
+import com.josef.mobile.utils.UtilManager;
 import com.josef.mobile.viewmodels.ViewModelProviderFactory;
 
 import javax.inject.Inject;
@@ -57,13 +60,14 @@ public class AuthActivity extends BaseActivity implements View.OnClickListener {
     GoogleSignInClient mGoogleSignInClient;
     @Inject
     ViewModelProviderFactory providerFactory;
+    @Inject
+    UtilManager utilManager;
+
     private AuthViewModel viewModel;
 
-
+    private EditText emailEditText, passwordEditText;
     private com.google.android.gms.common.SignInButton signInButton;
-
-    private Button signUp;
-
+    private Button signUpWithEmail;
     private Button signInWithEmail;
 
     Task<GoogleSignInAccount> task;
@@ -72,16 +76,19 @@ public class AuthActivity extends BaseActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.auth_layout2);
+        emailEditText = findViewById(R.id.email_et);
+        passwordEditText = findViewById(R.id.password_et);
+
         signInButton = findViewById(R.id.sign_in_button);
         signInButton.setOnClickListener(this);
 
-        signUp = findViewById(R.id.sign_up_btn);
-        signUp.setOnClickListener(this);
+        signUpWithEmail = findViewById(R.id.sign_up_btn);
+        signUpWithEmail.setOnClickListener(this);
 
         signInWithEmail = findViewById(R.id.sign_in_with_email);
         signInWithEmail.setOnClickListener(this);
-        subscribeObserver();
 
+        subscribeObserver();
     }
 
     @Override
@@ -116,17 +123,22 @@ public class AuthActivity extends BaseActivity implements View.OnClickListener {
                 if (userAuthResource != null) {
                     switch (userAuthResource.status) {
                         case LOADING: {
+                            utilManager.showProgressbar(AuthActivity.this);
                             break;
                         }
 
                         case AUTHENTICATED: {
                             Log.d(TAG, "onChanged: AuthActivity: AUTHENTICATED... " +
                                     "Authenticated as: " + userAuthResource.data.getEmail());
+                            startActivity(new Intent(AuthActivity.this, MainActivity.class));
+                            utilManager.hideProgressbar();
                             break;
                         }
 
                         case ERROR: {
                             Log.d(TAG, "onChanged: AuthActivity: ERROR...");
+                            utilManager.hideProgressbar();
+                            Toast.makeText(AuthActivity.this, userAuthResource.message, Toast.LENGTH_SHORT).show();
                             break;
                         }
 
@@ -140,18 +152,14 @@ public class AuthActivity extends BaseActivity implements View.OnClickListener {
         });
     }
 
-    @Override
-    public void subscribeToSessionManager() {
-
-    }
-
     private void signInWithGoogle() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
     private void signInWithEmail() {
-        viewModel.authenticateWithEmail();
+        viewModel.authenticateWithEmail(
+                emailEditText.getText().toString(), passwordEditText.getText().toString());
     }
 
 
@@ -172,12 +180,19 @@ public class AuthActivity extends BaseActivity implements View.OnClickListener {
         if (i == R.id.sign_in_button) {
             signInWithGoogle();
         }
+
         if (i == R.id.sign_up_btn) {
             signUpWithEmail();
         }
+
         if (i == R.id.sign_in_with_email) {
-            signUpWithEmail();
+            signInWithEmail();
         }
+
+    }
+
+    @Override
+    public void subscribeToSessionManager() {
 
     }
 }

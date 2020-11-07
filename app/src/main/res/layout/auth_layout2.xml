@@ -79,16 +79,25 @@
                         android:textColorHint="@color/grey_500"
                         android:textSize="16sp" />
 
-
-                    <Button
-                        android:id="@+id/sign_in_with_email"
-                        style="?android:attr/borderlessButtonStyle"
+                    <LinearLayout
+                        android:id="@+id/sign_in_ll"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Sign In"
-                        android:textColor="@color/grey_500"
-                        android:textSize="16sp" />
+                        android:layout_height="64dp"
+                        android:layout_gravity="bottom"
+                        android:background="@color/grey_500"
+                        android:gravity="right|center_vertical">
 
+                        <Button
+                            android:id="@+id/sign_in_with_email"
+                            style="?android:attr/borderlessButtonStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="16dp"
+                            android:text="Sign In"
+                            android:textColor="@color/grey_500"
+                            android:textSize="16sp" />
+
+                    </LinearLayout>
 
                     <com.google.android.gms.common.SignInButton
                         android:id="@+id/sign_in_button"

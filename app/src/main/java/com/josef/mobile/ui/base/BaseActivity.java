@@ -69,9 +69,8 @@ public abstract class BaseActivity extends DaggerAppCompatActivity {
                             break;
                         }
                         case AUTHENTICATED: {
-                            Log.d(TAG, "onChanged: BaseActivity: AUTHENTICATED... " +
-                                    "Authenticated as: " + userAuthResource.data.getUid() +
-                                    " " + userAuthResource.data.getId());
+                            Log.d(TAG, "onChanged: BaseActivity: AUTHENTICATED... ");
+
                             break;
                         }
                         case ERROR: {
