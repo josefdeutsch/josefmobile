@@ -78,7 +78,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
         ButterKnife.bind(this);
         viewModel = new ViewModelProvider(this, providerFactory).get(SignViewModel.class);
         signInButton.setOnClickListener(this);
-
+//
         Observable<CharSequence> charSequenceObservableEmail = getCharSequenceObservable(emailEditText);
         Observable<CharSequence> charSequenceObservablepassWord = getCharSequenceObservable(passwordEditText);
 
