@@ -1,11 +1,9 @@
 package com.josef.mobile.ui.auth.sign;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -32,6 +30,8 @@ import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
@@ -41,43 +41,42 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class SignActivity extends BaseActivity implements View.OnClickListener {
 
     private static final String TAG = "SignActivity";
+
     private final Pattern pattern = android.util.Patterns.EMAIL_ADDRESS;
+
     @Inject
     ViewModelProviderFactory providerFactory;
     @Inject
     UtilManager utilManager;
-    private SignViewModel viewModel;
-    private EditText emailEditText, passwordEditText;
-    private TextInputLayout emailInputLayout, passwordInputLayout;
-    private Button signInButton;
-    private LinearLayout linearLayoutSignIn;
+
+    SignViewModel viewModel;
+
     private Matcher matcher;
 
-    public static void hideKeyboard(Context context, View view) {
-        if (context != null) {
-            InputMethodManager inputMethodManager
-                    = (InputMethodManager) context.getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (inputMethodManager != null) {
-                if (view != null) {
-                    inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                }
-            }
-        }
-    }
+    @BindView(R.id.email_et)
+    EditText emailEditText;
+
+    @BindView(R.id.password_et)
+    EditText passwordEditText;
+
+    @BindView(R.id.email_til)
+    TextInputLayout emailInputLayout;
+
+    @BindView(R.id.password_til)
+    TextInputLayout passwordInputLayout;
+
+    @BindView(R.id.sign_in_btn)
+    Button signInButton;
+
+    @BindView(R.id.sign_in_ll)
+    LinearLayout linearLayoutSignIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign);
+        ButterKnife.bind(this);
         viewModel = new ViewModelProvider(this, providerFactory).get(SignViewModel.class);
-
-        emailEditText = findViewById(R.id.email_et);
-        emailInputLayout = findViewById(R.id.email_til);
-        passwordEditText = findViewById(R.id.password_et);
-        passwordInputLayout = findViewById(R.id.password_til);
-        signInButton = findViewById(R.id.sign_in_btn);
-        linearLayoutSignIn = findViewById(R.id.sign_in_ll);
-
         signInButton.setOnClickListener(this);
 
         Observable<CharSequence> charSequenceObservableEmail = getCharSequenceObservable(emailEditText);
