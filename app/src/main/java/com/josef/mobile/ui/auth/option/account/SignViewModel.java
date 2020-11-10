@@ -35,6 +35,7 @@ public class SignViewModel extends BaseViewModel {
         this.firebaseAuth = firebaseAuth;
     }
 
+
     public MediatorLiveData<Resource<User>> getContainers() {
         return containers;
     }

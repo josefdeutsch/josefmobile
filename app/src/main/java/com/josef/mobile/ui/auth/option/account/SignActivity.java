@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.textfield.TextInputLayout;
 import com.jakewharton.rxbinding4.widget.RxTextView;
 import com.josef.mobile.R;
+import com.josef.mobile.ui.auth.AuthInputViewModel;
 import com.josef.mobile.ui.auth.model.User;
 import com.josef.mobile.ui.base.BaseActivity;
 import com.josef.mobile.ui.main.Resource;
@@ -39,6 +40,8 @@ import io.reactivex.rxjava3.observers.DisposableObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class SignActivity extends BaseActivity implements View.OnClickListener {
+
+    AuthInputViewModel authInputViewModel;
 
     SignViewModel viewModel;
     @Inject
@@ -69,6 +72,8 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
         setContentView(R.layout.activity_sign);
         ButterKnife.bind(this);
         viewModel = new ViewModelProvider(this, providerFactory).get(SignViewModel.class);
+        authInputViewModel = new ViewModelProvider(this, providerFactory).get(AuthInputViewModel.class);
+
         signInButton.setOnClickListener(this);
 //
         Observable<CharSequence> charSequenceObservableEmail = getCharSequenceObservable(emailEditText);

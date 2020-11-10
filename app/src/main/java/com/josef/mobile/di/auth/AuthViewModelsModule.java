@@ -4,6 +4,7 @@ package com.josef.mobile.di.auth;
 import androidx.lifecycle.ViewModel;
 
 import com.josef.mobile.di.ViewModelKey;
+import com.josef.mobile.ui.auth.AuthInputViewModel;
 import com.josef.mobile.ui.auth.AuthViewModel;
 import com.josef.mobile.ui.auth.option.account.SignViewModel;
 import com.josef.mobile.ui.auth.option.verification.VerificationViewModel;
@@ -29,5 +30,10 @@ public abstract class AuthViewModelsModule {
     @IntoMap
     @ViewModelKey(VerificationViewModel.class)
     public abstract ViewModel bindVerificationViewModel(VerificationViewModel viewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AuthInputViewModel.class)
+    public abstract ViewModel bindInputViewModel(AuthInputViewModel viewModel);
 }
 
