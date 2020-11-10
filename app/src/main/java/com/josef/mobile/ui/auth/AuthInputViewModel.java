@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveDataReactiveStreams;
 import androidx.lifecycle.MediatorLiveData;
 
 import com.josef.mobile.ui.auth.model.CharSequenceObserver;
+import com.josef.mobile.ui.auth.model.CombinedLiveData;
 import com.josef.mobile.ui.base.BaseViewModel;
 
 import org.jetbrains.annotations.NotNull;
@@ -34,9 +35,13 @@ public class AuthInputViewModel extends BaseViewModel {
 
     private String verifier = "";
 
+    private final CombinedLiveData<CharSequence, CharSequence> combiner = new CombinedLiveData<>();
+
     @Inject
     public AuthInputViewModel() {
-
+        getPasswordLiveData("");
+        getEmailLiveData("");
+        combiner.combinedLiveData(emailTextLiveData, passWordLiveData);
     }
 
     public MediatorLiveData<CharSequence> getEmailText() {
@@ -49,6 +54,10 @@ public class AuthInputViewModel extends BaseViewModel {
 
     public MediatorLiveData<CharSequence> getVerification() {
         return verification;
+    }
+
+    public CombinedLiveData<CharSequence, CharSequence> getCombiner() {
+        return combiner;
     }
 
     public void verifyEmailInputs(CharSequence input) {
@@ -104,23 +113,12 @@ public class AuthInputViewModel extends BaseViewModel {
                 .subscribeOn(Schedulers.io());
     }
 
-
     public void verifyUsersInputs() {
-        verification.addSource(emailTextLiveData, listResource -> {
-            verification.setValue(listResource);
-            verification.removeSource(emailTextLiveData);
-        });
-        verification.addSource(passWordLiveData, listResource -> {
-            verification.setValue(listResource);
-            verification.removeSource(passWordLiveData);
-        });
-
+        combiner.removeLiveData(emailTextLiveData, passWordLiveData);
+        combiner.combinedLiveData(emailTextLiveData, passWordLiveData);
     }
-
 
     private void hideEmailError() {
 
     }
-
-
 }
