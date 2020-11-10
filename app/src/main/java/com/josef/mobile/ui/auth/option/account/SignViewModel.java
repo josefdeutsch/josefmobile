@@ -24,20 +24,18 @@ public class SignViewModel extends BaseViewModel {
 
     private static final String TAG = "SignViewModel";
 
-    private final Context mContext;
     private final FirebaseAuth firebaseAuth;
     private final MediatorLiveData<Resource<User>> containers = new MediatorLiveData<>();
-    private final User user = new User();
 
     @Inject
     public SignViewModel(Context context, FirebaseAuth firebaseAuth) {
-        this.mContext = context;
         this.firebaseAuth = firebaseAuth;
     }
 
-    public MediatorLiveData<Resource<User>> getContainers() {
+    public MediatorLiveData<Resource<User>> observeContainers() {
         return containers;
     }
+
 
     public void createUserWithEmailandPassword(String email, String password) {
 
