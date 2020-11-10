@@ -1,4 +1,4 @@
-package com.josef.mobile.ui.auth.sign;
+package com.josef.mobile.ui.auth.option.account;
 
 import android.content.Context;
 import android.util.Log;

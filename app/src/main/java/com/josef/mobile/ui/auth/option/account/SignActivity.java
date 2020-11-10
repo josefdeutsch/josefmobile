@@ -1,4 +1,4 @@
-package com.josef.mobile.ui.auth.sign;
+package com.josef.mobile.ui.auth.option.account;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -40,36 +40,28 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class SignActivity extends BaseActivity implements View.OnClickListener {
 
+    SignViewModel viewModel;
+    @Inject
+    ViewModelProviderFactory providerFactory;
+
     private static final String TAG = "SignActivity";
 
     private final Pattern pattern = android.util.Patterns.EMAIL_ADDRESS;
-
-    @Inject
-    ViewModelProviderFactory providerFactory;
     @Inject
     UtilManager utilManager;
-
-    SignViewModel viewModel;
-
-    private Matcher matcher;
-
     @BindView(R.id.email_et)
     EditText emailEditText;
-
     @BindView(R.id.password_et)
     EditText passwordEditText;
-
     @BindView(R.id.email_til)
     TextInputLayout emailInputLayout;
-
     @BindView(R.id.password_til)
     TextInputLayout passwordInputLayout;
-
     @BindView(R.id.sign_in_btn)
     Button signInButton;
-
     @BindView(R.id.sign_in_ll)
     LinearLayout linearLayoutSignIn;
+    private Matcher matcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

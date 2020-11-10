@@ -36,7 +36,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.josef.mobile.R;
 import com.josef.mobile.ui.auth.model.User;
-import com.josef.mobile.ui.auth.sign.SignActivity;
+import com.josef.mobile.ui.auth.option.account.SignActivity;
+import com.josef.mobile.ui.auth.option.verification.VerificationActivity;
 import com.josef.mobile.ui.base.BaseActivity;
 import com.josef.mobile.ui.main.MainActivity;
 import com.josef.mobile.utils.UtilManager;
@@ -53,6 +54,7 @@ public class AuthActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = "GoogleActivity";
     private static final int RC_SIGN_IN = 9001;
     private static final int SU_SIGN_IN = 9002;
+    private static final int VU_SIGN_IN = 9003;
 
     @Inject
     FirebaseAuth mAuth;
@@ -69,6 +71,7 @@ public class AuthActivity extends BaseActivity implements View.OnClickListener {
     private com.google.android.gms.common.SignInButton signInButton;
     private Button signUpWithEmail;
     private Button signInWithEmail;
+    private Button forgotPasswordButton;
 
     Task<GoogleSignInAccount> task;
 
@@ -78,6 +81,9 @@ public class AuthActivity extends BaseActivity implements View.OnClickListener {
         setContentView(R.layout.auth_layout2);
         emailEditText = findViewById(R.id.email_et);
         passwordEditText = findViewById(R.id.password_et);
+
+        forgotPasswordButton = findViewById(R.id.forgot_password_btn);
+        forgotPasswordButton.setOnClickListener(this);
 
         signInButton = findViewById(R.id.sign_in_button);
         signInButton.setOnClickListener(this);
@@ -162,10 +168,15 @@ public class AuthActivity extends BaseActivity implements View.OnClickListener {
                 emailEditText.getText().toString(), passwordEditText.getText().toString());
     }
 
-
     private void signUpWithEmail() {
         Intent signUpIntent = new Intent(this, SignActivity.class);
         startActivityForResult(signUpIntent, SU_SIGN_IN);
+    }
+
+    private void forgotPassword() {
+        Log.d(TAG, "forgotPassword: ");
+        Intent signUpIntent = new Intent(this, VerificationActivity.class);
+        startActivityForResult(signUpIntent, VU_SIGN_IN);
     }
 
     private void signOut() {
@@ -184,9 +195,13 @@ public class AuthActivity extends BaseActivity implements View.OnClickListener {
         if (i == R.id.sign_up_btn) {
             signUpWithEmail();
         }
-
         if (i == R.id.sign_in_with_email) {
             signInWithEmail();
+        }
+
+        if (i == R.id.forgot_password_btn) {
+            Log.d(TAG, "onClick: ");
+            forgotPassword();
         }
 
     }
