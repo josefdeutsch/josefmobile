@@ -7,6 +7,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.josef.mobile.R;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -16,6 +19,8 @@ public class AppCommonUtils implements CommonUtils {
     Gson gson;
     Dialog noNetwork;
     Dialog progressBar;
+    final Pattern pattern = android.util.Patterns.EMAIL_ADDRESS;
+    Matcher matcher;
 
     @Inject
     public AppCommonUtils() {
@@ -71,5 +76,13 @@ public class AppCommonUtils implements CommonUtils {
             noNetwork = null;
         }
     }
+
+    @Override
+    public boolean validateEmail(CharSequence email) {
+        if (email == null) return false;
+        matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
 
 }

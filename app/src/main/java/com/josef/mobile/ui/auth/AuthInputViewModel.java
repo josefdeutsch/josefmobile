@@ -25,7 +25,6 @@ public class AuthInputViewModel extends BaseViewModel {
     private final MediatorLiveData<CharSequence> emailText = new MediatorLiveData<>();
     private final MediatorLiveData<CharSequence> passwordText = new MediatorLiveData<>();
 
-    private final MediatorLiveData<CharSequence> verification = new MediatorLiveData<>();
 
     private final CharSequenceObserver<CharSequence> emailTextObserver = new CharSequenceObserver();
     private final CharSequenceObserver<CharSequence> passwordTextObserver = new CharSequenceObserver();
@@ -50,10 +49,6 @@ public class AuthInputViewModel extends BaseViewModel {
 
     public MediatorLiveData<CharSequence> getPasswordText() {
         return passwordText;
-    }
-
-    public MediatorLiveData<CharSequence> getVerification() {
-        return verification;
     }
 
     public CombinedLiveData<CharSequence, CharSequence> getCombiner() {
@@ -121,4 +116,5 @@ public class AuthInputViewModel extends BaseViewModel {
     private void hideEmailError() {
 
     }
+
 }

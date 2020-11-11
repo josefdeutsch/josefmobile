@@ -55,6 +55,11 @@ public class AppUtilManager implements UtilManager {
         commonUtils.hideProgressbar();
     }
 
+    @Override
+    public boolean validateEmail(CharSequence email) {
+        return commonUtils.validateEmail(email);
+    }
+
 
     @Override
     public Single<Boolean> isInternet() {

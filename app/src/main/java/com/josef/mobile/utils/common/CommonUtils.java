@@ -19,4 +19,6 @@ public interface CommonUtils {
 
     void hideProgressbar();
 
+    boolean validateEmail(CharSequence email);
+
 }
