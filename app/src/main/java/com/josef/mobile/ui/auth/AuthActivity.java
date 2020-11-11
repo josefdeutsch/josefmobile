@@ -20,6 +20,8 @@ package com.josef.mobile.ui.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -27,13 +29,13 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -78,7 +80,7 @@ public class AuthActivity extends BaseActivity {
     @BindView(R.id.forgot_password_btn)
     Button forgotPasswordButton;
     @BindView(R.id.google_sign_in)
-    SignInButton googlesSignIn;
+    Button googlesSignIn;
     @BindView(R.id.email_sign_up_btn)
     Button signInWithGoogle;
     @BindView(R.id.password_et)
@@ -101,9 +103,15 @@ public class AuthActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.auth_layout2);
         ButterKnife.bind(this);
+        setTransparentStatusBarLollipop();
         authViewModel = new ViewModelProvider(this, providerFactory).get(AuthViewModel.class);
         authInputViewModel = new ViewModelProvider(this, providerFactory).get(AuthInputViewModel.class);
-        subscribeObserver();
+        verifyEmailInputs();
+        verifyPasswordInputs();
+        observeEmailInputs();
+        observePasswordInputs();
+        observeLayoutActivation();
+        observeFirebaseValidation();
     }
 
     @Override
@@ -129,7 +137,84 @@ public class AuthActivity extends BaseActivity {
         }
     }
 
-    public void subscribeObserver() {
+    private void observeLayoutActivation() {
+        authInputViewModel.getCombiner().removeObservers(this);
+        authInputViewModel.getCombiner().observe(this, charSequenceCharSequencePair -> {
+
+            boolean isEmailValid = validateEmail(charSequenceCharSequencePair.first);
+            boolean isPasswordValid = validatePassword(charSequenceCharSequencePair.second);
+
+            if (isEmailValid && isPasswordValid) {
+                enableSignIn();
+            } else {
+                disableSignIn();
+            }
+        });
+    }
+
+    private void observePasswordInputs() {
+        authInputViewModel.getPasswordText().removeObservers(this);
+        authInputViewModel.getPasswordText().observe(this, charSequence -> {
+            boolean isPasswordValid = validatePassword(charSequence.toString());
+            if (!isPasswordValid) {
+                showPasswordError();
+            } else {
+                hidePasswordError();
+            }
+        });
+    }
+
+    private void observeEmailInputs() {
+        authInputViewModel.getEmailText().removeObservers(this);
+        authInputViewModel.getEmailText().observe(this, charSequence -> {
+            boolean isEmailValid = validateEmail(charSequence.toString());
+            if (!isEmailValid) {
+                showEmailError();
+            } else {
+                hideEmailError();
+            }
+        });
+    }
+
+    private void verifyPasswordInputs() {
+        passwordEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                authInputViewModel.verifyPasswordInputs(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                authInputViewModel.verifyUsersInputs();
+            }
+        });
+    }
+
+    private void verifyEmailInputs() {
+        emailEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                authInputViewModel.verifyEmailInputs(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                authInputViewModel.verifyUsersInputs();
+            }
+        });
+    }
+
+    public void observeFirebaseValidation() {
 
         authViewModel.observeAuthenticatedUser().observe(this, new Observer<AuthResource<User>>() {
             @Override
@@ -191,12 +276,61 @@ public class AuthActivity extends BaseActivity {
         startActivityForResult(signUpIntent, VU_SIGN_IN);
     }
 
-
     private void signOut() {
         mAuth.signOut();
         if (mGoogleSignInClient != null) mGoogleSignInClient.signOut();
     }
 
+    private void showEmailError() {
+        enableError(emailInputLayout);
+        emailInputLayout.setError("invalid email..");
+    }
+
+    private void hideEmailError() {
+        disableError(emailInputLayout);
+        emailInputLayout.setErrorEnabled(false);
+    }
+
+    private void enableError(TextInputLayout textInputLayout) {
+        if (textInputLayout.getChildCount() == 2)
+            textInputLayout.getChildAt(1).setVisibility(View.VISIBLE);
+    }
+
+    private void disableError(TextInputLayout textInputLayout) {
+        if (textInputLayout.getChildCount() == 2)
+            textInputLayout.getChildAt(1).setVisibility(View.GONE);
+    }
+
+    private boolean validateEmail(CharSequence email) {
+        return utilManager.validateEmail(email);
+    }
+
+    private boolean validatePassword(CharSequence password) {
+        if (password == null) return false;
+        return password.length() > 5;
+    }
+
+    private void showPasswordError() {
+        enableError(passwordInputLayout);
+        passwordInputLayout.setError("invalid password..");
+    }
+
+    private void hidePasswordError() {
+        disableError(passwordInputLayout);
+        passwordInputLayout.setErrorEnabled(false);
+    }
+
+    private void enableSignIn() {
+        linearLayoutSignIn.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
+        signInWithEmail.setEnabled(true);
+        signInWithEmail.setTextColor(ContextCompat.getColor(this, android.R.color.white));
+    }
+
+    private void disableSignIn() {
+        linearLayoutSignIn.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
+        signInWithEmail.setEnabled(false);
+        signInWithEmail.setTextColor(ContextCompat.getColor(this, R.color.grey_500));
+    }
 
 
     @Override

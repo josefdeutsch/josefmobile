@@ -150,13 +150,13 @@ public class VerificationActivity extends BaseActivity implements View.OnClickLi
 
 
     private void enableSignIn() {
-        linearLayoutSignIn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
+        linearLayoutSignIn.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
         signInButton.setEnabled(true);
         signInButton.setTextColor(ContextCompat.getColor(this, android.R.color.white));
     }
 
     private void disableSignIn() {
-        linearLayoutSignIn.setBackgroundColor(ContextCompat.getColor(this, R.color.grey_500));
+        linearLayoutSignIn.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
         signInButton.setEnabled(false);
         signInButton.setTextColor(ContextCompat.getColor(this, R.color.grey_500));
     }

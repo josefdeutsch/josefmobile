@@ -22,6 +22,7 @@ import com.josef.mobile.viewmodels.ViewModelProviderFactory;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class SignActivity extends BaseActivity {
@@ -50,6 +51,7 @@ public class SignActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign);
+        ButterKnife.bind(this);
         viewModel = new ViewModelProvider(this, providerFactory).get(SignViewModel.class);
         authInputViewModel = new ViewModelProvider(this, providerFactory).get(AuthInputViewModel.class);
         verifyEmailInputs();

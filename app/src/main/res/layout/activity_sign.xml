@@ -57,7 +57,7 @@
                         android:layout_marginLeft="56dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginRight="56dp"
-                        android:textColorHint="@color/grey_500">
+                        android:textColorHint="@color/transparent">
 
                         <EditText
                             android:id="@+id/password_et"
