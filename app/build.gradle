@@ -117,7 +117,7 @@ android {
         implementation 'com.google.firebase:firebase-auth:16.0.5'
         testImplementation 'junit:junit:4.12'
 
-
+        implementation 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:3.0.0-RC2'
         implementation 'com.jakewharton.rxbinding4:rxbinding:4.0.0'
 
         // AndroidX support design (for nav drawer)

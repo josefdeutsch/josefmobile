@@ -26,6 +26,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -47,6 +48,8 @@ import com.josef.mobile.ui.base.BaseActivity;
 import com.josef.mobile.ui.main.MainActivity;
 import com.josef.mobile.utils.UtilManager;
 import com.josef.mobile.viewmodels.ViewModelProviderFactory;
+
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 
 import javax.inject.Inject;
 
@@ -93,6 +96,10 @@ public class AuthActivity extends BaseActivity {
     Button signInWithEmail;
     @BindView(R.id.sign_in_ll)
     LinearLayout linearLayoutSignIn;
+    @BindView(R.id.logo)
+    ImageView imageView;
+    @BindView(R.id.buttons_ll)
+    LinearLayout actionButtons;
 
     AuthViewModel authViewModel;
     AuthInputViewModel authInputViewModel;
@@ -103,15 +110,27 @@ public class AuthActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.auth_layout2);
         ButterKnife.bind(this);
-        setTransparentStatusBarLollipop();
+        //setTransparentStatusBarLollipop();
         authViewModel = new ViewModelProvider(this, providerFactory).get(AuthViewModel.class);
         authInputViewModel = new ViewModelProvider(this, providerFactory).get(AuthInputViewModel.class);
+
         verifyEmailInputs();
         verifyPasswordInputs();
         observeEmailInputs();
         observePasswordInputs();
         observeLayoutActivation();
         observeFirebaseValidation();
+
+        KeyboardVisibilityEvent.setEventListener(this, isOpen -> {
+            Log.d(TAG, "onVisibilityChanged: " + isOpen);
+            if (isOpen) {
+                imageView.setVisibility(View.GONE);
+                actionButtons.setVisibility(View.GONE);
+            } else {
+                imageView.setVisibility(View.VISIBLE);
+                actionButtons.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     @Override
@@ -199,7 +218,7 @@ public class AuthActivity extends BaseActivity {
         emailEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                Log.d(TAG, "beforeTextChanged: ");
             }
 
             @Override
