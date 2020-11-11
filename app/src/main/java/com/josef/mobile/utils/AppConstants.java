@@ -21,5 +21,6 @@ public final class AppConstants {
 
     public static final String STATE_BOOLEAN_VALUE = "state_boolean";
 
+
 }
 

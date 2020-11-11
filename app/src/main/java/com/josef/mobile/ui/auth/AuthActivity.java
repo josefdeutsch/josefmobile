@@ -24,6 +24,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.lifecycle.Observer;
@@ -32,7 +33,9 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.josef.mobile.R;
 import com.josef.mobile.ui.auth.model.User;
@@ -45,16 +48,22 @@ import com.josef.mobile.viewmodels.ViewModelProviderFactory;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
  * Demonstrate Firebase Authentication using a Google ID Token.
  */
-public class AuthActivity extends BaseActivity implements View.OnClickListener {
+public class AuthActivity extends BaseActivity {
+
+
+    public static final int RC_SIGN_IN = 9002;
 
     public static final int RC_SIGN_OUT = 9001;
+    public static final int SU_SIGN_IN = 9003;
+    public static final int VU_SIGN_IN = 9004;
     private static final String TAG = "GoogleActivity";
-    private static final int RC_SIGN_IN = 9001;
-    private static final int SU_SIGN_IN = 9002;
-    private static final int VU_SIGN_IN = 9003;
 
     @Inject
     FirebaseAuth mAuth;
@@ -64,36 +73,36 @@ public class AuthActivity extends BaseActivity implements View.OnClickListener {
     ViewModelProviderFactory providerFactory;
     @Inject
     UtilManager utilManager;
+    @BindView(R.id.email_et)
+    EditText emailEditText;
+    @BindView(R.id.forgot_password_btn)
+    Button forgotPasswordButton;
+    @BindView(R.id.google_sign_in)
+    SignInButton googlesSignIn;
+    @BindView(R.id.email_sign_up_btn)
+    Button signInWithGoogle;
+    @BindView(R.id.password_et)
+    EditText passwordEditText;
+    @BindView(R.id.email_til)
+    TextInputLayout emailInputLayout;
+    @BindView(R.id.password_til)
+    TextInputLayout passwordInputLayout;
+    @BindView(R.id.sign_in_with_email)
+    Button signInWithEmail;
+    @BindView(R.id.sign_in_ll)
+    LinearLayout linearLayoutSignIn;
 
-    private AuthViewModel viewModel;
-
-    private EditText emailEditText, passwordEditText;
-    private com.google.android.gms.common.SignInButton signInButton;
-    private Button signUpWithEmail;
-    private Button signInWithEmail;
-    private Button forgotPasswordButton;
-
+    AuthViewModel authViewModel;
+    AuthInputViewModel authInputViewModel;
     Task<GoogleSignInAccount> task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.auth_layout2);
-        emailEditText = findViewById(R.id.email_et);
-        passwordEditText = findViewById(R.id.password_et);
-
-        forgotPasswordButton = findViewById(R.id.forgot_password_btn);
-        forgotPasswordButton.setOnClickListener(this);
-
-        signInButton = findViewById(R.id.sign_in_button);
-        signInButton.setOnClickListener(this);
-
-        signUpWithEmail = findViewById(R.id.sign_up_btn);
-        signUpWithEmail.setOnClickListener(this);
-
-        signInWithEmail = findViewById(R.id.sign_in_with_email);
-        signInWithEmail.setOnClickListener(this);
-
+        ButterKnife.bind(this);
+        authViewModel = new ViewModelProvider(this, providerFactory).get(AuthViewModel.class);
+        authInputViewModel = new ViewModelProvider(this, providerFactory).get(AuthInputViewModel.class);
         subscribeObserver();
     }
 
@@ -110,7 +119,7 @@ public class AuthActivity extends BaseActivity implements View.OnClickListener {
 
         if (requestCode == RC_SIGN_IN) {
             task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            viewModel.authenticateWithGoogle(task);
+            authViewModel.authenticateWithGoogle(task);
         }
         if (requestCode == SU_SIGN_IN) {
             //viewModel.authenticateWithEmail();
@@ -122,8 +131,7 @@ public class AuthActivity extends BaseActivity implements View.OnClickListener {
 
     public void subscribeObserver() {
 
-        viewModel = new ViewModelProvider(this, providerFactory).get(AuthViewModel.class);
-        viewModel.observeAuthenticatedUser().observe(this, new Observer<AuthResource<User>>() {
+        authViewModel.observeAuthenticatedUser().observe(this, new Observer<AuthResource<User>>() {
             @Override
             public void onChanged(AuthResource<User> userAuthResource) {
                 if (userAuthResource != null) {
@@ -158,53 +166,38 @@ public class AuthActivity extends BaseActivity implements View.OnClickListener {
         });
     }
 
-    private void signInWithGoogle() {
+    @OnClick(R.id.google_sign_in)
+    void signInWithGoogle(View v) {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-    private void signInWithEmail() {
-        viewModel.authenticateWithEmail(
+    @OnClick(R.id.sign_in_with_email)
+    void signInWithEmail(View v) {
+        authViewModel.authenticateWithEmail(
                 emailEditText.getText().toString(), passwordEditText.getText().toString());
     }
 
-    private void signUpWithEmail() {
+    @OnClick(R.id.email_sign_up_btn)
+    void signUpWithEmail() {
         Intent signUpIntent = new Intent(this, SignActivity.class);
         startActivityForResult(signUpIntent, SU_SIGN_IN);
     }
 
-    private void forgotPassword() {
+    @OnClick(R.id.forgot_password_btn)
+    void forgotPassword() {
         Log.d(TAG, "forgotPassword: ");
         Intent signUpIntent = new Intent(this, VerificationActivity.class);
         startActivityForResult(signUpIntent, VU_SIGN_IN);
     }
+
 
     private void signOut() {
         mAuth.signOut();
         if (mGoogleSignInClient != null) mGoogleSignInClient.signOut();
     }
 
-    @Override
-    public void onClick(View v) {
-        int i = v.getId();
 
-        if (i == R.id.sign_in_button) {
-            signInWithGoogle();
-        }
-
-        if (i == R.id.sign_up_btn) {
-            signUpWithEmail();
-        }
-        if (i == R.id.sign_in_with_email) {
-            signInWithEmail();
-        }
-
-        if (i == R.id.forgot_password_btn) {
-            Log.d(TAG, "onClick: ");
-            forgotPassword();
-        }
-
-    }
 
     @Override
     public void subscribeToSessionManager() {

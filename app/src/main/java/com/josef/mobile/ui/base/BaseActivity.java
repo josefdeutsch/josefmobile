@@ -18,7 +18,6 @@ import com.josef.mobile.utils.UtilManager;
 
 import javax.inject.Inject;
 
-import butterknife.ButterKnife;
 import dagger.android.support.DaggerAppCompatActivity;
 
 import static com.josef.mobile.ui.auth.AuthActivity.RC_SIGN_OUT;
@@ -35,7 +34,6 @@ public abstract class BaseActivity extends DaggerAppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ButterKnife.bind(this);
         subscribeToSessionManager();
         activity = this;
         ConnectionLiveData connectionLiveData = new ConnectionLiveData(this);
