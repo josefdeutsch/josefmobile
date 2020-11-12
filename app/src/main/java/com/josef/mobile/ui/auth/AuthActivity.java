@@ -121,6 +121,10 @@ public class AuthActivity extends BaseActivity {
         observeLayoutActivation();
         observeFirebaseValidation();
 
+        onKeyBoardEventListener();
+    }
+
+    private void onKeyBoardEventListener() {
         KeyboardVisibilityEvent.setEventListener(this, isOpen -> {
             Log.d(TAG, "onVisibilityChanged: " + isOpen);
             if (isOpen) {
@@ -342,13 +346,13 @@ public class AuthActivity extends BaseActivity {
     private void enableSignIn() {
         linearLayoutSignIn.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
         signInWithEmail.setEnabled(true);
-        signInWithEmail.setTextColor(ContextCompat.getColor(this, android.R.color.white));
+        signInWithEmail.setTextColor(ContextCompat.getColor(this, android.R.color.holo_green_dark));
     }
 
     private void disableSignIn() {
-        linearLayoutSignIn.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
+        linearLayoutSignIn.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent));
         signInWithEmail.setEnabled(false);
-        signInWithEmail.setTextColor(ContextCompat.getColor(this, R.color.grey_500));
+        signInWithEmail.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
     }
 
 

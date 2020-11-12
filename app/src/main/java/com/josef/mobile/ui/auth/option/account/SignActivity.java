@@ -6,6 +6,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -18,6 +19,8 @@ import com.josef.mobile.ui.auth.AuthInputViewModel;
 import com.josef.mobile.ui.base.BaseActivity;
 import com.josef.mobile.utils.UtilManager;
 import com.josef.mobile.viewmodels.ViewModelProviderFactory;
+
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 
 import javax.inject.Inject;
 
@@ -46,6 +49,8 @@ public class SignActivity extends BaseActivity {
     Button signInButton;
     @BindView(R.id.sign_in_ll)
     LinearLayout linearLayoutSignIn;
+    @BindView(R.id.logo)
+    ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +65,18 @@ public class SignActivity extends BaseActivity {
         observePasswordInputs();
         observeLayoutActivation();
         observeFirebaseValidation();
+
+        onKeyBoardEventListener();
+    }
+
+    private void onKeyBoardEventListener() {
+        KeyboardVisibilityEvent.setEventListener(this, isOpen -> {
+            if (isOpen) {
+                imageView.setVisibility(View.GONE);
+            } else {
+                imageView.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     private void observeLayoutActivation() {
@@ -216,15 +233,15 @@ public class SignActivity extends BaseActivity {
     }
 
     private void enableSignIn() {
-        linearLayoutSignIn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
+        linearLayoutSignIn.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
         signInButton.setEnabled(true);
-        signInButton.setTextColor(ContextCompat.getColor(this, android.R.color.white));
+        signInButton.setTextColor(ContextCompat.getColor(this, android.R.color.holo_green_dark));
     }
 
     private void disableSignIn() {
-        linearLayoutSignIn.setBackgroundColor(ContextCompat.getColor(this, R.color.grey_500));
+        linearLayoutSignIn.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
         signInButton.setEnabled(false);
-        signInButton.setTextColor(ContextCompat.getColor(this, R.color.grey_500));
+        signInButton.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
     }
 
 
