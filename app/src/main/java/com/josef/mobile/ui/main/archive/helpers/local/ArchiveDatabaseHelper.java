@@ -65,36 +65,28 @@ public class ArchiveDatabaseHelper implements ArchiveDatabase {
         dataManager.deleteArchives(archive);
     }
 
-    public static <K, V> K getKey(HashMap<K, V> map, V value) {
-        return map.entrySet()
-                .stream()
-                .filter(entry -> value.equals(entry.getValue()))
-                .map(HashMap.Entry::getKey)
-                .findFirst().get();
-    }
-
     @Override
     public void deleteArchivesPref(Archive archive) {
-
         long id = archive.id;
-        Type hashmaptypeintegerinteger = new TypeToken<HashMap<Integer, Integer>>() {
-        }.getType();
-
-        Gson gson1 = utilManager.getGson();
-        String stringmap1 = dataManager.getPositionIdHashmap();
-        HashMap<Integer, Integer> posidmap = gson1.fromJson(stringmap1, hashmaptypeintegerinteger);
-        int index = getKey(posidmap, (int) id);
-
+        Log.d(TAG, "deleteArchivesPref: " + archive.id);
         Type sparseArrayType = new TypeToken<HashMap<Integer, Boolean>>() {
         }.getType();
 
         Gson gson = utilManager.getGson();
-        String stringmap = dataManager.getPositionToggleHashmap();
+        String stringmap = dataManager.getHashString();
+        Log.d(TAG, "deleteArchivesPref: "
+                + stringmap);
 
         HashMap<Integer, Boolean> map = gson.fromJson(stringmap, sparseArrayType);
-        map.replace(index, false);
+        map.replace((int) id, false);
+        Log.d(TAG, "deleteArchivesPref: "
+                + map.toString());
+
 
         String string = gson.toJson(map);
-        dataManager.setPositionToggleHashMap(string);
+        dataManager.setHashString(string);
+        String stringmap2 = dataManager.getHashString();
+        Log.d(TAG, "deleteArchivesPref: "
+                + stringmap2);
     }
 }

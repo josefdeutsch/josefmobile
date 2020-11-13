@@ -1,5 +1,6 @@
 package com.josef.mobile.ui.main.post;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +40,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private PostRecyclerViewOnClickListener postRecyclerViewOnClickListener;
     HashMap<Integer, Boolean> map;
+
     private List<Container> posts = new ArrayList<>();
 
     @Inject
@@ -46,6 +48,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         this.requestManager = requestManager;
         this.datamanager = datamanager;
         this.utilManager = utilManager;
+        Log.d(TAG, "PostRecyclerAdapter: ");
 
     }
 
@@ -62,23 +65,19 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
-        if (datamanager.getPositionToggleHashmap().equals("uschi")) {
+        if (datamanager.getHashString().equals("uschi")) {
             map = new HashMap<>();
-            for (int i = 0; i <= 50 - 1; i++) {
+            for (int i = 0; i <= 150 - 1; i++) {
                 map.put(i, false);
             }
         } else {
-            Type type = new TypeToken<HashMap<Integer, Boolean>>() {
+            Type sparseArrayType = new TypeToken<HashMap<Integer, Boolean>>() {
             }.getType();
-            map = supplyHashMapToPrefs(type);
+            Gson gson = utilManager.getGson();
+            String stringmap = datamanager.getHashString();
+            map = gson.fromJson(stringmap, sparseArrayType);
+            Log.d(TAG, "onAttachedToRecyclerView: " + map.toString());
         }
-
-    }
-
-    private <K, V> K supplyHashMapToPrefs(Type token) {
-        Gson gson = utilManager.getGson();
-        String stringmap = datamanager.getPositionToggleHashmap();
-        return gson.fromJson(stringmap, token);
     }
 
     @Override
@@ -86,7 +85,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         super.onDetachedFromRecyclerView(recyclerView);
         Gson gson = utilManager.getGson();
         String string = gson.toJson(map);
-        datamanager.setPositionToggleHashMap(string);
+        datamanager.setHashString(string);
     }
 
 
