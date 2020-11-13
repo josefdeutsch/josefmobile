@@ -34,10 +34,13 @@ import com.josef.mobile.utils.common.CommonUtils;
 import com.josef.mobile.utils.net.AppNetworkUtils;
 import com.josef.mobile.utils.net.NetworkUtils;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -122,6 +125,9 @@ public class AppModule {
                 .baseUrl(AppConstants.BASE_URL3)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(new OkHttpClient.Builder()
+                        .connectTimeout(30l, TimeUnit.SECONDS)
+                        .readTimeout(30l, TimeUnit.SECONDS).build())
                 .build();
     }
 
@@ -151,7 +157,6 @@ public class AppModule {
         return Glide.with(application)
                 .setDefaultRequestOptions(requestOptions);
     }
-
 
 
     @Singleton

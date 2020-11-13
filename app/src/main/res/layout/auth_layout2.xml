@@ -14,11 +14,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fillViewport="true">
-
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -26,13 +24,11 @@
                     android:orientation="vertical"
                     android:paddingLeft="24dp"
                     android:paddingRight="24dp">
-
                     <ImageView
                         android:id="@+id/logo"
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
                         android:src="@drawable/ic_logosvg"></ImageView>
-
                     <!-- Email Label -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/email_til"
@@ -40,7 +36,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:textColorHint="@color/grey_500">
-
                         <EditText
                             android:id="@+id/email_et"
                             android:layout_width="match_parent"
@@ -51,8 +46,6 @@
                             android:textColor="@color/grey_500"
                             android:textColorHint="@color/grey_500" />
                     </com.google.android.material.textfield.TextInputLayout>
-
-
                     <!-- Password Label -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/password_til"
@@ -70,29 +63,24 @@
                             android:maxLength="@integer/MAX_TEXT_LENGTH"
                             android:textColor="@color/grey_500"
                             android:textColorHint="@color/grey_500" />
-
-
                     </com.google.android.material.textfield.TextInputLayout>
-
                     <LinearLayout
                         android:id="@+id/sign_in_ll"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/transparent">
-
                         <Button
                             android:id="@+id/sign_in_with_email"
                             style="?android:attr/borderlessButtonStyle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:background="@color/grey_300"
+                            android:textColorHint="@color/grey_500"
                             android:enabled="false"
                             android:text="LOGIN WITH EMAIL"
                             android:textColor="@color/colorPrimary"
                             android:textSize="16sp" />
                     </LinearLayout>
-
                     <LinearLayout
                         android:id="@+id/google_sign_in_ll"
                         android:layout_width="match_parent"
@@ -105,8 +93,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
-                            android:background="@color/grey_300"
-
+                            android:enabled="false"
+                            android:textColorHint="@color/grey_500"
                             android:text="LOGIN WITH GOOGLE"
                             android:textColor="@color/colorPrimary"
                             android:textSize="16sp" />
@@ -120,11 +108,12 @@
 
                         <Button
                             android:id="@+id/facebook_sign_in"
+                            style="?android:attr/borderlessButtonStyle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
-                            android:background="@color/grey_300"
-
+                            android:enabled="false"
+                            android:textColorHint="@color/grey_500"
                             android:text="LOGIN WITH FACEBOOK"
                             android:textColor="@color/colorPrimary"
                             android:textSize="16sp" />
@@ -136,7 +125,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@color/transparent"
                     android:orientation="horizontal"
                     android:paddingLeft="24dp"
                     android:paddingRight="24dp">
@@ -146,17 +136,23 @@
                         style="?android:attr/borderlessButtonStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Forgot Password"
+                        android:layout_marginTop="16dp"
                         android:textColorHint="@color/grey_500"
+                        android:enabled="false"
+                        android:text="FORGOT PASSWORD"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="16sp" />
 
                     <Button
                         android:id="@+id/email_sign_up_btn"
                         style="?android:attr/borderlessButtonStyle"
                         android:layout_width="wrap_content"
-                        android:layout_height="56dp"
-                        android:text="Sign Up"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
                         android:textColorHint="@color/grey_500"
+                        android:enabled="false"
+                        android:text="SIGN UP"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="16sp" />
 
                 </LinearLayout>

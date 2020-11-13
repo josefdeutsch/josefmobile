@@ -65,19 +65,36 @@ public class ArchiveDatabaseHelper implements ArchiveDatabase {
         dataManager.deleteArchives(archive);
     }
 
+    public static <K, V> K getKey(HashMap<K, V> map, V value) {
+        return map.entrySet()
+                .stream()
+                .filter(entry -> value.equals(entry.getValue()))
+                .map(HashMap.Entry::getKey)
+                .findFirst().get();
+    }
+
     @Override
     public void deleteArchivesPref(Archive archive) {
+
         long id = archive.id;
+        Type hashmaptypeintegerinteger = new TypeToken<HashMap<Integer, Integer>>() {
+        }.getType();
+
+        Gson gson1 = utilManager.getGson();
+        String stringmap1 = dataManager.getPositionIdHashmap();
+        HashMap<Integer, Integer> posidmap = gson1.fromJson(stringmap1, hashmaptypeintegerinteger);
+        int index = getKey(posidmap, (int) id);
+
         Type sparseArrayType = new TypeToken<HashMap<Integer, Boolean>>() {
         }.getType();
 
         Gson gson = utilManager.getGson();
-        String stringmap = dataManager.getHashString();
+        String stringmap = dataManager.getPositionToggleHashmap();
 
         HashMap<Integer, Boolean> map = gson.fromJson(stringmap, sparseArrayType);
-        map.replace((int) id, false);
+        map.replace(index, false);
 
         String string = gson.toJson(map);
-        dataManager.setHashString(string);
+        dataManager.setPositionToggleHashMap(string);
     }
 }

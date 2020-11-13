@@ -18,4 +18,10 @@
     <string name="fragment_posts">posts</string>
     <string name="fragment_archive">archive</string>
     <string name="archive">archive</string>
+    <string name="fragment_first">fragment_fist</string>
+    <string name="fragment_second">fragment_second</string>
+    <string name="fragment_third">fragment_third</string>
+    <string name="artworks_2017">artworks of 2017</string>
+    <string name="artworks_2018">artworks of 2018</string>
+    <string name="artworks_2019">artworks of 2019</string>
 </resources>

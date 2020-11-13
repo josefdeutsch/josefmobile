@@ -42,9 +42,9 @@ public class EndpointsObserverHelper implements EndpointsObserver {
     }
 
 
-    public Flowable<Resource<List<Container>>> getEndpoints() {
+    public Flowable<Resource<List<Container>>> getEndpoints(String index) {
 
-        return dataManager.getChange(BASE_URL3 + "_ah/api/echo/v1/echo?n=1")
+        return dataManager.getChange(BASE_URL3 + index)
                 .map(endpoint -> {
                     Gson gson = new Gson();
                     Type userListType = new TypeToken<ArrayList<Container>>() {

@@ -9,5 +9,5 @@ import io.reactivex.Flowable;
 
 public interface EndpointsObserver {
 
-     Flowable<Resource<List<Container>>> getEndpoints();
+     Flowable<Resource<List<Container>>> getEndpoints(String index);
 }

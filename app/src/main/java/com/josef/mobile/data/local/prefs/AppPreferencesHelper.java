@@ -18,7 +18,6 @@ package com.josef.mobile.data.local.prefs;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import com.josef.mobile.di.PreferenceInfo;
 
@@ -34,6 +33,7 @@ public class AppPreferencesHelper implements PreferencesHelper {
     private static final String PREF_KEY_SPARSEARRAY_IDENTIFIER = "PREF_KEY_ACCESS_TOKEN";
     private static final String PREF_STRING_SPARSEARRAY_IDENTIFIER = "PREF_STRING_ACCESS_TOKEN";
     private static final String ANOTHER_PREF_KEY_SPARSEARRAY_IDENTIFIER = "Anothersdkhfsdlfkds";
+    private static final String POSITION_ID_HASH_MAP = "pos_id_hash_map";
 
 
     private final SharedPreferences mPrefs;
@@ -48,14 +48,23 @@ public class AppPreferencesHelper implements PreferencesHelper {
 
 
     @Override
-    public String getHashString() {
+    public String getPositionToggleHashmap() {
         return mPrefs.getString(ANOTHER_PREF_KEY_SPARSEARRAY_IDENTIFIER, "uschi");
     }
 
     @Override
-    public void setHashString(String string) {
-        Log.d(TAG, "setParceableSparseBooleanArray: ");
+    public void setPositionToggleHashMap(String string) {
         mPrefs.edit().putString(ANOTHER_PREF_KEY_SPARSEARRAY_IDENTIFIER, string).commit();
+    }
+
+    @Override
+    public String getPositionIdHashmap() {
+        return mPrefs.getString(POSITION_ID_HASH_MAP, "simone");
+    }
+
+    @Override
+    public void setPositionIdHashmap(String string) {
+        mPrefs.edit().putString(POSITION_ID_HASH_MAP, string).commit();
     }
 
 }

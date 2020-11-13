@@ -69,13 +69,23 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public String getHashString() {
-        return preferencesHelper.getHashString();
+    public String getPositionToggleHashmap() {
+        return preferencesHelper.getPositionToggleHashmap();
     }
 
     @Override
-    public void setHashString(String string) {
-        preferencesHelper.setHashString(string);
+    public void setPositionToggleHashMap(String string) {
+        preferencesHelper.setPositionToggleHashMap(string);
+    }
+
+    @Override
+    public String getPositionIdHashmap() {
+        return preferencesHelper.getPositionIdHashmap();
+    }
+
+    @Override
+    public void setPositionIdHashmap(String string) {
+        preferencesHelper.setPositionToggleHashMap(string);
     }
 
     @Override

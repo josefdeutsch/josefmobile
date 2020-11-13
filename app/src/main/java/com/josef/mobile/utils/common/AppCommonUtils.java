@@ -16,7 +16,6 @@ import javax.inject.Singleton;
 @Singleton
 public class AppCommonUtils implements CommonUtils {
 
-    Gson gson;
     Dialog noNetwork;
     Dialog progressBar;
     final Pattern pattern = android.util.Patterns.EMAIL_ADDRESS;
@@ -29,8 +28,7 @@ public class AppCommonUtils implements CommonUtils {
 
     @Override
     public Gson getGson() {
-        if (gson == null) gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-        return gson;
+        return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
     }
 
     @Override
