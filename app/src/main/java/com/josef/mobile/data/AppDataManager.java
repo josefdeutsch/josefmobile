@@ -68,29 +68,19 @@ public class AppDataManager implements DataManager {
         return endpoints.getChange(url);
     }
 
-    @Override
-    public String getPositionToggleHashmap() {
-        return preferencesHelper.getPositionToggleHashmap();
-    }
-
-    @Override
-    public void setPositionToggleHashMap(String string) {
-        preferencesHelper.setPositionToggleHashMap(string);
-    }
-
-    @Override
-    public String getPositionIdHashmap() {
-        return preferencesHelper.getPositionIdHashmap();
-    }
-
-    @Override
-    public void setPositionIdHashmap(String string) {
-        preferencesHelper.setPositionToggleHashMap(string);
-    }
 
     @Override
     public DatabaseReference getDatabasereference() {
         return firebase.getDatabasereference();
     }
 
+    @Override
+    public String getHashString() {
+        return preferencesHelper.getHashString();
+    }
+
+    @Override
+    public void setHashString(String string) {
+        preferencesHelper.setHashString(string);
+    }
 }

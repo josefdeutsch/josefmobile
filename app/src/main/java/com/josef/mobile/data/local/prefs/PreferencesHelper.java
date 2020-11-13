@@ -24,13 +24,10 @@ package com.josef.mobile.data.local.prefs;
 public interface PreferencesHelper {
 
 
-    String getPositionToggleHashmap();
+     String getHashString();
 
-    void setPositionToggleHashMap(String string);
 
-    String getPositionIdHashmap();
-
-    void setPositionIdHashmap(String string);
+     void setHashString(String string);
 
 
 }

@@ -1,4 +1,4 @@
-package com.josef.mobile.ui.main.post.content.first;
+package com.josef.mobile.ui.main.post;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,16 +14,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.RequestManager;
 import com.josef.mobile.R;
-import com.josef.mobile.data.DataManager;
 import com.josef.mobile.ui.base.BaseFragment;
 import com.josef.mobile.ui.main.Resource;
 import com.josef.mobile.ui.main.archive.model.Archive;
-import com.josef.mobile.ui.main.post.PostRecyclerAdapter;
 import com.josef.mobile.ui.main.post.model.Container;
 import com.josef.mobile.ui.player.PlayerActivity;
-import com.josef.mobile.utils.UtilManager;
 import com.josef.mobile.viewmodels.ViewModelProviderFactory;
 
 import java.util.List;
@@ -34,26 +30,18 @@ import static com.josef.mobile.utils.AppConstants.PLAYERACTIVIY;
 import static com.josef.mobile.utils.AppConstants.REQUEST_INDEX;
 
 
-public class FirstPostFragment extends BaseFragment
+public class PostsFragment extends BaseFragment
         implements PostRecyclerAdapter.PostRecyclerViewOnClickListener {
 
     private static final String TAG = "PostsFragment";
 
     @Inject
-    RequestManager requestManager;
-
-    @Inject
-    DataManager dataManager;
-
-    @Inject
-    UtilManager utilManager;
-
     PostRecyclerAdapter adapter;
 
     @Inject
     ViewModelProviderFactory providerFactory;
 
-    private FirstFragmentViewModel viewModel;
+    private PostsViewModel viewModel;
 
     private RecyclerView recyclerView;
 
@@ -78,10 +66,9 @@ public class FirstPostFragment extends BaseFragment
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        adapter = new PostRecyclerAdapter(requestManager, dataManager, utilManager);
         recyclerView = view.findViewById(R.id.recycler_view);
         adapter.setPostRecyclerViewOnClickListener(this);
-        viewModel = new ViewModelProvider(this, providerFactory).get(FirstFragmentViewModel.class);
+        viewModel = new ViewModelProvider(this, providerFactory).get(PostsViewModel.class);
 
         initRecyclerView();
         subscribeObservers();
@@ -161,6 +148,7 @@ public class FirstPostFragment extends BaseFragment
         adapter.onDetachedFromRecyclerView(recyclerView);
     }
 }
+
 
 
 

@@ -66,24 +66,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 break;
             }
 
-            case R.id.nav_posts_first: {
-                if (isValidDestination(R.id.nav_posts_first)) {
-                    Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.FirstPostScreen);
+            case R.id.nav_posts: {
+                if (isValidDestination(R.id.nav_posts)) {
+                    Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.postScreen);
                 }
                 break;
             }
-            case R.id.nav_posts_sencond: {
-                if (isValidDestination(R.id.nav_posts_sencond)) {
-                    Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.SecondPostScreen);
-                }
-                break;
-            }
-            case R.id.nav_posts_third: {
-                if (isValidDestination(R.id.nav_posts_third)) {
-                    Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.ThirdPostScreen);
-                }
-                break;
-            }
+
             case R.id.nav_archive: {
                 if (isValidDestination(R.id.archiveScreen)) {
                     Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.archiveScreen);

@@ -113,11 +113,9 @@ public class Echo {
         if (n == 0) {
             message.setMessage("5");
         } else if (n == 1) {
-            message.setMessage(Data.first);
+            message.setMessage(Data.adFragment);
         } else if (n == 2) {
-            message.setMessage(Data.second);
         } else if (n == 3) {
-            message.setMessage(Data.third);
         }
         return message;
     }

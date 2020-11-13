@@ -12,20 +12,10 @@
         tools:layout="@layout/fragment_profile"></fragment>
 
     <fragment
-        android:id="@+id/FirstPostScreen"
-        android:name="com.josef.mobile.ui.main.post.content.first.FirstPostFragment"
-        android:label="@string/fragment_first"
+        android:id="@+id/postScreen"
+        android:name="com.josef.mobile.ui.main.post.PostsFragment"
+        android:label="@string/fragment_posts"
         tools:layout="@layout/fragment_posts_first"></fragment>
-    <fragment
-        android:id="@+id/SecondPostScreen"
-        android:name="com.josef.mobile.ui.main.post.content.second.SecondPostFragment"
-        android:label="@string/fragment_second"
-        tools:layout="@layout/fragment_posts_second"></fragment>
-    <fragment
-        android:id="@+id/ThirdPostScreen"
-        android:name="com.josef.mobile.ui.main.post.content.third.ThirdPostFragment"
-        android:label="@string/fragment_third"
-        tools:layout="@layout/fragment_posts_third"></fragment>
 
     <fragment
         android:id="@+id/archiveScreen"

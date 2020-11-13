@@ -1,4 +1,4 @@
-package com.josef.mobile.ui.main.post.content.first;
+package com.josef.mobile.ui.main.post;
 
 
 import android.content.Context;
@@ -24,9 +24,9 @@ import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-import static com.josef.mobile.utils.AppConstants.FIRST;
+import static com.josef.mobile.utils.AppConstants.ENDPOINT_1;
 
-public class FirstFragmentViewModel extends BaseViewModel {
+public class PostsViewModel extends BaseViewModel {
 
 
     private final DataManager dataManager;
@@ -37,10 +37,10 @@ public class FirstFragmentViewModel extends BaseViewModel {
     private MediatorLiveData<Resource<List<Container>>> containers;
 
     @Inject
-    public FirstFragmentViewModel(DataManager dataManager,
-                                  EndpointsObserver endpointsObserver,
-                                  UtilManager utilManager,
-                                  Context context) {
+    public PostsViewModel(DataManager dataManager,
+                          EndpointsObserver endpointsObserver,
+                          UtilManager utilManager,
+                          Context context) {
 
         this.dataManager = dataManager;
         this.endpointsObserver = endpointsObserver;
@@ -56,7 +56,7 @@ public class FirstFragmentViewModel extends BaseViewModel {
         containers.setValue(Resource.loading(null));
 
         LiveData<Resource<List<Container>>> source =
-                LiveDataReactiveStreams.fromPublisher(endpointsObserver.getEndpoints(FIRST));
+                LiveDataReactiveStreams.fromPublisher(endpointsObserver.getEndpoints(ENDPOINT_1));
 
         containers.setValue(Resource.loading(null));
         containers.addSource(source, new Observer<Resource<List<Container>>>() {
@@ -88,5 +88,6 @@ public class FirstFragmentViewModel extends BaseViewModel {
     }
 
 }
+
 
 
