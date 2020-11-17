@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_content"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -18,15 +18,11 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                >
+                android:layout_height="match_parent">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:layout_marginTop="32dp"
                     android:orientation="vertical"
                     android:paddingLeft="24dp"
                     android:paddingRight="24dp">
@@ -34,34 +30,38 @@
                     <ImageView
                         android:id="@+id/logo"
                         android:layout_width="match_parent"
-                        android:layout_height="150dp"
-                        android:src="@drawable/ic_logosvg"></ImageView>
+                        android:layout_height="256dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_webdesignsvg_02"></ImageView>
 
+
+                    <!-- Email Label -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/email_til"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
+                        android:background="@color/colorPrimary"
                         android:textColorHint="@color/grey_500">
 
                         <EditText
                             android:id="@+id/email_et"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:backgroundTintMode="@color/colorPrimary"
                             android:hint="Email"
                             android:inputType="textEmailAddress"
                             android:maxLength="@integer/EMAIL_TEXT_LENGTH"
                             android:textColor="@color/grey_500"
                             android:textColorHint="@color/grey_500" />
-
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <LinearLayout
                         android:id="@+id/sign_in_ll"
                         android:layout_width="match_parent"
-                        android:layout_marginTop="16dp"
                         android:layout_height="64dp"
                         android:layout_gravity="center"
+                        android:layout_marginTop="16dp"
                         android:background="@color/transparent">
 
                         <Button
@@ -69,15 +69,15 @@
                             style="?android:attr/borderlessButtonStyle"
                             android:layout_width="match_parent"
                             android:layout_height="56dp"
+                            android:background="@color/grey_300"
                             android:enabled="false"
                             android:text="RESET PASSWORD"
-                            android:background="@color/grey_300"
                             android:textColor="@color/colorPrimary"
                             android:textSize="16sp" />
 
                     </LinearLayout>
-
                 </LinearLayout>
+
 
             </FrameLayout>
 
@@ -85,6 +85,9 @@
 
 
     </FrameLayout>
+
+
+    \
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

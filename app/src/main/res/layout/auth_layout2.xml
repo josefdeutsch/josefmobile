@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_content"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -22,7 +23,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
                     android:orientation="vertical"
                     android:paddingLeft="24dp"
                     android:paddingRight="24dp">
@@ -30,8 +30,10 @@
                     <ImageView
                         android:id="@+id/logo"
                         android:layout_width="match_parent"
-                        android:layout_height="150dp"
-                        android:src="@drawable/ic_logosvg"></ImageView>
+                        android:layout_height="256dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_webdesignsvg_02"></ImageView>
+
 
                     <!-- Email Label -->
                     <com.google.android.material.textfield.TextInputLayout
@@ -39,9 +41,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
+                        android:background="@color/colorPrimary"
                         android:textColorHint="@color/grey_500">
 
                         <EditText
+                            android:backgroundTintMode="@color/colorPrimary"
                             android:id="@+id/email_et"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -59,9 +63,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
+                        android:background="@color/colorPrimary"
                         android:textColorHint="@color/grey_500">
 
                         <EditText
+                            android:backgroundTintMode="@color/colorAccent"
                             android:id="@+id/password_et"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -88,46 +94,11 @@
                             android:layout_marginTop="8dp"
                             android:background="@color/grey_300"
                             android:enabled="false"
-                            android:text="LOGIN WITH EMAIL"
+                            android:text="Continue"
                             android:textColor="@color/colorPrimary"
                             android:textSize="16sp" />
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:id="@+id/google_sign_in_ll"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/transparent">
-
-                        <Button
-                            android:id="@+id/google_sign_in"
-                            style="?android:attr/borderlessButtonStyle"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            android:backgroundTint="@color/grey_500"
-                            android:textColor="@color/colorPrimary"
-                            android:text="LOGIN WITH GOOGLE"
-                            android:textSize="16sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/facebook_sign_in_ll"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/transparent">
-
-                        <Button
-                            android:id="@+id/facebook_sign_in"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            android:background="@color/grey_300"
-                            android:enabled="false"
-                            android:text="LOGIN WITH FACEBOOK"
-                            android:textColor="@color/colorPrimary"
-                            android:textSize="16sp" />
-                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
@@ -142,21 +113,22 @@
 
                     <Button
                         android:id="@+id/forgot_password_btn"
+                        android:backgroundTint="@color/colorPrimaryDark"
                         style="?android:attr/borderlessButtonStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Forgot Password"
-                        android:backgroundTint="@color/grey_500"
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="@color/cardview_light_background"
                         android:textSize="16sp" />
 
                     <Button
-                        android:backgroundTint="@color/grey_500"
-                        android:textColor="@color/colorPrimary"
+                        android:layout_height="96dp"
+                        android:layout_marginRight="64dp"
                         android:id="@+id/email_sign_up_btn"
                         style="?android:attr/borderlessButtonStyle"
                         android:layout_width="wrap_content"
-                        android:layout_height="56dp"
+                        android:backgroundTint="@color/colorPrimaryDark"
+                        android:textColor="@color/cardview_light_background"
                         android:text="Sign Up"
                         android:textSize="16sp" />
 

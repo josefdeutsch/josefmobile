@@ -32,6 +32,7 @@ public class AppEmailLogin implements EmailLogin {
     public Flowable<AuthResource<User>> authenticateWithEmailAccount(String email, String password) {
 
         Single<User> completion = signInWithEmailAndPassword(email, password);
+
         Single<User> verification = verifyIsEmailSigned();
 
         return concatOptionsSingles(completion, verification)

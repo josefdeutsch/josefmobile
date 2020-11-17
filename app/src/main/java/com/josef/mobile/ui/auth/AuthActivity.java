@@ -34,9 +34,7 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -73,8 +71,6 @@ public class AuthActivity extends BaseActivity {
     @Inject
     FirebaseAuth mAuth;
     @Inject
-    GoogleSignInClient mGoogleSignInClient;
-    @Inject
     ViewModelProviderFactory providerFactory;
     @Inject
     UtilManager utilManager;
@@ -82,8 +78,6 @@ public class AuthActivity extends BaseActivity {
     EditText emailEditText;
     @BindView(R.id.forgot_password_btn)
     Button forgotPasswordButton;
-    @BindView(R.id.google_sign_in)
-    Button googlesSignIn;
     @BindView(R.id.email_sign_up_btn)
     Button signInWithGoogle;
     @BindView(R.id.password_et)
@@ -148,10 +142,6 @@ public class AuthActivity extends BaseActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == RC_SIGN_IN) {
-            task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            authViewModel.authenticateWithGoogle(task);
-        }
         if (requestCode == SU_SIGN_IN) {
             //viewModel.authenticateWithEmail();
         }
@@ -274,11 +264,6 @@ public class AuthActivity extends BaseActivity {
         });
     }
 
-    @OnClick(R.id.google_sign_in)
-    void signInWithGoogle(View v) {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
-    }
 
     @OnClick(R.id.sign_in_with_email)
     void signInWithEmail(View v) {
@@ -301,7 +286,6 @@ public class AuthActivity extends BaseActivity {
 
     private void signOut() {
         mAuth.signOut();
-        if (mGoogleSignInClient != null) mGoogleSignInClient.signOut();
     }
 
     private void showEmailError() {
