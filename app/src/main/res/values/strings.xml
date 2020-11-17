@@ -24,4 +24,8 @@
     <string name="artworks_2017">artworks of 2017</string>
     <string name="artworks_2018">artworks of 2018</string>
     <string name="artworks_2019">artworks of 2019</string>
+    <string name="aboutme">about</string>
+    <string name="artworks">Artwork</string>
+    <string name="aboutmes">About</string>
+    <string name="archives">Archive</string>
 </resources>
