@@ -1,7 +1,7 @@
 package com.josef.mobile.ui.main.archive.helpers.local;
 
+import com.josef.mobile.data.local.db.model.Archive;
 import com.josef.mobile.ui.main.Resource;
-import com.josef.mobile.ui.main.archive.model.Archive;
 
 import java.util.List;
 

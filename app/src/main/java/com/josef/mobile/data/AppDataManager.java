@@ -3,10 +3,10 @@ package com.josef.mobile.data;
 import com.google.firebase.database.DatabaseReference;
 import com.josef.mobile.data.firebase.Firebase;
 import com.josef.mobile.data.local.db.DbHelper;
+import com.josef.mobile.data.local.db.model.Archive;
 import com.josef.mobile.data.local.prefs.PreferencesHelper;
 import com.josef.mobile.data.remote.Endpoints;
 import com.josef.mobile.data.remote.model.Endpoint;
-import com.josef.mobile.ui.main.archive.model.Archive;
 
 import java.util.List;
 

@@ -8,10 +8,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.josef.mobile.SessionManager;
 import com.josef.mobile.data.DataManager;
+import com.josef.mobile.data.local.db.model.Archive;
 import com.josef.mobile.ui.auth.AuthResource;
 import com.josef.mobile.ui.auth.model.User;
 import com.josef.mobile.ui.main.MainActivity;
-import com.josef.mobile.ui.main.archive.model.Archive;
 import com.josef.mobile.ui.main.archive.model.Data;
 import com.josef.mobile.utils.UtilManager;
 
@@ -83,8 +83,10 @@ public class FirebaseUploadHelper implements FirebaseUpload {
             sum.put("sources", path);
             sum.put("card", archives.get(i).png);
             sum.put("background", archives.get(i).png);
-            sum.put("title", "material");
-            sum.put("studio", "Google+");
+
+            sum.put("title", archives.get(i).name); //name
+            sum.put("studio", archives.get(i).tag); //tag
+
             sources.put(sum);
         }
 

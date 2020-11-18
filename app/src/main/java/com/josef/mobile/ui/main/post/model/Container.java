@@ -17,6 +17,17 @@ public class Container {
         return id;
     }
 
+    @SerializedName("name")
+    @Expose
+    private String name;
+    @SerializedName("tag")
+    @Expose
+    private String tag;
+
+    public String getName() {
+        return name;
+    }
+
     @SerializedName("header")
     @Expose
     private String header;
@@ -33,11 +44,23 @@ public class Container {
     @Expose
     private String url;
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Container(String header, String subheader, String png, String url) {
         this.header = header;
         this.subheader = subheader;
         this.png = png;
         this.url = url;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 
     public void setId(int id) {

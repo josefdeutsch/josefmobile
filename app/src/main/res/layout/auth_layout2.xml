@@ -50,7 +50,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Email"
-                            android:inputType="textEmailAddress"
+                            android:inputType="textWebEmailAddress"
                             android:maxLength="@integer/EMAIL_TEXT_LENGTH"
                             android:textColor="@color/grey_500"
                             android:textColorHint="@color/grey_500" />
@@ -72,7 +72,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Password"
-                            android:inputType="textPassword"
+                            android:inputType="textWebPassword"
                             android:maxLength="@integer/MAX_TEXT_LENGTH"
                             android:textColor="@color/grey_500"
                             android:textColorHint="@color/grey_500" />

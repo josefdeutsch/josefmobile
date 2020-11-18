@@ -3,7 +3,7 @@ package com.josef.mobile.data.local.db;
 import android.content.Context;
 import android.util.Log;
 
-import com.josef.mobile.ui.main.archive.model.Archive;
+import com.josef.mobile.data.local.db.model.Archive;
 
 import java.util.List;
 

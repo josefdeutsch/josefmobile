@@ -9,9 +9,9 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Observer;
 
 import com.josef.mobile.data.DataManager;
+import com.josef.mobile.data.local.db.model.Archive;
 import com.josef.mobile.ui.base.BaseViewModel;
 import com.josef.mobile.ui.main.Resource;
-import com.josef.mobile.ui.main.archive.model.Archive;
 import com.josef.mobile.ui.main.post.helpers.remote.EndpointsObserver;
 import com.josef.mobile.ui.main.post.model.Container;
 import com.josef.mobile.utils.UtilManager;

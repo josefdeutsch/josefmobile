@@ -15,9 +15,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.josef.mobile.R;
+import com.josef.mobile.data.local.db.model.Archive;
 import com.josef.mobile.ui.base.BaseFragment;
 import com.josef.mobile.ui.main.Resource;
-import com.josef.mobile.ui.main.archive.model.Archive;
 import com.josef.mobile.ui.main.post.model.Container;
 import com.josef.mobile.ui.player.PlayerActivity;
 import com.josef.mobile.viewmodels.ViewModelProviderFactory;
@@ -132,7 +132,7 @@ public class PostsFragment extends BaseFragment
     @Override
     public void onChecked(int position, Boolean isChecked, Container favourite) {
         long id = favourite.getId();
-        Archive archive = new Archive(id, "default", favourite.getPng(), favourite.getUrl());
+        Archive archive = new Archive(id, favourite.getName(), favourite.getPng(), favourite.getUrl(), favourite.getTag());
         if (isChecked) {
             viewModel.insertArchives(archive);
         }

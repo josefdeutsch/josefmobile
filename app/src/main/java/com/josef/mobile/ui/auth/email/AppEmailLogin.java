@@ -22,7 +22,6 @@ public class AppEmailLogin implements EmailLogin {
 
     private static final String TAG = "AppEmailLogin";
     private final FirebaseAuth firebaseAuth;
-    private final User user = new User();
 
     @Inject
     public AppEmailLogin(FirebaseAuth firebaseAuth) {
@@ -59,13 +58,14 @@ public class AppEmailLogin implements EmailLogin {
         return completion.flatMap(verify -> verification).toFlowable();
     }
 
+    private final User user = new User();
+
     private Single<User> signInWithEmailAndPassword(String email, String password) {
         return Single.create(emitter -> firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@androidx.annotation.NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    user.email = email;
-                    Log.d(TAG, "onComplete: " + user.getEmail());
+                    user.uid = task.getResult().getUser().getUid();
                     emitter.onSuccess(user);
                 } else {
                     emitter.onError(task.getException());

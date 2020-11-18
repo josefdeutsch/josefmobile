@@ -17,10 +17,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.josef.mobile.R;
+import com.josef.mobile.data.local.db.model.Archive;
 import com.josef.mobile.ui.base.BaseFragment;
 import com.josef.mobile.ui.main.MainActivity;
 import com.josef.mobile.ui.main.Resource;
-import com.josef.mobile.ui.main.archive.model.Archive;
 import com.josef.mobile.viewmodels.ViewModelProviderFactory;
 
 import java.util.List;

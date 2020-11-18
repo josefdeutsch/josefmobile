@@ -241,7 +241,7 @@ public class AuthActivity extends BaseActivity {
 
                         case AUTHENTICATED: {
                             Log.d(TAG, "onChanged: AuthActivity: AUTHENTICATED... " +
-                                    "Authenticated as: " + userAuthResource.data.getEmail());
+                                    "Authenticated as: " + userAuthResource.data.getUid());
                             startActivity(new Intent(AuthActivity.this, MainActivity.class));
                             utilManager.hideProgressbar();
                             break;

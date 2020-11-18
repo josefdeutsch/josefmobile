@@ -6,9 +6,13 @@ import java.util.Date;
 
 public class User implements Serializable {
     public int id;
+
     public String uid, name, photoUrl;
+
     public String email;
+
     public Date createdAt;
+
     public boolean hasUSER;
 
     public Throwable throwable;

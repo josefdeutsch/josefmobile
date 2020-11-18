@@ -4,10 +4,10 @@ import androidx.room.Database;
 import androidx.room.RoomDatabase;
 
 import com.josef.mobile.data.local.db.dao.ArchiveDao;
-import com.josef.mobile.ui.main.archive.model.Archive;
+import com.josef.mobile.data.local.db.model.Archive;
 
 
-@Database(entities = {Archive.class}, version = 1)
+@Database(entities = {Archive.class}, version = 2)
 public abstract class AppDataBase extends RoomDatabase {
 
     public abstract ArchiveDao archiveDao();
