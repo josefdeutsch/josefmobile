@@ -77,7 +77,7 @@ public class FirebaseUploadHelper implements FirebaseUpload {
 
         for (int i = 0; i <= archives.size() - 1; i++) {
             JSONObject sum = new JSONObject();
-            sum.put("description", "LoremIpsum...");
+            sum.put("description", "");
             JSONArray path = new JSONArray();
             path.put(archives.get(i).url);
             sum.put("sources", path);
