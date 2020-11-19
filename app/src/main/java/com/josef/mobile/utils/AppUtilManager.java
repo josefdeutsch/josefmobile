@@ -2,6 +2,7 @@ package com.josef.mobile.utils;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 
 import com.google.gson.Gson;
 import com.josef.mobile.utils.common.CommonUtils;
@@ -60,6 +61,20 @@ public class AppUtilManager implements UtilManager {
         return commonUtils.validateEmail(email);
     }
 
+    @Override
+    public int getScreenHeight(Context context) {
+        return commonUtils.getScreenHeight(context);
+    }
+
+    @Override
+    public int getScreenWidth(Context context) {
+        return commonUtils.getScreenWidth(context);
+    }
+
+    @Override
+    public int getStatusBarHeight(Context context) {
+        return commonUtils.getStatusBarHeight(context);
+    }
 
     @Override
     public Single<Boolean> isInternet() {

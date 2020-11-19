@@ -1,6 +1,8 @@
 package com.josef.mobile.di.main;
 
 
+import android.content.Context;
+
 import com.bumptech.glide.RequestManager;
 import com.josef.mobile.data.DataManager;
 import com.josef.mobile.data.remote.Endpoints;
@@ -30,8 +32,8 @@ public class MainModule {
 
     @MainScope
     @Provides
-    static PostRecyclerAdapter providePostRecyclerAdapter(RequestManager requestManager, DataManager dataManager, UtilManager utilManager) {
-        return new PostRecyclerAdapter(requestManager, dataManager, utilManager);
+    static PostRecyclerAdapter providePostRecyclerAdapter(RequestManager requestManager, DataManager dataManager, UtilManager utilManager, Context context) {
+        return new PostRecyclerAdapter(requestManager, dataManager, utilManager, context);
     }
 
     @MainScope

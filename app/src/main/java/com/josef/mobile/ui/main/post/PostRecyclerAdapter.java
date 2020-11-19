@@ -1,5 +1,6 @@
 package com.josef.mobile.ui.main.post;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +37,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private final RequestManager requestManager;
     private final DataManager datamanager;
     private final UtilManager utilManager;
+    private final Context context;
 
 
     private PostRecyclerViewOnClickListener postRecyclerViewOnClickListener;
@@ -44,10 +46,11 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private List<Container> posts = new ArrayList<>();
 
     @Inject
-    public PostRecyclerAdapter(RequestManager requestManager, DataManager datamanager, UtilManager utilManager) {
+    public PostRecyclerAdapter(RequestManager requestManager, DataManager datamanager, UtilManager utilManager, Context context) {
         this.requestManager = requestManager;
         this.datamanager = datamanager;
         this.utilManager = utilManager;
+        this.context = context;
         Log.d(TAG, "PostRecyclerAdapter: ");
 
     }
@@ -113,6 +116,11 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_post_list_item, parent, false);
+        ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+        layoutParams.width = utilManager.getScreenWidth(context) / 2;
+        view.setLayoutParams(layoutParams);
+
+
         return new PostViewHolder(view);
     }
 
