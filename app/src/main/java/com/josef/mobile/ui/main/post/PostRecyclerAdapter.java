@@ -115,12 +115,13 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_post_list_item, parent, false);
-        ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
-        layoutParams.width = utilManager.getScreenWidth(context) / 2;
-        view.setLayoutParams(layoutParams);
-
-
+        //  ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+        //  layoutParams.width = utilManager.getScreenWidth(context) / 2;
+        // view.setLayoutParams(layoutParams);
+        //    view.setScaleX(0.95f);
+        // view.setScaleY(0.95f)
         return new PostViewHolder(view);
     }
 
