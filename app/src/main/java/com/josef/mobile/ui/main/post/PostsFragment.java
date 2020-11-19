@@ -182,6 +182,7 @@ public class PostsFragment extends BaseFragment
     public void onDestroy() {
         super.onDestroy();
         adapter.onDetachedFromRecyclerView(recyclerView);
+        recyclerView.clearOnScrollListeners();
     }
 }
 
