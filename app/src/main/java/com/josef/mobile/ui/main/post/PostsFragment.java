@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.josef.mobile.R;
 import com.josef.mobile.data.local.db.model.Archive;
 import com.josef.mobile.ui.base.BaseFragment;
-import com.josef.mobile.ui.main.ItemOffsetDecoration;
 import com.josef.mobile.ui.main.Resource;
 import com.josef.mobile.ui.main.post.model.Container;
 import com.josef.mobile.ui.player.PlayerActivity;
@@ -115,7 +114,7 @@ public class PostsFragment extends BaseFragment
     private void initRecyclerView() {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(gridLayoutManager);
-        recyclerView.addItemDecoration(new ItemOffsetDecoration(24));
+       // recyclerView.addItemDecoration(new ItemOffsetDecoration(0));
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemViewCacheSize(20);

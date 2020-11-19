@@ -11,6 +11,7 @@ import android.view.animation.BounceInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -55,8 +56,7 @@ public class ArchiveRecyclerViewAdapter extends RecyclerView.Adapter<ArchiveRecy
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.itemView.setTag(position);
         holder.onDelete(mValues.get(position));
-        Picasso.get().load(mValues.get(position).png).config(Bitmap.Config.ARGB_8888)
-                .fit().centerCrop().into(holder.imageView);
+        holder.onBind(mValues.get(position));
     }
 
     public void deleteTask(int position) {
@@ -78,14 +78,26 @@ public class ArchiveRecyclerViewAdapter extends RecyclerView.Adapter<ArchiveRecy
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        public ImageView imageView;
-        public ToggleButton mDelete;
+        TextView name;
+        TextView tag;
+        ImageView imageView;
+        ToggleButton mDelete;
 
         ViewHolder(View view) {
             super(view);
             imageView = view.findViewById(R.id.imageView);
             mDelete = view.findViewById(R.id.button_delete);
+            name = view.findViewById(R.id.cardview_name);
+            tag = view.findViewById(R.id.cardview_tag);
 
+        }
+
+        public void onBind(Archive archive) {
+            Picasso.get().load(archive.getPng()).config(Bitmap.Config.ARGB_8888)
+                    .fit().centerCrop().into(imageView);
+
+            name.setText(archive.getName());
+            tag.setText(archive.getTag());
         }
 
         private void onDelete(final Archive archive) {

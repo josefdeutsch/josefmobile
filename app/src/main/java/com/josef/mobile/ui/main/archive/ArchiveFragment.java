@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.josef.mobile.R;
@@ -72,7 +72,7 @@ public class ArchiveFragment extends BaseFragment implements View.OnClickListene
         final RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         final Context context = recyclerView.getContext();
         adapter = new ArchiveRecyclerViewAdapter(getActivity(), onDeleteCallBack);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setLayoutManager(new GridLayoutManager(context, 2));
         recyclerView.setAdapter(adapter);
         viewModel = new ViewModelProvider(this, providerFactory).get(ArchiveViewModel.class);
 

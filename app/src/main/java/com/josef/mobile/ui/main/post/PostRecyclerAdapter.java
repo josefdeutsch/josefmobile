@@ -116,10 +116,10 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_post_list_item, parent, false);
-        //  ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
-        //  layoutParams.width = utilManager.getScreenWidth(context) / 2;
-        // view.setLayoutParams(layoutParams);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_item, parent, false);
+        ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+        layoutParams.width = utilManager.getScreenWidth(context) / 2;
+        view.setLayoutParams(layoutParams);
         //    view.setScaleX(0.95f);
         // view.setScaleY(0.95f)
         return new PostViewHolder(view);
@@ -133,13 +133,15 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     public class PostViewHolder extends RecyclerView.ViewHolder implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
 
-        TextView title;
+        TextView name;
+        TextView tag;
         ImageView imageView;
         ToggleButton toggleButton;
 
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
-            title = itemView.findViewById(R.id.title);
+            name = itemView.findViewById(R.id.cardview_name);
+            tag = itemView.findViewById(R.id.cardview_tag);
             imageView = itemView.findViewById(R.id.image);
             toggleButton = itemView.findViewById(R.id.toggle);
             toggleButton.setOnCheckedChangeListener(this);
@@ -148,6 +150,8 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         public void bind(final Container container) {
             requestManager.load(container.getPng()).into(imageView);
+            name.setText(container.getName());
+            tag.setText(container.getTag());
         }
 
         @Override
