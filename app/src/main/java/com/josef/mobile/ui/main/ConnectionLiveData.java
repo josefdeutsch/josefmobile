@@ -17,6 +17,7 @@ public class ConnectionLiveData extends LiveData<Boolean> {
 
     private final Context context;
     private ConnectivityManager connectivityManager;
+
     private final BroadcastReceiver networkReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(final Context context, final Intent intent) {

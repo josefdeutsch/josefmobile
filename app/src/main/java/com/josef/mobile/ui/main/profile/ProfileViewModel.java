@@ -6,8 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.josef.mobile.SessionManager;
-import com.josef.mobile.ui.auth.AuthResource;
-import com.josef.mobile.ui.auth.model.User;
+import com.josef.mobile.ui.main.Resource;
 
 import javax.inject.Inject;
 
@@ -21,10 +20,20 @@ public class ProfileViewModel extends ViewModel {
     @Inject
     public ProfileViewModel(SessionManager sessionManager) {
         this.sessionManager = sessionManager;
-        Log.d(TAG, "ProfileViewModel: viewmodel is ready...");
+        Log.d(TAG, "ProfileViewModel: ");
     }
 
-    public LiveData<AuthResource<User>> getAuthenticatedUser() {
+    public LiveData<Resource<String>> observeHeader() {
+        // return sessionManager.getAuthUser();
+        return null;
+    }
+
+    public LiveData<Resource<String>> observeSubHeader() {
+        // return sessionManager.getAuthUser();
+        return null;
+    }
+
+    public LiveData<Resource<String>> observeArticle() {
         // return sessionManager.getAuthUser();
         return null;
     }
