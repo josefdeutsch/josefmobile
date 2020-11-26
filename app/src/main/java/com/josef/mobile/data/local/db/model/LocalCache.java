@@ -37,12 +37,13 @@ public class LocalCache {
     @ColumnInfo(name = "updated_at")
     public String updatedAt;
 
-    public LocalCache(long id, String name, String png, String url, String tag) {
+    public LocalCache(@NonNull Long id, boolean flag, String name, String url, String tag, String png) {
         this.id = id;
+        this.flag = flag;
         this.name = name;
-        this.png = png;
         this.url = url;
         this.tag = tag;
+        this.png = png;
     }
 
     public LocalCache(String name, String png, String url) {
@@ -57,6 +58,10 @@ public class LocalCache {
     }
 
     public LocalCache() {
+    }
+
+    public boolean isFlag() {
+        return flag;
     }
 
     public String getCreatedAt() {

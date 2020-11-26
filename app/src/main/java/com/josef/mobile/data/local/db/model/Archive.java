@@ -37,12 +37,13 @@ public class Archive {
     @ColumnInfo(name = "updated_at")
     public String updatedAt;
 
-    public Archive(long id, String name, String png, String url, String tag) {
+    public Archive(long id, boolean flag, String name, String png, String url, String tag) {
         this.id = id;
         this.name = name;
         this.png = png;
         this.url = url;
         this.tag = tag;
+        this.flag = flag;
     }
 
     public Archive(String name, String png, String url) {
@@ -65,6 +66,10 @@ public class Archive {
 
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public boolean isFlag() {
+        return flag;
     }
 
     @NonNull

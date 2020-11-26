@@ -98,7 +98,6 @@ public class ArchiveViewModel extends BaseViewModel {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe());
 
-        observeArchive();
 
     }
 }

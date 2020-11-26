@@ -14,16 +14,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.RequestManager;
-import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
 import com.josef.mobile.R;
 import com.josef.mobile.data.DataManager;
 import com.josef.mobile.data.local.db.model.LocalCache;
 import com.josef.mobile.utils.UtilManager;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -41,7 +37,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 
     private PostRecyclerViewOnClickListener postRecyclerViewOnClickListener;
-    HashMap<Integer, Boolean> map;
+
 
     private List<LocalCache> posts = new ArrayList<>();
 
@@ -60,36 +56,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
 
-    @Override
-    public void onViewRecycled(final RecyclerView.ViewHolder holder) {
-        super.onViewRecycled(holder);
-    }
 
-    @Override
-    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
-        if (datamanager.getHashString().equals("uschi")) {
-            map = new HashMap<>();
-            for (int i = 0; i <= 150 - 1; i++) {
-                map.put(i, false);
-            }
-        } else {
-            Type sparseArrayType = new TypeToken<HashMap<Integer, Boolean>>() {
-            }.getType();
-            Gson gson = utilManager.getGson();
-            String stringmap = datamanager.getHashString();
-            map = gson.fromJson(stringmap, sparseArrayType);
-            Log.d(TAG, "onAttachedToRecyclerView: " + map.toString());
-        }
-    }
-
-    @Override
-    public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
-        super.onDetachedFromRecyclerView(recyclerView);
-        Gson gson = utilManager.getGson();
-        String string = gson.toJson(map);
-        datamanager.setHashString(string);
-    }
 
 
     public void setPosts(List<LocalCache> posts) {
@@ -100,7 +67,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (position != RecyclerView.NO_POSITION) {
-            ((PostViewHolder) holder).toggleButton.setChecked(map.get(position));
+            ((PostViewHolder) holder).toggleButton.setChecked(posts.get(position).isFlag());
         }
         ((PostViewHolder) holder).bind(posts.get(position));
     }
@@ -109,7 +76,9 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         void onClick(int position);
 
-        void onChecked(int position, Boolean isChecked, LocalCache favourite);
+        void onChecked(Boolean isChecked, LocalCache favourite);
+
+        void isFlagged(Boolean isChecked, LocalCache favourite);
     }
 
     @NonNull
@@ -162,8 +131,9 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            map.put(getAdapterPosition(), isChecked);
-            postRecyclerViewOnClickListener.onChecked(getAdapterPosition(), isChecked, posts.get(getAdapterPosition()));
+            // map.put(getAdapterPosition(), isChecked);
+            postRecyclerViewOnClickListener.onChecked(isChecked, posts.get(getAdapterPosition()));
+            postRecyclerViewOnClickListener.isFlagged(isChecked, posts.get(getAdapterPosition()));
         }
     }
 }

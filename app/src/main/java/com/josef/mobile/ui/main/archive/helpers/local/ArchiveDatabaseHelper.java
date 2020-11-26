@@ -3,16 +3,13 @@ package com.josef.mobile.ui.main.archive.helpers.local;
 import android.content.Context;
 import android.util.Log;
 
-import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
 import com.josef.mobile.data.DataManager;
 import com.josef.mobile.data.local.db.model.Archive;
+import com.josef.mobile.data.local.db.model.LocalCache;
 import com.josef.mobile.ui.main.Resource;
 import com.josef.mobile.utils.UtilManager;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -62,31 +59,22 @@ public class ArchiveDatabaseHelper implements ArchiveDatabase {
 
     @Override
     public void deleteArchives(Archive archive) {
+
         dataManager.deleteArchives(archive);
     }
 
     @Override
     public void deleteArchivesPref(Archive archive) {
-        long id = archive.id;
-        Log.d(TAG, "deleteArchivesPref: " + archive.id);
-        Type sparseArrayType = new TypeToken<HashMap<Integer, Boolean>>() {
-        }.getType();
 
-        Gson gson = utilManager.getGson();
-        String stringmap = dataManager.getHashString();
-        Log.d(TAG, "deleteArchivesPref: "
-                + stringmap);
+        LocalCache localCache = new LocalCache(
+                archive.getId(),
+                archive.isFlag(),
+                archive.getName(),
+                archive.getUrl(),
+                archive.getTag(),
+                archive.getPng()
+        );
 
-        HashMap<Integer, Boolean> map = gson.fromJson(stringmap, sparseArrayType);
-        map.replace((int) id, false);
-        Log.d(TAG, "deleteArchivesPref: "
-                + map.toString());
-
-
-        String string = gson.toJson(map);
-        dataManager.setHashString(string);
-        String stringmap2 = dataManager.getHashString();
-        Log.d(TAG, "deleteArchivesPref: "
-                + stringmap2);
+        dataManager.updateEndpoints(localCache);
     }
 }

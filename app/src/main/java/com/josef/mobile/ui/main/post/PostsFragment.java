@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.josef.mobile.R;
+import com.josef.mobile.data.local.db.model.Archive;
 import com.josef.mobile.data.local.db.model.LocalCache;
 import com.josef.mobile.ui.base.BaseFragment;
 import com.josef.mobile.ui.main.Resource;
@@ -25,6 +26,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import static android.widget.NumberPicker.OnScrollListener.SCROLL_STATE_IDLE;
 import static com.josef.mobile.utils.AppConstants.PLAYERACTIVIY;
 import static com.josef.mobile.utils.AppConstants.REQUEST_INDEX;
 
@@ -41,9 +43,7 @@ public class PostsFragment extends BaseFragment
     ViewModelProviderFactory providerFactory;
 
     private PostsViewModel viewModel;
-
     private RecyclerView recyclerView;
-    boolean scroll_down = false;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -110,7 +110,6 @@ public class PostsFragment extends BaseFragment
     }
 
 
-
     private void initRecyclerView() {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(gridLayoutManager);
@@ -118,7 +117,6 @@ public class PostsFragment extends BaseFragment
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemViewCacheSize(20);
-
 
 
     }
@@ -131,13 +129,43 @@ public class PostsFragment extends BaseFragment
         startActivityForResult(intent, PLAYERACTIVIY);
     }
 
+    //  public Archive(long id, ,boolean flag, String name, String png, String url, String tag) {
     @Override
-    public void onChecked(int position, Boolean isChecked, LocalCache localCache) {
+    public void onChecked(Boolean isChecked, LocalCache favourite) {
+
+        Archive archive = new Archive(
+                favourite.getId(),
+                favourite.isFlag(),
+                favourite.getName(),
+                favourite.getPng(),
+                favourite.getUrl(),
+                favourite.getTag()
+        );
+
         if (isChecked) {
-            // viewModel.insertArchives(favourite);
+            viewModel.insertArchives(archive);
         }
         if (!isChecked) {
-            //  viewModel.deleteArchives(favourite);
+            viewModel.deleteArchives(archive);
+        }
+
+    }
+
+    @Override
+    public void isFlagged(Boolean isChecked, LocalCache favourite) {
+        if (isChecked) {
+            favourite.flag = true;
+            viewModel.updateEndpoints(favourite);
+            if (!recyclerView.isComputingLayout() && RecyclerView.SCROLL_STATE_IDLE == SCROLL_STATE_IDLE) {
+                recyclerView.post(() -> adapter.notifyDataSetChanged());
+            }
+        }
+        if (!isChecked) {
+            favourite.flag = false;
+            viewModel.updateEndpoints(favourite);
+            if (!recyclerView.isComputingLayout() && RecyclerView.SCROLL_STATE_IDLE == SCROLL_STATE_IDLE) {
+                recyclerView.post(() -> adapter.notifyDataSetChanged());
+            }
         }
     }
 

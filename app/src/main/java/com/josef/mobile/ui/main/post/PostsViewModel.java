@@ -87,6 +87,14 @@ public class PostsViewModel extends BaseViewModel {
                         .subscribe());
     }
 
+    public void updateEndpoints(final LocalCache localCache) {
+        compositeDisposable.add(
+                Completable.fromAction(() -> dataManager.updateEndpoints(localCache))
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe());
+    }
+
 }
 
 
