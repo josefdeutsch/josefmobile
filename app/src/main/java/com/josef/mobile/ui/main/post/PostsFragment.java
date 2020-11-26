@@ -15,10 +15,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.josef.mobile.R;
-import com.josef.mobile.data.local.db.model.Archive;
+import com.josef.mobile.data.local.db.model.LocalCache;
 import com.josef.mobile.ui.base.BaseFragment;
 import com.josef.mobile.ui.main.Resource;
-import com.josef.mobile.ui.main.post.model.Container;
 import com.josef.mobile.ui.player.PlayerActivity;
 import com.josef.mobile.viewmodels.ViewModelProviderFactory;
 
@@ -83,9 +82,9 @@ public class PostsFragment extends BaseFragment
 
     private void subscribeObservers() {
         viewModel.observeEndpoints().removeObservers(getViewLifecycleOwner());
-        viewModel.observeEndpoints().observe(getViewLifecycleOwner(), new Observer<Resource<List<Container>>>() {
+        viewModel.observeEndpoints().observe(getViewLifecycleOwner(), new Observer<Resource<List<LocalCache>>>() {
             @Override
-            public void onChanged(Resource<List<Container>> listResource) {
+            public void onChanged(Resource<List<LocalCache>> listResource) {
                 if (listResource != null) {
                     switch (listResource.status) {
                         case LOADING: {
@@ -133,14 +132,12 @@ public class PostsFragment extends BaseFragment
     }
 
     @Override
-    public void onChecked(int position, Boolean isChecked, Container favourite) {
-        long id = favourite.getId();
-        Archive archive = new Archive(id, favourite.getName(), favourite.getPng(), favourite.getUrl(), favourite.getTag());
+    public void onChecked(int position, Boolean isChecked, LocalCache localCache) {
         if (isChecked) {
-            viewModel.insertArchives(archive);
+            // viewModel.insertArchives(favourite);
         }
         if (!isChecked) {
-            viewModel.deleteArchives(archive);
+            //  viewModel.deleteArchives(favourite);
         }
     }
 

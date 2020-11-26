@@ -10,11 +10,15 @@ import com.josef.mobile.di.main.MainViewModelsModule;
 import com.josef.mobile.di.player.PlayerModule;
 import com.josef.mobile.di.player.PlayerScope;
 import com.josef.mobile.di.player.PlayerViewModelsModule;
+import com.josef.mobile.di.splash.SplashModule;
+import com.josef.mobile.di.splash.SplashScope;
+import com.josef.mobile.di.splash.SplashViewModelsModule;
 import com.josef.mobile.ui.auth.AuthActivity;
 import com.josef.mobile.ui.auth.option.account.SignActivity;
 import com.josef.mobile.ui.auth.option.verification.VerificationActivity;
 import com.josef.mobile.ui.main.MainActivity;
 import com.josef.mobile.ui.player.PlayerActivity;
+import com.josef.mobile.ui.splash.SplashActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -58,6 +62,15 @@ public abstract class ActivitysBuildersModule {
             }
     )
     abstract PlayerActivity contributePlayerActivity();
+
+    @SplashScope
+    @ContributesAndroidInjector(
+            modules = {
+                    SplashModule.class,
+                    SplashViewModelsModule.class
+            }
+    )
+    abstract SplashActivity contributeSplashActivity();
 
     @MainScope
     @ContributesAndroidInjector(

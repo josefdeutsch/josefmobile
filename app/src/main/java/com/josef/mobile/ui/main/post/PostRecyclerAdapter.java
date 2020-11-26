@@ -18,7 +18,7 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.josef.mobile.R;
 import com.josef.mobile.data.DataManager;
-import com.josef.mobile.ui.main.post.model.Container;
+import com.josef.mobile.data.local.db.model.LocalCache;
 import com.josef.mobile.utils.UtilManager;
 
 import java.lang.reflect.Type;
@@ -43,7 +43,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private PostRecyclerViewOnClickListener postRecyclerViewOnClickListener;
     HashMap<Integer, Boolean> map;
 
-    private List<Container> posts = new ArrayList<>();
+    private List<LocalCache> posts = new ArrayList<>();
 
     @Inject
     public PostRecyclerAdapter(RequestManager requestManager, DataManager datamanager, UtilManager utilManager, Context context) {
@@ -92,7 +92,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
 
-    public void setPosts(List<Container> posts) {
+    public void setPosts(List<LocalCache> posts) {
         this.posts = posts;
         notifyDataSetChanged();
     }
@@ -109,7 +109,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         void onClick(int position);
 
-        void onChecked(int position, Boolean isChecked, Container favourite);
+        void onChecked(int position, Boolean isChecked, LocalCache favourite);
     }
 
     @NonNull
@@ -148,10 +148,10 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             imageView.setOnClickListener(this);
         }
 
-        public void bind(final Container container) {
-            requestManager.load(container.getPng()).into(imageView);
-            name.setText(container.getName());
-            tag.setText(container.getTag());
+        public void bind(final LocalCache localCache) {
+            requestManager.load(localCache.getPng()).into(imageView);
+            name.setText(localCache.getName());
+            tag.setText(localCache.getTag());
         }
 
         @Override

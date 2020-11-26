@@ -4,6 +4,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.josef.mobile.data.firebase.Firebase;
 import com.josef.mobile.data.local.db.DbHelper;
 import com.josef.mobile.data.local.db.model.Archive;
+import com.josef.mobile.data.local.db.model.LocalCache;
 import com.josef.mobile.data.local.prefs.PreferencesHelper;
 import com.josef.mobile.data.remote.Endpoints;
 import com.josef.mobile.data.remote.model.Endpoint;
@@ -13,7 +14,6 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
@@ -39,8 +39,8 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Single<Archive> findbyName(Archive archive) {
-        return dbHelper.findbyName(archive);
+    public Single<Archive> findArchiveByName(Archive archive) {
+        return dbHelper.findArchiveByName(archive);
     }
 
     public void insertArchives(final Archive archive) {
@@ -53,8 +53,8 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Completable insertArchive(Archive archive) {
-        return dbHelper.insertArchive(archive);
+    public void updateArchives(Archive archive) {
+        dbHelper.updateArchives(archive);
     }
 
     @Override
@@ -62,12 +62,10 @@ public class AppDataManager implements DataManager {
         return dbHelper.getArchive();
     }
 
-
     @Override
     public Flowable<Endpoint> getChange(String url) {
         return endpoints.getChange(url);
     }
-
 
     @Override
     public DatabaseReference getDatabasereference() {
@@ -82,5 +80,41 @@ public class AppDataManager implements DataManager {
     @Override
     public void setHashString(String string) {
         preferencesHelper.setHashString(string);
+    }
+
+
+    @Override
+    public Flowable<List<LocalCache>> getAllEndpoints() {
+        return dbHelper.getAllEndpoints();
+    }
+
+    @Override
+    public Single<LocalCache> findEndpointsByName(LocalCache localCache) {
+        return dbHelper.findEndpointsByName(localCache);
+    }
+
+    @Override
+    public void insertEndpoints(LocalCache localCache) {
+        dbHelper.insertEndpoints(localCache);
+    }
+
+    @Override
+    public void insertAllEndpoints(List<LocalCache> localCache) {
+        dbHelper.insertAllEndpoints(localCache);
+    }
+
+    @Override
+    public void deleteEndpoints(LocalCache localCache) {
+        dbHelper.deleteEndpoints(localCache);
+    }
+
+    @Override
+    public void updateEndpoints(LocalCache localCache) {
+        dbHelper.updateEndpoints(localCache);
+    }
+
+    @Override
+    public Flowable<LocalCache> getEndpoint() {
+        return dbHelper.getEndpoint();
     }
 }

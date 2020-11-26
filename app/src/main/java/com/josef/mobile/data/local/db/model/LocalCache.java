@@ -6,8 +6,8 @@ import androidx.room.PrimaryKey;
 
 import io.reactivex.annotations.NonNull;
 
-@Entity(tableName = "archive")
-public class Archive {
+@Entity(tableName = "localcache")
+public class LocalCache {
 
     @ColumnInfo(name = "created_at")
     public String createdAt;
@@ -37,7 +37,7 @@ public class Archive {
     @ColumnInfo(name = "updated_at")
     public String updatedAt;
 
-    public Archive(long id, String name, String png, String url, String tag) {
+    public LocalCache(long id, String name, String png, String url, String tag) {
         this.id = id;
         this.name = name;
         this.png = png;
@@ -45,18 +45,18 @@ public class Archive {
         this.tag = tag;
     }
 
-    public Archive(String name, String png, String url) {
+    public LocalCache(String name, String png, String url) {
         this.name = name;
         this.png = png;
         this.url = url;
     }
 
-    public Archive(long id, String name) {
+    public LocalCache(long id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public Archive() {
+    public LocalCache() {
     }
 
     public String getCreatedAt() {

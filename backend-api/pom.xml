@@ -27,30 +27,30 @@
   -->
 
   <properties>
-    <maven.compiler.target>1.8</maven.compiler.target>
-    <maven.compiler.source>1.8</maven.compiler.source>
+      <maven.compiler.target>1.8</maven.compiler.target>
+      <maven.compiler.source>1.8</maven.compiler.source>
 
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <endpoints.framework.version>2.2.1</endpoints.framework.version>
-    <endpoints.management.version>1.0.12</endpoints.management.version>
+      <localCache.framework.version>2.2.1</localCache.framework.version>
+      <localCache.management.version>1.0.12</localCache.management.version>
 
-    <endpoints.project.id>capstone-272303</endpoints.project.id>
+      <localCache.project.id>capstone-272303</localCache.project.id>
   </properties>
 
   <dependencies>
     <!-- Compile/runtime dependencies -->
-    <dependency>
-      <groupId>com.google.endpoints</groupId>
-      <artifactId>endpoints-framework</artifactId>
-      <version>${endpoints.framework.version}</version>
-    </dependency>
+      <dependency>
+          <groupId>com.google.localCache</groupId>
+          <artifactId>localCache-framework</artifactId>
+          <version>${localCache.framework.version}</version>
+      </dependency>
     <!-- [START api_management] -->
-    <dependency>
-      <groupId>com.google.endpoints</groupId>
-      <artifactId>endpoints-management-control-appengine-all</artifactId>
-      <version>1.0.12</version>
-    </dependency>
+      <dependency>
+          <groupId>com.google.localCache</groupId>
+          <artifactId>localCache-management-control-appengine-all</artifactId>
+          <version>1.0.12</version>
+      </dependency>
     <!-- [END api_management] -->
     <dependency>
       <groupId>com.google.appengine</groupId>
@@ -129,11 +129,11 @@
       <!-- [START endpoints_plugin] -->
       <plugin>
         <groupId>com.google.cloud.tools</groupId>
-        <artifactId>endpoints-framework-maven-plugin</artifactId>
+          <artifactId>localCache-framework-maven-plugin</artifactId>
         <version>2.0.1</version>
         <configuration>
           <!-- plugin configuration -->
-          <hostname>${endpoints.project.id}.appspot.com</hostname>
+            <hostname>${localCache.project.id}.appspot.com</hostname>
         </configuration>
       </plugin>
       <!-- [END endpoints_plugin] -->

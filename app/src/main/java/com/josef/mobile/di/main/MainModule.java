@@ -5,29 +5,23 @@ import android.content.Context;
 
 import com.bumptech.glide.RequestManager;
 import com.josef.mobile.data.DataManager;
-import com.josef.mobile.data.remote.Endpoints;
 import com.josef.mobile.ui.main.MainActivity;
 import com.josef.mobile.ui.main.archive.helpers.firebase.FirebaseUpload;
 import com.josef.mobile.ui.main.archive.helpers.firebase.FirebaseUploadHelper;
 import com.josef.mobile.ui.main.archive.helpers.local.ArchiveDatabase;
 import com.josef.mobile.ui.main.archive.helpers.local.ArchiveDatabaseHelper;
 import com.josef.mobile.ui.main.post.PostRecyclerAdapter;
+import com.josef.mobile.ui.main.post.helpers.remote.AppEndpointsObserver;
 import com.josef.mobile.ui.main.post.helpers.remote.EndpointsObserver;
-import com.josef.mobile.ui.main.post.helpers.remote.EndpointsObserverHelper;
 import com.josef.mobile.utils.UtilManager;
 
 import dagger.Module;
 import dagger.Provides;
-import retrofit2.Retrofit;
 
 @Module
 public class MainModule {
 
-    @MainScope
-    @Provides
-    static Endpoints provideMainApi(Retrofit retrofit) {
-        return retrofit.create(Endpoints.class);
-    }
+
 
 
     @MainScope
@@ -57,8 +51,8 @@ public class MainModule {
 
     @MainScope
     @Provides
-    static EndpointsObserver provideEndpointsObserver(EndpointsObserverHelper endpointsObserverHelper) {
-        return endpointsObserverHelper;
+    static EndpointsObserver provideEndpointsObserver(AppEndpointsObserver appEndpointsObserver) {
+        return appEndpointsObserver;
     }
 
 

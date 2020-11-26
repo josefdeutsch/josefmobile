@@ -6,12 +6,12 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.josef.mobile.data.local.db.model.Archive;
 
 import java.util.List;
 
-import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
@@ -29,16 +29,13 @@ public interface ArchiveDao {
     Single<Archive> findByName(String name);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    Completable insertUser(Archive archive);
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Archive user);
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertAll(List<Archive> users);
+    @Update(entity = Archive.class)
+    void update(Archive archive);
 
     @Query("SELECT * FROM archive")
-    Flowable<List<Archive>> loadAll();
+    Flowable<List<Archive>> loadAllArchives();
 
     @Query("SELECT * FROM archive WHERE id IN (:userIds)")
     List<Archive> loadAllByIds(List<Integer> userIds);

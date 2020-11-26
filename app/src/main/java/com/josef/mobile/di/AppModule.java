@@ -93,6 +93,7 @@ public class AppModule {
         return retrofit.create(Endpoints.class);
     }
 
+
     @Provides
     @Singleton
     UtilManager provideUtil(AppUtilManager utilManager) {

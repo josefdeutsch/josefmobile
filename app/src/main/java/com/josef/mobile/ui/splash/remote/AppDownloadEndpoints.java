@@ -1,15 +1,12 @@
-package com.josef.mobile.ui.main.post.helpers.remote;
+package com.josef.mobile.ui.splash.remote;
 
 import android.util.Log;
-
-import androidx.lifecycle.MediatorLiveData;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.josef.mobile.data.DataManager;
+import com.josef.mobile.data.local.db.model.LocalCache;
 import com.josef.mobile.ui.main.Resource;
-import com.josef.mobile.ui.main.post.model.Container;
-import com.josef.mobile.utils.UtilManager;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -26,46 +23,41 @@ import io.reactivex.schedulers.Schedulers;
 import static com.josef.mobile.utils.AppConstants.BASE_URL3;
 
 @Singleton
-public class EndpointsObserverHelper implements EndpointsObserver {
+public class AppDownloadEndpoints implements DownloadEndpoints {
 
     private static final String TAG = "EndpointsObserverHelper";
 
     private final DataManager dataManager;
-    private final UtilManager utilManager;
-    private final MediatorLiveData<Resource<List<Container>>> containers = new MediatorLiveData<>();
-
 
     @Inject
-    public EndpointsObserverHelper(DataManager dataManager, UtilManager utilManager) {
+    public AppDownloadEndpoints(DataManager dataManager) {
         this.dataManager = dataManager;
-        this.utilManager = utilManager;
     }
 
-
-    public Flowable<Resource<List<Container>>> getEndpoints(String index) {
+    public Flowable<Resource<List<LocalCache>>> getEndpoints(String index) {
 
         return dataManager.getChange(BASE_URL3 + index)
                 .map(endpoint -> {
                     Gson gson = new Gson();
-                    Type userListType = new TypeToken<ArrayList<Container>>() {
+                    Type userListType = new TypeToken<ArrayList<LocalCache>>() {
                     }.getType();
-                    ArrayList<Container> endpoints = gson.fromJson(endpoint.message, userListType);
+                    ArrayList<LocalCache> endpoints = gson.fromJson(endpoint.message, userListType);
                     return endpoints;
                 })
 
-                .onErrorReturn(new Function<Throwable, ArrayList<Container>>() {
+                .onErrorReturn(new Function<Throwable, ArrayList<LocalCache>>() {
                     @Override
-                    public ArrayList<Container> apply(@NonNull Throwable throwable) throws Exception {
+                    public ArrayList<LocalCache> apply(@NonNull Throwable throwable) throws Exception {
                         Log.e(TAG, "apply: " + throwable.toString());
-                        Container container = new Container();
-                        container.setId(-1);
-                        ArrayList<Container> containers = new ArrayList<>();
+                        LocalCache container = new LocalCache();
+                        container.setId(-1l);
+                        ArrayList<LocalCache> containers = new ArrayList<>();
                         containers.add(container);
                         return containers;
                     }
                 })
 
-                .map((Function<List<Container>, Resource<List<Container>>>) posts -> {
+                .map((Function<List<LocalCache>, Resource<List<LocalCache>>>) posts -> {
                     if (posts.size() > 0) {
                         if (posts.get(0).getId() == -1) {
                             return Resource.error("Something went wrong", null);
@@ -75,7 +67,6 @@ public class EndpointsObserverHelper implements EndpointsObserver {
                 })
 
                 .subscribeOn(Schedulers.io());
-
 
     }
 }
