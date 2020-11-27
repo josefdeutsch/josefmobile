@@ -16,8 +16,8 @@ import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.josef.mobile.R;
+import com.josef.mobile.data.local.db.model.LocalCache;
 import com.josef.mobile.ui.main.Resource;
-import com.josef.mobile.ui.main.post.model.Container;
 import com.josef.mobile.viewmodels.ViewModelProviderFactory;
 
 import javax.inject.Inject;
@@ -90,9 +90,9 @@ public class PlayerActivity extends DaggerAppCompatActivity {
 
     private void subscribeObserver() {
         viewModel.authenticateWithEndpoint(index);
-        viewModel.observeEndpoints().observe(this, new Observer<Resource<Container>>() {
+        viewModel.observeEndpoints().observe(this, new Observer<Resource<LocalCache>>() {
             @Override
-            public void onChanged(Resource<Container> listResource) {
+            public void onChanged(Resource<LocalCache> listResource) {
                 if (listResource != null) {
                     switch (listResource.status) {
                         case LOADING: {

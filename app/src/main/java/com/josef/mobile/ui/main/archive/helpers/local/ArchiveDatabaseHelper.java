@@ -59,12 +59,12 @@ public class ArchiveDatabaseHelper implements ArchiveDatabase {
 
     @Override
     public void deleteArchives(Archive archive) {
-
         dataManager.deleteArchives(archive);
     }
 
     @Override
-    public void deleteArchivesPref(Archive archive) {
+    public void updateEndpoints(Archive archive) {
+        archive.setFlag(false);
 
         LocalCache localCache = new LocalCache(
                 archive.getId(),

@@ -2,24 +2,19 @@ package com.josef.mobile.ui.player.helpers.remote;
 
 import android.util.Log;
 
-import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
 import com.josef.mobile.data.DataManager;
+import com.josef.mobile.data.local.db.model.LocalCache;
 import com.josef.mobile.ui.main.Resource;
-import com.josef.mobile.ui.main.post.model.Container;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Flowable;
 import io.reactivex.schedulers.Schedulers;
-
-import static com.josef.mobile.utils.AppConstants.BASE_URL3;
 
 @Singleton
 public class EndpointObserverHelper implements EndpointObserver {
@@ -36,18 +31,20 @@ public class EndpointObserverHelper implements EndpointObserver {
     }
 
     @Override
-    public Flowable<Resource<Container>> observeEndpoints(int index) {
+    public Flowable<Resource<LocalCache>> observeEndpoints(int index) {
 
         Flowable<Integer> value = getIntegerFlowable(index);
 
-        Flowable<ArrayList<Container>> list = getFlowableList();
+        Flowable<List<LocalCache>> list = getFlowableList();
 
-        return Flowable.zip(value, list, (integer, containers) -> containers.get(integer))
+        return Flowable.zip(value, list, (integer, containers) -> {
+            return containers.get(integer);
+        })
                 .subscribeOn(Schedulers.io())
                 .onErrorReturn(throwable -> {
                     Log.e(TAG, "apply: " + throwable.toString());
-                    Container container = new Container();
-                    container.setId(-1);
+                    LocalCache container = new LocalCache();
+                    container.setId(-1l);
                     return container;
                 })
                 .map(container -> {
@@ -61,18 +58,12 @@ public class EndpointObserverHelper implements EndpointObserver {
 
     @NotNull
     private Flowable<Integer> getIntegerFlowable(int index) {
+
         return Flowable.just(index);
     }
 
-    private Flowable<ArrayList<Container>> getFlowableList() {
-        return dataManager.getChange(BASE_URL3 + "_ah/api/echo/v1/echo?n=1")
-                .map(endpoint -> {
-                    Gson gson = new Gson();
-                    Type userListType = new TypeToken<ArrayList<Container>>() {
-                    }.getType();
-                    ArrayList<Container> source = gson.fromJson(endpoint.message, userListType);
-                    return source;
-                });
+    private Flowable<List<LocalCache>> getFlowableList() {
+        return dataManager.getAllEndpoints();
     }
 
 

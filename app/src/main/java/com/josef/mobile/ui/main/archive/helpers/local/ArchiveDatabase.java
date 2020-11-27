@@ -12,7 +12,7 @@ public interface ArchiveDatabase {
 
     void deleteArchives(final Archive archive);
 
-    void deleteArchivesPref(Archive archive);
+    void updateEndpoints(Archive archive);
 
     Flowable<Resource<List<Archive>>> getAllArchives();
 }

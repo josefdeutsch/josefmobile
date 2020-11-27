@@ -31,10 +31,6 @@ public class ArchiveFragment extends BaseFragment implements View.OnClickListene
 
     @Inject
     ViewModelProviderFactory providerFactory;
-
-    private ArchiveViewModel viewModel;
-
-    private static final String TAG = "ArchiveFragment";
     private final ArchiveRecyclerViewAdapter.OnDeleteCallBack onDeleteCallBack
             = new ArchiveRecyclerViewAdapter.OnDeleteCallBack() {
 
@@ -47,12 +43,16 @@ public class ArchiveFragment extends BaseFragment implements View.OnClickListene
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            viewModel.deleteArchivesPref(archive);
                             viewModel.deleteArchives(archive);
+                            viewModel.updateEndpoints(archive);
                         }
                     }).show();
         }
     };
+    private ArchiveViewModel viewModel;
+
+    private static final String TAG = "ArchiveFragment";
+    private RecyclerView recyclerView;
 
     private Button sync;
     private ArchiveRecyclerViewAdapter adapter;
@@ -69,7 +69,7 @@ public class ArchiveFragment extends BaseFragment implements View.OnClickListene
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         sync = view.findViewById(R.id.purchasebutton);
         sync.setOnClickListener(this);
-        final RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
+        recyclerView = view.findViewById(R.id.recycler_view);
         final Context context = recyclerView.getContext();
         adapter = new ArchiveRecyclerViewAdapter(getActivity(), onDeleteCallBack);
         recyclerView.setLayoutManager(new GridLayoutManager(context, 2));

@@ -72,6 +72,10 @@ public class Archive {
         return flag;
     }
 
+    public void setFlag(boolean flag) {
+        this.flag = flag;
+    }
+
     @NonNull
     public Long getId() {
         return id;

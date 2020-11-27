@@ -71,6 +71,7 @@ public class PostsFragment extends BaseFragment
 
         initRecyclerView();
         subscribeObservers();
+        Log.d(TAG, "onViewCreated: +df[ogdfopigdfoighdfo;ighdfogki");
 
     }
 

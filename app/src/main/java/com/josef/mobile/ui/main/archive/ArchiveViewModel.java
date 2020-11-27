@@ -81,15 +81,6 @@ public class ArchiveViewModel extends BaseViewModel {
                         }));
     }
 
-    public void deleteArchivesPref(final Archive archive) {
-        compositeDisposable.add(
-                Completable.fromAction(() -> archiveDatabase.deleteArchivesPref(archive))
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe());
-
-
-    }
 
     public void deleteArchives(final Archive archive) {
         compositeDisposable.add(
@@ -97,7 +88,16 @@ public class ArchiveViewModel extends BaseViewModel {
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe());
+        observeArchive();
 
+    }
+
+    public void updateEndpoints(final Archive archive) {
+        compositeDisposable.add(
+                Completable.fromAction(() -> archiveDatabase.updateEndpoints(archive))
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe());
 
     }
 }
