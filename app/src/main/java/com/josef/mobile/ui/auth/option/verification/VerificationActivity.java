@@ -1,10 +1,10 @@
 package com.josef.mobile.ui.auth.option.verification;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,7 +34,6 @@ import butterknife.OnClick;
 
 public class VerificationActivity extends BaseActivity {
 
-    private static final String TAG = "SignActivity";
     private final Pattern pattern = android.util.Patterns.EMAIL_ADDRESS;
     @Inject
     ViewModelProviderFactory providerFactory;
@@ -85,20 +84,17 @@ public class VerificationActivity extends BaseActivity {
             if (userResource != null) {
                 switch (userResource.status) {
                     case LOADING: {
-                        Log.d(TAG, "onCreate: loading");
                         utilManager.showProgressbar(VerificationActivity.this);
                         break;
                     }
                     case SUCCESS: {
-                        Log.d(TAG, "onCreate: success");
-                        utilManager.hideProgressbar();
+                        new Handler().postDelayed(() -> utilManager.hideProgressbar(), 1000);
                         Toast.makeText(VerificationActivity.this, "We have sent an email with a confirmation link to your email address."
                                 , Toast.LENGTH_SHORT).show();
                         finish();
                         break;
                     }
                     case ERROR: {
-                        Log.d(TAG, "onCreate: error");
                         utilManager.hideProgressbar();
                         Toast.makeText(VerificationActivity.this, userResource.message, Toast.LENGTH_SHORT).show();
                         emailEditText.getText().clear();
@@ -147,7 +143,7 @@ public class VerificationActivity extends BaseActivity {
     private void showEmailError() {
         enableError(emailInputLayout);
         // emailInputLayout.setErrorEnabled(true);
-        emailInputLayout.setError("invalid email..");
+        emailInputLayout.setError("Invalid email");
     }
 
     private void hideEmailError() {

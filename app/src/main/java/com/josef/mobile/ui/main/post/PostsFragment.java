@@ -2,7 +2,6 @@ package com.josef.mobile.ui.main.post;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,7 +70,6 @@ public class PostsFragment extends BaseFragment
 
         initRecyclerView();
         subscribeObservers();
-        Log.d(TAG, "onViewCreated: +df[ogdfopigdfoighdfo;ighdfogki");
 
     }
 
@@ -89,7 +87,6 @@ public class PostsFragment extends BaseFragment
                 if (listResource != null) {
                     switch (listResource.status) {
                         case LOADING: {
-                            Log.d(TAG, "onChanged: PostsFragment: LOADING...");
                             showProgressbar(getActivity());
                             break;
                         }
@@ -101,7 +98,6 @@ public class PostsFragment extends BaseFragment
                         case ERROR: {
                             hideProgessbar();
                             getActivity().finish();
-                            Log.d(TAG, "onChanged: PostsFragment: ERROR... " + listResource.message);
                             break;
                         }
                     }
@@ -114,7 +110,6 @@ public class PostsFragment extends BaseFragment
     private void initRecyclerView() {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(gridLayoutManager);
-        // recyclerView.addItemDecoration(new ItemOffsetDecoration(0));
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemViewCacheSize(20);
@@ -130,7 +125,6 @@ public class PostsFragment extends BaseFragment
         startActivityForResult(intent, PLAYERACTIVIY);
     }
 
-    //  public Archive(long id, ,boolean flag, String name, String png, String url, String tag) {
     @Override
     public void onChecked(Boolean isChecked, LocalCache favourite) {
 

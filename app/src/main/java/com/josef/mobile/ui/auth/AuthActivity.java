@@ -18,11 +18,12 @@ package com.josef.mobile.ui.auth;
  */
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,6 +31,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -66,7 +68,9 @@ public class AuthActivity extends BaseActivity {
     public static final int RC_SIGN_OUT = 9001;
     public static final int SU_SIGN_IN = 9003;
     public static final int VU_SIGN_IN = 9004;
-    private static final String TAG = "GoogleActivity";
+
+    public static final int AUTH_REQ = 9005;
+
 
     @Inject
     FirebaseAuth mAuth;
@@ -104,7 +108,6 @@ public class AuthActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.auth_layout2);
         ButterKnife.bind(this);
-        //setTransparentStatusBarLollipop();
         authViewModel = new ViewModelProvider(this, providerFactory).get(AuthViewModel.class);
         authInputViewModel = new ViewModelProvider(this, providerFactory).get(AuthInputViewModel.class);
 
@@ -118,9 +121,18 @@ public class AuthActivity extends BaseActivity {
         onKeyBoardEventListener();
     }
 
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setMessage(R.string.quit);
+        alert.setCancelable(false);
+        alert.setPositiveButton(android.R.string.yes, (dialogInterface, i) -> finish());
+        alert.setNegativeButton(android.R.string.no, (dialogInterface, i) -> dialogInterface.dismiss());
+        alert.show();
+    }
+
     private void onKeyBoardEventListener() {
         KeyboardVisibilityEvent.setEventListener(this, isOpen -> {
-            Log.d(TAG, "onVisibilityChanged: " + isOpen);
             if (isOpen) {
                 imageView.setVisibility(View.GONE);
                 actionButtons.setVisibility(View.GONE);
@@ -143,7 +155,10 @@ public class AuthActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == SU_SIGN_IN) {
-            //viewModel.authenticateWithEmail();
+            //
+        }
+        if (requestCode == AUTH_REQ && Activity.RESULT_OK == resultCode) {
+            signOut();
         }
         if (requestCode == RC_SIGN_OUT) {
             signOut();
@@ -212,7 +227,6 @@ public class AuthActivity extends BaseActivity {
         emailEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                Log.d(TAG, "beforeTextChanged: ");
             }
 
             @Override
@@ -238,24 +252,18 @@ public class AuthActivity extends BaseActivity {
                             utilManager.showProgressbar(AuthActivity.this);
                             break;
                         }
-
                         case AUTHENTICATED: {
-                            Log.d(TAG, "onChanged: AuthActivity: AUTHENTICATED... " +
-                                    "Authenticated as: " + userAuthResource.data.getUid());
-                            startActivity(new Intent(AuthActivity.this, MainActivity.class));
-                            utilManager.hideProgressbar();
+                            startActivityForResult(new Intent(AuthActivity.this, MainActivity.class), AUTH_REQ);
+                            new Handler().postDelayed(() -> utilManager.hideProgressbar(), 1000);
+
                             break;
                         }
-
                         case ERROR: {
-                            Log.d(TAG, "onChanged: AuthActivity: ERROR...");
                             utilManager.hideProgressbar();
                             Toast.makeText(AuthActivity.this, userAuthResource.message, Toast.LENGTH_SHORT).show();
                             break;
                         }
-
                         case NOT_AUTHENTICATED: {
-                            Log.d(TAG, "onChanged: AuthActivity: NOT AUTHENTICATED. Navigating to Login screen.");
                             break;
                         }
                     }
@@ -279,7 +287,6 @@ public class AuthActivity extends BaseActivity {
 
     @OnClick(R.id.forgot_password_btn)
     void forgotPassword() {
-        Log.d(TAG, "forgotPassword: ");
         Intent signUpIntent = new Intent(this, VerificationActivity.class);
         startActivityForResult(signUpIntent, VU_SIGN_IN);
     }
@@ -290,7 +297,7 @@ public class AuthActivity extends BaseActivity {
 
     private void showEmailError() {
         enableError(emailInputLayout);
-        emailInputLayout.setError("invalid email..");
+        emailInputLayout.setError("Invalid email");
     }
 
     private void hideEmailError() {
@@ -319,7 +326,7 @@ public class AuthActivity extends BaseActivity {
 
     private void showPasswordError() {
         enableError(passwordInputLayout);
-        passwordInputLayout.setError("invalid password..");
+        passwordInputLayout.setError("Invalid password");
     }
 
     private void hidePasswordError() {

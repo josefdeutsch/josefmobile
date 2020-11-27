@@ -28,4 +28,5 @@
     <string name="artworks">Artwork</string>
     <string name="aboutmes">About</string>
     <string name="archives">Archive</string>
+    <string name="quit">Quit Application?</string>
 </resources>

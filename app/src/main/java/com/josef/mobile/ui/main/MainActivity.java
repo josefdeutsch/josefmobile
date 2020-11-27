@@ -1,5 +1,6 @@
 package com.josef.mobile.ui.main;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -163,11 +164,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Intent returnIntent = new Intent();
+            setResult(Activity.RESULT_OK, returnIntent);
+            finish();
         }
     }
-
-
 }
 
 

@@ -1,6 +1,7 @@
 package com.josef.mobile.ui.auth.option.account;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -166,7 +167,7 @@ public class SignActivity extends BaseActivity {
                         break;
                     }
                     case SUCCESS: {
-                        utilManager.hideProgressbar();
+                        new Handler().postDelayed(() -> utilManager.hideProgressbar(), 1000);
                         Toast.makeText(SignActivity.this, "We have sent an email with a confirmation link to your email address."
                                 , Toast.LENGTH_SHORT).show();
                         finish();
@@ -195,7 +196,7 @@ public class SignActivity extends BaseActivity {
 
     private void showEmailError() {
         enableError(emailInputLayout);
-        emailInputLayout.setError("invalid email..");
+        emailInputLayout.setError("Invalid email");
     }
 
     private void hideEmailError() {
@@ -224,7 +225,7 @@ public class SignActivity extends BaseActivity {
 
     private void showPasswordError() {
         enableError(passwordInputLayout);
-        passwordInputLayout.setError("invalid password..");
+        passwordInputLayout.setError("Invalid password");
     }
 
     private void hidePasswordError() {

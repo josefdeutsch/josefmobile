@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -49,7 +50,9 @@ public class SplashActivity extends BaseActivity {
                         }
                         case SUCCESS: {
                             viewModel.insertAllEndoints(listResource.data);
-                            startActivity(new Intent(SplashActivity.this, AuthActivity.class));
+                            Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(SplashActivity.this,
+                                    android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
+                            startActivity(new Intent(SplashActivity.this, AuthActivity.class), bundle);
                             finishAfterTransition();
                             break;
                         }

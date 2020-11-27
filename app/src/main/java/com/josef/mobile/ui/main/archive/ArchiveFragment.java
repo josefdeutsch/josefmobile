@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -16,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.josef.mobile.R;
 import com.josef.mobile.data.local.db.model.Archive;
 import com.josef.mobile.ui.base.BaseFragment;
@@ -54,7 +54,7 @@ public class ArchiveFragment extends BaseFragment implements View.OnClickListene
     private static final String TAG = "ArchiveFragment";
     private RecyclerView recyclerView;
 
-    private Button sync;
+    private FloatingActionButton sync;
     private ArchiveRecyclerViewAdapter adapter;
 
 
