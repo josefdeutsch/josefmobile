@@ -159,7 +159,6 @@ public class AppModule {
                 .setDefaultRequestOptions(requestOptions);
     }
 
-
     @Singleton
     @Provides
     static GoogleSignInClient provideGoogleClient(Application application) {

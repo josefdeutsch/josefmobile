@@ -21,7 +21,10 @@ public class ProfileViewModel extends ViewModel {
     public ProfileViewModel(SessionManager sessionManager) {
         this.sessionManager = sessionManager;
         Log.d(TAG, "ProfileViewModel: ");
+
+
     }
+
 
     public LiveData<Resource<String>> observeHeader() {
         // return sessionManager.getAuthUser();

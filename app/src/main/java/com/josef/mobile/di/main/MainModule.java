@@ -13,6 +13,7 @@ import com.josef.mobile.ui.main.archive.helpers.local.ArchiveDatabaseHelper;
 import com.josef.mobile.ui.main.post.PostRecyclerAdapter;
 import com.josef.mobile.ui.main.post.helpers.remote.AppEndpointsObserver;
 import com.josef.mobile.ui.main.post.helpers.remote.EndpointsObserver;
+import com.josef.mobile.ui.main.profile.ViewPagerAdapter;
 import com.josef.mobile.utils.UtilManager;
 
 import dagger.Module;
@@ -22,12 +23,16 @@ import dagger.Provides;
 public class MainModule {
 
 
-
-
     @MainScope
     @Provides
     static PostRecyclerAdapter providePostRecyclerAdapter(RequestManager requestManager, DataManager dataManager, UtilManager utilManager, Context context) {
         return new PostRecyclerAdapter(requestManager, dataManager, utilManager, context);
+    }
+
+    @MainScope
+    @Provides
+    static ViewPagerAdapter provideViewPagerAdapter(RequestManager requestManager, Context context) {
+        return new ViewPagerAdapter(requestManager, context);
     }
 
     @MainScope

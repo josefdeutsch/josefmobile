@@ -2,6 +2,7 @@ package com.josef.mobile.ui.main.profile;
 
 import android.animation.Animator;
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,18 +11,30 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.josef.mobile.R;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.ViewHolder> {
 
-    private final ArrayList<String> arrayList;
-    Context context;
-    private ImageView mContentView;
+    private final RequestManager requestManager;
+    private final Context context;
 
-    ViewPagerAdapter(ArrayList<String> arrayList) {
+
+    private ArrayList<String> arrayList;
+
+    public ViewPagerAdapter(RequestManager requestManager, Context context) {
+        this.requestManager = requestManager;
+        this.context = context;
+
+    }
+
+    public void setArrayList(ArrayList<String> arrayList) {
         this.arrayList = arrayList;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -32,12 +45,18 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.onBindViews(position);
+
+        try {
+            holder.onBindViews(position);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public int getItemCount() {
-        return arrayList.size();
+        if (arrayList == null) return 0;
+        return 4;
     }
 
     public void onAnimationChanged() {
@@ -46,7 +65,8 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView header, subheader, article;
+        TextView article;
+        ImageView animatedGif;
 
         private Animator animator;
 
@@ -55,12 +75,15 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
 
         }
 
-        private void onBindViews(int position) {
-            header = itemView.findViewById(R.id.header);
-            subheader = itemView.findViewById(R.id.subheader);
+        private void onBindViews(int position) throws IOException {
             article = itemView.findViewById(R.id.article);
+            animatedGif = itemView.findViewById(R.id.animated_gif);
+            String file = "http://joseph3d.com/wp-content/uploads/2020/11/LogoAnimatedBlack.gif";
+            Glide.with(context).load(file).into(animatedGif);
+            animatedGif.setImageURI(Uri.parse(file));
+
             article.setTag(R.id.article);
-            article.setText(arrayList.get(position));
+            // article.setText(arrayList.get(position));
         }
     }
 }

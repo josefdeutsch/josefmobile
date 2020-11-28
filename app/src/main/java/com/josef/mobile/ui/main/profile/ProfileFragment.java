@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,12 +20,17 @@ import com.josef.mobile.ui.base.BaseFragment;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
 public class ProfileFragment extends BaseFragment {
 
     private static final String TAG = "ProfileFragment";
     ViewPager2 viewPager2;
 
     TabLayout tabLayout;
+
+    @Inject
+    ViewPagerAdapter viewPagerAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,24 +47,25 @@ public class ProfileFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ArrayList<String> strings = new ArrayList<>();
-        for (int i = 0; i <= 5 - 1; i++) {
-            strings.add("Lorem Ipsum, Lorem Ipsum, Lorem Ipsum, Lorem Ipsum,");
-        }
-        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(strings);
+        ArrayList<String> strings = loadGifs();
+
         viewPager2 = view.findViewById(R.id.viewPager2);
         tabLayout = view.findViewById(R.id.tab_layout);
         viewPager2.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
-        viewPager2.setPageTransformer(new DepthPageTransformer());
-        view.setTranslationX(-1 * view.getWidth() * 1);
+        //   viewPager2.setPageTransformer(new DepthPageTransformer());
+        // view.setTranslationX(-1 * view.getWidth() * 1);
         viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels);
-                fadeInAnimation(viewPager2.findViewWithTag(R.id.article));
+                TextView textView = viewPager2.findViewWithTag(R.id.article);
+                // fadeInAnimation(textView);
+
             }
         });
+
         viewPager2.setAdapter(viewPagerAdapter);
+        viewPagerAdapter.setArrayList(strings);
 
         new TabLayoutMediator(tabLayout, viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
@@ -68,6 +75,12 @@ public class ProfileFragment extends BaseFragment {
         }).attach();
     }
 
+    private ArrayList<String> loadGifs() {
+        ArrayList<String> gifs = new ArrayList();
+        gifs.add("file:///android_asset/LogoAnimated.gif");
+        return gifs;
+    }
+
     void fadeOutAnimation(View viewToFadeOut) {
         ObjectAnimator fadeOut = ObjectAnimator.ofFloat(viewToFadeOut, "alpha", 1f, 0f);
 
@@ -75,7 +88,6 @@ public class ProfileFragment extends BaseFragment {
         fadeOut.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                // We wanna set the view to GONE, after it's fade out. so it actually disappear from the layout & don't take up space.
                 viewToFadeOut.setVisibility(View.GONE);
             }
         });
@@ -90,7 +102,6 @@ public class ProfileFragment extends BaseFragment {
         fadeIn.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
-                // We wanna set the view to VISIBLE, but with alpha 0. So it appear invisible in the layout.
                 viewToFadeIn.setVisibility(View.VISIBLE);
                 viewToFadeIn.setAlpha(0);
             }
