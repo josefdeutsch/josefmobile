@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
-public class ProfileFragment extends BaseFragment {
+public class ProfileFragment extends BaseFragment implements ViewPagerAdapter.ViewpagerAdapterOnClickListener {
 
     private static final String TAG = "ProfileFragment";
     ViewPager2 viewPager2;
@@ -58,9 +58,13 @@ public class ProfileFragment extends BaseFragment {
         String file = "http://joseph3d.com/wp-content/uploads/2020/11/LogoAnimatedBlack.gif";
 
         ArrayList<String> uri = new ArrayList<>();
-        for (int i = 0; i <= 6 - 1; i++) {
-            uri.add(file);
-        }
+        uri.add("http://joseph3d.com/wp-content/uploads/2020/11/LogoAnimatedBlack.gif");
+
+        uri.add("http://joseph3d.com/wp-content/uploads/2020/11/LogoAnimatedBlack.gif");
+        uri.add("http://joseph3d.com/wp-content/uploads/2020/11/LogoAnimatedBlack.gif");
+        uri.add("http://joseph3d.com/wp-content/uploads/2020/11/LogoAnimatedBlack.gif");
+        uri.add("http://joseph3d.com/wp-content/uploads/2020/11/LogoAnimatedBlack.gif");
+
 
         viewPager2 = view.findViewById(R.id.viewPager2);
         tabLayout = view.findViewById(R.id.tab_layout);
@@ -77,12 +81,14 @@ public class ProfileFragment extends BaseFragment {
         });
 
         viewPager2.setAdapter(viewPagerAdapter);
+        viewPagerAdapter.setViewpagerAdapterOnClickListener(this);
         viewPagerAdapter.setArrayList(strings, uri);
 
         new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> {
 
         }).attach();
     }
+
 
     void fadeOutAnimation(View viewToFadeOut) {
         ObjectAnimator fadeOut = ObjectAnimator.ofFloat(viewToFadeOut, "alpha", 1f, 0f);
@@ -114,4 +120,8 @@ public class ProfileFragment extends BaseFragment {
     }
 
 
+    @Override
+    public void onItemClicked() {
+
+    }
 }
