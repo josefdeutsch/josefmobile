@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -53,8 +52,7 @@ public class ProfileFragment extends BaseFragment {
         strings.add("");
         strings.add("Digital art is true");
         strings.add("Choose artworks");
-        strings.add("Synchronize account");
-        strings.add("Download JosephTv");
+        strings.add("Sync account");
         strings.add("Press play!");
 
         String file = "http://joseph3d.com/wp-content/uploads/2020/11/LogoAnimatedBlack.gif";
@@ -73,8 +71,8 @@ public class ProfileFragment extends BaseFragment {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels);
-                TextView textView = viewPager2.findViewWithTag(R.id.article);
-                fadeInAnimation(textView);
+                //TextView textView = viewPager2.findViewWithTag(R.id.article);
+                // fadeInAnimation(textView);
             }
         });
 

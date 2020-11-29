@@ -71,6 +71,7 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
         FrameLayout image_container;
         FrameLayout text_container;
         TextView article;
+        TextView header;
         ImageView animatedGif;
 
 
@@ -87,20 +88,22 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
 
             image_container = itemView.findViewById(R.id.profile_image_container);
             text_container = itemView.findViewById(R.id.profile_text_container);
-
+            header = itemView.findViewById(R.id.header);
             article = itemView.findViewById(R.id.article);
             article.setText(arrayList.get(position));
             article.setTag(R.id.article);
-            article.setVisibility(View.INVISIBLE);
+            //article.setVisibility(View.INVISIBLE);
 
             if (position > 0) {
                 Log.d(TAG, "onBindViews: ");
                 text_container.setVisibility(View.VISIBLE);
                 image_container.setVisibility(View.INVISIBLE);
+                header.setVisibility(View.INVISIBLE);
             } else {
                 Log.d(TAG, "onBindViews: ");
                 text_container.setVisibility(View.INVISIBLE);
                 image_container.setVisibility(View.VISIBLE);
+                header.setVisibility(View.VISIBLE);
             }
         }
     }
