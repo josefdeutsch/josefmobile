@@ -29,4 +29,9 @@
     <string name="aboutmes">About</string>
     <string name="archives">Archive</string>
     <string name="quit">Quit Application?</string>
+    <string name="info">Info</string>
+    <string name="fragment_into">fragmentinfo</string>
+
+    <string name="info_statment_belief"> I developed Joseph because I was looking for alternative ways to present my art.\nDuring my work I was confronted more and more with the idea of digital space.\nWhat exactly is digital space and how does it show itself?\nThe way to reinterpret an exhibition space captivates me and has motivated me so much to implement and complete joseph according to my ideas.\nIn the end, Joseph itself became a work of art and the metaphor:\n“The expression travels through space”\nis the message that emanates from the heart of the matter.</string>
+
 </resources>

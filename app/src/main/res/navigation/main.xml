@@ -23,4 +23,10 @@
         android:label="@string/fragment_archive"
         tools:layout="@layout/fragment_archive"></fragment>
 
+    <fragment
+        android:id="@+id/infoScreen"
+        android:name="com.josef.mobile.ui.main.info.InfoFragment"
+        android:label="@string/fragment_into"
+        tools:layout="@layout/fragment_info"></fragment>
+
 </navigation>

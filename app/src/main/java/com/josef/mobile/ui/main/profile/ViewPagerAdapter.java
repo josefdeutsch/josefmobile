@@ -35,7 +35,9 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
     }
 
     interface ViewpagerAdapterOnClickListener {
-        void onItemClicked();
+        void onItemInfoClicked();
+
+        void onItemContinueClicked();
     }
 
     public ViewPagerAdapter(RequestManager requestManager, Context context) {
@@ -135,10 +137,12 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
             switch (v.getId()) {
                 case R.id.continue_action:
                     Log.d(TAG, "onClick: ");// do what you want when user click layout
+                    viewpagerAdapterOnClickListener.onItemContinueClicked();
                     break;
 
                 case R.id.learnmore:
                     Log.d(TAG, "onClicsdsk: "); // do what you want when user click first view
+                    viewpagerAdapterOnClickListener.onItemInfoClicked();
                     break;
 
 

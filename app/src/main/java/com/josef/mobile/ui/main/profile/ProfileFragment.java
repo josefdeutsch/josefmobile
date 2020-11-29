@@ -1,8 +1,5 @@
 package com.josef.mobile.ui.main.profile;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,8 +52,6 @@ public class ProfileFragment extends BaseFragment implements ViewPagerAdapter.Vi
         strings.add("Sync account");
         strings.add("Press play!");
 
-        String file = "http://joseph3d.com/wp-content/uploads/2020/11/LogoAnimatedBlack.gif";
-
         ArrayList<String> uri = new ArrayList<>();
         uri.add("http://joseph3d.com/wp-content/uploads/2020/11/LogoAnimatedBlack.gif");
 
@@ -65,20 +60,9 @@ public class ProfileFragment extends BaseFragment implements ViewPagerAdapter.Vi
         uri.add("http://joseph3d.com/wp-content/uploads/2020/11/LogoAnimatedBlack.gif");
         uri.add("http://joseph3d.com/wp-content/uploads/2020/11/LogoAnimatedBlack.gif");
 
-
         viewPager2 = view.findViewById(R.id.viewPager2);
         tabLayout = view.findViewById(R.id.tab_layout);
         viewPager2.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
-        //   viewPager2.setPageTransformer(new DepthPageTransformer());
-        // view.setTranslationX(-1 * view.getWidth() * 1);
-        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                super.onPageScrolled(position, positionOffset, positionOffsetPixels);
-                //TextView textView = viewPager2.findViewWithTag(R.id.article);
-                // fadeInAnimation(textView);
-            }
-        });
 
         viewPager2.setAdapter(viewPagerAdapter);
         viewPagerAdapter.setViewpagerAdapterOnClickListener(this);
@@ -90,38 +74,13 @@ public class ProfileFragment extends BaseFragment implements ViewPagerAdapter.Vi
     }
 
 
-    void fadeOutAnimation(View viewToFadeOut) {
-        ObjectAnimator fadeOut = ObjectAnimator.ofFloat(viewToFadeOut, "alpha", 1f, 0f);
+    @Override
+    public void onItemInfoClicked() {
 
-        fadeOut.setDuration(1000);
-        fadeOut.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                viewToFadeOut.setVisibility(View.GONE);
-            }
-        });
-
-        fadeOut.start();
     }
-
-    void fadeInAnimation(View viewToFadeIn) {
-        ObjectAnimator fadeIn = ObjectAnimator.ofFloat(viewToFadeIn, "alpha", 0f, 1f);
-        fadeIn.setDuration(1000);
-
-        fadeIn.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                viewToFadeIn.setVisibility(View.VISIBLE);
-                viewToFadeIn.setAlpha(0);
-            }
-        });
-
-        fadeIn.start();
-    }
-
 
     @Override
-    public void onItemClicked() {
+    public void onItemContinueClicked() {
 
     }
 }
