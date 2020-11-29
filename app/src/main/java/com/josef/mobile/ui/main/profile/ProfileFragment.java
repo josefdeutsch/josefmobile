@@ -47,7 +47,22 @@ public class ProfileFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ArrayList<String> strings = loadGifs();
+
+        ArrayList<String> strings = new ArrayList<>();
+
+        strings.add("");
+        strings.add("Digital art is true");
+        strings.add("Choose artworks");
+        strings.add("Synchronize account");
+        strings.add("Download JosephTv");
+        strings.add("Press play!");
+
+        String file = "http://joseph3d.com/wp-content/uploads/2020/11/LogoAnimatedBlack.gif";
+
+        ArrayList<String> uri = new ArrayList<>();
+        for (int i = 0; i <= 6 - 1; i++) {
+            uri.add(file);
+        }
 
         viewPager2 = view.findViewById(R.id.viewPager2);
         tabLayout = view.findViewById(R.id.tab_layout);
@@ -59,26 +74,16 @@ public class ProfileFragment extends BaseFragment {
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels);
                 TextView textView = viewPager2.findViewWithTag(R.id.article);
-                // fadeInAnimation(textView);
-
+                fadeInAnimation(textView);
             }
         });
 
         viewPager2.setAdapter(viewPagerAdapter);
-        viewPagerAdapter.setArrayList(strings);
+        viewPagerAdapter.setArrayList(strings, uri);
 
-        new TabLayoutMediator(tabLayout, viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
-            @Override
-            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+        new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> {
 
-            }
         }).attach();
-    }
-
-    private ArrayList<String> loadGifs() {
-        ArrayList<String> gifs = new ArrayList();
-        gifs.add("file:///android_asset/LogoAnimated.gif");
-        return gifs;
     }
 
     void fadeOutAnimation(View viewToFadeOut) {

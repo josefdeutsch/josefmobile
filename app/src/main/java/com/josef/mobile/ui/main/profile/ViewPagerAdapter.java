@@ -2,16 +2,16 @@ package com.josef.mobile.ui.main.profile;
 
 import android.animation.Animator;
 import android.content.Context;
-import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.josef.mobile.R;
 
@@ -25,6 +25,7 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
 
 
     private ArrayList<String> arrayList;
+    private static final String TAG = "ViewPagerAdapter";
 
     public ViewPagerAdapter(RequestManager requestManager, Context context) {
         this.requestManager = requestManager;
@@ -32,10 +33,7 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
 
     }
 
-    public void setArrayList(ArrayList<String> arrayList) {
-        this.arrayList = arrayList;
-        notifyDataSetChanged();
-    }
+    private ArrayList<String> uri;
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -53,20 +51,28 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
         }
     }
 
-    @Override
-    public int getItemCount() {
-        if (arrayList == null) return 0;
-        return 4;
+    public void setArrayList(ArrayList<String> arrayList, ArrayList<String> uri) {
+        this.uri = uri;
+        this.arrayList = arrayList;
+        notifyDataSetChanged();
     }
 
     public void onAnimationChanged() {
 
     }
 
+    @Override
+    public int getItemCount() {
+        if (arrayList == null) return 0;
+        return arrayList.size();
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        FrameLayout image_container;
+        FrameLayout text_container;
         TextView article;
         ImageView animatedGif;
+
 
         private Animator animator;
 
@@ -76,14 +82,26 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
         }
 
         private void onBindViews(int position) throws IOException {
-            article = itemView.findViewById(R.id.article);
             animatedGif = itemView.findViewById(R.id.animated_gif);
-            String file = "http://joseph3d.com/wp-content/uploads/2020/11/LogoAnimatedBlack.gif";
-            Glide.with(context).load(file).into(animatedGif);
-            animatedGif.setImageURI(Uri.parse(file));
+            requestManager.load(uri.get(position)).into(animatedGif);
 
+            image_container = itemView.findViewById(R.id.profile_image_container);
+            text_container = itemView.findViewById(R.id.profile_text_container);
+
+            article = itemView.findViewById(R.id.article);
+            article.setText(arrayList.get(position));
             article.setTag(R.id.article);
-            // article.setText(arrayList.get(position));
+            article.setVisibility(View.INVISIBLE);
+
+            if (position > 0) {
+                Log.d(TAG, "onBindViews: ");
+                text_container.setVisibility(View.VISIBLE);
+                image_container.setVisibility(View.INVISIBLE);
+            } else {
+                Log.d(TAG, "onBindViews: ");
+                text_container.setVisibility(View.INVISIBLE);
+                image_container.setVisibility(View.VISIBLE);
+            }
         }
     }
 }
