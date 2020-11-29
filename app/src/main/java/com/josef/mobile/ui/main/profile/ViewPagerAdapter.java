@@ -17,7 +17,7 @@ import com.bumptech.glide.RequestManager;
 import com.josef.mobile.R;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.ViewHolder> {
 
@@ -25,7 +25,7 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
     private final Context context;
 
 
-    private ArrayList<String> arrayList;
+    private List<String> arrayList;
     private static final String TAG = "ViewPagerAdapter";
 
     private ViewpagerAdapterOnClickListener viewpagerAdapterOnClickListener;
@@ -46,7 +46,7 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
 
     }
 
-    private ArrayList<String> uri;
+    private List<String> uri;
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -64,7 +64,7 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
         }
     }
 
-    public void setArrayList(ArrayList<String> arrayList, ArrayList<String> uri) {
+    public void setArrayList(List<String> arrayList, List<String> uri) {
         this.uri = uri;
         this.arrayList = arrayList;
         notifyDataSetChanged();

@@ -32,6 +32,23 @@
     <string name="info">Info</string>
     <string name="fragment_into">fragmentinfo</string>
 
-    <string name="info_statment_belief"> I developed Joseph because I was looking for alternative ways to present my art.\nDuring my work I was confronted more and more with the idea of digital space.\nWhat exactly is digital space and how does it show itself?\nThe way to reinterpret an exhibition space captivates me and has motivated me so much to implement and complete joseph according to my ideas.\nIn the end, Joseph itself became a work of art and the metaphor:\n“The expression travels through space”\nis the message that emanates from the heart of the matter.</string>
+    <string name="info_statment_belief"> I developed Joseph because I was looking for alternative ways to present my art.\nDuring my work I was confronted more and more with the idea of digital space.\nWhat exactly is digital space and how does it show itself?\nThe way to reinterpret an exhibition space captivates me and has motivated me so much to implement and complete Joseph according to my ideas.\nIn the end, Joseph itself became a work of art and the metaphor:\n“The expression travels through space”\nis the message that emanates from the heart of the matter.</string>
+
+    <string-array name="profile_text_supplier">
+        <item> </item>
+        <item>Digital art is true</item>
+        <item>Choose artworks</item>
+        <item>Sync account</item>
+        <item>Press play!</item>
+    </string-array>
+
+    <string-array name="profile_url_supplier">
+        <item>http://joseph3d.com/wp-content/uploads/2020/11/LogoAnimatedBlack.gif</item>
+        <item>http://joseph3d.com/wp-content/uploads/2020/11/LogoAnimatedBlack.gif</item>
+        <item>http://joseph3d.com/wp-content/uploads/2020/11/LogoAnimatedBlack.gif</item>
+        <item>http://joseph3d.com/wp-content/uploads/2020/11/LogoAnimatedBlack.gif</item>
+        <item>http://joseph3d.com/wp-content/uploads/2020/11/LogoAnimatedBlack.gif</item>
+    </string-array>
+
 
 </resources>
