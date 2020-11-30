@@ -1,4 +1,4 @@
-package com.josef.mobile.ui.main.archive.helpers.local;
+package com.josef.mobile.ui.main.archive.local;
 
 import android.content.Context;
 import android.util.Log;
@@ -20,7 +20,7 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 @Singleton
-public class ArchiveDatabaseHelper implements ArchiveDatabase {
+public class AppArchiveDatabase implements ArchiveDatabase {
 
     private static final String TAG = "ArchiveDatabaseHelper";
     private final Context context;
@@ -29,7 +29,7 @@ public class ArchiveDatabaseHelper implements ArchiveDatabase {
 
 
     @Inject
-    public ArchiveDatabaseHelper(DataManager dataManager, UtilManager utilManager, Context context) {
+    public AppArchiveDatabase(DataManager dataManager, UtilManager utilManager, Context context) {
         this.dataManager = dataManager;
         this.utilManager = utilManager;
         this.context = context;

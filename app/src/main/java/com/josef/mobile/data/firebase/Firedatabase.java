@@ -9,7 +9,6 @@ import javax.inject.Singleton;
 @Singleton
 public class Firedatabase implements Firebase {
 
-    private static final String TAG = "Firedatabase";
     FirebaseDatabase database;
 
     @Inject

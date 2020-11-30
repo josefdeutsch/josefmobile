@@ -11,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,9 +26,11 @@ import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import com.google.android.gms.ads.LoadAdError;
 import com.google.android.material.navigation.NavigationView;
 import com.josef.mobile.R;
 import com.josef.mobile.ui.base.BaseActivity;
+import com.josef.mobile.ui.main.archive.ads.OnAdsInstantiated;
 import com.josef.mobile.viewmodels.ViewModelProviderFactory;
 
 import javax.inject.Inject;
@@ -113,8 +116,25 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             case R.id.nav_archive: {
                 if (isValidDestination(R.id.archiveScreen)) {
                     utilManager.showProgressbar(this);
-                    viewModel.initiateInsterstitialAds(() -> {
-                        Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.archiveScreen);
+                    viewModel.initiateInsterstitialAds(new OnAdsInstantiated() {
+                        @Override
+                        public void onSuccess() {
+                            Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.archiveScreen);
+                        }
+
+                        @Override
+                        public void onFailure(LoadAdError adError) {
+                            Toast.makeText(getApplicationContext(), adError.getMessage(), android.widget.Toast.LENGTH_SHORT)
+                                    .show();
+
+                            Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.profileScreen);
+                        }
+
+                        @Override
+                        public void onAdClicked() {
+
+                            //Order Google Play Store reference..
+                        }
                     });
                 }
                 break;
@@ -126,6 +146,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 }
                 break;
             }
+
         }
         menuItem.setChecked(true);
         drawerLayout.closeDrawer(GravityCompat.START);

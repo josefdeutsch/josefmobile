@@ -168,7 +168,6 @@ public class AppModule {
                 .requestIdToken(application.getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
-        // [END config_signin]
         return GoogleSignIn.getClient(application, gso);
     }
 

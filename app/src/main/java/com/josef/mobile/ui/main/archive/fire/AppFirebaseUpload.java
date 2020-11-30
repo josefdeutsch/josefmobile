@@ -1,19 +1,15 @@
-package com.josef.mobile.ui.main.archive.helpers.firebase;
-
-import android.util.Log;
+package com.josef.mobile.ui.main.archive.fire;
 
 import androidx.lifecycle.LiveDataReactiveStreams;
 
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.josef.mobile.SessionManager;
 import com.josef.mobile.data.DataManager;
 import com.josef.mobile.data.local.db.model.Archive;
 import com.josef.mobile.ui.auth.AuthResource;
 import com.josef.mobile.ui.auth.model.User;
 import com.josef.mobile.ui.main.MainActivity;
-import com.josef.mobile.ui.main.archive.model.Data;
-import com.josef.mobile.utils.UtilManager;
+import com.josef.mobile.ui.main.archive.fire.model.Data;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,27 +26,17 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 @Singleton
-public class FirebaseUploadHelper implements FirebaseUpload {
+public class AppFirebaseUpload implements FirebaseUpload {
 
-    private static final String TAG = "FirebaseUploadHelper";
     private final DataManager dataManager;
-    private final UtilManager utilManager;
     private final SessionManager sessionManager;
 
-    @Inject
-    public FirebaseUploadHelper(DataManager dataManager, SessionManager sessionManager, UtilManager utilManager) {
-        this.dataManager = dataManager;
-        this.sessionManager = sessionManager;
-        this.utilManager = utilManager;
-    }
+    private static final String DESCRIPTION = "description";
 
     public Observable<DatabaseReference> synchronize(MainActivity mainActivity) {
         if (sessionManager == null) return null;
-
         Observable<User> currentuser = getUserObservable(mainActivity);
-
         Observable<List<Archive>> archives = getListObservable();
-
         return Observable.zip(currentuser, archives, (user, archives1) -> upload(user, archives1))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -63,9 +49,25 @@ public class FirebaseUploadHelper implements FirebaseUpload {
     private Observable<User> getUserObservable(MainActivity mainActivity) {
         Publisher<AuthResource<User>> userPublisher
                 = LiveDataReactiveStreams.toPublisher(mainActivity, sessionManager.getAuthUser());
-
         return Observable.fromPublisher(userPublisher)
                 .map(userAuthResource -> userAuthResource.data);
+    }
+
+    private static final String _ = "";
+    private static final String SOURCES = "sources";
+    private static final String CARD = "card";
+    private static final String BACKGROUND = "background";
+    private static final String TITLE = "title";
+    private static final String STUDIO = "studio";
+    private static final String CATEGORY = "category";
+    private static final String VALUE = "Artwork";
+    private static final String GOOGLE_VIDEO = "googlevideos";
+    private static final String VIDEO = "videos";
+
+    @Inject
+    public AppFirebaseUpload(DataManager dataManager, SessionManager sessionManager) {
+        this.dataManager = dataManager;
+        this.sessionManager = sessionManager;
     }
 
     private DatabaseReference upload(User user, List<Archive> archives) throws JSONException {
@@ -77,29 +79,22 @@ public class FirebaseUploadHelper implements FirebaseUpload {
 
         for (int i = 0; i <= archives.size() - 1; i++) {
             JSONObject sum = new JSONObject();
-            sum.put("description", "");
+            sum.put(DESCRIPTION, _);
             JSONArray path = new JSONArray();
             path.put(archives.get(i).url);
-            sum.put("sources", path);
-            sum.put("card", archives.get(i).png);
-            sum.put("background", archives.get(i).png);
-
-            sum.put("title", archives.get(i).name); //name
-            sum.put("studio", archives.get(i).tag); //tag
-
+            sum.put(SOURCES, path);
+            sum.put(CARD, archives.get(i).png);
+            sum.put(BACKGROUND, archives.get(i).png);
+            sum.put(TITLE, archives.get(i).name); //name
+            sum.put(STUDIO, archives.get(i).tag); //tag
             sources.put(sum);
         }
-
-        data.put("category", "Google+");
-        data.put("videos", sources);
+        data.put(CATEGORY, VALUE);
+        data.put(VIDEO, sources);
         googlevideos.put(data);
-        jsonObject.put("googlevideos", googlevideos);
-        Data upload = new Data(jsonObject.toString(), "", "");
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();//
-        final DatabaseReference myRef = database.getReference("users");
-
-        Log.d(TAG, "upload: " + user.getUid());
+        jsonObject.put(GOOGLE_VIDEO, googlevideos);
+        Data upload = new Data(jsonObject.toString(), _, _);
+        DatabaseReference myRef = dataManager.getDatabasereference();
         myRef.child(user.uid).setValue(upload);
 
         return myRef;

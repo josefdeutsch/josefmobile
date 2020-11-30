@@ -2,7 +2,6 @@ package com.josef.mobile.ui.main.archive.ads;
 
 import android.content.Context;
 import android.os.Handler;
-import android.util.Log;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -17,7 +16,6 @@ import javax.inject.Singleton;
 @Singleton
 public class AppAdsRequest implements InterstitialAdsRequest {
 
-    private static final String TAG = "AppAdsRequest";
     private final Context context;
     private final UtilManager utilManager;
     private InterstitialAd mInterstitialAd;
@@ -42,30 +40,25 @@ public class AppAdsRequest implements InterstitialAdsRequest {
 
             @Override
             public void onAdFailedToLoad(LoadAdError adError) {
-                Log.d(TAG, "onAdFailedToLoad: " + adError.toString());
-
-                // Code to be executed when an ad request fails.
+                onAdsInstantiated.onFailure(adError);
             }
 
             @Override
             public void onAdOpened() {
-                // Code to be executed when the ad is displayed.
             }
 
             @Override
             public void onAdClicked() {
-                // Code to be executed when the user clicks on an ad.
+                onAdsInstantiated.onAdClicked();
             }
 
             @Override
             public void onAdLeftApplication() {
-                // Code to be executed when the user has left the app.
             }
 
             @Override
             public void onAdClosed() {
-                onAdsInstantiated.action();
-                // Code to be executed when the interstitial ad is closed.
+                onAdsInstantiated.onSuccess();
             }
         });
     }

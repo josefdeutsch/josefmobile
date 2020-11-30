@@ -6,10 +6,10 @@ import android.content.Context;
 import com.bumptech.glide.RequestManager;
 import com.josef.mobile.data.DataManager;
 import com.josef.mobile.ui.main.MainActivity;
-import com.josef.mobile.ui.main.archive.helpers.firebase.FirebaseUpload;
-import com.josef.mobile.ui.main.archive.helpers.firebase.FirebaseUploadHelper;
-import com.josef.mobile.ui.main.archive.helpers.local.ArchiveDatabase;
-import com.josef.mobile.ui.main.archive.helpers.local.ArchiveDatabaseHelper;
+import com.josef.mobile.ui.main.archive.fire.AppFirebaseUpload;
+import com.josef.mobile.ui.main.archive.fire.FirebaseUpload;
+import com.josef.mobile.ui.main.archive.local.AppArchiveDatabase;
+import com.josef.mobile.ui.main.archive.local.ArchiveDatabase;
 import com.josef.mobile.ui.main.post.PostRecyclerAdapter;
 import com.josef.mobile.ui.main.post.helpers.remote.AppEndpointsObserver;
 import com.josef.mobile.ui.main.post.helpers.remote.EndpointsObserver;
@@ -44,14 +44,14 @@ public class MainModule {
 
     @MainScope
     @Provides
-    static FirebaseUpload provideFirebaseUpload(FirebaseUploadHelper firebaseUploadHelper) {
-        return firebaseUploadHelper;
+    static FirebaseUpload provideFirebaseUpload(AppFirebaseUpload appFirebaseUpload) {
+        return appFirebaseUpload;
     }
 
     @MainScope
     @Provides
-    static ArchiveDatabase provideArchiveDatabase(ArchiveDatabaseHelper archiveDatabaseHelper) {
-        return archiveDatabaseHelper;
+    static ArchiveDatabase provideArchiveDatabase(AppArchiveDatabase appArchiveDatabase) {
+        return appArchiveDatabase;
     }
 
     @MainScope

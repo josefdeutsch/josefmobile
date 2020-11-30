@@ -1,7 +1,6 @@
 package com.josef.mobile.ui.main.archive;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,12 +45,9 @@ public class ArchiveFragment extends BaseFragment implements View.OnClickListene
                     .setTitle("Messenger:")
                     .setMessage("delete item..?")
                     .setCancelable(false)
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            viewModel.deleteArchives(archive);
-                            viewModel.updateEndpoints(archive);
-                        }
+                    .setPositiveButton("OK", (dialog, which) -> {
+                        viewModel.deleteArchives(archive);
+                        viewModel.updateEndpoints(archive);
                     }).show();
         }
     };
@@ -89,7 +85,7 @@ public class ArchiveFragment extends BaseFragment implements View.OnClickListene
                     }
                     case SUCCESS: {
                         if (listResource.data != null && listResource.data.isEmpty()) {
-                            archiveDatabaseEmptyRemainder();
+                            archiveDatabaseRemainder();
                             utilManager.hideProgressbar();
                             return;
                         }
@@ -108,7 +104,7 @@ public class ArchiveFragment extends BaseFragment implements View.OnClickListene
         });
     }
 
-    private void archiveDatabaseEmptyRemainder() {
+    private void archiveDatabaseRemainder() {
         Toast.makeText(getContext(), "Please add items to archive..", Toast.LENGTH_SHORT)
                 .show();
     }

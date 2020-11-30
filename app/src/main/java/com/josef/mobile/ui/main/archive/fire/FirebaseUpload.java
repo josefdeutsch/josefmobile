@@ -1,4 +1,4 @@
-package com.josef.mobile.ui.main.archive.helpers.firebase;
+package com.josef.mobile.ui.main.archive.fire;
 
 import com.google.firebase.database.DatabaseReference;
 import com.josef.mobile.ui.main.MainActivity;

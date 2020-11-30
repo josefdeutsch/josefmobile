@@ -1,4 +1,4 @@
-package com.josef.mobile.ui.main.archive.model;
+package com.josef.mobile.ui.main.archive.fire.model;
 
 public class Data {
 

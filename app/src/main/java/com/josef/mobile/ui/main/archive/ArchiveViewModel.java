@@ -14,8 +14,8 @@ import com.josef.mobile.data.local.db.model.Archive;
 import com.josef.mobile.ui.base.BaseViewModel;
 import com.josef.mobile.ui.main.MainActivity;
 import com.josef.mobile.ui.main.Resource;
-import com.josef.mobile.ui.main.archive.helpers.firebase.FirebaseUpload;
-import com.josef.mobile.ui.main.archive.helpers.local.ArchiveDatabase;
+import com.josef.mobile.ui.main.archive.fire.FirebaseUpload;
+import com.josef.mobile.ui.main.archive.local.ArchiveDatabase;
 
 import java.util.List;
 
