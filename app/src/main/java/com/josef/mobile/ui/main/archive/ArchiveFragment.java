@@ -3,10 +3,10 @@ package com.josef.mobile.ui.main.archive;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -19,6 +19,7 @@ import com.josef.mobile.R;
 import com.josef.mobile.data.local.db.model.Archive;
 import com.josef.mobile.ui.base.BaseFragment;
 import com.josef.mobile.ui.main.MainActivity;
+import com.josef.mobile.utils.UtilManager;
 import com.josef.mobile.viewmodels.ViewModelProviderFactory;
 
 import javax.inject.Inject;
@@ -27,6 +28,14 @@ public class ArchiveFragment extends BaseFragment implements View.OnClickListene
 
     @Inject
     ViewModelProviderFactory providerFactory;
+
+    @Inject
+    UtilManager utilManager;
+
+    private ArchiveViewModel viewModel;
+    private RecyclerView recyclerView;
+    private FloatingActionButton sync;
+    private ArchiveRecyclerViewAdapter adapter;
 
     private final ArchiveRecyclerViewAdapter.OnDeleteCallBack onDeleteCallBack
             = new ArchiveRecyclerViewAdapter.OnDeleteCallBack() {
@@ -46,14 +55,6 @@ public class ArchiveFragment extends BaseFragment implements View.OnClickListene
                     }).show();
         }
     };
-    private ArchiveViewModel viewModel;
-
-    private static final String TAG = "ArchiveFragment";
-    private RecyclerView recyclerView;
-
-    private FloatingActionButton sync;
-    private ArchiveRecyclerViewAdapter adapter;
-
 
     @Nullable
     @Override
@@ -83,17 +84,23 @@ public class ArchiveFragment extends BaseFragment implements View.OnClickListene
             if (listResource != null) {
                 switch (listResource.status) {
                     case LOADING: {
-                        Log.d(TAG, "onChanged: ArchiveFragment: LOADING...");
+                        utilManager.showProgressbar(getActivity());
                         break;
                     }
-
                     case SUCCESS: {
-                        Log.d(TAG, "onChanged: ArchiveFragment: SUCCESS :" + listResource.data.isEmpty());
-                        adapter.setListItems(listResource.data);
+                        if (listResource.data != null && listResource.data.isEmpty()) {
+                            archiveDatabaseEmptyRemainder();
+                            utilManager.hideProgressbar();
+                            return;
+                        }
+                        if (listResource.data != null) {
+                            adapter.setListItems(listResource.data);
+                        }
+                        utilManager.hideProgressbar();
                         break;
                     }
                     case ERROR: {
-                        Log.d(TAG, "onChanged: PostsFragment: ERROR : " + listResource.data.isEmpty());
+                        utilManager.hideProgressbar();
                         break;
                     }
                 }
@@ -101,23 +108,18 @@ public class ArchiveFragment extends BaseFragment implements View.OnClickListene
         });
     }
 
+    private void archiveDatabaseEmptyRemainder() {
+        Toast.makeText(getContext(), "Please add items to archive..", Toast.LENGTH_SHORT)
+                .show();
+    }
+
     @Override
     public void onClick(View v) {
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-        alert.setMessage(R.string.sync);
+        alert.setMessage(R.string.syncs);
         alert.setCancelable(false);
-        alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                viewModel.synchronize((MainActivity) getActivity());
-            }
-        });
-        alert.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
+        alert.setPositiveButton(android.R.string.yes, (dialogInterface, i) -> viewModel.synchronize((MainActivity) getActivity()));
+        alert.setNegativeButton(android.R.string.no, (dialogInterface, i) -> dialogInterface.dismiss());
         alert.show();
     }
 }

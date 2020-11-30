@@ -24,10 +24,10 @@ package com.josef.mobile.data.local.prefs;
 public interface PreferencesHelper {
 
 
-     String getHashString();
+     String getHashMapArchiveIndicator();
 
 
-     void setHashString(String string);
+    void setHashMapArchiveIndicator(String string);
 
-
+    void clearHashmapIndicator();
 }

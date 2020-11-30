@@ -20,7 +20,6 @@ import io.reactivex.Single;
 @Singleton
 public class AppDataManager implements DataManager {
 
-
     DbHelper dbHelper;
     Endpoints endpoints;
     PreferencesHelper preferencesHelper;
@@ -73,17 +72,6 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public String getHashString() {
-        return preferencesHelper.getHashString();
-    }
-
-    @Override
-    public void setHashString(String string) {
-        preferencesHelper.setHashString(string);
-    }
-
-
-    @Override
     public Flowable<List<LocalCache>> getAllEndpoints() {
         return dbHelper.getAllEndpoints();
     }
@@ -116,5 +104,20 @@ public class AppDataManager implements DataManager {
     @Override
     public Flowable<LocalCache> getEndpoint() {
         return dbHelper.getEndpoint();
+    }
+
+    @Override
+    public String getHashMapArchiveIndicator() {
+        return preferencesHelper.getHashMapArchiveIndicator();
+    }
+
+    @Override
+    public void setHashMapArchiveIndicator(String string) {
+        preferencesHelper.setHashMapArchiveIndicator(string);
+    }
+
+    @Override
+    public void clearHashmapIndicator() {
+        preferencesHelper.clearHashmapIndicator();
     }
 }

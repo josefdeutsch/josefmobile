@@ -29,32 +29,26 @@ import javax.inject.Inject;
 
 public class AppPreferencesHelper implements PreferencesHelper {
 
-    private static final String TAG = "AppPreferencesHelper";
-    private static final String PREF_KEY_SPARSEARRAY_IDENTIFIER = "PREF_KEY_ACCESS_TOKEN";
-    private static final String PREF_STRING_SPARSEARRAY_IDENTIFIER = "PREF_STRING_ACCESS_TOKEN";
-    private static final String ANOTHER_PREF_KEY_SPARSEARRAY_IDENTIFIER = "Anothersdkhfsdlfkds";
-    private static final String PREF_KEY_TOGGLE = "togglebtton";
-
+    private static final String ARCHIVE_INDICATOR = "archive_indicator";
     private final SharedPreferences mPrefs;
-    private final Context context;
-
 
     @Inject
     public AppPreferencesHelper(Context context, @PreferenceInfo String prefFileName) {
         mPrefs = context.getSharedPreferences(prefFileName, Context.MODE_PRIVATE);
-        this.context = context;
     }
 
-
-    @Override
-    public String getHashString() {
-
-        return mPrefs.getString(PREF_KEY_TOGGLE, "uschi");
+    public String getHashMapArchiveIndicator() {
+        return mPrefs.getString(ARCHIVE_INDICATOR, "empty");
     }
 
     @Override
-    public void setHashString(String string) {
-        mPrefs.edit().putString(PREF_KEY_TOGGLE, string).commit();
+    public void setHashMapArchiveIndicator(String string) {
+        mPrefs.edit().putString(ARCHIVE_INDICATOR, string).commit();
+    }
+
+    @Override
+    public void clearHashmapIndicator() {
+        mPrefs.edit().remove(ARCHIVE_INDICATOR).commit();
     }
 
 }

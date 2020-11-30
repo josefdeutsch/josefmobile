@@ -21,7 +21,6 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LifecycleRegistry;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
@@ -53,10 +52,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
-        //  lifecycleRegistry = new LifecycleRegistry(this);
         init();
         viewModel = new ViewModelProvider(this, providerFactory).get(MainViewModel.class);
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dataManager.clearHashmapIndicator();
     }
 
     @Nullable
@@ -71,15 +75,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout);
         NavigationUI.setupWithNavController(navigationView, navController);
         navigationView.setNavigationItemSelectedListener(this);
-
-        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
-            @Override
-            public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
-                setToolbarColor();
-            }
-        });
-
-
+        navController.addOnDestinationChangedListener((controller, destination, arguments) -> setToolbarColor());
     }
 
     private void setToolbarColor() {

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.josef.mobile.data.DataManager;
 import com.josef.mobile.utils.UtilManager;
 
 import javax.inject.Inject;
@@ -18,7 +19,10 @@ import dagger.android.support.DaggerFragment;
 public abstract class BaseFragment extends DaggerFragment {
 
     @Inject
-    UtilManager utilManager;
+    public UtilManager utilManager;
+
+    @Inject
+    public DataManager dataManager;
 
     private static final String TAG = "BaseFragment";
 

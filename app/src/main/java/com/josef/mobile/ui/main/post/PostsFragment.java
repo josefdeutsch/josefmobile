@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -128,6 +129,12 @@ public class PostsFragment extends BaseFragment
     @Override
     public void onChecked(Boolean isChecked, LocalCache favourite) {
 
+        if (dataManager.getHashMapArchiveIndicator().equals("empty")) {
+            Toast.makeText(getContext(), "Sculpture added to archive", Toast.LENGTH_SHORT)
+                    .show();
+            dataManager.setHashMapArchiveIndicator("not empty");
+        }
+
         Archive archive = new Archive(
                 favourite.getId(),
                 favourite.isFlag(),
@@ -170,6 +177,7 @@ public class PostsFragment extends BaseFragment
         super.onDestroy();
         adapter.onDetachedFromRecyclerView(recyclerView);
         recyclerView.clearOnScrollListeners();
+
     }
 }
 

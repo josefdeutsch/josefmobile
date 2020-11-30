@@ -33,7 +33,8 @@
     <string name="fragment_into">fragmentinfo</string>
 
     <string name="info_statment_belief"> I developed Joseph because I was looking for alternative ways to present my art.\nDuring my work I was confronted more and more with the idea of digital space.\nWhat exactly is digital space and how does it show itself?\nThe way to reinterpret an exhibition space captivates me and has motivated me so much to implement and complete Joseph according to my ideas.\nIn the end, Joseph itself became a work of art and the metaphor:\n“The expression travels through space”\nis the message that emanates from the heart of the matter.</string>
-
+    <string name="proceed">Proceed</string>
+    <string name="syncs">Synchronize with TV</string>
     <string-array name="profile_text_supplier">
         <item> </item>
         <item>Digital art is true</item>
