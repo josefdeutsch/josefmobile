@@ -26,6 +26,8 @@ import com.josef.mobile.data.local.db.DbHelper;
 import com.josef.mobile.data.local.prefs.AppPreferencesHelper;
 import com.josef.mobile.data.local.prefs.PreferencesHelper;
 import com.josef.mobile.data.remote.Endpoints;
+import com.josef.mobile.ui.main.archive.ads.AppAdsRequest;
+import com.josef.mobile.ui.main.archive.ads.InterstitialAdsRequest;
 import com.josef.mobile.utils.AppConstants;
 import com.josef.mobile.utils.AppUtilManager;
 import com.josef.mobile.utils.UtilManager;
@@ -181,6 +183,12 @@ public class AppModule {
     @Provides
     FirebaseAuth provideFirebaseAuth() {
         return FirebaseAuth.getInstance();
+    }
+
+    @Singleton
+    @Provides
+    InterstitialAdsRequest provideEndpointsObserver(AppAdsRequest appAdsRequest) {
+        return appAdsRequest;
     }
 
 

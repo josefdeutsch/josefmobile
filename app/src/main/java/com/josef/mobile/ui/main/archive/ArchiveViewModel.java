@@ -33,18 +33,23 @@ public class ArchiveViewModel extends BaseViewModel {
 
     private final FirebaseUpload firebaseUpload;
     private final ArchiveDatabase archiveDatabase;
+
     private final Context context;
 
     private MediatorLiveData<Resource<List<Archive>>> posts;
 
     @Inject
-    public ArchiveViewModel(FirebaseUpload firebaseUpload, ArchiveDatabase archiveDatabase, Context context) {
+    public ArchiveViewModel(FirebaseUpload firebaseUpload,
+                            ArchiveDatabase archiveDatabase,
+                            Context context) {
+
         this.firebaseUpload = firebaseUpload;
         this.archiveDatabase = archiveDatabase;
         this.context = context;
     }
 
     public LiveData<Resource<List<Archive>>> observeArchive() {
+
         if (posts == null) posts = new MediatorLiveData<>();
 
         LiveData<Resource<List<Archive>>> source =

@@ -120,6 +120,9 @@ android {
         implementation 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:3.0.0-RC2'
         implementation 'com.jakewharton.rxbinding4:rxbinding:4.0.0'
 
+
+        implementation 'com.google.android.gms:play-services-ads:19.5.0'
+
         // AndroidX support design (for nav drawer)
 //    def material_version = "1.0.0-rc02"
         def material_version = "1.0.0"

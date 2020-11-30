@@ -19,6 +19,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LifecycleRegistry;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.NavOptions;
@@ -28,6 +29,9 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.navigation.NavigationView;
 import com.josef.mobile.R;
 import com.josef.mobile.ui.base.BaseActivity;
+import com.josef.mobile.viewmodels.ViewModelProviderFactory;
+
+import javax.inject.Inject;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, LifecycleOwner {
 
@@ -36,17 +40,22 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
 
+    @Inject
+    ViewModelProviderFactory providerFactory;
+
+    MainViewModel viewModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         setContentView(R.layout.activity_main);
+
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
-
         //  lifecycleRegistry = new LifecycleRegistry(this);
         init();
+        viewModel = new ViewModelProvider(this, providerFactory).get(MainViewModel.class);
 
     }
 
@@ -107,13 +116,17 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
             case R.id.nav_archive: {
                 if (isValidDestination(R.id.archiveScreen)) {
-                    Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.archiveScreen);
+                    utilManager.showProgressbar(this);
+                    viewModel.initiateInsterstitialAds(() -> {
+                        Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.archiveScreen);
+                    });
                 }
                 break;
             }
             case R.id.nav_info: {
                 if (isValidDestination(R.id.infoScreen)) {
-                    Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.infoScreen);
+                    Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.infoScreen);
+
                 }
                 break;
             }

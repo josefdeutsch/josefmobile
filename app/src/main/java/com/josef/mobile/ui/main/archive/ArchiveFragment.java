@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,10 +19,7 @@ import com.josef.mobile.R;
 import com.josef.mobile.data.local.db.model.Archive;
 import com.josef.mobile.ui.base.BaseFragment;
 import com.josef.mobile.ui.main.MainActivity;
-import com.josef.mobile.ui.main.Resource;
 import com.josef.mobile.viewmodels.ViewModelProviderFactory;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -31,6 +27,7 @@ public class ArchiveFragment extends BaseFragment implements View.OnClickListene
 
     @Inject
     ViewModelProviderFactory providerFactory;
+
     private final ArchiveRecyclerViewAdapter.OnDeleteCallBack onDeleteCallBack
             = new ArchiveRecyclerViewAdapter.OnDeleteCallBack() {
 
@@ -76,31 +73,32 @@ public class ArchiveFragment extends BaseFragment implements View.OnClickListene
         recyclerView.setAdapter(adapter);
         viewModel = new ViewModelProvider(this, providerFactory).get(ArchiveViewModel.class);
 
-        viewModel.observeArchive().observe(this, new Observer<Resource<List<Archive>>>() {
-            @Override
-            public void onChanged(Resource<List<Archive>> listResource) {
-                if (listResource != null) {
-                    switch (listResource.status) {
-                        case LOADING: {
-                            Log.d(TAG, "onChanged: ArchiveFragment: LOADING...");
-                            break;
-                        }
+        subscribeObservers();
+    }
 
-                        case SUCCESS: {
-                            Log.d(TAG, "onChanged: ArchiveFragment: SUCCESS :" + listResource.data.isEmpty());
-                            adapter.setListItems(listResource.data);
-                            break;
-                        }
-                        case ERROR: {
-                            Log.d(TAG, "onChanged: PostsFragment: ERROR : " + listResource.data.isEmpty());
-                            break;
-                        }
+    private void subscribeObservers() {
+
+        viewModel.observeArchive().removeObservers(getViewLifecycleOwner());
+        viewModel.observeArchive().observe(getViewLifecycleOwner(), listResource -> {
+            if (listResource != null) {
+                switch (listResource.status) {
+                    case LOADING: {
+                        Log.d(TAG, "onChanged: ArchiveFragment: LOADING...");
+                        break;
+                    }
+
+                    case SUCCESS: {
+                        Log.d(TAG, "onChanged: ArchiveFragment: SUCCESS :" + listResource.data.isEmpty());
+                        adapter.setListItems(listResource.data);
+                        break;
+                    }
+                    case ERROR: {
+                        Log.d(TAG, "onChanged: PostsFragment: ERROR : " + listResource.data.isEmpty());
+                        break;
                     }
                 }
             }
         });
-
-
     }
 
     @Override
