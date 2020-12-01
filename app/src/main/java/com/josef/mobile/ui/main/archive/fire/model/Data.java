@@ -6,15 +6,10 @@ public class Data {
     String url;
     String email;
 
-    public Data() {
-
-    }
-
     public Data(String png, String url, String email) {
         this.png = png;
         this.url = url;
         this.email = email;
-
     }
 
     public String getPng() {

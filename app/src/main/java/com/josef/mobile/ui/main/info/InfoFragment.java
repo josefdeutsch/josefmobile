@@ -7,11 +7,11 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.josef.mobile.R;
+import com.josef.mobile.ui.base.BaseFragment;
 
-public class InfoFragment extends Fragment {
+public class InfoFragment extends BaseFragment {
 
 
     @Override

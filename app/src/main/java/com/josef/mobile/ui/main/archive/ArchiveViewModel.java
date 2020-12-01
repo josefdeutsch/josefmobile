@@ -2,7 +2,6 @@ package com.josef.mobile.ui.main.archive;
 
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
@@ -28,8 +27,6 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
 public class ArchiveViewModel extends BaseViewModel {
-
-    private static final String TAG = "PostsViewModel";
 
     private final FirebaseUpload firebaseUpload;
     private final ArchiveDatabase archiveDatabase;
@@ -76,8 +73,7 @@ public class ArchiveViewModel extends BaseViewModel {
 
                             @Override
                             public void onError(@NonNull Throwable e) {
-                                Toast.makeText(context, "Error !", Toast.LENGTH_SHORT).show();
-                                Log.e(TAG, "onError: " + e.getMessage());
+                                Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
                             }
 
                             @Override

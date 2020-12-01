@@ -9,7 +9,6 @@ import io.reactivex.Flowable;
 
 public interface ArchiveDatabase {
 
-
     void deleteArchives(final Archive archive);
 
     void updateEndpoints(Archive archive);

@@ -12,7 +12,6 @@ import com.josef.mobile.utils.UtilManager;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-
 @Singleton
 public class AppAdsRequest implements InterstitialAdsRequest {
 

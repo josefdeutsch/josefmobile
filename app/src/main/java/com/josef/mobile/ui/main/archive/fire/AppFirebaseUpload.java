@@ -31,8 +31,6 @@ public class AppFirebaseUpload implements FirebaseUpload {
     private final DataManager dataManager;
     private final SessionManager sessionManager;
 
-    private static final String DESCRIPTION = "description";
-
     public Observable<DatabaseReference> synchronize(MainActivity mainActivity) {
         if (sessionManager == null) return null;
         Observable<User> currentuser = getUserObservable(mainActivity);
@@ -52,17 +50,6 @@ public class AppFirebaseUpload implements FirebaseUpload {
         return Observable.fromPublisher(userPublisher)
                 .map(userAuthResource -> userAuthResource.data);
     }
-
-    private static final String _ = "";
-    private static final String SOURCES = "sources";
-    private static final String CARD = "card";
-    private static final String BACKGROUND = "background";
-    private static final String TITLE = "title";
-    private static final String STUDIO = "studio";
-    private static final String CATEGORY = "category";
-    private static final String VALUE = "Artwork";
-    private static final String GOOGLE_VIDEO = "googlevideos";
-    private static final String VIDEO = "videos";
 
     @Inject
     public AppFirebaseUpload(DataManager dataManager, SessionManager sessionManager) {
@@ -85,8 +72,8 @@ public class AppFirebaseUpload implements FirebaseUpload {
             sum.put(SOURCES, path);
             sum.put(CARD, archives.get(i).png);
             sum.put(BACKGROUND, archives.get(i).png);
-            sum.put(TITLE, archives.get(i).name); //name
-            sum.put(STUDIO, archives.get(i).tag); //tag
+            sum.put(TITLE, archives.get(i).name);
+            sum.put(STUDIO, archives.get(i).tag);
             sources.put(sum);
         }
         data.put(CATEGORY, VALUE);

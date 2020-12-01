@@ -20,7 +20,6 @@ public class AppArchiveDatabase implements ArchiveDatabase {
 
     private final DataManager dataManager;
 
-
     @Inject
     public AppArchiveDatabase(DataManager dataManager) {
         this.dataManager = dataManager;
