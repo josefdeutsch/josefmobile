@@ -6,6 +6,7 @@ import android.content.Context;
 import com.bumptech.glide.RequestManager;
 import com.josef.mobile.data.DataManager;
 import com.josef.mobile.ui.main.MainActivity;
+import com.josef.mobile.ui.main.archive.ArchiveRecyclerViewAdapter;
 import com.josef.mobile.ui.main.archive.fire.AppFirebaseUpload;
 import com.josef.mobile.ui.main.archive.fire.FirebaseUpload;
 import com.josef.mobile.ui.main.archive.local.AppArchiveDatabase;
@@ -27,6 +28,12 @@ public class MainModule {
     @Provides
     static PostRecyclerAdapter providePostRecyclerAdapter(RequestManager requestManager, DataManager dataManager, UtilManager utilManager, Context context) {
         return new PostRecyclerAdapter(requestManager, dataManager, utilManager, context);
+    }
+
+    @MainScope
+    @Provides
+    static ArchiveRecyclerViewAdapter provideArchiveRecyclerViewAdapter(RequestManager requestManager) {
+        return new ArchiveRecyclerViewAdapter(requestManager);
     }
 
     @MainScope

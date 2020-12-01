@@ -89,8 +89,6 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
         layoutParams.width = utilManager.getScreenWidth(context) / 2;
         view.setLayoutParams(layoutParams);
-        //    view.setScaleX(0.95f);
-        // view.setScaleY(0.95f)
         return new PostViewHolder(view);
     }
 

@@ -1,6 +1,5 @@
 package com.josef.mobile.ui.main.archive;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +22,9 @@ import com.josef.mobile.viewmodels.ViewModelProviderFactory;
 
 import javax.inject.Inject;
 
-public class ArchiveFragment extends BaseFragment implements View.OnClickListener {
+import butterknife.ButterKnife;
+
+public class ArchiveFragment extends BaseFragment implements View.OnClickListener, ArchiveRecyclerViewAdapter.OnDeleteCallBack {
 
     @Inject
     ViewModelProviderFactory providerFactory;
@@ -31,32 +32,21 @@ public class ArchiveFragment extends BaseFragment implements View.OnClickListene
     @Inject
     UtilManager utilManager;
 
+    private static final int recyclerviewSpancount = 2;
+
     private ArchiveViewModel viewModel;
     private RecyclerView recyclerView;
     private FloatingActionButton sync;
-    private ArchiveRecyclerViewAdapter adapter;
-
-    private final ArchiveRecyclerViewAdapter.OnDeleteCallBack onDeleteCallBack
-            = new ArchiveRecyclerViewAdapter.OnDeleteCallBack() {
-
-        @Override
-        public void delete(final Archive archive) {
-            new AlertDialog.Builder(getActivity())
-                    .setTitle("Messenger:")
-                    .setMessage("delete item..?")
-                    .setCancelable(false)
-                    .setPositiveButton("OK", (dialog, which) -> {
-                        viewModel.deleteArchives(archive);
-                        viewModel.updateEndpoints(archive);
-                    }).show();
-        }
-    };
+    @Inject
+    ArchiveRecyclerViewAdapter adapter;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_archive, container, false);
+        View view = inflater.inflate(R.layout.fragment_archive, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override
@@ -64,9 +54,8 @@ public class ArchiveFragment extends BaseFragment implements View.OnClickListene
         sync = view.findViewById(R.id.purchasebutton);
         sync.setOnClickListener(this);
         recyclerView = view.findViewById(R.id.recycler_view);
-        final Context context = recyclerView.getContext();
-        adapter = new ArchiveRecyclerViewAdapter(getActivity(), onDeleteCallBack);
-        recyclerView.setLayoutManager(new GridLayoutManager(context, 2));
+        adapter.setmDeleteCallBack(this);
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), recyclerviewSpancount));
         recyclerView.setAdapter(adapter);
         viewModel = new ViewModelProvider(this, providerFactory).get(ArchiveViewModel.class);
 
@@ -105,18 +94,29 @@ public class ArchiveFragment extends BaseFragment implements View.OnClickListene
     }
 
     private void archiveDatabaseRemainder() {
-        Toast.makeText(getContext(), "Please add items to archive..", Toast.LENGTH_SHORT)
-                .show();
+        Toast.makeText(getContext(), getContext().getResources().getResourceName(R.string.archive_database_remainder), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onClick(View v) {
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-        alert.setMessage(R.string.syncs);
+        alert.setMessage(R.string.archive_fab_alert_syncs);
         alert.setCancelable(false);
         alert.setPositiveButton(android.R.string.yes, (dialogInterface, i) -> viewModel.synchronize((MainActivity) getActivity()));
         alert.setNegativeButton(android.R.string.no, (dialogInterface, i) -> dialogInterface.dismiss());
         alert.show();
+    }
+
+    @Override
+    public void delete(Archive archive) {
+        new AlertDialog.Builder(getActivity())
+                .setTitle(R.string.archive_alert_title)
+                .setMessage(R.string.archive_alert_message)
+                .setCancelable(false)
+                .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                    viewModel.deleteArchives(archive);
+                    viewModel.updateEndpoints(archive);
+                }).show();
     }
 }
 

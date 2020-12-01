@@ -18,12 +18,6 @@
     <string name="fragment_posts">Digital Artworks</string>
     <string name="fragment_archive">Synchronize Account</string>
     <string name="archive">archive</string>
-    <string name="fragment_first">fragment_fist</string>
-    <string name="fragment_second">fragment_second</string>
-    <string name="fragment_third">fragment_third</string>
-    <string name="artworks_2017">artworks of 2017</string>
-    <string name="artworks_2018">artworks of 2018</string>
-    <string name="artworks_2019">artworks of 2019</string>
     <string name="aboutme">about</string>
     <string name="artworks">Artwork</string>
     <string name="aboutmes">About</string>
@@ -34,7 +28,12 @@
 
     <string name="info_statment_belief"> I developed Joseph because I was looking for alternative ways to present my art.\nDuring my work I was confronted more and more with the idea of digital space.\nWhat exactly is digital space and how does it show itself?\nThe way to reinterpret an exhibition space captivates me and has motivated me so much to implement and complete Joseph according to my ideas.\nIn the end, Joseph itself became a work of art and the metaphor:\n“The expression travels through space”\nis the message that emanates from the heart of the matter.</string>
     <string name="proceed">Proceed</string>
-    <string name="syncs">Synchronize with TV</string>
+    <string name="archive_fab_alert_syncs">Synchronize with TV</string>
+
+    <string name="archive_alert_title">Remainder</string>
+    <string name="archive_alert_message">Delete item?</string>
+    <string name="archive_database_remainder">Please add item to archive..</string>
+
     <string-array name="profile_text_supplier">
         <item> </item>
         <item>Digital art is true</item>
