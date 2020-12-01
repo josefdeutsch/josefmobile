@@ -1,13 +1,9 @@
 package com.josef.mobile.ui.main.archive.local;
 
-import android.content.Context;
-import android.util.Log;
-
 import com.josef.mobile.data.DataManager;
 import com.josef.mobile.data.local.db.model.Archive;
 import com.josef.mobile.data.local.db.model.LocalCache;
 import com.josef.mobile.ui.main.Resource;
-import com.josef.mobile.utils.UtilManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,24 +18,18 @@ import io.reactivex.schedulers.Schedulers;
 @Singleton
 public class AppArchiveDatabase implements ArchiveDatabase {
 
-    private static final String TAG = "ArchiveDatabaseHelper";
-    private final Context context;
-    private final UtilManager utilManager;
     private final DataManager dataManager;
 
 
     @Inject
-    public AppArchiveDatabase(DataManager dataManager, UtilManager utilManager, Context context) {
+    public AppArchiveDatabase(DataManager dataManager) {
         this.dataManager = dataManager;
-        this.utilManager = utilManager;
-        this.context = context;
     }
 
 
     public Flowable<Resource<List<Archive>>> getAllArchives() {
         return dataManager.getAllArchives()
                 .onErrorReturn(throwable -> {
-                    Log.e(TAG, "apply: " + throwable.toString());
                     Archive archive = new Archive();
                     archive.id = -1l;
                     List<Archive> archives = new ArrayList<>();

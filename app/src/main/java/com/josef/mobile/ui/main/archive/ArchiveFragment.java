@@ -12,7 +12,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.josef.mobile.R;
 import com.josef.mobile.data.local.db.model.Archive;
 import com.josef.mobile.ui.base.BaseFragment;
@@ -22,7 +21,9 @@ import com.josef.mobile.viewmodels.ViewModelProviderFactory;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class ArchiveFragment extends BaseFragment implements View.OnClickListener, ArchiveRecyclerViewAdapter.OnDeleteCallBack {
 
@@ -32,13 +33,13 @@ public class ArchiveFragment extends BaseFragment implements View.OnClickListene
     @Inject
     UtilManager utilManager;
 
-    private static final int recyclerviewSpancount = 2;
+    @BindView(R.id.recycler_view)
+    RecyclerView recyclerView;
 
-    private ArchiveViewModel viewModel;
-    private RecyclerView recyclerView;
-    private FloatingActionButton sync;
     @Inject
     ArchiveRecyclerViewAdapter adapter;
+
+    ArchiveViewModel viewModel;
 
     @Nullable
     @Override
@@ -51,14 +52,10 @@ public class ArchiveFragment extends BaseFragment implements View.OnClickListene
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        sync = view.findViewById(R.id.purchasebutton);
-        sync.setOnClickListener(this);
-        recyclerView = view.findViewById(R.id.recycler_view);
         adapter.setmDeleteCallBack(this);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), recyclerviewSpancount));
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         recyclerView.setAdapter(adapter);
         viewModel = new ViewModelProvider(this, providerFactory).get(ArchiveViewModel.class);
-
         subscribeObservers();
     }
 
@@ -94,10 +91,13 @@ public class ArchiveFragment extends BaseFragment implements View.OnClickListene
     }
 
     private void archiveDatabaseRemainder() {
-        Toast.makeText(getContext(), getContext().getResources().getResourceName(R.string.archive_database_remainder), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(),
+                getContext().getResources().
+                        getResourceName(R.string.archive_database_remainder),
+                Toast.LENGTH_SHORT).show();
     }
 
-    @Override
+    @OnClick(R.id.purchasebutton)
     public void onClick(View v) {
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
         alert.setMessage(R.string.archive_fab_alert_syncs);

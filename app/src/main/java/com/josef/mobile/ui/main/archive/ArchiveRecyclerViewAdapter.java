@@ -17,17 +17,21 @@ import com.bumptech.glide.RequestManager;
 import com.josef.mobile.R;
 import com.josef.mobile.data.local.db.model.Archive;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class ArchiveRecyclerViewAdapter extends RecyclerView.Adapter<ArchiveRecyclerViewAdapter.ViewHolder> {
 
-    private List<Archive> mValues;
     private final RequestManager requestManager;
+
     private OnDeleteCallBack mDeleteCallBack;
+    private List<Archive> mValues;
 
     public ArchiveRecyclerViewAdapter(RequestManager requestManager) {
         this.requestManager = requestManager;
-
     }
 
     public void setmDeleteCallBack(OnDeleteCallBack mDeleteCallBack) {
@@ -36,7 +40,7 @@ public class ArchiveRecyclerViewAdapter extends RecyclerView.Adapter<ArchiveRecy
 
     @Override
     public int getItemCount() {
-        if (mValues == null) return 0;
+        if (mValues == null) mValues = new ArrayList<>();
         return mValues.size();
     }
 
@@ -64,18 +68,23 @@ public class ArchiveRecyclerViewAdapter extends RecyclerView.Adapter<ArchiveRecy
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
+
+
+        @BindView(R.id.cardview_name)
         TextView name;
+
+        @BindView(R.id.cardview_tag)
         TextView tag;
+
+        @BindView(R.id.imageView)
         ImageView imageView;
+
+        @BindView(R.id.button_delete)
         ToggleButton mDelete;
 
         ViewHolder(View view) {
             super(view);
-            imageView = view.findViewById(R.id.imageView);
-            mDelete = view.findViewById(R.id.button_delete);
-            name = view.findViewById(R.id.cardview_name);
-            tag = view.findViewById(R.id.cardview_tag);
-
+            ButterKnife.bind(this, view);
         }
 
         public void onBind(Archive archive) {
@@ -96,13 +105,9 @@ public class ArchiveRecyclerViewAdapter extends RecyclerView.Adapter<ArchiveRecy
             mDelete.setOnCheckedChangeListener((compoundButton, isChecked) -> {
                 compoundButton.startAnimation(scaleAnimation);
                 if (isChecked) {
-
                     mDeleteCallBack.delete(archive);
-
                     Handler handler = new Handler();
                     handler.postDelayed(() -> compoundButton.setChecked(false), 250);
-                } else {
-
                 }
             });
         }
