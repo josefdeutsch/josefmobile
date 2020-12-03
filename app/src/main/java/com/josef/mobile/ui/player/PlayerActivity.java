@@ -3,25 +3,23 @@ package com.josef.mobile.ui.player;
 import android.app.Dialog;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.josef.mobile.R;
-import com.josef.mobile.data.local.db.model.LocalCache;
-import com.josef.mobile.ui.main.Resource;
 import com.josef.mobile.viewmodels.ViewModelProviderFactory;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import dagger.android.support.DaggerAppCompatActivity;
 
 import static com.josef.mobile.utils.AppConstants.REQUEST_INDEX;
@@ -31,14 +29,6 @@ import static com.josef.mobile.utils.AppConstants.STATE_RESUME_WINDOW;
 
 public class PlayerActivity extends DaggerAppCompatActivity {
 
-    private static final String TAG = "PlayerActivity";
-
-    protected FrameLayout mFullScreenButton;
-    protected ImageView mFullScreenIcon;
-    protected PlayerView mPlayerView;
-    protected boolean mExoPlayerFullscreen = false;
-    protected int mResumeWindow;
-    protected long mResumePosition;
 
     @Inject
     Dialog mFullScreenDialog;
@@ -52,15 +42,25 @@ public class PlayerActivity extends DaggerAppCompatActivity {
     @Inject
     ProgressiveMediaSource.Factory videoSource;
 
+    protected boolean mExoPlayerFullscreen = false;
+    protected int mResumeWindow;
+    protected long mResumePosition;
+
     private PlayerViewModel viewModel;
 
     private int index;
-
+    @BindView(R.id.exo_fullscreen_button)
+    FrameLayout mFullScreenButton;
+    @BindView(R.id.exo_fullscreen_icon)
+    ImageView mFullScreenIcon;
+    @BindView(R.id.exoplayer)
+    PlayerView mPlayerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
+        ButterKnife.bind(this);
         if (savedInstanceState == null) index = getIntent().getIntExtra(REQUEST_INDEX, 0);
 
         if (savedInstanceState != null) {
@@ -68,16 +68,10 @@ public class PlayerActivity extends DaggerAppCompatActivity {
             mResumePosition = savedInstanceState.getLong(STATE_RESUME_POSITION);
             mExoPlayerFullscreen = savedInstanceState.getBoolean(STATE_BOOLEAN_VALUE);
         }
-        mPlayerView = findViewById(R.id.exoplayer);
-        mFullScreenIcon = mPlayerView.findViewById(R.id.exo_fullscreen_icon);
-        mFullScreenButton = mPlayerView.findViewById(R.id.exo_fullscreen_button);
 
         viewModel = new ViewModelProvider(this, providerFactory).get(PlayerViewModel.class);
-
         subscribeObserver();
-
         openFullscreenDialog();
-
     }
 
     @Override
@@ -90,29 +84,25 @@ public class PlayerActivity extends DaggerAppCompatActivity {
 
     private void subscribeObserver() {
         viewModel.authenticateWithEndpoint(index);
-        viewModel.observeEndpoints().observe(this, new Observer<Resource<LocalCache>>() {
-            @Override
-            public void onChanged(Resource<LocalCache> listResource) {
-                if (listResource != null) {
-                    switch (listResource.status) {
-                        case LOADING: {
-                            Log.d(TAG, "onChanged: PlayerActivity: LOADING...");
-                            break;
-                        }
-                        case SUCCESS: {
+        viewModel.observeEndpoints().observe(this, listResource -> {
+            if (listResource != null) {
+                switch (listResource.status) {
+                    case LOADING: {
+                        break;
+                    }
+                    case SUCCESS: {
+                        if (listResource.data.getUrl() != null)
                             setupMediaSource(listResource.data.getUrl());
-                            Log.d(TAG, "onChanged: PlayerActivity:" + listResource.data.getUrl());
-                            break;
-                        }
-                        case ERROR: {
-                            finish();
-                            Log.d(TAG, "onChanged: PlayerActivity: ERROR... " + listResource.message);
-                            break;
-                        }
+                        break;
+                    }
+                    case ERROR: {
+                        finish();
+                        break;
                     }
                 }
             }
         });
+        //  viewModel.observeEndpoints().removeObservers(this);
     }
 
     protected void openFullscreenDialog() {

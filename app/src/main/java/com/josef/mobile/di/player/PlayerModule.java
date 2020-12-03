@@ -20,8 +20,8 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.josef.mobile.R;
 import com.josef.mobile.ui.player.PlayerActivity;
-import com.josef.mobile.ui.player.helpers.remote.EndpointObserver;
-import com.josef.mobile.ui.player.helpers.remote.EndpointObserverHelper;
+import com.josef.mobile.ui.player.remote.EndpointObserver;
+import com.josef.mobile.ui.player.remote.EndpointObserverHelper;
 
 import dagger.Module;
 import dagger.Provides;

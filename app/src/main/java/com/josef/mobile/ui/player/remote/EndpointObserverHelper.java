@@ -1,6 +1,6 @@
-package com.josef.mobile.ui.player.helpers.remote;
+package com.josef.mobile.ui.player.remote;
 
-import android.util.Log;
+import android.content.Context;
 
 import com.josef.mobile.data.DataManager;
 import com.josef.mobile.data.local.db.model.LocalCache;
@@ -19,15 +19,14 @@ import io.reactivex.schedulers.Schedulers;
 @Singleton
 public class EndpointObserverHelper implements EndpointObserver {
 
+    private final Context context;
 
-    private static final String TAG = "EndpointObserverHelper";
-
-    final DataManager dataManager;
-
+    private final DataManager dataManager;
 
     @Inject
-    public EndpointObserverHelper(DataManager dataManager) {
+    public EndpointObserverHelper(Context context, DataManager dataManager) {
         this.dataManager = dataManager;
+        this.context = context;
     }
 
     @Override
@@ -42,7 +41,6 @@ public class EndpointObserverHelper implements EndpointObserver {
         })
                 .subscribeOn(Schedulers.io())
                 .onErrorReturn(throwable -> {
-                    Log.e(TAG, "apply: " + throwable.toString());
                     LocalCache container = new LocalCache();
                     container.setId(-1l);
                     return container;
