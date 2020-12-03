@@ -27,6 +27,11 @@
     <string name="info">Info</string>
     <string name="fragment_into">fragmentinfo</string>
 
+    <!--callbackworker -->
+    <string name="callbackworker_url_direct">http://joseph3d.com</string>
+    <string name="callbackworker_url_success">onSuccess</string>
+    <string name="callbackworker_url_error">onError</string>
+
     <string name="resource_onerror_remainder">Something went wrong..</string>
 
     <string name="info_statment_belief"> I developed Joseph because I was looking for alternative ways to present my art.\nDuring my work I was confronted more and more with the idea of digital space.\nWhat exactly is digital space and how does it show itself?\nThe way to reinterpret an exhibition space captivates me and has motivated me so much to implement and complete Joseph according to my ideas.\nIn the end, Joseph itself became a work of art and the metaphor:\n“The expression travels through space”\nis the message that emanates from the heart of the matter.</string>
@@ -56,6 +61,15 @@
         <item>http://joseph3d.com/wp-content/uploads/2020/11/LogoAnimatedBlack.gif</item>
         <item>http://joseph3d.com/wp-content/uploads/2020/11/LogoAnimatedBlack.gif</item>
     </string-array>
+    <string name="title_activity_error">ErrorActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
 
 </resources>
