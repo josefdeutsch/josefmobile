@@ -1,7 +1,6 @@
 package com.josef.mobile.ui.main.profile;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,38 +14,36 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.RequestManager;
 import com.josef.mobile.R;
+import com.josef.mobile.ui.main.profile.model.Profile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.ViewHolder> {
 
     private final RequestManager requestManager;
-    private final Context context;
 
-
-    private List<String> arrayList;
-    private static final String TAG = "ViewPagerAdapter";
-
+    private List<Profile> profileList;
     private ViewpagerAdapterOnClickListener viewpagerAdapterOnClickListener;
 
     public void setViewpagerAdapterOnClickListener(ViewpagerAdapterOnClickListener viewpagerAdapterOnClickListener) {
         this.viewpagerAdapterOnClickListener = viewpagerAdapterOnClickListener;
     }
 
-    interface ViewpagerAdapterOnClickListener {
-        void onItemInfoClicked();
-
-        void onItemContinueClicked();
+    public void setProfiles(List<Profile> profileList) {
+        this.profileList = profileList;
+        notifyDataSetChanged();
     }
 
     public ViewPagerAdapter(RequestManager requestManager, Context context) {
         this.requestManager = requestManager;
-        this.context = context;
-
     }
 
-    private List<String> uri;
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -56,7 +53,6 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
         try {
             holder.onBindViews(position);
         } catch (IOException e) {
@@ -64,52 +60,51 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
         }
     }
 
-    public void setArrayList(List<String> arrayList, List<String> uri) {
-        this.uri = uri;
-        this.arrayList = arrayList;
-        notifyDataSetChanged();
-    }
-
     @Override
     public int getItemCount() {
-        if (arrayList == null) return 0;
-        return arrayList.size();
+        if (profileList == null) profileList = new ArrayList<>();
+        return profileList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    interface ViewpagerAdapterOnClickListener {
 
-        FrameLayout image_container;
-        FrameLayout text_container;
+        void onItemInfoClicked();
+
+        void onItemContinueClicked();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+
+        private static final String TAG = "ViewHolder";
+        @BindView(R.id.profile_button_container)
         RelativeLayout button_container;
-        TextView article;
-        TextView header;
-        ImageView animatedGif;
-        ImageView pointsLeftRight;
-        Button continue_action;
+        @BindView(R.id.profile_image_container)
+        FrameLayout image_container;
+        @BindView(R.id.profile_text_container)
+        FrameLayout text_container;
+        @BindView(R.id.learnmore)
         Button learn_more;
+        @BindView(R.id.article)
+        TextView article;
+        @BindView(R.id.header)
+        TextView header;
+        @BindView(R.id.animated_gif)
+        ImageView animatedGif;
+        @BindView(R.id.pointsleftright)
+        ImageView pointsLeftRight;
+        @BindView(R.id.continue_action)
+        Button continue_action;
 
         ViewHolder(View itemView) {
             super(itemView);
-            button_container = itemView.findViewById(R.id.profile_button_container);
-            image_container = itemView.findViewById(R.id.profile_image_container);
-            text_container = itemView.findViewById(R.id.profile_text_container);
-            learn_more = itemView.findViewById(R.id.learnmore);
-            pointsLeftRight = itemView.findViewById(R.id.pointsleftright);
-            animatedGif = itemView.findViewById(R.id.animated_gif);
-            header = itemView.findViewById(R.id.header);
-            article = itemView.findViewById(R.id.article);
-            continue_action = itemView.findViewById(R.id.continue_action);
+            ButterKnife.bind(this, itemView);
         }
 
         private void onBindViews(int position) throws IOException {
-            int last = arrayList.size() - 1;
-            requestManager.load(uri.get(position)).into(animatedGif);
-
-            article.setText(arrayList.get(position));
+            int last = profileList.size() - 1;
+            requestManager.load(profileList.get(position).getUrl()).into(animatedGif);
+            article.setText(profileList.get(position).getArticle());
             article.setTag(R.id.article);
-
-            continue_action.setOnClickListener(this);
-            learn_more.setOnClickListener(this);
 
             if (position > 0) {
                 text_container.setVisibility(View.VISIBLE);
@@ -117,11 +112,13 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
                 header.setVisibility(View.INVISIBLE);
                 pointsLeftRight.setVisibility(View.VISIBLE);
                 button_container.setVisibility(View.INVISIBLE);
+
                 if (last == position) {
                     button_container.setVisibility(View.VISIBLE);
                 } else {
                     button_container.setVisibility(View.INVISIBLE);
                 }
+
             } else {
                 text_container.setVisibility(View.INVISIBLE);
                 image_container.setVisibility(View.VISIBLE);
@@ -131,23 +128,14 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
             }
         }
 
-        @Override
-        public void onClick(View v) {
+        @OnClick(R.id.continue_action)
+        public void onItemContinueClicked(View v) {
+            viewpagerAdapterOnClickListener.onItemContinueClicked();
+        }
 
-            switch (v.getId()) {
-                case R.id.continue_action:
-                    Log.d(TAG, "onClick: ");// do what you want when user click layout
-                    viewpagerAdapterOnClickListener.onItemContinueClicked();
-                    break;
-
-                case R.id.learnmore:
-                    Log.d(TAG, "onClicsdsk: "); // do what you want when user click first view
-                    viewpagerAdapterOnClickListener.onItemInfoClicked();
-                    break;
-
-
-            }
-
+        @OnClick(R.id.learnmore)
+        public void onItemInfoClicked(View v) {
+            viewpagerAdapterOnClickListener.onItemInfoClicked();
         }
     }
 }

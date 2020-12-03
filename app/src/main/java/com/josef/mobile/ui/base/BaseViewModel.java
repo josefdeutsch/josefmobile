@@ -3,21 +3,38 @@ package com.josef.mobile.ui.base;
 import androidx.lifecycle.ViewModel;
 
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 public abstract class BaseViewModel extends ViewModel implements Base {
 
-    public final CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private CompositeDisposable compositeDisposable;
 
     public BaseViewModel() {
+    }
+
+    public void addToCompositeDisposable(Disposable disposable) {
+        getCompositeDisposable().add(disposable);
+    }
+
+    private void dispose() {
+        getCompositeDisposable().dispose();
+    }
+
+    private void clear() {
+        getCompositeDisposable().clear();
+    }
+
+    private CompositeDisposable getCompositeDisposable() {
+        if (compositeDisposable == null || compositeDisposable.isDisposed()) {
+            compositeDisposable = new CompositeDisposable();
+        }
+        return compositeDisposable;
     }
 
     @Override
     protected void onCleared() {
         super.onCleared();
-        compositeDisposable.clear();
-        compositeDisposable.dispose();
+        dispose();
+        clear();
     }
-
-
-
 }

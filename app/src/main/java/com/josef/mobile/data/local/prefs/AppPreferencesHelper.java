@@ -29,7 +29,6 @@ import javax.inject.Inject;
 
 public class AppPreferencesHelper implements PreferencesHelper {
 
-    private static final String ARCHIVE_INDICATOR = "archive_indicator";
     private final SharedPreferences mPrefs;
 
     @Inject
@@ -38,7 +37,7 @@ public class AppPreferencesHelper implements PreferencesHelper {
     }
 
     public String getHashMapArchiveIndicator() {
-        return mPrefs.getString(ARCHIVE_INDICATOR, "empty");
+        return mPrefs.getString(ARCHIVE_INDICATOR, ARCHIVE_EMPTY);
     }
 
     @Override

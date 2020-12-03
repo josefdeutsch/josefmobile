@@ -5,16 +5,17 @@ import android.content.Context;
 
 import com.bumptech.glide.RequestManager;
 import com.josef.mobile.data.DataManager;
-import com.josef.mobile.ui.main.MainActivity;
 import com.josef.mobile.ui.main.archive.ArchiveRecyclerViewAdapter;
 import com.josef.mobile.ui.main.archive.fire.AppFirebaseUpload;
 import com.josef.mobile.ui.main.archive.fire.FirebaseUpload;
 import com.josef.mobile.ui.main.archive.local.AppArchiveDatabase;
 import com.josef.mobile.ui.main.archive.local.ArchiveDatabase;
 import com.josef.mobile.ui.main.post.PostRecyclerAdapter;
-import com.josef.mobile.ui.main.post.helpers.remote.AppEndpointsObserver;
-import com.josef.mobile.ui.main.post.helpers.remote.EndpointsObserver;
+import com.josef.mobile.ui.main.post.remote.AppEndpointsObserver;
+import com.josef.mobile.ui.main.post.remote.EndpointsObserver;
 import com.josef.mobile.ui.main.profile.ViewPagerAdapter;
+import com.josef.mobile.ui.main.profile.res.AppResourceObserver;
+import com.josef.mobile.ui.main.profile.res.ResourceObserver;
 import com.josef.mobile.utils.UtilManager;
 
 import dagger.Module;
@@ -42,12 +43,6 @@ public class MainModule {
         return new ViewPagerAdapter(requestManager, context);
     }
 
-    @MainScope
-    @Provides
-    static MainActivity provideMainActivity(MainActivity mainActivity) {
-        return mainActivity;
-    }
-
 
     @MainScope
     @Provides
@@ -67,6 +62,11 @@ public class MainModule {
         return appEndpointsObserver;
     }
 
+    @MainScope
+    @Provides
+    static ResourceObserver provideResourceObserver(AppResourceObserver appResourceObserver) {
+        return appResourceObserver;
+    }
 
     /** @Provides
      @MainScope static PostRecyclerAdapter.PostRecyclerViewOnClickListener getClickListener(PostsFragment postsFragment) {

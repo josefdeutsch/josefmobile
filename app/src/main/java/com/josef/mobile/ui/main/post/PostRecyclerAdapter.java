@@ -1,7 +1,6 @@
 package com.josef.mobile.ui.main.post;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,19 +24,19 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 @Singleton
 public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
-    private static final String TAG = "PostRecyclerAdapter";
 
     private final RequestManager requestManager;
     private final DataManager datamanager;
     private final UtilManager utilManager;
     private final Context context;
 
-
     private PostRecyclerViewOnClickListener postRecyclerViewOnClickListener;
-
 
     private List<LocalCache> posts = new ArrayList<>();
 
@@ -47,19 +46,14 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         this.datamanager = datamanager;
         this.utilManager = utilManager;
         this.context = context;
-        Log.d(TAG, "PostRecyclerAdapter: ");
-
     }
 
     public void setPostRecyclerViewOnClickListener(PostRecyclerViewOnClickListener postRecyclerViewOnClickListener) {
         this.postRecyclerViewOnClickListener = postRecyclerViewOnClickListener;
     }
 
-
-
-
-
     public void setPosts(List<LocalCache> posts) {
+        if (posts == null) posts = new ArrayList<>();
         this.posts = posts;
         notifyDataSetChanged();
     }
@@ -98,21 +92,24 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return posts.size();
     }
 
-    public class PostViewHolder extends RecyclerView.ViewHolder implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
+    class PostViewHolder extends RecyclerView.ViewHolder implements CompoundButton.OnCheckedChangeListener {
 
+        @BindView(R.id.cardview_name)
         TextView name;
+
+        @BindView(R.id.cardview_tag)
         TextView tag;
+
+        @BindView(R.id.image)
         ImageView imageView;
+
+        @BindView(R.id.toggle)
         ToggleButton toggleButton;
 
-        public PostViewHolder(@NonNull View itemView) {
+        PostViewHolder(@NonNull View itemView) {
             super(itemView);
-            name = itemView.findViewById(R.id.cardview_name);
-            tag = itemView.findViewById(R.id.cardview_tag);
-            imageView = itemView.findViewById(R.id.image);
-            toggleButton = itemView.findViewById(R.id.toggle);
+            ButterKnife.bind(this, itemView);
             toggleButton.setOnCheckedChangeListener(this);
-            imageView.setOnClickListener(this);
         }
 
         public void bind(final LocalCache localCache) {
@@ -121,15 +118,13 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             tag.setText(localCache.getTag());
         }
 
-        @Override
+        @OnClick(R.id.image)
         public void onClick(View v) {
             postRecyclerViewOnClickListener.onClick(getAdapterPosition());
         }
 
-
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            // map.put(getAdapterPosition(), isChecked);
             postRecyclerViewOnClickListener.onChecked(isChecked, posts.get(getAdapterPosition()));
             postRecyclerViewOnClickListener.isFlagged(isChecked, posts.get(getAdapterPosition()));
         }

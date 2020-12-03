@@ -29,9 +29,9 @@ public class MainViewModel extends BaseViewModel {
     }
 
     public void initiateInsterstitialAds(OnAdsInstantiated onAdsInstantiated) {
-        compositeDisposable.add(
-                Completable.fromAction(() -> interstitialAdsRequest.execute(onAdsInstantiated))
-                        .subscribeOn(AndroidSchedulers.mainThread())
-                        .subscribe());
+      addToCompositeDisposable(
+              Completable.fromAction(() -> interstitialAdsRequest.execute(onAdsInstantiated))
+                      .subscribeOn(AndroidSchedulers.mainThread())
+                      .subscribe());
     }
 }

@@ -16,6 +16,7 @@
     <string name="posts">posts</string>
     <string name="fragment_profile">About Joseph</string>
     <string name="fragment_posts">Digital Artworks</string>
+    <string name="fragment_posts_added_sculpture_remainder">"Sculpture added to archive"</string>
     <string name="fragment_archive">Synchronize Account</string>
     <string name="archive">archive</string>
     <string name="aboutme">about</string>
@@ -26,6 +27,8 @@
     <string name="info">Info</string>
     <string name="fragment_into">fragmentinfo</string>
 
+    <string name="resource_onerror_remainder">Something went wrong..</string>
+
     <string name="info_statment_belief"> I developed Joseph because I was looking for alternative ways to present my art.\nDuring my work I was confronted more and more with the idea of digital space.\nWhat exactly is digital space and how does it show itself?\nThe way to reinterpret an exhibition space captivates me and has motivated me so much to implement and complete Joseph according to my ideas.\nIn the end, Joseph itself became a work of art and the metaphor:\n“The expression travels through space”\nis the message that emanates from the heart of the matter.</string>
     <string name="proceed">Proceed</string>
     <string name="archive_fab_alert_syncs">Synchronize with TV</string>
@@ -33,6 +36,10 @@
     <string name="archive_alert_title">Remainder</string>
     <string name="archive_alert_message">Delete item?</string>
     <string name="archive_database_remainder">Please add item to archive..</string>
+
+    <!--play store-->
+    <string name="app_google_play_store_link">"https://play.google.com/store/apps/details?id="</string>
+    <string name="app_market_link">"market://details?id="</string>
 
     <string-array name="profile_text_supplier">
         <item> </item>

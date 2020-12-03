@@ -63,7 +63,7 @@ public class ArchiveViewModel extends BaseViewModel {
     }
 
     public void synchronize(MainActivity mainActivity) {
-        compositeDisposable.add(
+        addToCompositeDisposable(
                 firebaseUpload.synchronize(mainActivity)
                         .subscribeWith(new DisposableObserver<DatabaseReference>() {
                             @Override
@@ -84,7 +84,7 @@ public class ArchiveViewModel extends BaseViewModel {
 
 
     public void deleteArchives(final Archive archive) {
-        compositeDisposable.add(
+        addToCompositeDisposable(
                 Completable.fromAction(() -> archiveDatabase.deleteArchives(archive))
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
@@ -94,7 +94,7 @@ public class ArchiveViewModel extends BaseViewModel {
     }
 
     public void updateEndpoints(final Archive archive) {
-        compositeDisposable.add(
+        addToCompositeDisposable(
                 Completable.fromAction(() -> archiveDatabase.updateEndpoints(archive))
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())

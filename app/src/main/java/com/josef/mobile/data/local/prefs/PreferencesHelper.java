@@ -23,6 +23,11 @@ package com.josef.mobile.data.local.prefs;
 
 public interface PreferencesHelper {
 
+    String ARCHIVE_INDICATOR = "archive_indicator";
+    String ARCHIVE_EMPTY = "empty";
+    String ARCHIVE_NOT_EMPTY = "not empty";
+
+
     String getHashMapArchiveIndicator();
 
     void setHashMapArchiveIndicator(String string);

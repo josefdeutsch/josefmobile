@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.navigation.NavigationView;
@@ -18,49 +19,79 @@ import com.josef.mobile.R;
 import com.josef.mobile.ui.base.BaseFragment;
 import com.josef.mobile.ui.main.MainActivity;
 
-import java.util.Arrays;
-
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class ProfileFragment extends BaseFragment implements ViewPagerAdapter.ViewpagerAdapterOnClickListener {
-
-    private static final String TAG = "ProfileFragment";
-    ViewPager2 viewPager2;
-
-    TabLayout tabLayout;
 
     @Inject
     ViewPagerAdapter viewPagerAdapter;
 
+    @BindView(R.id.viewPager2)
+    ViewPager2 viewPager2;
+
+    @BindView(R.id.tab_layout)
+    TabLayout tabLayout;
+
+    private ProfileViewModel viewModel;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewPager2 = view.findViewById(R.id.viewPager2);
+
         tabLayout = view.findViewById(R.id.tab_layout);
+
         viewPager2.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
 
         viewPager2.setAdapter(viewPagerAdapter);
         viewPagerAdapter.setViewpagerAdapterOnClickListener(this);
-        viewPagerAdapter.setArrayList(
-                Arrays.asList(this.getResources().getStringArray(R.array.profile_text_supplier)),
-                Arrays.asList(this.getResources().getStringArray(R.array.profile_url_supplier))
-        );
+
+        viewModel = new ViewModelProvider(this, providerFactory).get(ProfileViewModel.class);
 
         new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> {
 
         }).attach();
+
+        subscribeObservers();
+    }
+
+    private void subscribeObservers() {
+        viewModel.observeProfiles().removeObservers(getViewLifecycleOwner());
+        viewModel.observeProfiles().observe(getViewLifecycleOwner(), listResource -> {
+            if (listResource != null) {
+                switch (listResource.status) {
+                    case LOADING: {
+                        showProgressbar(getActivity());
+                        break;
+                    }
+                    case SUCCESS: {
+                        viewPagerAdapter.setProfiles(listResource.data);
+                        hideProgessbar();
+                        break;
+                    }
+                    case ERROR: {
+                        hideProgessbar();
+                        getActivity().finish();
+                        break;
+                    }
+                }
+            }
+        });
     }
 
 

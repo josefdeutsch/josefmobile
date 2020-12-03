@@ -1,4 +1,4 @@
-package com.josef.mobile.ui.main.post.helpers.remote;
+package com.josef.mobile.ui.main.post.remote;
 
 import com.josef.mobile.data.local.db.model.LocalCache;
 import com.josef.mobile.ui.main.Resource;

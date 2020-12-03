@@ -54,11 +54,11 @@ public class SplashViewModel extends BaseViewModel {
     }
 
     public void insertAllEndoints(final List<LocalCache> archives) {
-        compositeDisposable.add(
-                Completable.fromAction(() -> dataManager.insertAllEndpoints(archives))
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe());
+       addToCompositeDisposable(
+               Completable.fromAction(() -> dataManager.insertAllEndpoints(archives))
+                       .subscribeOn(Schedulers.io())
+                       .observeOn(AndroidSchedulers.mainThread())
+                       .subscribe());
     }
 
 }

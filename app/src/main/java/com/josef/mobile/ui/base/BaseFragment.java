@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 
 import com.josef.mobile.data.DataManager;
 import com.josef.mobile.utils.UtilManager;
+import com.josef.mobile.viewmodels.ViewModelProviderFactory;
 
 import javax.inject.Inject;
 
@@ -23,6 +24,9 @@ public abstract class BaseFragment extends DaggerFragment {
 
     @Inject
     public DataManager dataManager;
+
+    @Inject
+    public ViewModelProviderFactory providerFactory;
 
     private static final String TAG = "BaseFragment";
 
