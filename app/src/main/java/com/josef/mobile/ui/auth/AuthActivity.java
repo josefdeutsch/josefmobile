@@ -62,6 +62,7 @@ import butterknife.OnClick;
  */
 public class AuthActivity extends BaseActivity {
 
+    private static final String TAG = "AuthActivity";
 
     public static final int RC_SIGN_IN = 9002;
 
@@ -108,6 +109,7 @@ public class AuthActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.auth_layout2);
         ButterKnife.bind(this);
+
         authViewModel = new ViewModelProvider(this, providerFactory).get(AuthViewModel.class);
         authInputViewModel = new ViewModelProvider(this, providerFactory).get(AuthInputViewModel.class);
 
@@ -124,7 +126,7 @@ public class AuthActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setMessage(R.string.quit);
+        alert.setMessage(R.string.app_quit_remainder);
         alert.setCancelable(false);
         alert.setPositiveButton(android.R.string.yes, (dialogInterface, i) -> finish());
         alert.setNegativeButton(android.R.string.no, (dialogInterface, i) -> dialogInterface.dismiss());
@@ -204,6 +206,7 @@ public class AuthActivity extends BaseActivity {
         });
     }
 
+
     private void verifyPasswordInputs() {
         passwordEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -222,6 +225,7 @@ public class AuthActivity extends BaseActivity {
             }
         });
     }
+
 
     private void verifyEmailInputs() {
         emailEditText.addTextChangedListener(new TextWatcher() {

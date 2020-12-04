@@ -41,6 +41,7 @@ public class AuthInputViewModel extends BaseViewModel {
         getPasswordLiveData("");
         getEmailLiveData("");
         combiner.combinedLiveData(emailTextLiveData, passWordLiveData);
+
     }
 
     public MediatorLiveData<CharSequence> getEmailText() {

@@ -8,7 +8,7 @@ import com.josef.mobile.data.local.db.dao.EndpointsDao;
 import com.josef.mobile.data.local.db.model.Archive;
 import com.josef.mobile.data.local.db.model.LocalCache;
 
-@Database(entities = {Archive.class, LocalCache.class}, version = 4)
+@Database(entities = {Archive.class, LocalCache.class}, version = 6)
 public abstract class AppDataBase extends RoomDatabase {
 
     public abstract EndpointsDao endpontsDao();

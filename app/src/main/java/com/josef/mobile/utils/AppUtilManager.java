@@ -3,6 +3,10 @@ package com.josef.mobile.utils;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.LinkProperties;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 
 import com.google.gson.Gson;
 import com.josef.mobile.utils.common.CommonUtils;
@@ -10,8 +14,6 @@ import com.josef.mobile.utils.net.NetworkUtils;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
-import io.reactivex.Single;
 
 @Singleton
 public class AppUtilManager implements UtilManager {
@@ -76,8 +78,24 @@ public class AppUtilManager implements UtilManager {
         return commonUtils.getStatusBarHeight(context);
     }
 
+
     @Override
-    public Single<Boolean> isInternet() {
-        return networkUtils.isInternet();
+    public Network getActiveNetwork() {
+        return networkUtils.getActiveNetwork();
+    }
+
+    @Override
+    public NetworkCapabilities getNetworkCapabilities(Network currentNetwork) {
+        return networkUtils.getNetworkCapabilities(currentNetwork);
+    }
+
+    @Override
+    public LinkProperties getLinkProperties(Network currentNetwork) {
+        return networkUtils.getLinkProperties(currentNetwork);
+    }
+
+    @Override
+    public ConnectivityManager getConnectivityManager() {
+        return networkUtils.getConnectivityManager();
     }
 }

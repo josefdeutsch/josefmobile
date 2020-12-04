@@ -1,5 +1,6 @@
 package com.josef.mobile.ui.main.profile;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -17,12 +19,16 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.josef.mobile.R;
 import com.josef.mobile.ui.base.BaseFragment;
+import com.josef.mobile.ui.err.ErrorActivity;
 import com.josef.mobile.ui.main.MainActivity;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.josef.mobile.ui.err.ErrorActivity.ACTIVITY_KEY;
+import static com.josef.mobile.ui.err.ErrorActivity.EXECEPTION_KEY;
 
 public class ProfileFragment extends BaseFragment implements ViewPagerAdapter.ViewpagerAdapterOnClickListener {
 
@@ -86,7 +92,15 @@ public class ProfileFragment extends BaseFragment implements ViewPagerAdapter.Vi
                     }
                     case ERROR: {
                         hideProgessbar();
-                        getActivity().finish();
+                        Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getActivity(),
+                                android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
+
+                        Intent intent = new Intent(getActivity(), ErrorActivity.class);
+                        intent.putExtra(ACTIVITY_KEY, getActivity().getComponentName().getClassName());
+                        intent.putExtra(EXECEPTION_KEY, listResource.message);
+
+                        startActivity(intent, bundle);
+                        getActivity().finishAfterTransition();
                         break;
                     }
                 }

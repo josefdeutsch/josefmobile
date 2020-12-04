@@ -3,7 +3,6 @@ package com.josef.mobile.ui.splash;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.lifecycle.Observer;
@@ -13,12 +12,16 @@ import com.josef.mobile.R;
 import com.josef.mobile.data.local.db.model.LocalCache;
 import com.josef.mobile.ui.auth.AuthActivity;
 import com.josef.mobile.ui.base.BaseActivity;
+import com.josef.mobile.ui.err.ErrorActivity;
 import com.josef.mobile.ui.main.Resource;
 import com.josef.mobile.viewmodels.ViewModelProviderFactory;
 
 import java.util.List;
 
 import javax.inject.Inject;
+
+import static com.josef.mobile.ui.err.ErrorActivity.ACTIVITY_KEY;
+import static com.josef.mobile.ui.err.ErrorActivity.EXECEPTION_KEY;
 
 public class SplashActivity extends BaseActivity {
 
@@ -44,10 +47,6 @@ public class SplashActivity extends BaseActivity {
             public void onChanged(Resource<List<LocalCache>> listResource) {
                 if (listResource != null) {
                     switch (listResource.status) {
-                        case LOADING: {
-                            Log.d(TAG, "onChanged: PostsFragment: LOADING...");
-                            break;
-                        }
                         case SUCCESS: {
                             viewModel.insertAllEndoints(listResource.data);
                             Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(SplashActivity.this,
@@ -57,7 +56,16 @@ public class SplashActivity extends BaseActivity {
                             break;
                         }
                         case ERROR: {
-                            Log.d(TAG, "onChanged: PostsFragment: ERROR... " + listResource.message);
+                            Intent intent = new Intent(SplashActivity.this, ErrorActivity.class);
+                            intent.putExtra(ACTIVITY_KEY, SplashActivity.this.getComponentName().getClassName());
+                            intent.putExtra(EXECEPTION_KEY, listResource.message);
+
+                            Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(SplashActivity.this,
+                                    android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
+
+                            startActivity((intent), bundle);
+
+                            finishAfterTransition();
                             break;
                         }
                     }

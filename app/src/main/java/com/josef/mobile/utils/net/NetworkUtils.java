@@ -1,9 +1,19 @@
 package com.josef.mobile.utils.net;
 
 
-import io.reactivex.Single;
+import android.net.ConnectivityManager;
+import android.net.LinkProperties;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 
 public interface NetworkUtils {
 
-    Single<Boolean> isInternet();
+    Network getActiveNetwork();
+
+    NetworkCapabilities getNetworkCapabilities(Network currentNetwork);
+
+    LinkProperties getLinkProperties(Network currentNetwork);
+
+    ConnectivityManager getConnectivityManager();
+
 }

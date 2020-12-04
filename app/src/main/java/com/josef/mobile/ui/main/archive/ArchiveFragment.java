@@ -1,5 +1,6 @@
 package com.josef.mobile.ui.main.archive;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.josef.mobile.R;
 import com.josef.mobile.data.local.db.model.Archive;
 import com.josef.mobile.ui.base.BaseFragment;
+import com.josef.mobile.ui.err.ErrorActivity;
 import com.josef.mobile.ui.main.MainActivity;
 import com.josef.mobile.utils.UtilManager;
 import com.josef.mobile.viewmodels.ViewModelProviderFactory;
@@ -24,6 +27,9 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.josef.mobile.ui.err.ErrorActivity.ACTIVITY_KEY;
+import static com.josef.mobile.ui.err.ErrorActivity.EXECEPTION_KEY;
 
 public class ArchiveFragment extends BaseFragment implements View.OnClickListener, ArchiveRecyclerViewAdapter.OnDeleteCallBack {
 
@@ -83,6 +89,16 @@ public class ArchiveFragment extends BaseFragment implements View.OnClickListene
                     }
                     case ERROR: {
                         utilManager.hideProgressbar();
+                        Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getActivity(),
+                                android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
+
+                        Intent intent = new Intent(getActivity(), ErrorActivity.class);
+                        intent.putExtra(ACTIVITY_KEY, getActivity().getComponentName().getClassName());
+                        intent.putExtra(EXECEPTION_KEY, listResource.message);
+
+                        startActivity(intent, bundle);
+
+                        getActivity().finishAfterTransition();
                         break;
                     }
                 }

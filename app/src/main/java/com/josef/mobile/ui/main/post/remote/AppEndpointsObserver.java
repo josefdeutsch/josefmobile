@@ -2,7 +2,6 @@ package com.josef.mobile.ui.main.post.remote;
 
 import android.content.Context;
 
-import com.josef.mobile.R;
 import com.josef.mobile.data.DataManager;
 import com.josef.mobile.data.local.db.model.LocalCache;
 import com.josef.mobile.ui.main.Resource;
@@ -35,6 +34,7 @@ public class AppEndpointsObserver implements EndpointsObserver {
                 .onErrorReturn((Function<Throwable, ArrayList<LocalCache>>) throwable -> {
                     LocalCache container = new LocalCache();
                     container.setId(-1l);
+                    container.setException(throwable.getMessage());
                     ArrayList<LocalCache> containers = new ArrayList<>();
                     containers.add(container);
                     return containers;
@@ -42,7 +42,7 @@ public class AppEndpointsObserver implements EndpointsObserver {
                 .map((Function<List<LocalCache>, Resource<List<LocalCache>>>) posts -> {
                     if (posts.size() > 0) {
                         if (posts.get(0).getId() == -1) {
-                            return Resource.error(context.getResources().getString(R.string.resource_onerror_remainder), null);
+                            return Resource.error(posts.get(0).getException(), null);
                         }
                     }
                     return Resource.success(posts);

@@ -48,9 +48,11 @@ public class AppDownloadEndpoints implements DownloadEndpoints {
                 .onErrorReturn(new Function<Throwable, ArrayList<LocalCache>>() {
                     @Override
                     public ArrayList<LocalCache> apply(@NonNull Throwable throwable) throws Exception {
-                        Log.e(TAG, "apply: " + throwable.toString());
+                        Log.e(TAG, "apply: " + throwable.getMessage());
                         LocalCache container = new LocalCache();
                         container.setId(-1l);
+                        container.setException(throwable.getMessage());
+
                         ArrayList<LocalCache> containers = new ArrayList<>();
                         containers.add(container);
                         return containers;
@@ -59,8 +61,8 @@ public class AppDownloadEndpoints implements DownloadEndpoints {
 
                 .map((Function<List<LocalCache>, Resource<List<LocalCache>>>) posts -> {
                     if (posts.size() > 0) {
-                        if (posts.get(0).getId() == -1) {
-                            return Resource.error("Something went wrong", null);
+                        if (posts.get(0).getId() == -1l) {
+                            return Resource.error(posts.get(0).getException(), null);
                         }
                     }
                     return Resource.success(posts);

@@ -2,31 +2,22 @@
     <string name="app_name">josefmobile</string>
     <string name="action_settings">settings</string>
     <string name="action_archive">Archive</string>
-    <string name="question">more info..?</string>
-    <string name="OK">OK</string>
-    <string name="sync">synchronize with TV</string>
-    <string name="ERROR">error</string>
-    <string name="ok_button">ok</string>
-    <string name="cancel_button">cancel</string>
 
-    <string name="logout">logout</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="profile">profile</string>
-    <string name="posts">posts</string>
+    <string name="app_quit_remainder">Quit application?</string>
+
     <string name="fragment_profile">About Joseph</string>
     <string name="fragment_posts">Digital Artworks</string>
     <string name="fragment_posts_added_sculpture_remainder">"Sculpture added to archive"</string>
     <string name="fragment_archive">Synchronize Account</string>
-    <string name="archive">archive</string>
-    <string name="aboutme">about</string>
-    <string name="artworks">Artwork</string>
-    <string name="aboutmes">About</string>
-    <string name="archives">Archive</string>
-    <string name="quit">Quit Application?</string>
-    <string name="info">Info</string>
+
+    <string name="activity_sign_confirmation">"We have sent an email with a confirmation link to your email address."</>
+    <string name="activity_verification_confirmation">"We have sent an email with a confirmation link to your email address."</>
+
     <string name="fragment_into">fragmentinfo</string>
 
+    <string name="info_statment_belief"> I developed Joseph because I was looking for alternative ways to present my art.\nDuring my work I was confronted more and more with the idea of digital space.\nWhat exactly is digital space and how does it show itself?\nThe way to reinterpret an exhibition space captivates me and has motivated me so much to implement and complete Joseph according to my ideas.\nIn the end, Joseph itself became a work of art and the metaphor:\n“The expression travels through space”\nis the message that emanates from the heart of the matter.</string>
+
+    <string name="app_email_login">"We have sent you an email, please click on the link below and activate your account.."</>
     <!--callbackworker -->
     <string name="callbackworker_url_direct">http://joseph3d.com</string>
     <string name="callbackworker_url_success">onSuccess</string>
@@ -34,10 +25,7 @@
 
     <string name="resource_onerror_remainder">Something went wrong..</string>
 
-    <string name="info_statment_belief"> I developed Joseph because I was looking for alternative ways to present my art.\nDuring my work I was confronted more and more with the idea of digital space.\nWhat exactly is digital space and how does it show itself?\nThe way to reinterpret an exhibition space captivates me and has motivated me so much to implement and complete Joseph according to my ideas.\nIn the end, Joseph itself became a work of art and the metaphor:\n“The expression travels through space”\nis the message that emanates from the heart of the matter.</string>
-    <string name="proceed">Proceed</string>
     <string name="archive_fab_alert_syncs">Synchronize with TV</string>
-
     <string name="archive_alert_title">Remainder</string>
     <string name="archive_alert_message">Delete item?</string>
     <string name="archive_database_remainder">Please add item to archive..</string>
@@ -61,15 +49,9 @@
         <item>http://joseph3d.com/wp-content/uploads/2020/11/LogoAnimatedBlack.gif</item>
         <item>http://joseph3d.com/wp-content/uploads/2020/11/LogoAnimatedBlack.gif</item>
     </string-array>
-    <string name="title_activity_error">ErrorActivity</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="title_activity_error">ErrorActivity</string>
+    <string name="activity_error_nonnetwork">No Network available..</string>
 
 
 </resources>

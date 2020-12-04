@@ -168,7 +168,7 @@ public class SignActivity extends BaseActivity {
                     }
                     case SUCCESS: {
                         new Handler().postDelayed(() -> utilManager.hideProgressbar(), 1000);
-                        Toast.makeText(SignActivity.this, "We have sent an email with a confirmation link to your email address."
+                        Toast.makeText(SignActivity.this, this.getResources().getString(R.string.activity_sign_confirmation)
                                 , Toast.LENGTH_SHORT).show();
                         finish();
                         break;
@@ -176,8 +176,6 @@ public class SignActivity extends BaseActivity {
                     case ERROR: {
                         utilManager.hideProgressbar();
                         Toast.makeText(SignActivity.this, userResource.message, Toast.LENGTH_SHORT).show();
-                        emailEditText.getText().clear();
-                        passwordEditText.getText().clear();
                         break;
                     }
                 }

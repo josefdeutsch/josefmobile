@@ -1,11 +1,12 @@
 package com.josef.mobile.ui.auth.email;
 
-import android.util.Log;
+import android.content.Context;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.josef.mobile.R;
 import com.josef.mobile.ui.auth.AuthResource;
 import com.josef.mobile.ui.auth.model.User;
 
@@ -20,11 +21,12 @@ import io.reactivex.schedulers.Schedulers;
 @Singleton
 public class AppEmailLogin implements EmailLogin {
 
-    private static final String TAG = "AppEmailLogin";
     private final FirebaseAuth firebaseAuth;
+    private final Context context;
 
     @Inject
-    public AppEmailLogin(FirebaseAuth firebaseAuth) {
+    public AppEmailLogin(Context context, FirebaseAuth firebaseAuth) {
+        this.context = context;
         this.firebaseAuth = firebaseAuth;
     }
 
@@ -37,7 +39,6 @@ public class AppEmailLogin implements EmailLogin {
         return concatOptionsSingles(completion, verification)
 
                 .onErrorReturn(throwable -> {
-                    Log.e(TAG, "apply: " + throwable.toString());
                     User user = new User();
                     user.setId(-1);
                     user.setThrowable(throwable);
@@ -79,8 +80,7 @@ public class AppEmailLogin implements EmailLogin {
             if (firebaseAuth.getCurrentUser().isEmailVerified()) {
                 emitter.onSuccess(user);
             } else {
-                emitter.onError(new RuntimeException("We have sent you an email, please click on the link below " +
-                        "and activate your account.."));
+                emitter.onError(new RuntimeException(context.getResources().getString(R.string.app_email_login)));
             }
         });
     }

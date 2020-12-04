@@ -37,6 +37,17 @@ public class LocalCache {
     @ColumnInfo(name = "updated_at")
     public String updatedAt;
 
+    public String exception;
+
+    public String getException() {
+        return exception;
+    }
+
+    public void setException(String exception) {
+        this.exception = exception;
+    }
+
+
     public LocalCache(@NonNull Long id, boolean flag, String name, String url, String tag, String png) {
         this.id = id;
         this.flag = flag;

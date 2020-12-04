@@ -1,12 +1,14 @@
 package com.josef.mobile.ui.player;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -14,6 +16,7 @@ import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.josef.mobile.R;
+import com.josef.mobile.ui.err.ErrorActivity;
 import com.josef.mobile.viewmodels.ViewModelProviderFactory;
 
 import javax.inject.Inject;
@@ -22,6 +25,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.support.DaggerAppCompatActivity;
 
+import static com.josef.mobile.ui.err.ErrorActivity.ACTIVITY_KEY;
+import static com.josef.mobile.ui.err.ErrorActivity.EXECEPTION_KEY;
 import static com.josef.mobile.utils.AppConstants.REQUEST_INDEX;
 import static com.josef.mobile.utils.AppConstants.STATE_BOOLEAN_VALUE;
 import static com.josef.mobile.utils.AppConstants.STATE_RESUME_POSITION;
@@ -96,7 +101,15 @@ public class PlayerActivity extends DaggerAppCompatActivity {
                         break;
                     }
                     case ERROR: {
-                        finish();
+                        Intent intent = new Intent(this, ErrorActivity.class);
+                        intent.putExtra(ACTIVITY_KEY, this.getComponentName().getClassName());
+                        intent.putExtra(EXECEPTION_KEY, listResource.message);
+                        Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(PlayerActivity.this,
+                                android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
+
+                        startActivity(intent, bundle);
+
+                        finishAfterTransition();
                         break;
                     }
                 }

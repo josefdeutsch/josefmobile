@@ -37,6 +37,16 @@ public class Archive {
     @ColumnInfo(name = "updated_at")
     public String updatedAt;
 
+    public String exception;
+
+    public String getException() {
+        return exception;
+    }
+
+    public void setException(String exception) {
+        this.exception = exception;
+    }
+
     public Archive(long id, boolean flag, String name, String png, String url, String tag) {
         this.id = id;
         this.name = name;

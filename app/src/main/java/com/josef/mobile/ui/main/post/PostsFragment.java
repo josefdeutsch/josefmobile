@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +18,7 @@ import com.josef.mobile.R;
 import com.josef.mobile.data.local.db.model.Archive;
 import com.josef.mobile.data.local.db.model.LocalCache;
 import com.josef.mobile.ui.base.BaseFragment;
+import com.josef.mobile.ui.err.ErrorActivity;
 import com.josef.mobile.ui.player.PlayerActivity;
 
 import javax.inject.Inject;
@@ -24,6 +26,8 @@ import javax.inject.Inject;
 import static android.widget.NumberPicker.OnScrollListener.SCROLL_STATE_IDLE;
 import static com.josef.mobile.data.local.prefs.PreferencesHelper.ARCHIVE_EMPTY;
 import static com.josef.mobile.data.local.prefs.PreferencesHelper.ARCHIVE_NOT_EMPTY;
+import static com.josef.mobile.ui.err.ErrorActivity.ACTIVITY_KEY;
+import static com.josef.mobile.ui.err.ErrorActivity.EXECEPTION_KEY;
 import static com.josef.mobile.utils.AppConstants.PLAYERACTIVIY;
 import static com.josef.mobile.utils.AppConstants.REQUEST_INDEX;
 
@@ -89,7 +93,17 @@ public class PostsFragment extends BaseFragment
                     }
                     case ERROR: {
                         hideProgessbar();
-                        getActivity().finish();
+
+                        Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getActivity(),
+                                android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
+
+                        Intent intent = new Intent(getActivity(), ErrorActivity.class);
+                        intent.putExtra(ACTIVITY_KEY, getActivity().getComponentName().getClassName());
+                        intent.putExtra(EXECEPTION_KEY, listResource.message);
+
+                        startActivity(intent, bundle);
+
+                        getActivity().finishAfterTransition();
                         break;
                     }
                 }

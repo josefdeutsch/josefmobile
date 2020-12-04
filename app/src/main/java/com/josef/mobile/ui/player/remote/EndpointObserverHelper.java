@@ -43,11 +43,12 @@ public class EndpointObserverHelper implements EndpointObserver {
                 .onErrorReturn(throwable -> {
                     LocalCache container = new LocalCache();
                     container.setId(-1l);
+                    container.setException(throwable.getMessage());
                     return container;
                 })
                 .map(container -> {
                     if (container.getId() == -1) {
-                        return Resource.error("Something went wrong", null);
+                        return Resource.error(container.getException(), null);
                     }
                     return Resource.success(container);
                 });

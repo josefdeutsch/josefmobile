@@ -55,6 +55,7 @@ public class AppResourceObserver implements ResourceObserver {
                 .onErrorReturn((Function<Throwable, ArrayList<Profile>>) throwable -> {
                     Profile container = new Profile();
                     container.setId(-1);
+                    container.setException(throwable.getMessage());
                     ArrayList<Profile> containers = new ArrayList<>();
                     containers.add(container);
                     return containers;
@@ -62,7 +63,7 @@ public class AppResourceObserver implements ResourceObserver {
                 .map((Function<List<Profile>, Resource<List<Profile>>>) posts -> {
                     if (posts.size() > 0) {
                         if (posts.get(0).getId() == -1) {
-                            return Resource.error(context.getResources().getString(R.string.resource_onerror_remainder), null);
+                            return Resource.error(posts.get(0).getException(), null);
                         }
                     }
                     return Resource.success(posts);

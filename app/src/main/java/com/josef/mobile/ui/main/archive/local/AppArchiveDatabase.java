@@ -31,6 +31,7 @@ public class AppArchiveDatabase implements ArchiveDatabase {
                 .onErrorReturn(throwable -> {
                     Archive archive = new Archive();
                     archive.id = -1l;
+                    archive.setException(throwable.getMessage());
                     List<Archive> archives = new ArrayList<>();
                     archives.add(archive);
                     return archives;
@@ -38,7 +39,7 @@ public class AppArchiveDatabase implements ArchiveDatabase {
                 .map((Function<List<Archive>, Resource<List<Archive>>>) archives -> {
                     if (archives.size() > 0) {
                         if (archives.get(0).id == -1l) {
-                            return Resource.error("Error!", null);
+                            return Resource.error(archives.get(0).getException(), null);
                         }
                     }
                     return Resource.success(archives);
