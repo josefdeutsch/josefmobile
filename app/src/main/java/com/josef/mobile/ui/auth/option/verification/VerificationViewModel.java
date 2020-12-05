@@ -2,14 +2,13 @@ package com.josef.mobile.ui.auth.option.verification;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.LiveDataReactiveStreams;
 import androidx.lifecycle.MediatorLiveData;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.josef.mobile.ui.auth.model.CharSequenceObserver;
+import com.josef.mobile.ui.auth.email.help.CharSequenceObserver;
 import com.josef.mobile.ui.auth.model.User;
 import com.josef.mobile.ui.base.BaseViewModel;
 import com.josef.mobile.ui.main.Resource;
@@ -30,7 +29,6 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class VerificationViewModel extends BaseViewModel {
 
 
-    private static final String TAG = "VerificationViewModel";
 
     private final Context mContext;
     private final FirebaseAuth firebaseAuth;
@@ -103,7 +101,6 @@ public class VerificationViewModel extends BaseViewModel {
     private Flowable<Resource<User>> getFlowableResourceUser(String email) {
         return addonVerificationListenerSingle(email)
                 .onErrorReturn(throwable -> {
-                    Log.e(TAG, "apply: " + throwable.toString());
                     User user = new User();
                     user.setId(-1);
                     user.setThrowable(throwable);

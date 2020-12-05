@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.LinkProperties;
 import android.net.Network;
 import android.net.NetworkCapabilities;
+import android.net.NetworkInfo;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -40,6 +41,13 @@ public class AppNetworkUtils implements NetworkUtils {
     @Override
     public ConnectivityManager getConnectivityManager() {
         return context.getSystemService(ConnectivityManager.class);
+    }
+
+    public boolean isOnline() {
+        ConnectivityManager connMgr = (ConnectivityManager)
+                context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        return (networkInfo != null && networkInfo.isConnected());
     }
 
 }

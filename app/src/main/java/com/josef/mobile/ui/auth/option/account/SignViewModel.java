@@ -1,8 +1,5 @@
 package com.josef.mobile.ui.auth.option.account;
 
-import android.content.Context;
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.LiveDataReactiveStreams;
 import androidx.lifecycle.MediatorLiveData;
@@ -16,25 +13,19 @@ import javax.inject.Inject;
 
 import io.reactivex.Flowable;
 import io.reactivex.Single;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 
 public class SignViewModel extends BaseViewModel {
 
-    private static final String TAG = "SignViewModel";
 
-    private final Context mContext;
     private final FirebaseAuth firebaseAuth;
     private final MediatorLiveData<Resource<User>> containers = new MediatorLiveData<>();
-    private final User user = new User();
 
     @Inject
-    public SignViewModel(Context context, FirebaseAuth firebaseAuth) {
-        this.mContext = context;
+    public SignViewModel(FirebaseAuth firebaseAuth) {
         this.firebaseAuth = firebaseAuth;
     }
-
 
     public MediatorLiveData<Resource<User>> getContainers() {
         return containers;
@@ -60,18 +51,14 @@ public class SignViewModel extends BaseViewModel {
 
         return concatOptionsSingles(completion, verification)
                 .onErrorReturn(throwable -> {
-                    Log.e(TAG, "apply: " + throwable.toString());
                     User user = new User();
                     user.setId(-1);
                     user.setThrowable(throwable);
                     return user;
                 })
-                .map((Function<User, Resource<User>>) user -> {
+                .map(user -> {
                     if (user.getId() == -1) {
-                        Log.d(TAG, "getFlowableResourceBoolean: error");
-                        return Resource.error(user.getThrowable().getMessage(), null);
                     }
-                    Log.d(TAG, "getFlowableResourceBoolean: ");
                     return Resource.success(user);
                 })
                 .subscribeOn(Schedulers.io());

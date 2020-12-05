@@ -16,6 +16,7 @@ import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.josef.mobile.R;
+import com.josef.mobile.ui.base.BaseActivity;
 import com.josef.mobile.ui.err.ErrorActivity;
 import com.josef.mobile.viewmodels.ViewModelProviderFactory;
 
@@ -23,16 +24,14 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import dagger.android.support.DaggerAppCompatActivity;
 
-import static com.josef.mobile.ui.err.ErrorActivity.ACTIVITY_KEY;
-import static com.josef.mobile.ui.err.ErrorActivity.EXECEPTION_KEY;
+import static com.josef.mobile.ui.err.ErrorActivity.ACTIVITY_KEYS;
 import static com.josef.mobile.utils.AppConstants.REQUEST_INDEX;
 import static com.josef.mobile.utils.AppConstants.STATE_BOOLEAN_VALUE;
 import static com.josef.mobile.utils.AppConstants.STATE_RESUME_POSITION;
 import static com.josef.mobile.utils.AppConstants.STATE_RESUME_WINDOW;
 
-public class PlayerActivity extends DaggerAppCompatActivity {
+public class PlayerActivity extends BaseActivity {
 
 
     @Inject
@@ -47,19 +46,25 @@ public class PlayerActivity extends DaggerAppCompatActivity {
     @Inject
     ProgressiveMediaSource.Factory videoSource;
 
-    protected boolean mExoPlayerFullscreen = false;
-    protected int mResumeWindow;
-    protected long mResumePosition;
-
-    private PlayerViewModel viewModel;
-
-    private int index;
     @BindView(R.id.exo_fullscreen_button)
     FrameLayout mFullScreenButton;
     @BindView(R.id.exo_fullscreen_icon)
     ImageView mFullScreenIcon;
     @BindView(R.id.exoplayer)
     PlayerView mPlayerView;
+
+
+    protected boolean mExoPlayerFullscreen = false;
+    protected int mResumeWindow;
+    protected long mResumePosition;
+    PlayerViewModel viewModel;
+    private int index;
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        viewModel.observeEndpoints().removeObservers(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,17 +98,19 @@ public class PlayerActivity extends DaggerAppCompatActivity {
             if (listResource != null) {
                 switch (listResource.status) {
                     case LOADING: {
+                        showProgressbar(this);
                         break;
                     }
                     case SUCCESS: {
+                        hideProgessbar();
                         if (listResource.data.getUrl() != null)
                             setupMediaSource(listResource.data.getUrl());
                         break;
                     }
                     case ERROR: {
+                        hideProgessbar();
                         Intent intent = new Intent(this, ErrorActivity.class);
-                        intent.putExtra(ACTIVITY_KEY, this.getComponentName().getClassName());
-                        intent.putExtra(EXECEPTION_KEY, listResource.message);
+                        intent.putExtra(ACTIVITY_KEYS, this.getComponentName().getClassName());
                         Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(PlayerActivity.this,
                                 android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
 
@@ -115,7 +122,6 @@ public class PlayerActivity extends DaggerAppCompatActivity {
                 }
             }
         });
-        //  viewModel.observeEndpoints().removeObservers(this);
     }
 
     protected void openFullscreenDialog() {

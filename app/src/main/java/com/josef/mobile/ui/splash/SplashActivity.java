@@ -20,12 +20,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import static com.josef.mobile.ui.err.ErrorActivity.ACTIVITY_KEY;
-import static com.josef.mobile.ui.err.ErrorActivity.EXECEPTION_KEY;
+import static com.josef.mobile.ui.err.ErrorActivity.ACTIVITY_KEYS;
 
 public class SplashActivity extends BaseActivity {
 
-    private static final String TAG = "SplashActivity";
 
     @Inject
     ViewModelProviderFactory providerFactory;
@@ -53,12 +51,12 @@ public class SplashActivity extends BaseActivity {
                                     android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
                             startActivity(new Intent(SplashActivity.this, AuthActivity.class), bundle);
                             finishAfterTransition();
+                            //
                             break;
                         }
                         case ERROR: {
                             Intent intent = new Intent(SplashActivity.this, ErrorActivity.class);
-                            intent.putExtra(ACTIVITY_KEY, SplashActivity.this.getComponentName().getClassName());
-                            intent.putExtra(EXECEPTION_KEY, listResource.message);
+                            intent.putExtra(ACTIVITY_KEYS, SplashActivity.this.getComponentName().getClassName());
 
                             Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(SplashActivity.this,
                                     android.R.anim.fade_in, android.R.anim.fade_out).toBundle();

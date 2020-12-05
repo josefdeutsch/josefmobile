@@ -21,7 +21,7 @@ public class AppCommonUtils implements CommonUtils {
 
     Dialog noNetwork;
     Dialog progressBar;
-    final Pattern pattern = android.util.Patterns.EMAIL_ADDRESS;
+    Pattern pattern = android.util.Patterns.EMAIL_ADDRESS;
     Matcher matcher;
 
     @Inject

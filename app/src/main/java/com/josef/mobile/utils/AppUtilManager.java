@@ -98,4 +98,9 @@ public class AppUtilManager implements UtilManager {
     public ConnectivityManager getConnectivityManager() {
         return networkUtils.getConnectivityManager();
     }
+
+    @Override
+    public boolean isOnline() {
+        return networkUtils.isOnline();
+    }
 }

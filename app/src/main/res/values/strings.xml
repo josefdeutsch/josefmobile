@@ -10,15 +10,15 @@
     <string name="fragment_posts_added_sculpture_remainder">"Sculpture added to archive"</string>
     <string name="fragment_archive">Synchronize Account</string>
 
-    <string name="activity_sign_confirmation">"We have sent an email with a confirmation link to your email address."</>
-    <string name="activity_verification_confirmation">"We have sent an email with a confirmation link to your email address."</>
+    <string name="activity_sign_confirmation">"We have sent an email with a confirmation link to your email address."</string>
+    <string name="activity_verification_confirmation">"We have sent an email with a confirmation link to your email address."</string>
 
     <string name="fragment_into">fragmentinfo</string>
 
-    <string name="info_statment_belief"> I developed Joseph because I was looking for alternative ways to present my art.\nDuring my work I was confronted more and more with the idea of digital space.\nWhat exactly is digital space and how does it show itself?\nThe way to reinterpret an exhibition space captivates me and has motivated me so much to implement and complete Joseph according to my ideas.\nIn the end, Joseph itself became a work of art and the metaphor:\n“The expression travels through space”\nis the message that emanates from the heart of the matter.</string>
+    <string name="info_statment_belief">I developed Joseph because I was looking for alternative ways to present my art.\nDuring my work I was confronted more and more with the idea of digital space.\nWhat exactly is digital space and how does it show itself?\nThe way to reinterpret an exhibition space captivates me and has motivated me so much to implement and complete Joseph according to my ideas.\nIn the end, Joseph itself became a work of art and the metaphor:\n“The expression travels through space”\nis the message that emanates from the heart of the matter.</string>
 
-    <string name="app_email_login">"We have sent you an email, please click on the link below and activate your account.."</>
-    <!--callbackworker -->
+    <string name="app_email_login">"We have sent you an email, please click on the link below and activate your account.."</string>
+
     <string name="callbackworker_url_direct">http://joseph3d.com</string>
     <string name="callbackworker_url_success">onSuccess</string>
     <string name="callbackworker_url_error">onError</string>
@@ -30,7 +30,7 @@
     <string name="archive_alert_message">Delete item?</string>
     <string name="archive_database_remainder">Please add item to archive..</string>
 
-    <!--play store-->
+
     <string name="app_google_play_store_link">"https://play.google.com/store/apps/details?id="</string>
     <string name="app_market_link">"market://details?id="</string>
 
@@ -52,6 +52,15 @@
 
     <string name="title_activity_error">ErrorActivity</string>
     <string name="activity_error_nonnetwork">No Network available..</string>
+
+    <string name="nav_profile_title">Profile title</string>
+    <string name="nav_posts_title">Posts title</string>
+    <string name="nav_archive_title">Archive title</string>
+    <string name="nav_info_title">Info title</string>
+    <string name="toolbar_logout_button">Logout?</string>
+
+    <string name="activity_auth_invalid_password">Invalid password</string>
+    <string name="activity_auth_invalid_email">Invalid email</string>
 
 
 </resources>

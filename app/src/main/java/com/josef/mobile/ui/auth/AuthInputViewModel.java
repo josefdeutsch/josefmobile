@@ -6,8 +6,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.LiveDataReactiveStreams;
 import androidx.lifecycle.MediatorLiveData;
 
-import com.josef.mobile.ui.auth.model.CharSequenceObserver;
-import com.josef.mobile.ui.auth.model.CombinedLiveData;
+import com.josef.mobile.ui.auth.email.help.CharSequenceObserver;
+import com.josef.mobile.ui.auth.email.help.CombinedLiveData;
 import com.josef.mobile.ui.base.BaseViewModel;
 
 import org.jetbrains.annotations.NotNull;

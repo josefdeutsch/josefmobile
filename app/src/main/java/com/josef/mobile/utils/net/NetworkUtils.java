@@ -16,4 +16,6 @@ public interface NetworkUtils {
 
     ConnectivityManager getConnectivityManager();
 
+    boolean isOnline();
+
 }

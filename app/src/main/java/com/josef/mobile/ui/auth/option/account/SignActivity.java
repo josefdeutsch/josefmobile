@@ -1,7 +1,6 @@
 package com.josef.mobile.ui.auth.option.account;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -163,18 +162,18 @@ public class SignActivity extends BaseActivity {
             if (userResource != null) {
                 switch (userResource.status) {
                     case LOADING: {
-                        utilManager.showProgressbar(SignActivity.this);
+                        showProgressbar(SignActivity.this);
                         break;
                     }
                     case SUCCESS: {
-                        new Handler().postDelayed(() -> utilManager.hideProgressbar(), 1000);
+                        hideProgessbar();
                         Toast.makeText(SignActivity.this, this.getResources().getString(R.string.activity_sign_confirmation)
                                 , Toast.LENGTH_SHORT).show();
                         finish();
                         break;
                     }
                     case ERROR: {
-                        utilManager.hideProgressbar();
+                        hideProgessbar();
                         Toast.makeText(SignActivity.this, userResource.message, Toast.LENGTH_SHORT).show();
                         break;
                     }
@@ -194,7 +193,7 @@ public class SignActivity extends BaseActivity {
 
     private void showEmailError() {
         enableError(emailInputLayout);
-        emailInputLayout.setError("Invalid email");
+        emailInputLayout.setError(this.getResources().getString(R.string.activity_auth_invalid_email));
     }
 
     private void hideEmailError() {
@@ -223,7 +222,7 @@ public class SignActivity extends BaseActivity {
 
     private void showPasswordError() {
         enableError(passwordInputLayout);
-        passwordInputLayout.setError("Invalid password");
+        passwordInputLayout.setError(this.getResources().getString(R.string.activity_auth_invalid_password));
     }
 
     private void hidePasswordError() {

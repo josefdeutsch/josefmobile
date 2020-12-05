@@ -1,4 +1,4 @@
-package com.josef.mobile.ui.auth.model;
+package com.josef.mobile.ui.auth.email.help;
 
 import androidx.core.util.Pair;
 import androidx.lifecycle.LiveData;

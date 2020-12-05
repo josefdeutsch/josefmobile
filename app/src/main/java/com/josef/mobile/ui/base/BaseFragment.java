@@ -28,8 +28,6 @@ public abstract class BaseFragment extends DaggerFragment {
     @Inject
     public ViewModelProviderFactory providerFactory;
 
-    private static final String TAG = "BaseFragment";
-
 
     public void showProgressbar(Activity activity) {
         utilManager.showProgressbar(activity);

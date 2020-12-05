@@ -31,9 +31,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -41,7 +39,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.josef.mobile.R;
-import com.josef.mobile.ui.auth.model.User;
 import com.josef.mobile.ui.auth.option.account.SignActivity;
 import com.josef.mobile.ui.auth.option.verification.VerificationActivity;
 import com.josef.mobile.ui.base.BaseActivity;
@@ -62,16 +59,10 @@ import butterknife.OnClick;
  */
 public class AuthActivity extends BaseActivity {
 
-    private static final String TAG = "AuthActivity";
-
-    public static final int RC_SIGN_IN = 9002;
-
     public static final int RC_SIGN_OUT = 9001;
     public static final int SU_SIGN_IN = 9003;
     public static final int VU_SIGN_IN = 9004;
-
     public static final int AUTH_REQ = 9005;
-
 
     @Inject
     FirebaseAuth mAuth;
@@ -125,7 +116,6 @@ public class AuthActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setMessage(R.string.app_quit_remainder);
         alert.setCancelable(false);
         alert.setPositiveButton(android.R.string.yes, (dialogInterface, i) -> finish());
@@ -156,9 +146,6 @@ public class AuthActivity extends BaseActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == SU_SIGN_IN) {
-            //
-        }
         if (requestCode == AUTH_REQ && Activity.RESULT_OK == resultCode) {
             signOut();
         }
@@ -247,29 +234,27 @@ public class AuthActivity extends BaseActivity {
 
     public void observeFirebaseValidation() {
 
-        authViewModel.observeAuthenticatedUser().observe(this, new Observer<AuthResource<User>>() {
-            @Override
-            public void onChanged(AuthResource<User> userAuthResource) {
-                if (userAuthResource != null) {
-                    switch (userAuthResource.status) {
-                        case LOADING: {
-                            utilManager.showProgressbar(AuthActivity.this);
-                            break;
-                        }
-                        case AUTHENTICATED: {
-                            startActivityForResult(new Intent(AuthActivity.this, MainActivity.class), AUTH_REQ);
-                            new Handler().postDelayed(() -> utilManager.hideProgressbar(), 1000);
+        authViewModel.observeAuthenticatedUser().observe(this, userAuthResource -> {
+            if (userAuthResource != null) {
+                switch (userAuthResource.status) {
+                    case LOADING: {
+                        showProgressbar(AuthActivity.this);
+                        break;
+                    }
+                    case AUTHENTICATED: {
+                        hideProgessbar();
+                        startActivityForResult(new Intent(AuthActivity.this, MainActivity.class), AUTH_REQ);
+                        new Handler().postDelayed(() -> utilManager.hideProgressbar(), 1000);
 
-                            break;
-                        }
-                        case ERROR: {
-                            utilManager.hideProgressbar();
-                            Toast.makeText(AuthActivity.this, userAuthResource.message, Toast.LENGTH_SHORT).show();
-                            break;
-                        }
-                        case NOT_AUTHENTICATED: {
-                            break;
-                        }
+                        break;
+                    }
+                    case ERROR: {
+                        hideProgessbar();
+                        Toast.makeText(AuthActivity.this, userAuthResource.message, Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                    case NOT_AUTHENTICATED: {
+                        break;
                     }
                 }
             }

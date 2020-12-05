@@ -27,8 +27,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.josef.mobile.ui.err.ErrorActivity.ACTIVITY_KEY;
-import static com.josef.mobile.ui.err.ErrorActivity.EXECEPTION_KEY;
+import static com.josef.mobile.ui.err.ErrorActivity.ACTIVITY_KEYS;
 
 public class ProfileFragment extends BaseFragment implements ViewPagerAdapter.ViewpagerAdapterOnClickListener {
 
@@ -96,8 +95,7 @@ public class ProfileFragment extends BaseFragment implements ViewPagerAdapter.Vi
                                 android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
 
                         Intent intent = new Intent(getActivity(), ErrorActivity.class);
-                        intent.putExtra(ACTIVITY_KEY, getActivity().getComponentName().getClassName());
-                        intent.putExtra(EXECEPTION_KEY, listResource.message);
+                        intent.putExtra(ACTIVITY_KEYS, getActivity().getComponentName().getClassName());
 
                         startActivity(intent, bundle);
                         getActivity().finishAfterTransition();

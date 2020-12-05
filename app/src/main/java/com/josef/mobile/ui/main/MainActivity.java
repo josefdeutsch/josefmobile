@@ -1,6 +1,5 @@
 package com.josef.mobile.ui.main;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -19,7 +18,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LifecycleRegistry;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
@@ -37,8 +35,6 @@ import javax.inject.Inject;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, LifecycleOwner {
 
-    private static final String TAG = "MainActivity";
-    private LifecycleRegistry lifecycleRegistry;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
 
@@ -202,9 +198,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            Intent returnIntent = new Intent();
-            setResult(Activity.RESULT_OK, returnIntent);
-            finish();
+            sessionManager.logOut();
         }
     }
 }

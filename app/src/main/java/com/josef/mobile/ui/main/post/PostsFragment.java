@@ -26,8 +26,7 @@ import javax.inject.Inject;
 import static android.widget.NumberPicker.OnScrollListener.SCROLL_STATE_IDLE;
 import static com.josef.mobile.data.local.prefs.PreferencesHelper.ARCHIVE_EMPTY;
 import static com.josef.mobile.data.local.prefs.PreferencesHelper.ARCHIVE_NOT_EMPTY;
-import static com.josef.mobile.ui.err.ErrorActivity.ACTIVITY_KEY;
-import static com.josef.mobile.ui.err.ErrorActivity.EXECEPTION_KEY;
+import static com.josef.mobile.ui.err.ErrorActivity.ACTIVITY_KEYS;
 import static com.josef.mobile.utils.AppConstants.PLAYERACTIVIY;
 import static com.josef.mobile.utils.AppConstants.REQUEST_INDEX;
 
@@ -98,8 +97,7 @@ public class PostsFragment extends BaseFragment
                                 android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
 
                         Intent intent = new Intent(getActivity(), ErrorActivity.class);
-                        intent.putExtra(ACTIVITY_KEY, getActivity().getComponentName().getClassName());
-                        intent.putExtra(EXECEPTION_KEY, listResource.message);
+                        intent.putExtra(ACTIVITY_KEYS, getActivity().getComponentName().getClassName());
 
                         startActivity(intent, bundle);
 

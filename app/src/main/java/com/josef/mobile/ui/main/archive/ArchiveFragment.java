@@ -28,8 +28,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.josef.mobile.ui.err.ErrorActivity.ACTIVITY_KEY;
-import static com.josef.mobile.ui.err.ErrorActivity.EXECEPTION_KEY;
+import static com.josef.mobile.ui.err.ErrorActivity.ACTIVITY_KEYS;
 
 public class ArchiveFragment extends BaseFragment implements View.OnClickListener, ArchiveRecyclerViewAdapter.OnDeleteCallBack {
 
@@ -93,8 +92,7 @@ public class ArchiveFragment extends BaseFragment implements View.OnClickListene
                                 android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
 
                         Intent intent = new Intent(getActivity(), ErrorActivity.class);
-                        intent.putExtra(ACTIVITY_KEY, getActivity().getComponentName().getClassName());
-                        intent.putExtra(EXECEPTION_KEY, listResource.message);
+                        intent.putExtra(ACTIVITY_KEYS, getActivity().getComponentName().getClassName());
 
                         startActivity(intent, bundle);
 
@@ -109,7 +107,7 @@ public class ArchiveFragment extends BaseFragment implements View.OnClickListene
     private void archiveDatabaseRemainder() {
         Toast.makeText(getContext(),
                 getContext().getResources().
-                        getResourceName(R.string.archive_database_remainder),
+                        getString(R.string.archive_database_remainder),
                 Toast.LENGTH_SHORT).show();
     }
 

@@ -1,9 +1,7 @@
 package com.josef.mobile.ui.auth.option.verification;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
@@ -23,9 +21,6 @@ import com.josef.mobile.viewmodels.ViewModelProviderFactory;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -34,7 +29,6 @@ import butterknife.OnClick;
 
 public class VerificationActivity extends BaseActivity {
 
-    private final Pattern pattern = android.util.Patterns.EMAIL_ADDRESS;
     @Inject
     ViewModelProviderFactory providerFactory;
     @Inject
@@ -51,7 +45,6 @@ public class VerificationActivity extends BaseActivity {
     ImageView imageView;
 
     private VerificationViewModel viewModel;
-    private Matcher matcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +61,7 @@ public class VerificationActivity extends BaseActivity {
 
     private void observeEmailInputs() {
         viewModel.observeEmailText().observe(this, charSequence -> {
-            boolean isEmailValid = validateEmail(charSequence.toString());
+            boolean isEmailValid = validateEmail(charSequence);
             if (!isEmailValid) {
                 showEmailError();
                 disableSignIn();
@@ -88,7 +81,7 @@ public class VerificationActivity extends BaseActivity {
                         break;
                     }
                     case SUCCESS: {
-                        new Handler().postDelayed(() -> utilManager.hideProgressbar(), 1000);
+                        utilManager.hideProgressbar();
                         Toast.makeText(VerificationActivity.this, this.getResources().getString(R.string.activity_verification_confirmation)
                                 , Toast.LENGTH_SHORT).show();
                         finish();
@@ -141,14 +134,12 @@ public class VerificationActivity extends BaseActivity {
 
     private void showEmailError() {
         enableError(emailInputLayout);
-        // emailInputLayout.setErrorEnabled(true);
-        emailInputLayout.setError("Invalid email");
+        emailInputLayout.setError(this.getResources().getString(R.string.activity_auth_invalid_password));
     }
 
     private void hideEmailError() {
         disableError(emailInputLayout);
         emailInputLayout.setErrorEnabled(false);
-        // emailInputLayout.setError(null);
     }
 
     private void enableError(TextInputLayout textInputLayout) {
@@ -161,13 +152,9 @@ public class VerificationActivity extends BaseActivity {
             textInputLayout.getChildAt(1).setVisibility(View.GONE);
     }
 
-    private boolean validateEmail(String email) {
-        if (TextUtils.isEmpty(email))
-            return false;
-        matcher = pattern.matcher(email);
-        return matcher.matches();
+    private boolean validateEmail(CharSequence email) {
+        return utilManager.validateEmail(email);
     }
-
 
     private void enableSignIn() {
         linearLayoutSignIn.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));

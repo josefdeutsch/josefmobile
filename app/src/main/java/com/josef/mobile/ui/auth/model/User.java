@@ -2,19 +2,18 @@ package com.josef.mobile.ui.auth.model;
 
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class User implements Serializable {
 
     public int id;
 
-    public String uid, name, photoUrl;
+    public String uid;
 
     public String email;
 
-    public Date createdAt;
+    public String name;
 
-    public boolean hasUSER;
+    public String photoUrl;
 
     public Throwable throwable;
 
@@ -27,6 +26,7 @@ public class User implements Serializable {
     }
 
     public User() {
+
     }
 
     public User(String uid, String name, String email, String photoUrl) {
