@@ -6,7 +6,7 @@ android {
     compileSdkVersion 29
     defaultConfig {
         applicationId "com.josef.josefmobile"
-        minSdkVersion 28
+        minSdkVersion 24
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -21,25 +21,6 @@ android {
         }
     }
 
-    flavorDimensions 'version'
-    productFlavors {
-        free {
-            dimension = 'version'
-            applicationId = 'com.josef.mobile.free'
-            versionName = 'free'
-            signingConfig signingConfigs.config
-            versionNameSuffix = 'com.josef.mobile.free'
-            minSdkVersion 28
-        }
-        paid {
-            dimension = 'version'
-            applicationId = 'com.josef.mobile.paid'
-            versionName = 'paid'
-            versionNameSuffix = 'com.josef.mobile.paid'
-            signingConfig signingConfigs.config
-            minSdkVersion 28
-        }
-    }
     buildTypes {
         release {
             minifyEnabled false
@@ -57,9 +38,7 @@ android {
     lintOptions {
         disable 'RestrictedApi'
     }
-    compileOptions {
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
+
 
 
     configurations {

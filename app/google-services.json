@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:690143347015:android:b1df4f90b4cd2cc7f60c62",
         "android_client_info": {
-          "package_name": "com.josef.mobile.free"
+          "package_name": "com.josef.josefmobile"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "690143347015-gjt7okphf89rc1sjm2igj2nph584ohtn.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.josef.mobile.free",
+            "package_name": "com.josef.josefmobile",
             "certificate_hash": "8d650a1bc9b169bce72aff72c2fc51b8fd702401"
           }
         },

@@ -7,25 +7,25 @@
 
     <fragment
         android:id="@+id/profileScreen"
-        android:name="com.josef.mobile.ui.main.profile.ProfileFragment"
+        android:name="com.josef.josefmobile.ui.main.profile.ProfileFragment"
         android:label="@string/fragment_profile"
         tools:layout="@layout/fragment_profile"></fragment>
 
     <fragment
         android:id="@+id/postScreen"
-        android:name="com.josef.mobile.ui.main.post.PostsFragment"
+        android:name="com.josef.josefmobile.ui.main.post.PostsFragment"
         android:label="@string/fragment_posts"
         tools:layout="@layout/fragment_posts_first"></fragment>
 
     <fragment
         android:id="@+id/archiveScreen"
-        android:name="com.josef.mobile.ui.main.archive.ArchiveFragment"
+        android:name="com.josef.josefmobile.ui.main.archive.ArchiveFragment"
         android:label="@string/fragment_archive"
         tools:layout="@layout/fragment_archive"></fragment>
 
     <fragment
         android:id="@+id/infoScreen"
-        android:name="com.josef.mobile.ui.main.info.InfoFragment"
+        android:name="com.josef.josefmobile.ui.main.info.InfoFragment"
         android:label="@string/fragment_into"
         tools:layout="@layout/fragment_info"></fragment>
 
