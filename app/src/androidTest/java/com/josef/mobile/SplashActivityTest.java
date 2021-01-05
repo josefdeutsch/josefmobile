@@ -5,9 +5,8 @@ import androidx.test.espresso.IdlingRegistry;
 import androidx.test.espresso.IdlingResource;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.josef.josefmobile.R;
 import com.josef.mobile.idlingres.EspressoIdlingResource;
-import com.josef.mobile.ui.SplashActivity;
+import com.josef.mobile.vfree.ui.SplashActivity;
 
 import org.junit.FixMethodOrder;
 import org.junit.Test;

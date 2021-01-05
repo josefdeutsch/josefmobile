@@ -8,7 +8,7 @@ import androidx.test.espresso.IdlingResource;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.josef.mobile.free.ui.ArchiveActivity;
-import com.josef.mobile.utils.InterstitialAdsRequest;
+import com.josef.mobile.vfree.utils.InterstitialAdsRequest;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

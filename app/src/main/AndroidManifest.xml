@@ -7,8 +7,9 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
 
     <application
-        android:name="com.josef.josefmobile.BaseApplication"
+        android:name=".vfree.BaseApplication"
         android:allowBackup="true"
+        android:usesCleartextTraffic="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -17,12 +18,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.josef.josefmobile.ui.err.ErrorActivity"
+            android:name=".vfree.ui.err.ErrorActivity"
             android:label="@string/title_activity_error"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name="com.josef.josefmobile.ui.splash.SplashActivity"
+            android:name=".vfree.ui.splash.SplashActivity"
             android:launchMode="singleTask"
             android:theme="@style/SplashTheme">
             <intent-filter>
@@ -41,25 +42,25 @@
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:theme="@android:style/Theme.Translucent" />
         <activity
-            android:name="com.josef.josefmobile.ui.auth.option.account.SignActivity"
+            android:name=".vfree.ui.auth.option.account.SignActivity"
             android:launchMode="singleTask"
             android:theme="@style/AuthTheme" />
         <activity
-            android:name="com.josef.josefmobile.ui.auth.option.verification.VerificationActivity"
+            android:name=".vfree.ui.auth.option.verification.VerificationActivity"
             android:launchMode="singleTask"
             android:theme="@style/AuthTheme"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name="com.josef.josefmobile.ui.player.PlayerActivity"
+            android:name=".vfree.ui.player.PlayerActivity"
             android:launchMode="singleTask" />
         <activity
-            android:name="com.josef.josefmobile.ui.auth.AuthActivity"
+            android:name=".vfree.ui.auth.AuthActivity"
             android:launchMode="singleTask"
             android:theme="@style/AuthTheme">
             >
         </activity>
         <activity
-            android:name="com.josef.josefmobile.ui.main.MainActivity"
+            android:name=".vfree.ui.main.MainActivity"
             android:launchMode="singleTask" />
     </application>
 
