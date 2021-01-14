@@ -80,6 +80,50 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/password_til2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@color/colorPrimary"
+                        android:textColorHint="@color/grey_500">
+
+                        <EditText
+                            android:backgroundTintMode="@color/colorAccent"
+                            android:id="@+id/password_et2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Password"
+                            android:inputType="textPassword"
+                            android:maxLength="@integer/MAX_TEXT_LENGTH"
+                            android:textColor="@color/grey_500"
+                            android:textColorHint="@color/grey_500" />
+
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/password_til3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@color/colorPrimary"
+                        android:textColorHint="@color/grey_500">
+
+                        <EditText
+                            android:backgroundTintMode="@color/colorAccent"
+                            android:id="@+id/password_et3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Password"
+                            android:inputType="textPassword"
+                            android:maxLength="@integer/MAX_TEXT_LENGTH"
+                            android:textColor="@color/grey_500"
+                            android:textColorHint="@color/grey_500" />
+
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
                     <LinearLayout
                         android:id="@+id/sign_in_ll"
                         android:layout_width="match_parent"
