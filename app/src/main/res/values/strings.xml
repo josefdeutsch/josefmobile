@@ -61,6 +61,8 @@
 
     <string name="activity_auth_invalid_password">Invalid password</string>
     <string name="activity_auth_invalid_email">Invalid email</string>
+    <string name="activity_auth_invalid_firstName">Invalid Name</string>
+    <string name="activity_auth_invalid_lastName">Invalid Name</string>
 
 
 </resources>

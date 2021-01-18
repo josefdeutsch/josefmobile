@@ -34,7 +34,51 @@
                         android:scaleType="centerCrop"
                         android:src="@drawable/ic_webdesignsvg_02"></ImageView>
 
+                    <!-- First Name Label -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/firstName_til"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@color/colorPrimary"
+                        android:textColorHint="@color/grey_500">
 
+                        <EditText
+                            android:backgroundTintMode="@color/colorAccent"
+                            android:id="@+id/firstName_et"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="First Name"
+                            android:inputType="textPersonName"
+                            android:maxLength="@integer/MAX_TEXT_LENGTH"
+                            android:textColor="@color/grey_500"
+                            android:textColorHint="@color/grey_500" />
+
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Last Name Label -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/lastName_til"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@color/colorPrimary"
+                        android:textColorHint="@color/grey_500">
+
+                        <EditText
+                            android:backgroundTintMode="@color/colorAccent"
+                            android:id="@+id/lastName_et"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Last Name"
+                            android:inputType="textPersonName"
+                            android:maxLength="@integer/MAX_TEXT_LENGTH"
+                            android:textColor="@color/grey_500"
+                            android:textColorHint="@color/grey_500" />
+
+
+                    </com.google.android.material.textfield.TextInputLayout>
                     <!-- Email Label -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/email_til"
@@ -69,50 +113,6 @@
                         <EditText
                             android:backgroundTintMode="@color/colorAccent"
                             android:id="@+id/password_et"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Password"
-                            android:inputType="textPassword"
-                            android:maxLength="@integer/MAX_TEXT_LENGTH"
-                            android:textColor="@color/grey_500"
-                            android:textColorHint="@color/grey_500" />
-
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/password_til2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:background="@color/colorPrimary"
-                        android:textColorHint="@color/grey_500">
-
-                        <EditText
-                            android:backgroundTintMode="@color/colorAccent"
-                            android:id="@+id/password_et2"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Password"
-                            android:inputType="textPassword"
-                            android:maxLength="@integer/MAX_TEXT_LENGTH"
-                            android:textColor="@color/grey_500"
-                            android:textColorHint="@color/grey_500" />
-
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/password_til3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:background="@color/colorPrimary"
-                        android:textColorHint="@color/grey_500">
-
-                        <EditText
-                            android:backgroundTintMode="@color/colorAccent"
-                            android:id="@+id/password_et3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Password"

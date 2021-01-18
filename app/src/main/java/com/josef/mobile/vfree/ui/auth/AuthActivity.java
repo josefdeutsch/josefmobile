@@ -155,8 +155,8 @@ public class AuthActivity extends BaseActivity {
     }
 
     private void observeLayoutActivation() {
-        authInputViewModel.getCombiner().removeObservers(this);
-        authInputViewModel.getCombiner().observe(this, charSequenceCharSequencePair -> {
+        authInputViewModel.getEmailpassword().removeObservers(this);
+        authInputViewModel.getEmailpassword().observe(this, charSequenceCharSequencePair -> {
 
             boolean isEmailValid = validateEmail(charSequenceCharSequencePair.first);
             boolean isPasswordValid = validatePassword(charSequenceCharSequencePair.second);
@@ -208,7 +208,7 @@ public class AuthActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                authInputViewModel.verifyUsersInputs();
+                authInputViewModel.verifyUsersInput();
             }
         });
     }
@@ -227,7 +227,7 @@ public class AuthActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                authInputViewModel.verifyUsersInputs();
+                authInputViewModel.verifyUsersInput();
             }
         });
     }
