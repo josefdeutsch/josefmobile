@@ -32,7 +32,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SignActivity extends BaseActivity {
+public final class SignActivity extends BaseActivity {
 
     AuthInputViewModel authInputViewModel;
 
@@ -136,8 +136,8 @@ public class SignActivity extends BaseActivity {
     }
 
     private void observeFirstNameInputs() {
-        authInputViewModel.getFirstTextText().removeObservers(this);
-        authInputViewModel.getFirstTextText().observe(this, charSequence -> {
+        authInputViewModel.getFirstNameHelper().getLiveData().removeObservers(this);
+        authInputViewModel.getFirstNameHelper().getLiveData().observe(this, charSequence -> {
 
             boolean isFirstNameValid = validateFirstLastName(charSequence.toString());
 
@@ -150,8 +150,8 @@ public class SignActivity extends BaseActivity {
     }
 
     private void observeLastNameInputs() {
-        authInputViewModel.getLastText().removeObservers(this);
-        authInputViewModel.getLastText().observe(this, charSequence -> {
+        authInputViewModel.getLastNameHelper().getLiveData().removeObservers(this);
+        authInputViewModel.getLastNameHelper().getLiveData().observe(this, charSequence -> {
 
             boolean isLastNameValid = validateFirstLastName(charSequence.toString());
 
@@ -165,8 +165,8 @@ public class SignActivity extends BaseActivity {
 
 
     private void observePasswordInputs() {
-        authInputViewModel.getPasswordText().removeObservers(this);
-        authInputViewModel.getPasswordText().observe(this, charSequence -> {
+        authInputViewModel.getPasswordHelper().getLiveData().removeObservers(this);
+        authInputViewModel.getPasswordHelper().getLiveData().observe(this, charSequence -> {
             boolean isPasswordValid = validatePassword(charSequence.toString());
             if (!isPasswordValid) {
                 showPasswordError();
@@ -177,8 +177,8 @@ public class SignActivity extends BaseActivity {
     }
 
     private void observeEmailInputs() {
-        authInputViewModel.getEmailText().removeObservers(this);
-        authInputViewModel.getEmailText().observe(this, charSequence -> {
+        authInputViewModel.getEmailHelper().getLiveData().removeObservers(this);
+        authInputViewModel.getEmailHelper().getLiveData().observe(this, charSequence -> {
             boolean isEmailValid = validateEmail(charSequence.toString());
             if (!isEmailValid) {
                 showEmailError();

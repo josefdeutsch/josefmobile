@@ -3,7 +3,7 @@ package com.josef.mobile.vfree.ui.auth.model;
 
 import java.io.Serializable;
 
-public class User implements Serializable {
+public final class User implements Serializable {
 
     public int id;
 

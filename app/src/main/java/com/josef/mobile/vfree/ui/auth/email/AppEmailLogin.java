@@ -19,7 +19,7 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 @Singleton
-public class AppEmailLogin implements EmailLogin {
+public final class AppEmailLogin implements EmailLogin {
 
     private final FirebaseAuth firebaseAuth;
     private final Context context;

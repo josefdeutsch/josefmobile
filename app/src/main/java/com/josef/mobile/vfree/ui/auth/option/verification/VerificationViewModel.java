@@ -26,9 +26,7 @@ import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
-public class VerificationViewModel extends BaseViewModel {
-
-
+public final class VerificationViewModel extends BaseViewModel {
 
     private final Context mContext;
     private final FirebaseAuth firebaseAuth;

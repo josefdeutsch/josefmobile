@@ -16,8 +16,7 @@ import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 
 
-public class SignViewModel extends BaseViewModel {
-
+public final class SignViewModel extends BaseViewModel {
 
     private final FirebaseAuth firebaseAuth;
     private final MediatorLiveData<Resource<User>> containers = new MediatorLiveData<>();

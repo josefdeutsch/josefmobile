@@ -27,7 +27,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class VerificationActivity extends BaseActivity {
+public final class VerificationActivity extends BaseActivity {
 
     @Inject
     ViewModelProviderFactory providerFactory;

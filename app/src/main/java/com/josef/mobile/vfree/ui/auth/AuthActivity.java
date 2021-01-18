@@ -155,11 +155,11 @@ public class AuthActivity extends BaseActivity {
     }
 
     private void observeLayoutActivation() {
-        authInputViewModel.getEmailpassword().removeObservers(this);
-        authInputViewModel.getEmailpassword().observe(this, charSequenceCharSequencePair -> {
+        authInputViewModel.getCombiner().removeObservers(this);
+        authInputViewModel.getCombiner().observe(this, quartet -> {
 
-            boolean isEmailValid = validateEmail(charSequenceCharSequencePair.first);
-            boolean isPasswordValid = validatePassword(charSequenceCharSequencePair.second);
+            boolean isEmailValid = validateEmail(quartet.c);
+            boolean isPasswordValid = validatePassword(quartet.d);
 
             if (isEmailValid && isPasswordValid) {
                 enableSignIn();
@@ -170,8 +170,8 @@ public class AuthActivity extends BaseActivity {
     }
 
     private void observePasswordInputs() {
-        authInputViewModel.getPasswordText().removeObservers(this);
-        authInputViewModel.getPasswordText().observe(this, charSequence -> {
+        authInputViewModel.getPasswordHelper().getLiveData().removeObservers(this);
+        authInputViewModel.getPasswordHelper().getLiveData().observe(this, charSequence -> {
             boolean isPasswordValid = validatePassword(charSequence.toString());
             if (!isPasswordValid) {
                 showPasswordError();
@@ -182,8 +182,8 @@ public class AuthActivity extends BaseActivity {
     }
 
     private void observeEmailInputs() {
-        authInputViewModel.getEmailText().removeObservers(this);
-        authInputViewModel.getEmailText().observe(this, charSequence -> {
+        authInputViewModel.getEmailHelper().getLiveData().removeObservers(this);
+        authInputViewModel.getEmailHelper().getLiveData().observe(this, charSequence -> {
             boolean isEmailValid = validateEmail(charSequence.toString());
             if (!isEmailValid) {
                 showEmailError();

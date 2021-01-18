@@ -2,13 +2,9 @@ package com.josef.mobile.vfree.ui.auth.email.help;
 
 import io.reactivex.rxjava3.subjects.PublishSubject;
 
-public class CharSequenceObserver<T> {
+public final class CharSequenceObserver<T> {
 
-    PublishSubject<T> subject = PublishSubject.create();
-
-    public CharSequenceObserver() {
-
-    }
+    private final PublishSubject<T> subject = PublishSubject.create();
 
     private boolean isValid(T t) {
         return t != null;

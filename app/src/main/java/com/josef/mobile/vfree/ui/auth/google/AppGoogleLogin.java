@@ -23,7 +23,7 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 @Singleton
-public class AppGoogleLogin implements GoogleLogin {
+public final class AppGoogleLogin implements GoogleLogin {
 
     private static final String TAG = "AppGoogleLogin";
     private final FirebaseAuth auth;
