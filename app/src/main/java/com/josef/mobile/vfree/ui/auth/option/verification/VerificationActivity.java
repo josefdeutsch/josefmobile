@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.josef.mobile.vfree.ui.auth.AuthInputViewModel;
 import com.josef.mobile.vfree.ui.base.BaseActivity;
 import com.josef.mobile.vfree.utils.UtilManager;
 import com.josef.mobile.vfree.viewmodels.ViewModelProviderFactory;
@@ -45,6 +46,7 @@ public final class VerificationActivity extends BaseActivity {
     ImageView imageView;
 
     private VerificationViewModel viewModel;
+    private AuthInputViewModel authInputViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +54,7 @@ public final class VerificationActivity extends BaseActivity {
         setContentView(R.layout.activity_verification);
         ButterKnife.bind(this);
         viewModel = new ViewModelProvider(this, providerFactory).get(VerificationViewModel.class);
-
+        authInputViewModel = new ViewModelProvider(this, providerFactory).get(AuthInputViewModel.class);
         verifyEmailInputs();
         observeFirebaseValidation();
         observeEmailInputs();
@@ -60,7 +62,8 @@ public final class VerificationActivity extends BaseActivity {
     }
 
     private void observeEmailInputs() {
-        viewModel.observeEmailText().observe(this, charSequence -> {
+        authInputViewModel.getEmailHelper().getLiveData().removeObservers(this);
+        authInputViewModel.getEmailHelper().getLiveData().observe(this, charSequence -> {
             boolean isEmailValid = validateEmail(charSequence);
             if (!isEmailValid) {
                 showEmailError();
@@ -73,6 +76,7 @@ public final class VerificationActivity extends BaseActivity {
     }
 
     private void observeFirebaseValidation() {
+        viewModel.observeContainer().removeObservers(this);
         viewModel.observeContainer().observe(this, userResource -> {
             if (userResource != null) {
                 switch (userResource.status) {
@@ -106,13 +110,12 @@ public final class VerificationActivity extends BaseActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                viewModel.verifyEmailInputs(s);
+                authInputViewModel.verifyEmailInputs(s);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
-
+                authInputViewModel.verifyUsersInput();
             }
         });
     }

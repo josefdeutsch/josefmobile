@@ -17,8 +17,6 @@ public final class QuartetLiveData<A, B, C, D> extends MediatorLiveData<Quartet<
     D d;
 
     public void combinedLiveData(LiveData<A> ld1, LiveData<B> ld2, LiveData<C> ld3, LiveData<D> ld4) {
-
-        try {
             setValue(Quartet.create(a, b, c, d));
 
             addSource(ld1, a -> {
@@ -48,9 +46,6 @@ public final class QuartetLiveData<A, B, C, D> extends MediatorLiveData<Quartet<
                 QuartetLiveData.this.setValue(Quartet.create(a, b, c, d));
             });
 
-        } catch (NullPointerException e) {
-
-        }
     }
 
 

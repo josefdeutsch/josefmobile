@@ -1,5 +1,7 @@
 package com.josef.mobile.vfree.ui.auth;
 
+import android.util.Log;
+
 import com.josef.mobile.vfree.ui.auth.email.help.InputFieldHelper;
 import com.josef.mobile.vfree.ui.auth.email.help.QuartetLiveData;
 import com.josef.mobile.vfree.ui.base.BaseViewModel;
@@ -7,6 +9,8 @@ import org.jetbrains.annotations.NotNull;
 import javax.inject.Inject;
 
 public class AuthInputViewModel extends BaseViewModel {
+
+    private static final String TAG = "AuthInputViewModel";
 
     private final QuartetLiveData<CharSequence, CharSequence,
             CharSequence, CharSequence> combiner = new QuartetLiveData<>();
@@ -27,7 +31,7 @@ public class AuthInputViewModel extends BaseViewModel {
 
     @NotNull
     public void verifyUsersInput() {
-
+        Log.d(TAG, "verifyUsersInput: ");
         combiner.removeLiveData(firstNameHelper.getLiveData(),
                 lastNameHelper.getLiveData(),
                 emailHelper.getLiveData(),

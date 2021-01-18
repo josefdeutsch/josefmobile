@@ -47,9 +47,6 @@ public final class Quartet<A, B, C, D> {
 
     @NonNull
     public static <A, B, C, D> Quartet<A, B, C, D> create(@Nullable A a, @Nullable B b, @Nullable C c, @Nullable D d) throws NullPointerException {
-        if (checkForNull(a, b, c, d)) {
-            throw new NullPointerException("Quartet not fully supplied");
-        }
         return new Quartet<>(a, b, c, d);
     }
 

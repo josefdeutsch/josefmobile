@@ -1,25 +1,13 @@
 package com.josef.mobile.vfree.ui.auth.option.verification;
 
-import android.content.Context;
-import android.text.TextUtils;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.LiveDataReactiveStreams;
 import androidx.lifecycle.MediatorLiveData;
-
 import com.google.firebase.auth.FirebaseAuth;
-import com.josef.mobile.vfree.ui.auth.email.help.CharSequenceObserver;
 import com.josef.mobile.vfree.ui.auth.model.User;
 import com.josef.mobile.vfree.ui.base.BaseViewModel;
 import com.josef.mobile.vfree.ui.main.Resource;
-
-import org.jetbrains.annotations.NotNull;
-
-import java.util.concurrent.TimeUnit;
-
 import javax.inject.Inject;
-
-import io.reactivex.rxjava3.core.BackpressureStrategy;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.functions.Function;
@@ -28,55 +16,14 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public final class VerificationViewModel extends BaseViewModel {
 
-    private final Context mContext;
     private final FirebaseAuth firebaseAuth;
 
     private final MediatorLiveData<Resource<User>> containers = new MediatorLiveData<>();
-    private final MediatorLiveData<CharSequence> emailText = new MediatorLiveData<>();
-
-    private final CharSequenceObserver<CharSequence> emailTextObserver = new CharSequenceObserver();
-
-    private String verifier = "";
 
     @Inject
-    public VerificationViewModel(Context context, FirebaseAuth firebaseAuth) {
-        this.mContext = context;
+    public VerificationViewModel(FirebaseAuth firebaseAuth) {
         this.firebaseAuth = firebaseAuth;
     }
-
-    public MediatorLiveData<CharSequence> observeEmailText() {
-        return emailText;
-    }
-
-    public void verifyEmailInputs(CharSequence input) {
-        if (!verifier.equals(input)) {
-            verifier = input.toString();
-            LiveData<CharSequence> source =
-                    LiveDataReactiveStreams.fromPublisher(getCharSequenceObservable(input));
-            emailText.addSource(source, listResource -> {
-                emailText.setValue(listResource);
-                emailText.removeSource(source);
-            });
-        }
-    }
-
-
-    @NotNull
-    private Flowable<CharSequence> getCharSequenceObservable(CharSequence sequence) {
-        emailTextObserver.setSubject(sequence);
-        return emailTextObserver.generateObservable()
-                .doOnNext(charSequence -> hideEmailError())
-                .debounce(400, TimeUnit.MILLISECONDS)
-                .filter(charSequence -> !TextUtils.isEmpty(charSequence))
-                .toFlowable(BackpressureStrategy.BUFFER)
-                .subscribeOn(Schedulers.io());
-    }
-
-
-    private void hideEmailError() {
-
-    }
-
 
     public MediatorLiveData<Resource<User>> observeContainer() {
         return containers;
