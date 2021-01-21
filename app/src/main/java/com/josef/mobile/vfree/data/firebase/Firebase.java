@@ -4,5 +4,7 @@ import com.google.firebase.database.DatabaseReference;
 
 public interface Firebase {
 
-    DatabaseReference getDatabasereference();
+    DatabaseReference getDataBaseRefChild_User();
+
+    DatabaseReference getDataBaseRefChild_Profile();
 }

@@ -11,6 +11,9 @@ public class Data {
         this.url = url;
         this.email = email;
     }
+    public Data( String url) {
+        this.url = url;
+    }
 
     public String getPng() {
         return png;

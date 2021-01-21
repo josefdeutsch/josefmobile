@@ -16,7 +16,12 @@ public class Firedatabase implements Firebase {
         this.database = database;
     }
 
-    public DatabaseReference getDatabasereference() {
+    public DatabaseReference getDataBaseRefChild_User() {
         return database.getReference("users");
+    }
+
+    @Override
+    public DatabaseReference getDataBaseRefChild_Profile() {
+        return database.getReference("profile");
     }
 }

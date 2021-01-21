@@ -2,8 +2,8 @@ package com.josef.mobile.vfree.ui.splash.remote;
 
 import android.util.Log;
 
-import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.josef.mobile.vfree.data.DataManager;
 import com.josef.mobile.vfree.data.local.db.model.LocalCache;
 import com.josef.mobile.vfree.ui.main.Resource;

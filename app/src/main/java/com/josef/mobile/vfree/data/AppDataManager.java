@@ -67,8 +67,13 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public DatabaseReference getDatabasereference() {
-        return firebase.getDatabasereference();
+    public DatabaseReference getDataBaseRefChild_User() {
+        return firebase.getDataBaseRefChild_User();
+    }
+
+    @Override
+    public DatabaseReference getDataBaseRefChild_Profile() {
+        return firebase.getDataBaseRefChild_Profile();
     }
 
     @Override

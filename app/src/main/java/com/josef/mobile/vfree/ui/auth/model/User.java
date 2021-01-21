@@ -11,7 +11,9 @@ public final class User implements Serializable {
 
     public String email;
 
-    public String name;
+    public String fname;
+
+    public String lname;
 
     public String photoUrl;
 
@@ -29,10 +31,10 @@ public final class User implements Serializable {
 
     }
 
-    public User(String uid, String name, String email, String photoUrl) {
+    public User(String uid, String email, String fname, String photoUrl) {
         this.uid = uid;
-        this.name = name;
         this.email = email;
+        this.fname = fname;
         this.photoUrl = photoUrl;
     }
 
@@ -48,11 +50,39 @@ public final class User implements Serializable {
         return uid;
     }
 
-    public String getName() {
-        return name;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getEmail() {
         return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getFname() {
+        return fname;
+    }
+
+    public void setFname(String fname) {
+        this.fname = fname;
+    }
+
+    public String getLname() {
+        return lname;
+    }
+
+    public void setLname(String lname) {
+        this.lname = lname;
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 }

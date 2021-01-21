@@ -184,6 +184,7 @@ public class AppModule {
         return FirebaseAuth.getInstance();
     }
 
+
     @Singleton
     @Provides
     InterstitialAdsRequest provideEndpointsObserver(AppAdsRequest appAdsRequest) {

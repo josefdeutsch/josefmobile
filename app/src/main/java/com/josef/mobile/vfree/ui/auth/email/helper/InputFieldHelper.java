@@ -1,4 +1,4 @@
-package com.josef.mobile.vfree.ui.auth.email.help;
+package com.josef.mobile.vfree.ui.auth.email.helper;
 
 import android.text.TextUtils;
 

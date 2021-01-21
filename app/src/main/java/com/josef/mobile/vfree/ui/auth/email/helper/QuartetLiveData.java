@@ -1,6 +1,5 @@
-package com.josef.mobile.vfree.ui.auth.email.help;
+package com.josef.mobile.vfree.ui.auth.email.helper;
 
-import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;

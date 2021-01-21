@@ -1,4 +1,4 @@
-package com.josef.mobile.vfree.ui.auth.email.help;
+package com.josef.mobile.vfree.ui.auth.email.helper;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

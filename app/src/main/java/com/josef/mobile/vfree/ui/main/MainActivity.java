@@ -26,8 +26,10 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DatabaseReference;
 import com.josef.mobile.vfree.ui.base.BaseActivity;
 import com.josef.mobile.vfree.ui.main.archive.ads.OnAdsInstantiated;
+import com.josef.mobile.vfree.ui.main.archive.fire.model.Data;
 import com.josef.mobile.vfree.viewmodels.ViewModelProviderFactory;
 import com.josef.mobile.R;
 

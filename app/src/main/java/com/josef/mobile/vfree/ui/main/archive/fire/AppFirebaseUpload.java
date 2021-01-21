@@ -23,6 +23,8 @@ import javax.inject.Singleton;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.BiFunction;
 import io.reactivex.schedulers.Schedulers;
 
 @Singleton
@@ -32,10 +34,19 @@ public class AppFirebaseUpload implements FirebaseUpload {
     private final SessionManager sessionManager;
 
     public Observable<DatabaseReference> synchronize(MainActivity mainActivity) {
+
         if (sessionManager == null) return null;
+
         Observable<User> currentuser = getUserObservable(mainActivity);
         Observable<List<Archive>> archives = getListObservable();
-        return Observable.zip(currentuser, archives, (user, archives1) -> upload(user, archives1))
+
+        return Observable.zip(currentuser, archives, new BiFunction<User, List<Archive>, DatabaseReference>() {
+            @NonNull
+            @Override
+            public DatabaseReference apply(@NonNull User user, @NonNull List<Archive> archives1) throws Exception {
+                return AppFirebaseUpload.this.upload(user, archives1);
+            }
+        })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
@@ -81,7 +92,7 @@ public class AppFirebaseUpload implements FirebaseUpload {
         googlevideos.put(data);
         jsonObject.put(GOOGLE_VIDEO, googlevideos);
         Data upload = new Data(jsonObject.toString(), _, _);
-        DatabaseReference myRef = dataManager.getDatabasereference();
+        DatabaseReference myRef = dataManager.getDataBaseRefChild_User();
         myRef.child(user.uid).setValue(upload);
 
         return myRef;

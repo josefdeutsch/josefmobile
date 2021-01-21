@@ -2,8 +2,8 @@ package com.josef.mobile.vfree.ui.auth;
 
 import android.util.Log;
 
-import com.josef.mobile.vfree.ui.auth.email.help.InputFieldHelper;
-import com.josef.mobile.vfree.ui.auth.email.help.QuartetLiveData;
+import com.josef.mobile.vfree.ui.auth.email.helper.InputFieldHelper;
+import com.josef.mobile.vfree.ui.auth.email.helper.QuartetLiveData;
 import com.josef.mobile.vfree.ui.base.BaseViewModel;
 import org.jetbrains.annotations.NotNull;
 import javax.inject.Inject;

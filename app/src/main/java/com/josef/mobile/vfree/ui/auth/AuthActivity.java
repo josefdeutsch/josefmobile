@@ -233,7 +233,7 @@ public class AuthActivity extends BaseActivity {
     }
 
     public void observeFirebaseValidation() {
-
+        authViewModel.observeAuthenticatedUser().removeObservers(this);
         authViewModel.observeAuthenticatedUser().observe(this, userAuthResource -> {
             if (userAuthResource != null) {
                 switch (userAuthResource.status) {

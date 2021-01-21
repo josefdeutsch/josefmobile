@@ -12,13 +12,12 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
-import androidx.core.util.Pair;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.josef.mobile.vfree.ui.auth.AuthInputViewModel;
-import com.josef.mobile.vfree.ui.auth.email.help.Quartet;
+import com.josef.mobile.vfree.ui.auth.email.helper.Quartet;
 import com.josef.mobile.vfree.ui.base.BaseActivity;
 import com.josef.mobile.vfree.utils.UtilManager;
 import com.josef.mobile.vfree.viewmodels.ViewModelProviderFactory;
@@ -197,7 +196,6 @@ public final class SignActivity extends BaseActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                Log.d(TAG, "onTextChanged: "+s);
                 authInputViewModel.verifyFirstInputs(s);
             }
 
@@ -217,7 +215,6 @@ public final class SignActivity extends BaseActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                Log.d(TAG, "onTextChanged: "+s);
                 authInputViewModel.verifyLastInputs(s);
             }
 
@@ -237,7 +234,6 @@ public final class SignActivity extends BaseActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                Log.d(TAG, "onTextChanged: "+s);
                 authInputViewModel.verifyPasswordInputs(s);
             }
 
@@ -299,7 +295,11 @@ public final class SignActivity extends BaseActivity {
     @OnClick(R.id.sign_in_btn)
     void onClick(View v) {
         viewModel.createUserWithEmailandPassword(
-                emailEditText.getText().toString(), passwordEditText.getText().toString());
+                firstNameEditText.getText().toString(),
+                lastNameEditText.getText().toString(),
+                emailEditText.getText().toString(),
+                passwordEditText.getText().toString()
+        );
     }
 
 

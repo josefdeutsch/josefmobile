@@ -13,6 +13,7 @@ import com.josef.mobile.vfree.ui.auth.AuthResource;
 import com.josef.mobile.vfree.ui.auth.model.User;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -33,6 +34,7 @@ public final class AppGoogleLogin implements GoogleLogin {
         this.auth = auth;
     }
 
+    @NotNull
     public Flowable<AuthResource<User>> authenticateWithGoogle(Task<GoogleSignInAccount> googleSignInAccountSingle) {
 
         return authenticateWithCredentials(googleSignInAccountSingle)
@@ -73,9 +75,11 @@ public final class AppGoogleLogin implements GoogleLogin {
             auth.signInWithCredential(googleAuthCredential).addOnCompleteListener(authTask -> {
                 if (authTask.isSuccessful()) {
                     FirebaseUser firebaseUser = auth.getCurrentUser();
-                    if (firebaseUser != null) {
+                    try{
                         User user = getUser(firebaseUser);
                         emitter.onSuccess(user);
+                    }catch (NullPointerException e){
+                        Log.e(TAG, "addOnFirebaseCompletionListener: "+e.getMessage().toString());
                     }
                 } else {
                     emitter.onError(authTask.getException());
@@ -85,8 +89,9 @@ public final class AppGoogleLogin implements GoogleLogin {
         });
     }
 
-
+    @Nullable
     private User getUser(FirebaseUser firebaseUser) {
+        if(firebaseUser == null) throw new NullPointerException("FirebaseUser is null");
         String uid = firebaseUser.getUid();
         String name = firebaseUser.getDisplayName();
         String email = firebaseUser.getEmail();
