@@ -1,6 +1,7 @@
 package com.josef.mobile.vfree.data;
 
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.josef.mobile.vfree.data.firebase.Firebase;
 import com.josef.mobile.vfree.data.local.db.DbHelper;
 import com.josef.mobile.vfree.data.local.db.model.Archive;
@@ -20,10 +21,10 @@ import io.reactivex.Single;
 @Singleton
 public class AppDataManager implements DataManager {
 
-    DbHelper dbHelper;
-    Endpoints endpoints;
-    PreferencesHelper preferencesHelper;
-    Firebase firebase;
+    private final DbHelper dbHelper;
+    private final Endpoints endpoints;
+    private final PreferencesHelper preferencesHelper;
+    private final Firebase firebase;
 
     @Inject
     public AppDataManager(DbHelper dbHelper, Endpoints endpoints, Firebase firebase, PreferencesHelper preferencesHelper) {
@@ -74,6 +75,11 @@ public class AppDataManager implements DataManager {
     @Override
     public DatabaseReference getDataBaseRefChild_Profile() {
         return firebase.getDataBaseRefChild_Profile();
+    }
+
+    @Override
+    public FirebaseDatabase getFirebaseDataBase() {
+        return firebase.getFirebaseDataBase();
     }
 
     @Override

@@ -9,13 +9,14 @@ import javax.inject.Singleton;
 @Singleton
 public class Firedatabase implements Firebase {
 
-    FirebaseDatabase database;
+    private final FirebaseDatabase database;
 
     @Inject
     public Firedatabase(FirebaseDatabase database) {
         this.database = database;
     }
 
+    @Override
     public DatabaseReference getDataBaseRefChild_User() {
         return database.getReference("users");
     }
@@ -23,5 +24,10 @@ public class Firedatabase implements Firebase {
     @Override
     public DatabaseReference getDataBaseRefChild_Profile() {
         return database.getReference("profile");
+    }
+
+    @Override
+    public FirebaseDatabase getFirebaseDataBase() {
+        return database;
     }
 }

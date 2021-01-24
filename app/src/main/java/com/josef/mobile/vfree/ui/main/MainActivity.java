@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,18 +19,16 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
-import com.google.android.gms.ads.LoadAdError;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.database.DatabaseReference;
+import com.josef.mobile.vfree.ui.auth.model.User;
 import com.josef.mobile.vfree.ui.base.BaseActivity;
-import com.josef.mobile.vfree.ui.main.archive.ads.OnAdsInstantiated;
-import com.josef.mobile.vfree.ui.main.archive.fire.model.Data;
 import com.josef.mobile.vfree.viewmodels.ViewModelProviderFactory;
 import com.josef.mobile.R;
 
@@ -55,9 +54,36 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
+        View headerLayout = navigationView.inflateHeaderView(R.layout.navigation_header);
+        TextView firstName = headerLayout.findViewById(R.id.nav_name);
+        TextView lastName = headerLayout.findViewById(R.id.nav_email);
+
         init();
         viewModel = new ViewModelProvider(this, providerFactory).get(MainViewModel.class);
-
+        viewModel.getDataStoreCredentials().removeObservers(this);
+        viewModel.observeDataStoreCredentials(this).observe(this, new Observer<Resource<User>>() {
+            @Override
+            public void onChanged(Resource<User> userResource) {
+                if (userResource != null) {
+                    switch (userResource.status) {
+                        case LOADING: {
+                            break;
+                        }
+                        case SUCCESS: {
+                            firstName.setText(userResource.data.fname+" "+userResource.data.lname);
+                            lastName.setText(userResource.data.email);
+                            break;
+                        }
+                        case ERROR: {
+                            Toast.makeText(MainActivity.this, userResource.message, Toast.LENGTH_LONG).show();
+                            break;
+                        }
+                    }
+                }
+                // Toast.makeText(MainActivity.this, userResource.data.email,
+                //    Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override
@@ -118,24 +144,21 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     utilManager.showProgressbar(this);
                     Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.archiveScreen);
                     /**viewModel.initiateInsterstitialAds(new OnAdsInstantiated() {
-                        @Override
-                        public void onSuccess() {
-                            Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.archiveScreen);
-                        }
+                    @Override public void onSuccess() {
+                    Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.archiveScreen);
+                    }
 
-                        @Override
-                        public void onFailure(LoadAdError adError) {
-                            Toast.makeText(getApplicationContext(), adError.getMessage(), android.widget.Toast.LENGTH_SHORT)
-                                    .show();
+                    @Override public void onFailure(LoadAdError adError) {
+                    Toast.makeText(getApplicationContext(), adError.getMessage(), android.widget.Toast.LENGTH_SHORT)
+                    .show();
 
-                            Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.profileScreen);
-                        }
+                    Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.profileScreen);
+                    }
 
-                        @Override
-                        public void onAdClicked() {
+                    @Override public void onAdClicked() {
 
-                            //Order Google Play Store reference..
-                        }
+                    //Order Google Play Store reference..
+                    }
                     });**/
                 }
                 break;

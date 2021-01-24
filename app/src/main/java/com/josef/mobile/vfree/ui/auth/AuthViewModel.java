@@ -22,7 +22,9 @@ public class AuthViewModel extends BaseViewModel {
     private static final String TAG = "AuthViewModel";
 
     @Inject
-    AuthViewModel(SessionManager sessionManager, GoogleLogin googleLogin, EmailLogin emailLogin) {
+    AuthViewModel(SessionManager sessionManager,
+                  GoogleLogin googleLogin,
+                  EmailLogin emailLogin) {
         this.sessionManager = sessionManager;
         this.googleLogin = googleLogin;
         this.emailLogin = emailLogin;

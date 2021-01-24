@@ -117,7 +117,6 @@ public final class SignViewModel extends BaseViewModel {
                             if (task.isSuccessful()) {
                                 User user = new User();
                                 emitter.onSuccess(user);
-                                Log.d(TAG, "sendVerification: ");
                             } else {
                                 emitter.onError(task.getException());
                             }

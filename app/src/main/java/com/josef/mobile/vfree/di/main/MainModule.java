@@ -16,6 +16,8 @@ import com.josef.mobile.vfree.ui.main.post.remote.EndpointsObserver;
 import com.josef.mobile.vfree.ui.main.profile.ViewPagerAdapter;
 import com.josef.mobile.vfree.ui.main.profile.res.AppResourceObserver;
 import com.josef.mobile.vfree.ui.main.profile.res.ResourceObserver;
+import com.josef.mobile.vfree.ui.main.store.AppDataBaseCredentials;
+import com.josef.mobile.vfree.ui.main.store.Credentials;
 import com.josef.mobile.vfree.utils.UtilManager;
 
 import dagger.Module;
@@ -72,6 +74,10 @@ public class MainModule {
      @MainScope static PostRecyclerAdapter.PostRecyclerViewOnClickListener getClickListener(PostsFragment postsFragment) {
      return postsFragment;
      }**/
-
+    @MainScope
+    @Provides
+    static Credentials provideCredentials(AppDataBaseCredentials appDataBaseCredentials) {
+        return appDataBaseCredentials;
+    }
 }
 
