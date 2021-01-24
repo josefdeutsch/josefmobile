@@ -40,6 +40,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
 
+    //https://www.youtube.com/watch?v=eGWu0-0TWFI&list=RDCMUCnKhcV7frITmrYbIU5MrMZw&index=2
+
     @Inject
     ViewModelProviderFactory providerFactory;
 

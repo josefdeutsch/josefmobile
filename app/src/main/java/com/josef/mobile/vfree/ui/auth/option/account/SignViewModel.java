@@ -1,20 +1,12 @@
 package com.josef.mobile.vfree.ui.auth.option.account;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.LiveDataReactiveStreams;
 import androidx.lifecycle.MediatorLiveData;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import com.google.firebase.database.DatabaseReference;
@@ -23,18 +15,13 @@ import com.josef.mobile.vfree.ui.auth.model.User;
 import com.josef.mobile.vfree.ui.base.BaseViewModel;
 import com.josef.mobile.vfree.ui.main.Resource;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.inject.Inject;
 
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.SingleEmitter;
 import io.reactivex.SingleOnSubscribe;
-import io.reactivex.SingleSource;
-import io.reactivex.functions.BiFunction;
-import io.reactivex.functions.Function;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.schedulers.Schedulers;
 
 
@@ -81,15 +68,15 @@ public final class SignViewModel extends BaseViewModel {
                                                                 String email,
                                                                 String password) {
 
-        final Single<User> createFirebaseAccounts = createFirebaseAccount(email, password);
+         Single<User> createAccount = createAccount(email, password);
 
-        final Single<User> sendVerificationToFirebases = sendVerificationToFirebase();
+         Single<User> sendVerification = sendVerification();
 
-        final Single<User> createFirestoreCredentialss = createFirestoreCredentials(fName, lName, email);
+         Single<User> createCredentials = createCredentials(fName, lName, email);
 
-        return createFirebaseAccounts
-                .flatMap(user -> sendVerificationToFirebases)
-                .flatMap(user -> createFirestoreCredentialss)
+        return createAccount
+                .flatMap(user -> sendVerification)
+                .flatMap(user -> createCredentials)
 
                 .onErrorReturn(throwable -> {
                     User user = new User();
@@ -101,11 +88,12 @@ public final class SignViewModel extends BaseViewModel {
                     if (user.getId() == -1) {
                     }
                     return Resource.success(user);
-                }).toFlowable()
+                })
+                .toFlowable()
                 .subscribeOn(Schedulers.io());
     }
 
-    private Single<User> createFirebaseAccount(String email, String password) {
+    private Single<User> createAccount(String email, String password) {
         return Single.create(emitter -> firebaseAuth
                 .createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
@@ -118,20 +106,27 @@ public final class SignViewModel extends BaseViewModel {
                 }));
     }
 
-    private Single<User> sendVerificationToFirebase() {
-        return Single.create(emitter -> firebaseAuth.getCurrentUser()
-                .sendEmailVerification()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        User user = new User();
-                        emitter.onSuccess(user);
-                    } else {
-                        emitter.onError(task.getException());
-                    }
-                }));
+    private Single<User> sendVerification() {
+        return Single.create(new SingleOnSubscribe<User>() {
+            @Override
+            public void subscribe(@NonNull SingleEmitter<User> emitter) throws Exception {
+                firebaseAuth.getCurrentUser().reload();
+                firebaseAuth.getCurrentUser()
+                        .sendEmailVerification()
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                User user = new User();
+                                emitter.onSuccess(user);
+                                Log.d(TAG, "sendVerification: ");
+                            } else {
+                                emitter.onError(task.getException());
+                            }
+                        });
+            }
+        });
     }
 
-    private Single<User> createFirestoreCredentials(String fName, String lName, String email) {
+    private Single<User> createCredentials(String fName, String lName, String email) {
         return Single.create(emitter -> {
 
             DatabaseReference myRef = dataManager.getDataBaseRefChild_Profile();
