@@ -24,9 +24,15 @@
         tools:layout="@layout/fragment_archive"></fragment>
 
     <fragment
+        android:id="@+id/tvScreen"
+        android:name="com.josef.mobile.vfree.ui.main.tv.TvFragment"
+        android:label="@string/fragment_tv"
+        tools:layout="@layout/fragment_tv"></fragment>
+
+    <fragment
         android:id="@+id/infoScreen"
-        android:name="com.josef.mobile.vfree.ui.main.info.InfoFragment"
+        android:name="com.josef.mobile.vfree.ui.main.about.AboutFragment"
         android:label="@string/fragment_into"
-        tools:layout="@layout/fragment_info"></fragment>
+        tools:layout="@layout/fragment_about"></fragment>
 
 </navigation>

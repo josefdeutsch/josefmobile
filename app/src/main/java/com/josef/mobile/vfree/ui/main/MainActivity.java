@@ -163,6 +163,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 }
                 break;
             }
+
+            case R.id.nav_tv: {
+                if (isValidDestination(R.id.nav_tv)) {
+                    Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.tvScreen);
+                }
+                break;
+            }
             case R.id.nav_info: {
                 if (isValidDestination(R.id.infoScreen)) {
                     Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.infoScreen);

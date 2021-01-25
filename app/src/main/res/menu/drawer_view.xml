@@ -5,21 +5,38 @@
             android:id="@+id/nav_profile"
             android:icon="@drawable/ic_baseline_person_24"
             android:title="@string/nav_profile_title" />
-        <item
-            android:id="@+id/nav_posts"
-            android:icon="@drawable/ic_baseline_article_24"
-            android:title="@string/nav_posts_title"
 
-            />
-        <item
-            android:id="@+id/nav_archive"
-            android:icon="@drawable/ic_baseline_archive_24"
-            android:title="@string/nav_archive_title" />
+        <item android:title="General">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_posts"
+                        android:icon="@drawable/ic_baseline_article_24"
+                        android:title="@string/nav_posts_title"
 
-        <item
-            android:id="@+id/nav_info"
-            android:icon="@drawable/ic_baseline_info_24"
-            android:title="@string/nav_info_title" />
+                        />
+                    <item
+                        android:id="@+id/nav_archive"
+                        android:icon="@drawable/ic_baseline_archive_24"
+                        android:title="@string/nav_archive_title" />
+                </group>
+            </menu>
+        </item>
 
+        <item android:title="Recommended">
+            <menu>
+                <group android:checkableBehavior="single">
+
+                    <item
+                        android:id="@+id/nav_tv"
+                        android:icon="@drawable/ic_baseline_live_tv_24"
+                        android:title="@string/nav_tv_title" />
+                    <item
+                        android:id="@+id/nav_info"
+                        android:icon="@drawable/ic_baseline_info_24"
+                        android:title="@string/nav_info_title" />
+                </group>
+            </menu>
+        </item>
     </group>
 </menu>

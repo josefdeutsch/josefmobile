@@ -1,4 +1,4 @@
-package com.josef.mobile.vfree.ui.main.info;
+package com.josef.mobile.vfree.ui.main.about;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 import com.josef.mobile.vfree.ui.base.BaseFragment;
 import com.josef.mobile.R;
 
-public class InfoFragment extends BaseFragment {
+public class AboutFragment extends BaseFragment {
 
 
     @Override
@@ -23,7 +23,7 @@ public class InfoFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_info, container, false);
+        return inflater.inflate(R.layout.fragment_about, container, false);
     }
 
     @Override

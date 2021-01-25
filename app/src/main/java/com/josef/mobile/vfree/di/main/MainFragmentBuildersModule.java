@@ -1,9 +1,10 @@
 package com.josef.mobile.vfree.di.main;
 
 import com.josef.mobile.vfree.ui.main.archive.ArchiveFragment;
-import com.josef.mobile.vfree.ui.main.info.InfoFragment;
+import com.josef.mobile.vfree.ui.main.about.AboutFragment;
 import com.josef.mobile.vfree.ui.main.post.PostsFragment;
 import com.josef.mobile.vfree.ui.main.profile.ProfileFragment;
+import com.josef.mobile.vfree.ui.main.tv.TvFragment;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -21,6 +22,9 @@ public abstract class MainFragmentBuildersModule {
     abstract ArchiveFragment constributeArchiveFragment();
 
     @ContributesAndroidInjector
-    abstract InfoFragment constributeInfoFragment();
+    abstract TvFragment constributeTvFragment();
+
+    @ContributesAndroidInjector
+    abstract AboutFragment constributeInfoFragment();
 
 }

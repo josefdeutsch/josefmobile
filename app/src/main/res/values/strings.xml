@@ -63,6 +63,8 @@
     <string name="activity_auth_invalid_email">Invalid email</string>
     <string name="activity_auth_invalid_firstName">Invalid Name</string>
     <string name="activity_auth_invalid_lastName">Invalid Name</string>
+    <string name="fragment_tv">Joseph TV</string>
+    <string name="nav_tv_title">Joseph Tv</string>
 
 
 </resources>
