@@ -2,6 +2,7 @@ package com.josef.mobile.vfree.ui.main;
 
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.LiveDataReactiveStreams;
@@ -25,6 +26,7 @@ import javax.inject.Inject;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Action;
 
 
 public class MainViewModel extends BaseViewModel {
@@ -57,10 +59,16 @@ public class MainViewModel extends BaseViewModel {
         return adsRequest;
     }
 
+    private static final String TAG = "MainViewModel";
     public void initiateInsterstitialAds(OnAdsInstantiated onAdsInstantiated) {
         addToCompositeDisposable(
-                Completable.fromAction(() ->
-                        interstitialAdsRequest.execute(onAdsInstantiated))
+                Completable.fromAction(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        Log.d(TAG, "run: ");
+                        interstitialAdsRequest.setAdListener(onAdsInstantiated);
+                    }
+                })
                         .subscribeOn(AndroidSchedulers.mainThread())
                         .subscribe());
     }

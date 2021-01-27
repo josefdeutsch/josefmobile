@@ -50,12 +50,23 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 public class AppModule {
 
+    @Provides
+    @Singleton
+    DataManager provideDataManager(AppDataManager appDataManager) {
+        return appDataManager;
+    }
 
     @Provides
     @Singleton
     AppDataBase provideAppDatabase(@DatabaseInfo String dbName, Context context) {
         return Room.databaseBuilder(context, AppDataBase.class, dbName).fallbackToDestructiveMigration()
                 .build();
+    }
+
+    @Provides
+    @DatabaseInfo
+    String provideDatabaseName() {
+        return "my_db.db";
     }
 
     @Provides
@@ -72,21 +83,27 @@ public class AppModule {
 
     @Provides
     @Singleton
-    Context provideContext(Application application) {
-        return application;
-    }
-
-    @Provides
-    @DatabaseInfo
-    String provideDatabaseName() {
-        return "my_db.db";
+    FirebaseDatabase provideFiredatabase() {
+        return FirebaseDatabase.getInstance();
     }
 
     @Provides
     @Singleton
-    DataManager provideDataManager(AppDataManager appDataManager) {
-        return appDataManager;
+    PreferencesHelper providePreferencesHelper(AppPreferencesHelper appPreferencesHelper) {
+        return appPreferencesHelper;
     }
+
+    @Singleton
+    @Provides
+    FirebaseAuth provideFirebaseAuth() {
+        return FirebaseAuth.getInstance();
+    }
+
+
+
+
+
+
 
 
     @Provides
@@ -115,11 +132,7 @@ public class AppModule {
     }
 
 
-    @Provides
-    @Singleton
-    FirebaseDatabase provideFiredatabase() {
-        return FirebaseDatabase.getInstance();
-    }
+
 
     @Singleton
     @Provides
@@ -140,11 +153,7 @@ public class AppModule {
         return AppConstants.PREF_NAME;
     }
 
-    @Provides
-    @Singleton
-    PreferencesHelper providePreferencesHelper(AppPreferencesHelper appPreferencesHelper) {
-        return appPreferencesHelper;
-    }
+
 
     @Singleton
     @Provides
@@ -178,11 +187,7 @@ public class AppModule {
     }
 
 
-    @Singleton
-    @Provides
-    FirebaseAuth provideFirebaseAuth() {
-        return FirebaseAuth.getInstance();
-    }
+
 
 
     @Singleton
@@ -191,5 +196,9 @@ public class AppModule {
         return appAdsRequest;
     }
 
-
+    @Provides
+    @Singleton
+    Context provideContext(Application application) {
+        return application;
+    }
 }

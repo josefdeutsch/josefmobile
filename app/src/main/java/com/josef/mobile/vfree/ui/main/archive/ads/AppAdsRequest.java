@@ -26,10 +26,13 @@ public class AppAdsRequest implements InterstitialAdsRequest {
     }
 
     @Override
-    public void execute(OnAdsInstantiated onAdsInstantiated) {
+    public void execute() {
         mInterstitialAd = new InterstitialAd(context);
         mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
+    }
+
+    public void setAdListener(OnAdsInstantiated onAdsInstantiated){
         mInterstitialAd.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {
@@ -60,5 +63,7 @@ public class AppAdsRequest implements InterstitialAdsRequest {
                 onAdsInstantiated.onSuccess();
             }
         });
+
+      //  mInterstitialAd.show();
     }
 }

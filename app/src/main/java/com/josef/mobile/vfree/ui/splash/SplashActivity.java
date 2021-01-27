@@ -35,6 +35,7 @@ public class SplashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         viewModel = new ViewModelProvider(this, providerFactory).get(SplashViewModel.class);
+        viewModel.initiateInsterstitialAds();
         subscribeObservers();
     }
 
