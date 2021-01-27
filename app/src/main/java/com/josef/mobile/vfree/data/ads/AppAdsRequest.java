@@ -1,43 +1,51 @@
-package com.josef.mobile.vfree.ui.main.archive.ads;
+package com.josef.mobile.vfree.data.ads;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.LoadAdError;
-import com.josef.mobile.vfree.utils.UtilManager;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class AppAdsRequest implements InterstitialAdsRequest {
+public class AppAdsRequest implements AdsRequest {
 
-    private final Context context;
-    private final UtilManager utilManager;
+    private static final String TAG = "AppAdsRequest";
+
+    public InterstitialAd getInterstitialAd() {
+        return mInterstitialAd;
+    }
+
     private InterstitialAd mInterstitialAd;
 
+    private OnAdsInstantiated onAdsInstantiated;
+
+    @NonNull
+    private final Context context;
+
     @Inject
-    public AppAdsRequest(Context context, UtilManager utilManager) {
+    public AppAdsRequest(@NonNull Context context
+    ) {
         this.context = context;
-        this.utilManager = utilManager;
     }
 
     @Override
-    public void execute() {
+    public void setInterstitialAd(@NonNull String id) {
         mInterstitialAd = new InterstitialAd(context);
-        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.setAdUnitId(id);
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
-    }
-
-    public void setAdListener(OnAdsInstantiated onAdsInstantiated){
         mInterstitialAd.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {
-                new Handler().postDelayed(() -> utilManager.hideProgressbar(), 1000);
-                mInterstitialAd.show();
+                //InterstitialAd.show();
             }
 
             @Override
@@ -61,9 +69,26 @@ public class AppAdsRequest implements InterstitialAdsRequest {
             @Override
             public void onAdClosed() {
                 onAdsInstantiated.onSuccess();
+                requestNewInterstitial();
             }
         });
 
-      //  mInterstitialAd.show();
     }
+
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
+
+    public void requestNewInterstitial() {
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                AdRequest adRequest = new AdRequest.Builder()
+                        .build();
+                mInterstitialAd.loadAd(adRequest);
+            }
+        }, 300);
+    }
+    public void setOnAdsInstantiated(OnAdsInstantiated onAdsInstantiated){
+        this.onAdsInstantiated = onAdsInstantiated;
+    };
+
 }

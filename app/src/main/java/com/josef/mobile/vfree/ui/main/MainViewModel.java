@@ -8,33 +8,28 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.LiveDataReactiveStreams;
 import androidx.lifecycle.MediatorLiveData;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.Query;
-import com.josef.mobile.vfree.SessionManager;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.LoadAdError;
 import com.josef.mobile.vfree.data.DataManager;
-import com.josef.mobile.vfree.ui.auth.AuthResource;
+import com.josef.mobile.vfree.data.ads.AdsRequest;
 import com.josef.mobile.vfree.ui.auth.model.User;
 import com.josef.mobile.vfree.ui.base.BaseViewModel;
-import com.josef.mobile.vfree.ui.main.archive.ads.InterstitialAdsRequest;
-import com.josef.mobile.vfree.ui.main.archive.ads.OnAdsInstantiated;
+import com.josef.mobile.vfree.data.ads.OnAdsInstantiated;
 import com.josef.mobile.vfree.ui.main.store.Credentials;
-
-import org.reactivestreams.Publisher;
 
 import javax.inject.Inject;
 
 import io.reactivex.Completable;
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Action;
 
 
 public class MainViewModel extends BaseViewModel {
 
-    private final InterstitialAdsRequest interstitialAdsRequest;
+    private final DataManager dataManager;
     private final Credentials credentials;
-    private final Context context;
-    private final MediatorLiveData<Resource<Void>> adsRequest = new MediatorLiveData<>();
+
+    private static final String TAG = "MainViewModel";
 
     public MediatorLiveData<Resource<User>> getDataStoreCredentials() {
         return dataStoreCredentials;
@@ -44,29 +39,24 @@ public class MainViewModel extends BaseViewModel {
 
     @Inject
     public MainViewModel(
-            InterstitialAdsRequest interstitialAdsRequest,
-            Credentials credentials,
-            Context context
+            DataManager dataManager,
+            Credentials credentials
     ) {
 
-        this.interstitialAdsRequest = interstitialAdsRequest;
+        this.dataManager = dataManager;
         this.credentials = credentials;
-        this.context = context;
 
     }
 
-    public MediatorLiveData<Resource<Void>> observeAdsRequest() {
-        return adsRequest;
-    }
 
-    private static final String TAG = "MainViewModel";
     public void initiateInsterstitialAds(OnAdsInstantiated onAdsInstantiated) {
         addToCompositeDisposable(
                 Completable.fromAction(new Action() {
                     @Override
                     public void run() throws Exception {
-                        Log.d(TAG, "run: ");
-                        interstitialAdsRequest.setAdListener(onAdsInstantiated);
+                        dataManager.getInterstitialAd().show();
+                        dataManager.setOnAdsInstantiated(onAdsInstantiated);
+
                     }
                 })
                         .subscribeOn(AndroidSchedulers.mainThread())
@@ -88,12 +78,6 @@ public class MainViewModel extends BaseViewModel {
         return dataStoreCredentials;
 
     }
-
-
-
-
-
-
 
 
 }

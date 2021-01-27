@@ -1,7 +1,12 @@
 package com.josef.mobile.vfree.data;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.josef.mobile.vfree.data.ads.AdsRequest;
+import com.josef.mobile.vfree.data.ads.OnAdsInstantiated;
 import com.josef.mobile.vfree.data.firebase.Firebase;
 import com.josef.mobile.vfree.data.local.db.DbHelper;
 import com.josef.mobile.vfree.data.local.db.model.Archive;
@@ -25,13 +30,20 @@ public class AppDataManager implements DataManager {
     private final Endpoints endpoints;
     private final PreferencesHelper preferencesHelper;
     private final Firebase firebase;
+    private final AdsRequest adsRequest;
 
     @Inject
-    public AppDataManager(DbHelper dbHelper, Endpoints endpoints, Firebase firebase, PreferencesHelper preferencesHelper) {
+    public AppDataManager(@NonNull DbHelper dbHelper,
+                          @NonNull Endpoints endpoints,
+                          @NonNull Firebase firebase,
+                          @NonNull PreferencesHelper preferencesHelper,
+                          @NonNull AdsRequest adsRequest
+    ) {
         this.dbHelper = dbHelper;
         this.endpoints = endpoints;
         this.preferencesHelper = preferencesHelper;
         this.firebase = firebase;
+        this.adsRequest = adsRequest;
     }
 
     public Flowable<List<Archive>> getAllArchives() {
@@ -131,4 +143,21 @@ public class AppDataManager implements DataManager {
     public void clearHashmapIndicator() {
         preferencesHelper.clearHashmapIndicator();
     }
+
+    @Override
+    public void setInterstitialAd(String id) {
+        adsRequest.setInterstitialAd(id);
+    }
+
+    @Override
+    public void setOnAdsInstantiated(OnAdsInstantiated onAdsInstantiated) {
+        adsRequest.setOnAdsInstantiated(onAdsInstantiated);
+    }
+
+    @Override
+    public InterstitialAd getInterstitialAd() {
+        return adsRequest.getInterstitialAd();
+    }
+
+
 }

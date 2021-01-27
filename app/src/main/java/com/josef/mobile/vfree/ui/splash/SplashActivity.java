@@ -3,24 +3,21 @@ package com.josef.mobile.vfree.ui.splash;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityOptionsCompat;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.josef.mobile.vfree.data.local.db.model.LocalCache;
 import com.josef.mobile.vfree.ui.auth.AuthActivity;
 import com.josef.mobile.vfree.ui.base.BaseActivity;
-import com.josef.mobile.vfree.ui.err.ErrorActivity;
-import com.josef.mobile.vfree.ui.main.Resource;
 import com.josef.mobile.vfree.viewmodels.ViewModelProviderFactory;
 import com.josef.mobile.R;
 
-import java.util.List;
 
 import javax.inject.Inject;
 
-import static com.josef.mobile.vfree.ui.err.ErrorActivity.ACTIVITY_KEYS;
 
 public class SplashActivity extends BaseActivity {
 
@@ -28,51 +25,35 @@ public class SplashActivity extends BaseActivity {
     @Inject
     ViewModelProviderFactory providerFactory;
 
-    private SplashViewModel viewModel;
+
+    @NonNull private SplashViewModel viewModel;
+
+    @NonNull private static final String interstitialAdId =
+            "ca-app-pub-3940256099942544/1033173712";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        viewModel = new ViewModelProvider(this, providerFactory).get(SplashViewModel.class);
-        viewModel.initiateInsterstitialAds();
-        subscribeObservers();
-    }
+        viewModel = new ViewModelProvider(this, providerFactory)
+                .get(SplashViewModel.class);
 
-    private void subscribeObservers() {
-        viewModel.observeEndpoints().removeObservers(this);
-        viewModel.observeEndpoints().observe(this, new Observer<Resource<List<LocalCache>>>() {
+        viewModel.initiateInsterstitialAds(interstitialAdId);
+
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(new Runnable() {
             @Override
-            public void onChanged(Resource<List<LocalCache>> listResource) {
-                if (listResource != null) {
-                    switch (listResource.status) {
-                        case SUCCESS: {
-                            viewModel.insertAllEndoints(listResource.data);
-                            Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(SplashActivity.this,
-                                    android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
-                            startActivity(new Intent(SplashActivity.this, AuthActivity.class), bundle);
-                            finishAfterTransition();
-                            //
-                            break;
-                        }
-                        case ERROR: {
-                            Intent intent = new Intent(SplashActivity.this, ErrorActivity.class);
-                            intent.putExtra(ACTIVITY_KEYS, SplashActivity.this.getComponentName().getClassName());
+            public void run() {
+                Bundle bundle = ActivityOptionsCompat
+                        .makeCustomAnimation(SplashActivity.this,
+                        android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
 
-                            Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(SplashActivity.this,
-                                    android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
-
-                            startActivity((intent), bundle);
-
-                            finishAfterTransition();
-                            break;
-                        }
-                    }
-                }
+                startActivity(new Intent(SplashActivity.this, AuthActivity.class),
+                        bundle);
+                finishAfterTransition();
             }
-        });
+        },3000);
     }
-
 
     @Override
     public void subscribeToSessionManager() {

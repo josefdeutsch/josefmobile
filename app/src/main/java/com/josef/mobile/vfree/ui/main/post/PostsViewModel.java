@@ -12,7 +12,7 @@ import com.josef.mobile.vfree.data.local.db.model.Archive;
 import com.josef.mobile.vfree.data.local.db.model.LocalCache;
 import com.josef.mobile.vfree.ui.base.BaseViewModel;
 import com.josef.mobile.vfree.ui.main.Resource;
-import com.josef.mobile.vfree.ui.main.post.remote.EndpointsObserver;
+import com.josef.mobile.vfree.ui.main.post.remote.DownloadEndpoints;
 import com.josef.mobile.vfree.utils.AppConstants;
 import com.josef.mobile.vfree.utils.UtilManager;
 
@@ -29,13 +29,13 @@ public class PostsViewModel extends BaseViewModel {
 
     private final DataManager dataManager;
     private final UtilManager utilManager;
-    private final EndpointsObserver endpointsObserver;
+    private final DownloadEndpoints endpointsObserver;
 
     private MediatorLiveData<Resource<List<LocalCache>>> containers;
 
     @Inject
     public PostsViewModel(DataManager dataManager,
-                          EndpointsObserver endpointsObserver,
+                          DownloadEndpoints endpointsObserver,
                           UtilManager utilManager,
                           Context context) {
 

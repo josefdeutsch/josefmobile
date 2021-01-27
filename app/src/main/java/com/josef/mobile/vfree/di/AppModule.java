@@ -10,6 +10,8 @@ import androidx.room.Room;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -17,6 +19,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.josef.mobile.vfree.data.AppDataManager;
 import com.josef.mobile.vfree.data.DataManager;
+import com.josef.mobile.vfree.data.ads.AdsRequest;
+import com.josef.mobile.vfree.data.ads.AppAdsRequest;
 import com.josef.mobile.vfree.data.firebase.Firebase;
 import com.josef.mobile.vfree.data.firebase.Firedatabase;
 import com.josef.mobile.vfree.data.local.db.AppDataBase;
@@ -25,8 +29,6 @@ import com.josef.mobile.vfree.data.local.db.DbHelper;
 import com.josef.mobile.vfree.data.local.prefs.AppPreferencesHelper;
 import com.josef.mobile.vfree.data.local.prefs.PreferencesHelper;
 import com.josef.mobile.vfree.data.remote.Endpoints;
-import com.josef.mobile.vfree.ui.main.archive.ads.AppAdsRequest;
-import com.josef.mobile.vfree.ui.main.archive.ads.InterstitialAdsRequest;
 import com.josef.mobile.vfree.utils.AppConstants;
 import com.josef.mobile.vfree.utils.AppUtilManager;
 import com.josef.mobile.vfree.utils.UtilManager;
@@ -52,87 +54,74 @@ public class AppModule {
 
     @Provides
     @Singleton
-    DataManager provideDataManager(AppDataManager appDataManager) {
+    static  DataManager provideDataManager(AppDataManager appDataManager) {
         return appDataManager;
     }
 
     @Provides
     @Singleton
-    AppDataBase provideAppDatabase(@DatabaseInfo String dbName, Context context) {
+    static  AppDataBase provideAppDatabase(@DatabaseInfo String dbName, Context context) {
         return Room.databaseBuilder(context, AppDataBase.class, dbName).fallbackToDestructiveMigration()
                 .build();
     }
 
-    @Provides
-    @DatabaseInfo
-    String provideDatabaseName() {
-        return "my_db.db";
-    }
 
     @Provides
     @Singleton
-    DbHelper provideDbHelper(AppDbHelper appDbHelper, Context context) {
+    static DbHelper provideDbHelper(AppDbHelper appDbHelper, Context context) {
         return appDbHelper;
     }
 
     @Provides
     @Singleton
-    Firebase provideFirebase(Firedatabase firedatabase) {
+    static  Firebase provideFirebase(Firedatabase firedatabase) {
         return firedatabase;
     }
 
     @Provides
     @Singleton
-    FirebaseDatabase provideFiredatabase() {
+    static  FirebaseDatabase provideFiredatabase() {
         return FirebaseDatabase.getInstance();
     }
 
     @Provides
     @Singleton
-    PreferencesHelper providePreferencesHelper(AppPreferencesHelper appPreferencesHelper) {
+    static PreferencesHelper providePreferencesHelper(AppPreferencesHelper appPreferencesHelper) {
         return appPreferencesHelper;
     }
 
     @Singleton
     @Provides
-    FirebaseAuth provideFirebaseAuth() {
+    static  FirebaseAuth provideFirebaseAuth() {
         return FirebaseAuth.getInstance();
     }
 
 
 
-
-
-
-
-
     @Provides
     @Singleton
-    Endpoints provideMainApi(Retrofit retrofit) {
+    static Endpoints provideMainApi(Retrofit retrofit) {
         return retrofit.create(Endpoints.class);
     }
 
 
     @Provides
     @Singleton
-    UtilManager provideUtil(AppUtilManager utilManager) {
+    static UtilManager provideUtil(AppUtilManager utilManager) {
         return utilManager;
     }
 
     @Provides
     @Singleton
-    CommonUtils provideCommonUtil(AppCommonUtils appCommonUtils) {
+    static CommonUtils provideCommonUtil(AppCommonUtils appCommonUtils) {
         return appCommonUtils;
     }
 
     @Provides
     @Singleton
-    NetworkUtils provideNetworkUtil(AppNetworkUtils appNetworkUtils) {
+    static NetworkUtils provideNetworkUtil(AppNetworkUtils appNetworkUtils) {
         return appNetworkUtils;
     }
-
-
-
 
     @Singleton
     @Provides
@@ -148,8 +137,14 @@ public class AppModule {
     }
 
     @Provides
+    @DatabaseInfo
+    String provideDatabaseName() {
+        return "my_db.db";
+    }
+
+    @Provides
     @PreferenceInfo
-    String providePreferenceName() {
+    static String providePreferenceName() {
         return AppConstants.PREF_NAME;
     }
 
@@ -186,19 +181,23 @@ public class AppModule {
         return ContextCompat.getDrawable(application, R.drawable.logo);
     }
 
-
-
-
-
     @Singleton
     @Provides
-    InterstitialAdsRequest provideEndpointsObserver(AppAdsRequest appAdsRequest) {
+    static AdsRequest provideRequestAd(AppAdsRequest appAdsRequest) {
         return appAdsRequest;
+    }
+    @Singleton
+    @Provides
+    static InterstitialAd provideInterstitialAd(Context context) {
+        InterstitialAd mInterstitialAd = new InterstitialAd(context);
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+        return mInterstitialAd;
     }
 
     @Provides
     @Singleton
-    Context provideContext(Application application) {
+    static Context provideContext(Application application) {
         return application;
     }
 }

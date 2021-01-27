@@ -1,4 +1,4 @@
-package com.josef.mobile.vfree.ui.splash.remote;
+package com.josef.mobile.vfree.ui.main.post.remote;
 
 import android.util.Log;
 

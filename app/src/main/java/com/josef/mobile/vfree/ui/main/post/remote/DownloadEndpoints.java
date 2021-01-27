@@ -7,7 +7,7 @@ import java.util.List;
 
 import io.reactivex.Flowable;
 
-public interface EndpointsObserver {
+public interface DownloadEndpoints {
 
      Flowable<Resource<List<LocalCache>>> getEndpoints(String index);
 }

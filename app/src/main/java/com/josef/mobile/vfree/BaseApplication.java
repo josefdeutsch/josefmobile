@@ -2,10 +2,12 @@ package com.josef.mobile.vfree;
 
 
 
+
+
 import com.josef.mobile.vfree.di.DaggerAppComponent;
 
 import dagger.android.AndroidInjector;
-import dagger.android.support.DaggerApplication;
+import dagger.android.DaggerApplication;
 
 /**
  * http://joseph3d.com/wp-admin/

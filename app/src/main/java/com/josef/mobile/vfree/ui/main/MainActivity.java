@@ -27,11 +27,12 @@ import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.material.navigation.NavigationView;
 import com.josef.mobile.vfree.ui.auth.model.User;
 import com.josef.mobile.vfree.ui.base.BaseActivity;
-import com.josef.mobile.vfree.ui.main.archive.ads.OnAdsInstantiated;
+import com.josef.mobile.vfree.data.ads.OnAdsInstantiated;
 import com.josef.mobile.vfree.viewmodels.ViewModelProviderFactory;
 import com.josef.mobile.R;
 
@@ -117,6 +118,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     private static final String TAG = "MainActivity";
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
@@ -138,36 +140,65 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
             case R.id.nav_posts: {
                 if (isValidDestination(R.id.nav_posts)) {
-                    Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.postScreen);
+                    Log.d(TAG, "onNavigationItemSelected: ");
+                    Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment)
+                            .navigate(R.id.postScreen);
+                    viewModel.initiateInsterstitialAds(new OnAdsInstantiated() {
+                        @Override
+                        public void onSuccess() {
+                        }
+
+                        @Override
+                        public void onFailure(LoadAdError adError) {
+                            Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment)
+                                    .navigate(R.id.profileScreen);
+                        }
+
+                        @Override
+                        public void onAdClicked() {
+
+                        }
+
+                        @Override
+                        public void onAdLoaded() {
+
+                        }
+                    });
+
+
                 }
                 break;
             }
 
             case R.id.nav_archive: {
                 if (isValidDestination(R.id.archiveScreen)) {
-                    // utilManager.showProgressbar(this);
-                    //  Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.archiveScreen);
+                    Log.d(TAG, "onNavigationItemSelected: ");
                     viewModel.initiateInsterstitialAds(new OnAdsInstantiated() {
                         @Override
                         public void onSuccess() {
-                            Log.d(TAG, "onSuccess: ");
-                            Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.archiveScreen);
+
                         }
 
                         @Override
                         public void onFailure(LoadAdError adError) {
-                            Toast.makeText(getApplicationContext(), adError.getMessage(), android.widget.Toast.LENGTH_SHORT)
-                                    .show();
+                            Log.d(TAG, "onFailure: "
+                            +adError.getMessage());
 
-                            Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.profileScreen);
+                            Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment)
+                                    .navigate(R.id.profileScreen);
                         }
 
                         @Override
                         public void onAdClicked() {
 
-                            //Order Google Play Store reference..
+                        }
+
+                        @Override
+                        public void onAdLoaded() {
+
                         }
                     });
+
                 }
                 break;
             }

@@ -5,14 +5,15 @@ import android.content.Context;
 
 import com.bumptech.glide.RequestManager;
 import com.josef.mobile.vfree.data.DataManager;
+import com.josef.mobile.vfree.di.splash.SplashScope;
 import com.josef.mobile.vfree.ui.main.archive.ArchiveRecyclerViewAdapter;
 import com.josef.mobile.vfree.ui.main.archive.fire.AppFirebaseUpload;
 import com.josef.mobile.vfree.ui.main.archive.fire.FirebaseUpload;
 import com.josef.mobile.vfree.ui.main.archive.local.AppArchiveDatabase;
 import com.josef.mobile.vfree.ui.main.archive.local.ArchiveDatabase;
 import com.josef.mobile.vfree.ui.main.post.PostRecyclerAdapter;
-import com.josef.mobile.vfree.ui.main.post.remote.AppEndpointsObserver;
-import com.josef.mobile.vfree.ui.main.post.remote.EndpointsObserver;
+import com.josef.mobile.vfree.ui.main.post.remote.AppDownloadEndpoints;
+import com.josef.mobile.vfree.ui.main.post.remote.DownloadEndpoints;
 import com.josef.mobile.vfree.ui.main.profile.ViewPagerAdapter;
 import com.josef.mobile.vfree.ui.main.profile.res.AppResourceObserver;
 import com.josef.mobile.vfree.ui.main.profile.res.ResourceObserver;
@@ -60,8 +61,8 @@ public class MainModule {
 
     @MainScope
     @Provides
-    static EndpointsObserver provideEndpointsObserver(AppEndpointsObserver appEndpointsObserver) {
-        return appEndpointsObserver;
+    static DownloadEndpoints provideDownloadEndpoints(AppDownloadEndpoints appDownloadEndpoints) {
+        return appDownloadEndpoints;
     }
 
     @MainScope
