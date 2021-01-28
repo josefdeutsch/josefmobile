@@ -3,10 +3,7 @@ package com.josef.mobile.vfree.data.ads;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
-
 import androidx.annotation.NonNull;
-
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
@@ -18,14 +15,13 @@ import javax.inject.Singleton;
 @Singleton
 public class AppAdsRequest implements AdsRequest {
 
-    private static final String TAG = "AppAdsRequest";
+    @NonNull
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
 
-    public InterstitialAd getInterstitialAd() {
-        return mInterstitialAd;
-    }
-
+    @NonNull
     private InterstitialAd mInterstitialAd;
 
+    @NonNull
     private OnAdsInstantiated onAdsInstantiated;
 
     @NonNull
@@ -39,14 +35,14 @@ public class AppAdsRequest implements AdsRequest {
 
     @Override
     public void setInterstitialAd(@NonNull String id) {
+
         mInterstitialAd = new InterstitialAd(context);
         mInterstitialAd.setAdUnitId(id);
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
         mInterstitialAd.setAdListener(new AdListener() {
+
             @Override
-            public void onAdLoaded() {
-                //InterstitialAd.show();
-            }
+            public void onAdLoaded() { }
 
             @Override
             public void onAdFailedToLoad(LoadAdError adError) {
@@ -69,26 +65,29 @@ public class AppAdsRequest implements AdsRequest {
             @Override
             public void onAdClosed() {
                 onAdsInstantiated.onSuccess();
-                requestNewInterstitial();
+                //requestNewInterstitial();
             }
         });
-
     }
-
-    private final Handler mHandler = new Handler(Looper.getMainLooper());
 
     public void requestNewInterstitial() {
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                AdRequest adRequest = new AdRequest.Builder()
-                        .build();
-                mInterstitialAd.loadAd(adRequest);
-            }
-        }, 300);
+        mHandler.postDelayed(() ->
+                mInterstitialAd
+                        .loadAd(new AdRequest.Builder().build()),
+                300);
     }
-    public void setOnAdsInstantiated(OnAdsInstantiated onAdsInstantiated){
+    @Override
+    public void setOnInterstitialInstantiated(
+            @NonNull OnAdsInstantiated onAdsInstantiated){
+
         this.onAdsInstantiated = onAdsInstantiated;
     };
+
+    @NonNull
+    @Override
+    public InterstitialAd getInterstitialAd() {
+        return mInterstitialAd;
+    }
+
 
 }

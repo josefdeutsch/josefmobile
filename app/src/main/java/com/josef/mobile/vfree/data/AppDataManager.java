@@ -150,8 +150,8 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public void setOnAdsInstantiated(OnAdsInstantiated onAdsInstantiated) {
-        adsRequest.setOnAdsInstantiated(onAdsInstantiated);
+    public void setOnInterstitialInstantiated(OnAdsInstantiated onAdsInstantiated) {
+        adsRequest.setOnInterstitialInstantiated(onAdsInstantiated);
     }
 
     @Override

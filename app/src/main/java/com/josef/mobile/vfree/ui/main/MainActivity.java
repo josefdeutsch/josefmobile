@@ -28,7 +28,12 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.navigation.NavigationView;
 import com.josef.mobile.vfree.ui.auth.model.User;
 import com.josef.mobile.vfree.ui.base.BaseActivity;
@@ -40,15 +45,21 @@ import javax.inject.Inject;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, LifecycleOwner {
 
+    @NonNull
     private DrawerLayout drawerLayout;
+
+    @NonNull
     private NavigationView navigationView;
 
-    //https://www.youtube.com/watch?v=eGWu0-0TWFI&list=RDCMUCnKhcV7frITmrYbIU5MrMZw&index=2
-
+    @NonNull
     @Inject
     ViewModelProviderFactory providerFactory;
 
-    MainViewModel viewModel;
+    @NonNull
+    private MainViewModel viewModel;
+
+
+     AdView mAdView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,11 +69,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
+
         View headerLayout = navigationView.inflateHeaderView(R.layout.navigation_header);
+
         TextView firstName = headerLayout.findViewById(R.id.nav_name);
         TextView lastName = headerLayout.findViewById(R.id.nav_email);
 
         init();
+
         viewModel = new ViewModelProvider(this, providerFactory).get(MainViewModel.class);
         viewModel.getDataStoreCredentials().removeObservers(this);
         viewModel.observeDataStoreCredentials(this).observe(this, new Observer<Resource<User>>() {
@@ -84,8 +98,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                         }
                     }
                 }
-                // Toast.makeText(MainActivity.this, userResource.data.email,
-                //    Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -117,7 +129,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 .setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(this, R.color.transparent)));
     }
 
-    private static final String TAG = "MainActivity";
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -140,12 +151,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
             case R.id.nav_posts: {
                 if (isValidDestination(R.id.nav_posts)) {
-                    Log.d(TAG, "onNavigationItemSelected: ");
                     Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment)
                             .navigate(R.id.postScreen);
                     viewModel.initiateInsterstitialAds(new OnAdsInstantiated() {
                         @Override
                         public void onSuccess() {
+
                         }
 
                         @Override
@@ -158,47 +169,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                         public void onAdClicked() {
 
                         }
-
-                        @Override
-                        public void onAdLoaded() {
-
-                        }
                     });
-
-
                 }
                 break;
             }
 
             case R.id.nav_archive: {
                 if (isValidDestination(R.id.archiveScreen)) {
-                    Log.d(TAG, "onNavigationItemSelected: ");
-                    viewModel.initiateInsterstitialAds(new OnAdsInstantiated() {
-                        @Override
-                        public void onSuccess() {
-
-                        }
-
-                        @Override
-                        public void onFailure(LoadAdError adError) {
-                            Log.d(TAG, "onFailure: "
-                            +adError.getMessage());
-
-                            Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment)
-                                    .navigate(R.id.profileScreen);
-                        }
-
-                        @Override
-                        public void onAdClicked() {
-
-                        }
-
-                        @Override
-                        public void onAdLoaded() {
-
-                        }
-                    });
-
+                    Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment)
+                            .navigate(R.id.archiveScreen);
                 }
                 break;
             }

@@ -10,6 +10,4 @@ public interface OnAdsInstantiated {
 
     void onAdClicked();
 
-    void onAdLoaded();
-
 }

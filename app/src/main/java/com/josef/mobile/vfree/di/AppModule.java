@@ -186,14 +186,8 @@ public class AppModule {
     static AdsRequest provideRequestAd(AppAdsRequest appAdsRequest) {
         return appAdsRequest;
     }
-    @Singleton
-    @Provides
-    static InterstitialAd provideInterstitialAd(Context context) {
-        InterstitialAd mInterstitialAd = new InterstitialAd(context);
-        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
-        mInterstitialAd.loadAd(new AdRequest.Builder().build());
-        return mInterstitialAd;
-    }
+
+
 
     @Provides
     @Singleton

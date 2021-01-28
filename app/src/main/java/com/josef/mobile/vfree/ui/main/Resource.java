@@ -6,7 +6,6 @@ import androidx.annotation.Nullable;
 
 public class Resource<T> {
 
-    private static final String TAG = "Resource";
     @NonNull
     public final Status status;
 

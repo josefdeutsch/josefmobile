@@ -18,6 +18,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/main" />
 
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -33,7 +34,6 @@
 
     </RelativeLayout>
 
-
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
@@ -43,5 +43,8 @@
         app:headerLayout="@layout/navigation_header"
 
         app:menu="@menu/drawer_view" />
+
+
+
 
 </androidx.drawerlayout.widget.DrawerLayout>

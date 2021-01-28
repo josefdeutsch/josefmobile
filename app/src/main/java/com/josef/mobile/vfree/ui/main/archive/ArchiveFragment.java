@@ -14,6 +14,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.LoadAdError;
 import com.josef.mobile.vfree.data.local.db.model.Archive;
 import com.josef.mobile.vfree.ui.base.BaseFragment;
 import com.josef.mobile.vfree.ui.err.ErrorActivity;
@@ -30,7 +34,9 @@ import butterknife.OnClick;
 
 import static com.josef.mobile.vfree.ui.err.ErrorActivity.ACTIVITY_KEYS;
 
-public class ArchiveFragment extends BaseFragment implements View.OnClickListener, ArchiveRecyclerViewAdapter.OnDeleteCallBack {
+public class ArchiveFragment extends BaseFragment
+        implements View.OnClickListener, ArchiveRecyclerViewAdapter.OnDeleteCallBack {
+
 
     @Inject
     ViewModelProviderFactory providerFactory;
@@ -40,6 +46,9 @@ public class ArchiveFragment extends BaseFragment implements View.OnClickListene
 
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
+
+    @BindView(R.id.adView)
+    AdView mAdView;
 
     @Inject
     ArchiveRecyclerViewAdapter adapter;
@@ -52,16 +61,56 @@ public class ArchiveFragment extends BaseFragment implements View.OnClickListene
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_archive, container, false);
         ButterKnife.bind(this, view);
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        mAdView.loadAd(adRequest);
+        mAdView.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+            }
+
+            @Override
+            public void onAdFailedToLoad(LoadAdError adError) {
+                // Code to be executed when an ad request fails.
+            }
+
+            @Override
+            public void onAdOpened() {
+                // Code to be executed when an ad opens an overlay that
+                // covers the screen.
+            }
+
+            @Override
+            public void onAdClicked() {
+                // Code to be executed when the user clicks on an ad.
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                // Code to be executed when the user has left the app.
+            }
+
+            @Override
+            public void onAdClosed() {
+                // Code to be executed when the user is about to return
+                // to the app after tapping on an ad.
+            }
+        });
         return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+
         adapter.setmDeleteCallBack(this);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         recyclerView.setAdapter(adapter);
-        viewModel = new ViewModelProvider(this, providerFactory).get(ArchiveViewModel.class);
+        viewModel = new ViewModelProvider(this, providerFactory)
+                .get(ArchiveViewModel.class);
         subscribeObservers();
+
     }
 
     private void subscribeObservers() {
@@ -131,6 +180,15 @@ public class ArchiveFragment extends BaseFragment implements View.OnClickListene
                     viewModel.deleteArchives(archive);
                     viewModel.updateEndpoints(archive);
                 }).show();
+    }
+
+    private void showBanner() {
+        mAdView.resume();
+        mAdView.setVisibility(View.VISIBLE);
+    }
+    private void hideBanner() {
+        mAdView.pause();
+        mAdView.setVisibility(View.GONE);
     }
 }
 
