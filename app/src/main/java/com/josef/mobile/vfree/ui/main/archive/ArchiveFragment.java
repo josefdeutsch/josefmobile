@@ -2,11 +2,17 @@ package com.josef.mobile.vfree.ui.main.archive;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityOptionsCompat;
@@ -16,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.LoadAdError;
 import com.josef.mobile.vfree.data.local.db.model.Archive;
@@ -37,6 +44,8 @@ import static com.josef.mobile.vfree.ui.err.ErrorActivity.ACTIVITY_KEYS;
 public class ArchiveFragment extends BaseFragment
         implements View.OnClickListener, ArchiveRecyclerViewAdapter.OnDeleteCallBack {
 
+    @NonNull
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
 
     @Inject
     ViewModelProviderFactory providerFactory;
@@ -55,6 +64,8 @@ public class ArchiveFragment extends BaseFragment
 
     ArchiveViewModel viewModel;
 
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -62,42 +73,9 @@ public class ArchiveFragment extends BaseFragment
         View view = inflater.inflate(R.layout.fragment_archive, container, false);
         ButterKnife.bind(this, view);
 
-        AdRequest adRequest = new AdRequest.Builder().build();
-
-        mAdView.loadAd(adRequest);
-        mAdView.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                // Code to be executed when an ad finishes loading.
-            }
-
-            @Override
-            public void onAdFailedToLoad(LoadAdError adError) {
-                // Code to be executed when an ad request fails.
-            }
-
-            @Override
-            public void onAdOpened() {
-                // Code to be executed when an ad opens an overlay that
-                // covers the screen.
-            }
-
-            @Override
-            public void onAdClicked() {
-                // Code to be executed when the user clicks on an ad.
-            }
-
-            @Override
-            public void onAdLeftApplication() {
-                // Code to be executed when the user has left the app.
-            }
-
-            @Override
-            public void onAdClosed() {
-                // Code to be executed when the user is about to return
-                // to the app after tapping on an ad.
-            }
-        });
+        loadBanner();
+       // mHandler.postDelayed(() -> hideBanner(),
+           //     3000);
         return view;
     }
 
@@ -182,14 +160,46 @@ public class ArchiveFragment extends BaseFragment
                 }).show();
     }
 
-    private void showBanner() {
-        mAdView.resume();
-        mAdView.setVisibility(View.VISIBLE);
+    private void loadBanner() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        mAdView.loadAd(adRequest);
+        mAdView.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+            }
+
+            @Override
+            public void onAdFailedToLoad(LoadAdError adError) {
+                // Code to be executed when an ad request fails.
+            }
+
+            @Override
+            public void onAdOpened() {
+                // Code to be executed when an ad opens an overlay that
+                // covers the screen.
+            }
+
+            @Override
+            public void onAdClicked() {
+                // Code to be executed when the user clicks on an ad.
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                // Code to be executed when the user has left the app.
+            }
+
+            @Override
+            public void onAdClosed() {
+                // Code to be executed when the user is about to return
+                // to the app after tapping on an ad.
+            }
+        });
     }
-    private void hideBanner() {
-        mAdView.pause();
-        mAdView.setVisibility(View.GONE);
-    }
+
+
 }
 
 
