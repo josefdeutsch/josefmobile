@@ -61,7 +61,8 @@
         </activity>
         <activity
             android:name=".vfree.ui.main.MainActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"
+            android:theme="@style/BaseTheme"/>
     </application>
 
 </manifest>
