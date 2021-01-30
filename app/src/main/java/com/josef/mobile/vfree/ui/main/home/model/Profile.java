@@ -1,4 +1,4 @@
-package com.josef.mobile.vfree.ui.main.profile.model;
+package com.josef.mobile.vfree.ui.main.home.model;
 
 public class Profile {
 

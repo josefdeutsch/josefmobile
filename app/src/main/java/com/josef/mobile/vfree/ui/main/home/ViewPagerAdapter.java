@@ -1,4 +1,4 @@
-package com.josef.mobile.vfree.ui.main.profile;
+package com.josef.mobile.vfree.ui.main.home;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,7 +13,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.RequestManager;
-import com.josef.mobile.vfree.ui.main.profile.model.Profile;
+import com.josef.mobile.vfree.ui.main.home.model.Profile;
 import com.josef.mobile.R;
 
 import java.io.IOException;

@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel;
 import com.josef.mobile.vfree.di.ViewModelKey;
 import com.josef.mobile.vfree.ui.main.MainViewModel;
 import com.josef.mobile.vfree.ui.main.archive.ArchiveViewModel;
+import com.josef.mobile.vfree.ui.main.home.HomeViewModel;
 import com.josef.mobile.vfree.ui.main.post.PostsViewModel;
-import com.josef.mobile.vfree.ui.main.profile.ProfileViewModel;
 
 import dagger.Binds;
 import dagger.Module;
@@ -17,8 +17,8 @@ public abstract class MainViewModelsModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(ProfileViewModel.class)
-    public abstract ViewModel bindProfileViewModel(ProfileViewModel viewModel);
+    @ViewModelKey(HomeViewModel.class)
+    public abstract ViewModel bindProfileViewModel(HomeViewModel viewModel);
 
     @Binds
     @IntoMap

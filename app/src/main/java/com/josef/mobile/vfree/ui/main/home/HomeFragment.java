@@ -1,4 +1,4 @@
-package com.josef.mobile.vfree.ui.main.profile;
+package com.josef.mobile.vfree.ui.main.home;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,7 +29,7 @@ import butterknife.ButterKnife;
 
 import static com.josef.mobile.vfree.ui.err.ErrorActivity.ACTIVITY_KEYS;
 
-public class ProfileFragment extends BaseFragment implements ViewPagerAdapter.ViewpagerAdapterOnClickListener {
+public class HomeFragment extends BaseFragment implements ViewPagerAdapter.ViewpagerAdapterOnClickListener {
 
     @Inject
     ViewPagerAdapter viewPagerAdapter;
@@ -40,7 +40,7 @@ public class ProfileFragment extends BaseFragment implements ViewPagerAdapter.Vi
     @BindView(R.id.tab_layout)
     TabLayout tabLayout;
 
-    private ProfileViewModel viewModel;
+    private HomeViewModel viewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,7 +66,7 @@ public class ProfileFragment extends BaseFragment implements ViewPagerAdapter.Vi
         viewPager2.setAdapter(viewPagerAdapter);
         viewPagerAdapter.setViewpagerAdapterOnClickListener(this);
 
-        viewModel = new ViewModelProvider(this, providerFactory).get(ProfileViewModel.class);
+        viewModel = new ViewModelProvider(this, providerFactory).get(HomeViewModel.class);
 
         new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> {
 

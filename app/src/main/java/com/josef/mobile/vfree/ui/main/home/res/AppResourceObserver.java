@@ -1,9 +1,9 @@
-package com.josef.mobile.vfree.ui.main.profile.res;
+package com.josef.mobile.vfree.ui.main.home.res;
 
 import android.content.Context;
 
 import com.josef.mobile.vfree.ui.main.Resource;
-import com.josef.mobile.vfree.ui.main.profile.model.Profile;
+import com.josef.mobile.vfree.ui.main.home.model.Profile;
 import com.josef.mobile.R;
 
 import java.util.ArrayList;

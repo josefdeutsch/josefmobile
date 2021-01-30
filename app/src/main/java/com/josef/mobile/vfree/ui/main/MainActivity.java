@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.appcompat.widget.Toolbar;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -25,7 +25,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
-import com.google.android.gms.ads.AdView;
+
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.material.navigation.NavigationView;
 import com.josef.mobile.vfree.ui.auth.model.User;
@@ -50,9 +50,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @NonNull
     private MainViewModel viewModel;
 
-    public Toolbar toolbar;
-
-     AdView mAdView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -127,14 +124,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         switch (menuItem.getItemId()) {
 
-            case R.id.nav_profile: {
+            case R.id.nav_home: {
                 // nav options to clear backstack
                 NavOptions navOptions = new NavOptions.Builder()
                         .setPopUpTo(R.id.main, true)
                         .build();
 
                 Navigation.findNavController(this, R.id.nav_host_fragment)
-                        .navigate(R.id.profileScreen,
+                        .navigate(R.id.homeScreen,
                                 null,
                                 navOptions
                         );
@@ -154,7 +151,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                         @Override
                         public void onFailure(LoadAdError adError) {
                             Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment)
-                                    .navigate(R.id.profileScreen);
+                                    .navigate(R.id.homeScreen);
                         }
 
                         @Override
@@ -183,6 +180,20 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             case R.id.nav_info: {
                 if (isValidDestination(R.id.infoScreen)) {
                     Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.infoScreen);
+
+                }
+                break;
+            }
+            case R.id.nav_events: {
+                if (isValidDestination(R.id.eventScreen)) {
+                    Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.eventScreen);
+
+                }
+                break;
+            }
+            case R.id.nav_profiles: {
+                if (isValidDestination(R.id.profilesScreen)) {
+                    Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.profilesScreen);
 
                 }
                 break;

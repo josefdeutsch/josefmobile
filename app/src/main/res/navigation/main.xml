@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    app:startDestination="@+id/profileScreen">
+    app:startDestination="@+id/homeScreen">
 
     <fragment
-        android:id="@+id/profileScreen"
-        android:name="com.josef.mobile.vfree.ui.main.profile.ProfileFragment"
+        android:id="@+id/homeScreen"
+        android:name="com.josef.mobile.vfree.ui.main.home.HomeFragment"
         android:label="@string/fragment_profile"
         tools:layout="@layout/fragment_profile"></fragment>
 
@@ -34,5 +34,17 @@
         android:name="com.josef.mobile.vfree.ui.main.about.AboutFragment"
         android:label="@string/fragment_into"
         tools:layout="@layout/fragment_about"></fragment>
+
+    <fragment
+        android:id="@+id/eventScreen"
+        android:name="com.josef.mobile.vfree.ui.main.events.EventsFragment"
+        android:label="@string/fragment_events"
+        tools:layout="@layout/fragment_events"></fragment>
+
+    <fragment
+        android:id="@+id/profilesScreen"
+        android:name="com.josef.mobile.vfree.ui.main.profiles.ProfilesFragment"
+        android:label="@string/fragment_profiles"
+        tools:layout="@layout/fragment_events"></fragment>
 
 </navigation>

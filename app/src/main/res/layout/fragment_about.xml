@@ -1,31 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark">
+    android:background="@color/colorPrimaryDark"
+    android:orientation="vertical">
 
-    <ImageView
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="68dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_baseline_account_box_24"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-    </ImageView>
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+    <!-- Here you put the rest of your current view-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
     <TextView
         android:id="@+id/header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="120dp"
+        android:layout_marginStart="12dp"
         android:layout_marginTop="60dp"
         android:fontFamily="sans-serif-condensed"
         android:gravity="top"
-        android:text="Joseph"
+        android:text="About me and Joseph"
         android:textColor="#FFFFFF"
         android:textSize="36dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,29 +33,74 @@
         android:id="@+id/subheader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="120dp"
-        android:layout_marginTop="108dp"
+        android:layout_marginStart="12dp"
         android:fontFamily="sans-serif-thin"
-        android:text="Digital Art is true"
+        android:text="Joseph - Digital Art is true"
         android:textColor="#FFFFFF"
         android:textSize="18dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/article"
+        android:id="@+id/article2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="160dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="12dp"
         android:fontFamily="sans-serif-thin"
         android:letterSpacing="0.1"
         android:maxLines="100"
-        android:text="@string/info_statment_belief"
+        android:text="@string/loremipsum100"
         android:textColor="#FFFFFF"
         android:textSize="18dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonPanel2"
+        android:backgroundTint="@color/material_green_700"
+        android:text="Learn more about Joseph Tv"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="12dp"
+        >
+
+    </Button>
+
+    <com.google.android.exoplayer2.ui.PlayerView
+        android:id="@+id/exoplayer"
+        android:layout_width="match_parent"
+        android:layout_height="256dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="12dp"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        app:controller_layout_id="@layout/exo_playback_control_view"
+        app:player_layout_id="@layout/exo_simple_player_view">
+
+    </com.google.android.exoplayer2.ui.PlayerView>
+
+    <TextView
+        android:id="@+id/article"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="12dp"
+        android:fontFamily="sans-serif-thin"
+        android:letterSpacing="0.1"
+        android:maxLines="100"
+        android:text="@string/loremipsum100"
+        android:textColor="#FFFFFF"
+        android:textSize="18dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>

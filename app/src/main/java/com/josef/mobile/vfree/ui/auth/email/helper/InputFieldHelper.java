@@ -18,6 +18,7 @@ public final class InputFieldHelper {
 
     @NotNull
     private final MediatorLiveData<CharSequence> mediatorLiveData = new MediatorLiveData<>();
+
     @NotNull
     private final CharSequenceObserver<CharSequence> observer = new CharSequenceObserver();
 

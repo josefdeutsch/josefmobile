@@ -1,4 +1,4 @@
-package com.josef.mobile.vfree.ui.main.profile;
+package com.josef.mobile.vfree.ui.main.home;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.LiveDataReactiveStreams;
@@ -6,20 +6,20 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.josef.mobile.vfree.ui.main.Resource;
-import com.josef.mobile.vfree.ui.main.profile.model.Profile;
-import com.josef.mobile.vfree.ui.main.profile.res.ResourceObserver;
+import com.josef.mobile.vfree.ui.main.home.model.Profile;
+import com.josef.mobile.vfree.ui.main.home.res.ResourceObserver;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
-public class ProfileViewModel extends ViewModel {
+public class HomeViewModel extends ViewModel {
 
     private final ResourceObserver resourceObserver;
     private MediatorLiveData<Resource<List<Profile>>> containers;
 
     @Inject
-    public ProfileViewModel(ResourceObserver resourceObserver) {
+    public HomeViewModel(ResourceObserver resourceObserver) {
         this.resourceObserver = resourceObserver;
     }
 
