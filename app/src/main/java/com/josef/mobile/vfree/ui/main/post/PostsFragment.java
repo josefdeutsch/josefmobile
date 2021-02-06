@@ -2,6 +2,7 @@ package com.josef.mobile.vfree.ui.main.post;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import com.josef.mobile.R;
 
 import javax.inject.Inject;
 
+import static android.content.ContentValues.TAG;
 import static android.widget.NumberPicker.OnScrollListener.SCROLL_STATE_IDLE;
 
 
@@ -89,16 +91,16 @@ public class PostsFragment extends BaseFragment
                     }
                     case ERROR: {
                         hideProgessbar();
+                        Log.d(TAG, "subscribeObservers: "+listResource.message.toString());
+                       // Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getActivity(),
+                          //      android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
 
-                        Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getActivity(),
-                                android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
+                    //    Intent intent = new Intent(getActivity(), ErrorActivity.class);
+                     //   intent.putExtra(ErrorActivity.ACTIVITY_KEYS, getActivity().getComponentName().getClassName());
 
-                        Intent intent = new Intent(getActivity(), ErrorActivity.class);
-                        intent.putExtra(ErrorActivity.ACTIVITY_KEYS, getActivity().getComponentName().getClassName());
+                    //   startActivity(intent, bundle);
 
-                        startActivity(intent, bundle);
-
-                        getActivity().finishAfterTransition();
+                    //    getActivity().finishAfterTransition();
                         break;
                     }
                 }
@@ -119,6 +121,7 @@ public class PostsFragment extends BaseFragment
     public void onClick(int position) {
         Intent intent = new Intent(getActivity(), PlayerActivity.class);
         intent.putExtra(AppConstants.REQUEST_INDEX, position);
+        Log.d(TAG, "onClick: "+position);
         startActivityForResult(intent, AppConstants.PLAYERACTIVIY);
     }
 

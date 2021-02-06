@@ -86,7 +86,7 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
         Button learn_more;
         @BindView(R.id.article)
         TextView article;
-        @BindView(R.id.header)
+        @BindView(R.id.vision_header)
         TextView header;
         @BindView(R.id.animated_gif)
         ImageView animatedGif;

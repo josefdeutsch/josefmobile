@@ -146,7 +146,8 @@ android {
        // implementation(group: 'com.google.firebase', name: 'firebase-firestore', version: '17.0.1')
 
        // implementation('com.firebaseui:firebase-ui-firestore:6.3.0')
-
+// https://mvnrepository.com/artifact/com.ms-square/expandableTextView
+        implementation group: 'com.ms-square', name: 'expandableTextView', version: '0.1.4'
         implementation 'com.jakewharton:butterknife:10.2.3'
         annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'
 

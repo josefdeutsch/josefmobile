@@ -45,18 +45,15 @@ public class AppDownloadEndpoints implements DownloadEndpoints {
                     return endpoints;
                 })
 
-                .onErrorReturn(new Function<Throwable, ArrayList<LocalCache>>() {
-                    @Override
-                    public ArrayList<LocalCache> apply(@NonNull Throwable throwable) throws Exception {
-                        Log.e(TAG, "apply: " + throwable.getMessage());
-                        LocalCache container = new LocalCache();
-                        container.setId(-1l);
-                        container.setException(throwable.getMessage());
+                .onErrorReturn(throwable -> {
+                    Log.e(TAG, "apply: " + throwable.getMessage());
+                    LocalCache container = new LocalCache();
+                    container.setId(-1l);
+                    container.setException(throwable.getMessage());
 
-                        ArrayList<LocalCache> containers = new ArrayList<>();
-                        containers.add(container);
-                        return containers;
-                    }
+                    ArrayList<LocalCache> containers = new ArrayList<>();
+                    containers.add(container);
+                    return containers;
                 })
 
                 .map((Function<List<LocalCache>, Resource<List<LocalCache>>>) posts -> {

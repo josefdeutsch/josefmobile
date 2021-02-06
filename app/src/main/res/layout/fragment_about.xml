@@ -16,7 +16,7 @@
         android:orientation="vertical">
 
     <TextView
-        android:id="@+id/header"
+        android:id="@+id/vision_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
@@ -30,7 +30,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/subheader"
+        android:id="@+id/vision_subheader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
@@ -42,7 +42,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/article2"
+        android:id="@+id/vision_article"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
@@ -51,7 +51,7 @@
         android:fontFamily="sans-serif-thin"
         android:letterSpacing="0.1"
         android:maxLines="100"
-        android:text="@string/loremipsum100"
+        android:text=""
         android:textColor="#FFFFFF"
         android:textSize="18dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -94,7 +94,7 @@
         android:fontFamily="sans-serif-thin"
         android:letterSpacing="0.1"
         android:maxLines="100"
-        android:text="@string/loremipsum100"
+        android:text=""
         android:textColor="#FFFFFF"
         android:textSize="18dp"
         app:layout_constraintStart_toStartOf="parent"

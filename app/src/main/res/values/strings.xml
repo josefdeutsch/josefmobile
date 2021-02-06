@@ -1,7 +1,10 @@
 <resources>
     <string name="app_name">josefmobile</string>
     <string name="action_settings">settings</string>
-    <string name="action_archive">Archive</string>
+    <string name="action_archive">Archive</string>curl \
+    -F 'text=YOUR_TEXT_URL' \
+    -H 'api-key:quickstart-QUdJIGlzIGNvbWluZy4uLi4K' \
+    https://api.deepai.org/api/text-generato
 
     <string name="app_quit_remainder">Quit application?</string>
 
@@ -66,9 +69,10 @@
     <string name="fragment_tv">Joseph TV</string>
     <string name="nav_tv_title">Joseph Tv</string>
 
-    <string name="loremipsum100">Lorem ipsum dolor sit amet, no nostrum adipiscing cum. Sed cu saepe intellegat assueverit, dictas iudicabit his cu, volumus consulatu mel no. Explicari aliquando in pri, errem recusabo eu mei, scripta accumsan ocurreret in mei. Id pri quas persecuti. Alia nonumy nominati eos at. In possim habemus nec, ea principes laboramus consetetur qui, salutatus complectitur eu per.
 
-Id eos affert dictas temporibus, dictas suscipit persequeris ea sed. At mea assentior efficiendi deterruisset, nec ea justo libris suscipiantur. Discere necessitatibus an ius, ei harum mollis pro, ut veri dolores sed. Ipsum maiorum eu his, sit ad deleniti forensibus, choro essent urbanitas.</string>
+
+    <string name="Aitext">h</string>
+
     <string name="fragment_events">Events</string>
     <string name="nav_events">Events</string>
     <string name="fragment_profiles">Profile</string>

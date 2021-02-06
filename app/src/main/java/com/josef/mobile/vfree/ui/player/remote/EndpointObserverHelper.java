@@ -57,13 +57,10 @@ public class EndpointObserverHelper implements EndpointObserver {
 
     @NotNull
     private Flowable<Integer> getIntegerFlowable(int index) {
-
         return Flowable.just(index);
     }
 
     private Flowable<List<LocalCache>> getFlowableList() {
         return dataManager.getAllEndpoints();
     }
-
-
 }
