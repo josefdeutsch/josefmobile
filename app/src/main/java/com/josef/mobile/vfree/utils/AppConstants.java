@@ -22,8 +22,8 @@ public final class AppConstants {
     public static final String STATE_BOOLEAN_VALUE = "state_boolean";
 
     public static final String ENDPOINT_1 = "_ah/api/echo/v1/echo?n=1";
-    public static final String SECOND = "_ah/api/echo/v1/echo?n=2";
-    public static final String THIRD = "_ah/api/echo/v1/echo?n=3";
+    public static final String ENDPOINT_2 = "_ah/api/echo/v1/echo?n=2";
+    public static final String ENDPOINT_3 = "_ah/api/echo/v1/echo?n=3";
 
 
 }

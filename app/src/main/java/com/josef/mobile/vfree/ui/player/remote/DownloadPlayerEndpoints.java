@@ -5,7 +5,7 @@ import com.josef.mobile.vfree.ui.main.Resource;
 
 import io.reactivex.Flowable;
 
-public interface EndpointObserver {
+public interface DownloadPlayerEndpoints {
 
      Flowable<Resource<LocalCache>> observeEndpoints(int index);
 

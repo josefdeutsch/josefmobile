@@ -28,10 +28,6 @@
                 <group android:checkableBehavior="single">
 
                     <item
-                        android:id="@+id/nav_tv"
-                        android:icon="@drawable/ic_baseline_play_circle_24"
-                        android:title="@string/nav_tv_title" />
-                    <item
                         android:id="@+id/nav_info"
                         android:icon="@drawable/ic_baseline_info_24"
                         android:title="@string/nav_info_title" />

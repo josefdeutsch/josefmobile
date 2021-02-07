@@ -5,6 +5,9 @@ import android.content.Context;
 
 import com.bumptech.glide.RequestManager;
 import com.josef.mobile.vfree.data.DataManager;
+import com.josef.mobile.vfree.ui.main.about.adapters.AboutRecyclerViewAdapter;
+import com.josef.mobile.vfree.ui.main.about.remote.AppDownloadAboutEndpoints;
+import com.josef.mobile.vfree.ui.main.about.remote.DownloadAboutEndpoints;
 import com.josef.mobile.vfree.ui.main.archive.ArchiveRecyclerViewAdapter;
 import com.josef.mobile.vfree.ui.main.archive.fire.AppFirebaseUpload;
 import com.josef.mobile.vfree.ui.main.archive.fire.FirebaseUpload;
@@ -18,6 +21,8 @@ import com.josef.mobile.vfree.ui.main.home.res.AppResourceObserver;
 import com.josef.mobile.vfree.ui.main.home.res.ResourceObserver;
 import com.josef.mobile.vfree.ui.main.store.AppDataBaseCredentials;
 import com.josef.mobile.vfree.ui.main.store.Credentials;
+import com.josef.mobile.vfree.ui.player.remote.AppDownloadPlayerEndpoints;
+import com.josef.mobile.vfree.ui.player.remote.DownloadPlayerEndpoints;
 import com.josef.mobile.vfree.utils.UtilManager;
 
 import dagger.Module;
@@ -37,6 +42,13 @@ public class MainModule {
     @Provides
     static ArchiveRecyclerViewAdapter provideArchiveRecyclerViewAdapter(RequestManager requestManager) {
         return new ArchiveRecyclerViewAdapter(requestManager);
+    }
+
+
+    @MainScope
+    @Provides
+    static AboutRecyclerViewAdapter provideAboutRecyclerViewAdapter(Context context) {
+        return new AboutRecyclerViewAdapter(context);
     }
 
     @MainScope
@@ -79,5 +91,13 @@ public class MainModule {
     static Credentials provideCredentials(AppDataBaseCredentials appDataBaseCredentials) {
         return appDataBaseCredentials;
     }
+
+    @MainScope
+    @Provides
+    static DownloadAboutEndpoints provideAboutDownloadEndpoints(AppDownloadAboutEndpoints downloadAboutEndpoints) {
+        return downloadAboutEndpoints;
+    }
+
+
 }
 

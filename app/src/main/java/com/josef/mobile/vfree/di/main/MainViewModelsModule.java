@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.josef.mobile.vfree.di.ViewModelKey;
 import com.josef.mobile.vfree.ui.main.MainViewModel;
+import com.josef.mobile.vfree.ui.main.about.AboutViewModel;
 import com.josef.mobile.vfree.ui.main.archive.ArchiveViewModel;
 import com.josef.mobile.vfree.ui.main.home.HomeViewModel;
 import com.josef.mobile.vfree.ui.main.post.PostsViewModel;
@@ -34,4 +35,10 @@ public abstract class MainViewModelsModule {
     @IntoMap
     @ViewModelKey(MainViewModel.class)
     public abstract ViewModel bindMainViewModel(MainViewModel viewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AboutViewModel.class)
+    public abstract ViewModel bindAboutViewModel(AboutViewModel viewModel);
+
 }

@@ -18,9 +18,10 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.josef.mobile.vfree.di.main.MainScope;
 import com.josef.mobile.vfree.ui.player.PlayerActivity;
-import com.josef.mobile.vfree.ui.player.remote.EndpointObserver;
-import com.josef.mobile.vfree.ui.player.remote.EndpointObserverHelper;
+import com.josef.mobile.vfree.ui.player.remote.AppDownloadPlayerEndpoints;
+import com.josef.mobile.vfree.ui.player.remote.DownloadPlayerEndpoints;
 import com.josef.mobile.R;
 
 import dagger.Module;
@@ -29,11 +30,6 @@ import dagger.Provides;
 @Module
 public abstract class PlayerModule {
 
-    @PlayerScope
-    @Provides
-    static EndpointObserver provideEndpointsObserver(EndpointObserverHelper endpointObserverHelper) {
-        return endpointObserverHelper;
-    }
 
     @PlayerScope
     @Provides
@@ -62,5 +58,11 @@ public abstract class PlayerModule {
                 super.onBackPressed();
             }
         };
+    }
+
+    @PlayerScope
+    @Provides
+    static DownloadPlayerEndpoints providePlayerDownloadEndpoints(AppDownloadPlayerEndpoints downloadAboutEndpoints) {
+        return downloadAboutEndpoints;
     }
 }
