@@ -5,7 +5,7 @@ import com.google.firebase.database.annotations.NotNull;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.josef.mobile.vfree.data.DataManager;
-import com.josef.mobile.vfree.data.local.db.model.LocalCache;
+import com.josef.mobile.vfree.ui.main.post.model.LocalCache;
 import com.josef.mobile.vfree.ui.main.Resource;
 import com.josef.mobile.vfree.utils.AppConstants;
 import java.lang.reflect.Type;

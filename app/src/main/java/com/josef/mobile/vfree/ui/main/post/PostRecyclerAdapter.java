@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.RequestManager;
 import com.josef.mobile.vfree.data.DataManager;
-import com.josef.mobile.vfree.data.local.db.model.LocalCache;
+import com.josef.mobile.vfree.ui.main.post.model.LocalCache;
 import com.josef.mobile.vfree.utils.UtilManager;
 import com.josef.mobile.R;
 

@@ -14,7 +14,7 @@ import android.widget.ToggleButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.RequestManager;
-import com.josef.mobile.vfree.data.local.db.model.Archive;
+import com.josef.mobile.vfree.ui.main.archive.model.Archive;
 import com.josef.mobile.R;
 
 import java.util.ArrayList;

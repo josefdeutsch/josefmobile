@@ -8,8 +8,8 @@ import androidx.lifecycle.LiveDataReactiveStreams;
 import androidx.lifecycle.MediatorLiveData;
 
 import com.josef.mobile.vfree.data.DataManager;
-import com.josef.mobile.vfree.data.local.db.model.Archive;
-import com.josef.mobile.vfree.data.local.db.model.LocalCache;
+import com.josef.mobile.vfree.ui.main.archive.model.Archive;
+import com.josef.mobile.vfree.ui.main.post.model.LocalCache;
 import com.josef.mobile.vfree.ui.base.BaseViewModel;
 import com.josef.mobile.vfree.ui.main.Resource;
 import com.josef.mobile.vfree.ui.main.post.remote.DownloadEndpoints;

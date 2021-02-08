@@ -1,8 +1,8 @@
 package com.josef.mobile.vfree.data.local.db;
 
 
-import com.josef.mobile.vfree.data.local.db.model.Archive;
-import com.josef.mobile.vfree.data.local.db.model.LocalCache;
+import com.josef.mobile.vfree.ui.main.archive.model.Archive;
+import com.josef.mobile.vfree.ui.main.post.model.LocalCache;
 
 import java.util.List;
 

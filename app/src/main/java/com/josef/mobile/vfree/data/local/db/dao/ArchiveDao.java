@@ -8,7 +8,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.josef.mobile.vfree.data.local.db.model.Archive;
+import com.josef.mobile.vfree.ui.main.archive.model.Archive;
 
 import java.util.List;
 

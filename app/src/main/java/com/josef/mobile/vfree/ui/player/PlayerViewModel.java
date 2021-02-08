@@ -8,7 +8,7 @@ import androidx.lifecycle.Observer;
 import com.google.firebase.database.annotations.NotNull;
 import com.google.firebase.database.annotations.Nullable;
 import com.josef.mobile.vfree.data.DataManager;
-import com.josef.mobile.vfree.data.local.db.model.LocalCache;
+import com.josef.mobile.vfree.ui.main.post.model.LocalCache;
 import com.josef.mobile.vfree.ui.base.BaseViewModel;
 import com.josef.mobile.vfree.ui.main.Resource;
 import com.josef.mobile.vfree.ui.player.remote.DownloadPlayerEndpoints;

@@ -1,4 +1,4 @@
-package com.josef.mobile.vfree.data.local.db.model;
+package com.josef.mobile.vfree.ui.main.archive.model;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -6,8 +6,8 @@ import androidx.room.PrimaryKey;
 
 import io.reactivex.annotations.NonNull;
 
-@Entity(tableName = "localcache")
-public class LocalCache {
+@Entity(tableName = "archive")
+public class Archive {
 
     @ColumnInfo(name = "created_at")
     public String createdAt;
@@ -47,32 +47,27 @@ public class LocalCache {
         this.exception = exception;
     }
 
-
-    public LocalCache(@NonNull Long id, boolean flag, String name, String url, String tag, String png) {
+    public Archive(long id, boolean flag, String name, String png, String url, String tag) {
         this.id = id;
-        this.flag = flag;
         this.name = name;
+        this.png = png;
         this.url = url;
         this.tag = tag;
-        this.png = png;
+        this.flag = flag;
     }
 
-    public LocalCache(String name, String png, String url) {
+    public Archive(String name, String png, String url) {
         this.name = name;
         this.png = png;
         this.url = url;
     }
 
-    public LocalCache(long id, String name) {
+    public Archive(long id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public LocalCache() {
-    }
-
-    public boolean isFlag() {
-        return flag;
+    public Archive() {
     }
 
     public String getCreatedAt() {
@@ -81,6 +76,14 @@ public class LocalCache {
 
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public boolean isFlag() {
+        return flag;
+    }
+
+    public void setFlag(boolean flag) {
+        this.flag = flag;
     }
 
     @NonNull

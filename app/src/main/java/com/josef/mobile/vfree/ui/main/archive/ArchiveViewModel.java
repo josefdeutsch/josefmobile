@@ -9,7 +9,7 @@ import androidx.lifecycle.LiveDataReactiveStreams;
 import androidx.lifecycle.MediatorLiveData;
 
 import com.google.firebase.database.DatabaseReference;
-import com.josef.mobile.vfree.data.local.db.model.Archive;
+import com.josef.mobile.vfree.ui.main.archive.model.Archive;
 import com.josef.mobile.vfree.ui.base.BaseViewModel;
 import com.josef.mobile.vfree.ui.main.MainActivity;
 import com.josef.mobile.vfree.ui.main.Resource;

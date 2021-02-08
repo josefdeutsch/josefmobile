@@ -4,45 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/colorPrimaryDark"
-    tools:context=".vfree.ui.splash.SplashActivity">
+    android:background="@color/colorPrimary"
+    tools:context=".vfree.ui.splash.SplashActivity"
 
-    <ImageView
-        android:id="@+id/logo"
+    >
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/animated_gif"
         android:layout_width="match_parent"
-        android:layout_height="256dp"
-        android:paddingLeft="24dp"
-        android:paddingRight="24dp"
+        android:layout_height="512dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_webdesignsvg_02"
+        android:src="@drawable/logoblack"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></ImageView>
-
-    <TextView
-        android:id="@+id/text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:fontFamily="sans-serif-black-serif"
-        android:paddingLeft="24dp"
-        android:paddingRight="24dp"
-        android:text="Digital Art is true"
-        android:textColor="@color/colorPrimary"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/logo"
-        app:layout_constraintStart_toStartOf="@+id/logo"></TextView>
-
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_marginStart="180dp"
-        android:layout_marginBottom="128dp"
-        android:theme="@style/WhiteTheme"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"></ProgressBar>
-
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

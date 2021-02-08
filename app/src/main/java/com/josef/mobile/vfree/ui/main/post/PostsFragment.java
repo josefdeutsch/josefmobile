@@ -15,11 +15,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.josef.mobile.vfree.data.local.db.model.Archive;
-import com.josef.mobile.vfree.data.local.db.model.LocalCache;
+import com.josef.mobile.vfree.ui.err.ErrorActivity;
+import com.josef.mobile.vfree.ui.main.archive.model.Archive;
+import com.josef.mobile.vfree.ui.main.post.model.LocalCache;
 import com.josef.mobile.vfree.data.local.prefs.PreferencesHelper;
 import com.josef.mobile.vfree.ui.base.BaseFragment;
-import com.josef.mobile.vfree.ui.err.ErrorActivity;
 import com.josef.mobile.vfree.ui.player.PlayerActivity;
 import com.josef.mobile.vfree.utils.AppConstants;
 import com.josef.mobile.R;
@@ -92,15 +92,15 @@ public class PostsFragment extends BaseFragment
                     case ERROR: {
                         hideProgessbar();
                         Log.d(TAG, "subscribeObservers: "+listResource.message.toString());
-                       // Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getActivity(),
-                          //      android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
+                        Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getActivity(),
+                               android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
 
-                    //    Intent intent = new Intent(getActivity(), ErrorActivity.class);
-                     //   intent.putExtra(ErrorActivity.ACTIVITY_KEYS, getActivity().getComponentName().getClassName());
+                        Intent intent = new Intent(getActivity(), ErrorActivity.class);
+                        intent.putExtra(ErrorActivity.ACTIVITY_KEYS, getActivity().getComponentName().getClassName());
 
-                    //   startActivity(intent, bundle);
+                      startActivity(intent, bundle);
 
-                    //    getActivity().finishAfterTransition();
+                        getActivity().finishAfterTransition();
                         break;
                     }
                 }

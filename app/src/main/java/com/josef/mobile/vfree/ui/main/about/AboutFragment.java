@@ -19,6 +19,7 @@ import com.josef.mobile.vfree.ui.base.BaseFragment;
 import com.josef.mobile.vfree.ui.err.ErrorActivity;
 import com.josef.mobile.vfree.ui.main.about.adapters.AboutRecyclerViewAdapter;
 import com.josef.mobile.vfree.ui.main.post.PostsViewModel;
+import com.josef.mobile.vfree.utils.AppConstants;
 
 import javax.inject.Inject;
 
@@ -48,6 +49,12 @@ public class AboutFragment extends BaseFragment {
         subscribeObservers();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        viewModel.getContainers().removeObservers(getViewLifecycleOwner());
+    }
+
     private void initRecyclerView(@NonNull View view) {
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
@@ -56,8 +63,7 @@ public class AboutFragment extends BaseFragment {
     }
 
     private void subscribeObservers() {
-        viewModel.observeEndpoints().removeObservers(getViewLifecycleOwner());
-        viewModel.observeEndpoints().observe(getViewLifecycleOwner(), listResource -> {
+        viewModel.observeEndpoints(AppConstants.ENDPOINT_2).observe(getViewLifecycleOwner(), listResource -> {
             if (listResource != null) {
                 switch (listResource.status) {
                     case LOADING: {
@@ -66,13 +72,11 @@ public class AboutFragment extends BaseFragment {
                     }
                     case SUCCESS: {
                         adapter.setAbouts(listResource.data);
-                        Log.d(TAG, "subscribeObservers: "+listResource.data.toString());
                         hideProgessbar();
                         break;
                     }
                     case ERROR: {
                         hideProgessbar();
-                        Log.d(TAG, "subscribeObservers: " + listResource.message.toString());
                         Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getActivity(),
                                 android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
 

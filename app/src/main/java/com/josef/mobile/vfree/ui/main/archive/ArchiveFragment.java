@@ -13,7 +13,7 @@ import androidx.core.app.ActivityOptionsCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.josef.mobile.vfree.data.local.db.model.Archive;
+import com.josef.mobile.vfree.ui.main.archive.model.Archive;
 import com.josef.mobile.vfree.ui.base.BaseFragment;
 import com.josef.mobile.vfree.ui.err.ErrorActivity;
 import com.josef.mobile.vfree.ui.main.MainActivity;

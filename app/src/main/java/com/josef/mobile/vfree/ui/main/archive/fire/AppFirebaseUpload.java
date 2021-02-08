@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveDataReactiveStreams;
 import com.google.firebase.database.DatabaseReference;
 import com.josef.mobile.vfree.SessionManager;
 import com.josef.mobile.vfree.data.DataManager;
-import com.josef.mobile.vfree.data.local.db.model.Archive;
+import com.josef.mobile.vfree.ui.main.archive.model.Archive;
 import com.josef.mobile.vfree.ui.auth.AuthResource;
 import com.josef.mobile.vfree.ui.auth.model.User;
 import com.josef.mobile.vfree.ui.main.MainActivity;

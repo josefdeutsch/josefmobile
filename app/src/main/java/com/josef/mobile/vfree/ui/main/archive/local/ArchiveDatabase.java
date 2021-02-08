@@ -1,6 +1,6 @@
 package com.josef.mobile.vfree.ui.main.archive.local;
 
-import com.josef.mobile.vfree.data.local.db.model.Archive;
+import com.josef.mobile.vfree.ui.main.archive.model.Archive;
 import com.josef.mobile.vfree.ui.main.Resource;
 
 import java.util.List;
