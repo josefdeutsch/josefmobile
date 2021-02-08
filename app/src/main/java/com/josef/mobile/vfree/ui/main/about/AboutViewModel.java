@@ -35,8 +35,8 @@ public class AboutViewModel extends BaseViewModel {
     @Inject
     public AboutViewModel(DataManager dataManager,
                           DownloadAboutEndpoints endpointsObserver,
-                          UtilManager utilManager,
-                          Context context) {
+                          UtilManager utilManager)
+    {
 
         this.dataManager = dataManager;
         this.endpointsObserver = endpointsObserver;
@@ -45,24 +45,22 @@ public class AboutViewModel extends BaseViewModel {
     }
 
 
-    public LiveData<Resource<List<About>>> observeEndpoints(@NonNull String url) {
+    public LiveData<Resource<List<About>>> observeEndpoints(@NonNull String url)
+    {
         if (containers == null) containers = new MediatorLiveData<>();
         containers.setValue(Resource.loading(null));
 
         LiveData<Resource<List<About>>> source =
-                LiveDataReactiveStreams.fromPublisher(endpointsObserver.getEndpoints(url));
+                LiveDataReactiveStreams
+                        .fromPublisher(endpointsObserver.getEndpoints(url));
 
         containers.setValue(Resource.loading(null));
-        containers.addSource(source, new Observer<Resource<List<About>>>() {
-            @Override
-            public void onChanged(Resource<List<About>> userAuthResource) {
-                containers.setValue(userAuthResource);
-                containers.removeSource(source);
-            }
+        containers.addSource(source, userAuthResource -> {
+            containers.setValue(userAuthResource);
+            containers.removeSource(source);
         });
 
         return containers;
     }
-
 
 }

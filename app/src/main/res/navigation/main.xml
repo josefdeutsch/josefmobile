@@ -23,11 +23,6 @@
         android:label="@string/fragment_archive"
         tools:layout="@layout/fragment_archive"></fragment>
 
-    <fragment
-        android:id="@+id/tvScreen"
-        android:name="com.josef.mobile.vfree.ui.main.tv.TvFragment"
-        android:label="@string/fragment_tv"
-        tools:layout="@layout/fragment_tv"></fragment>
 
     <fragment
         android:id="@+id/infoScreen"

@@ -75,8 +75,8 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Flowable<Endpoint> getChange(String url) {
-        return endpoints.getChange(url);
+    public Flowable<Endpoint> getEndpoints(String url) {
+        return endpoints.getEndpoints(url);
     }
 
     @Override

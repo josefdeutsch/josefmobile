@@ -1,6 +1,7 @@
 package com.josef.mobile.vfree.ui.main.about.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import ru.embersoft.expandabletextview.ExpandableTextView;
+
+import static android.content.ContentValues.TAG;
 
 public class AboutRecyclerViewAdapter extends RecyclerView.Adapter<AboutRecyclerViewAdapter.ViewHolder> {
 
@@ -64,6 +67,7 @@ public class AboutRecyclerViewAdapter extends RecyclerView.Adapter<AboutRecycler
     @Override
     public int getItemCount() {
         if (abouts == null) abouts = new ArrayList<>();
+        Log.d(TAG, "getItemCount: "+abouts.size());
         return abouts.size();
     }
 

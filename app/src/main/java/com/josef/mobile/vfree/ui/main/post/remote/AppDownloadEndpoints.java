@@ -33,9 +33,9 @@ public class AppDownloadEndpoints implements DownloadEndpoints {
         this.dataManager = dataManager;
     }
 
-    public Flowable<Resource<List<LocalCache>>> getEndpoints(String index) {
+    public Flowable<Resource<List<LocalCache>>> getEndpoints(String url) {
 
-        return dataManager.getChange(BASE_URL3 + index)
+        return dataManager.getEndpoints(BASE_URL3 + url)
                 .map(endpoint -> {
                     Gson gson = new Gson();
                     Type userListType = new TypeToken<ArrayList<LocalCache>>() {

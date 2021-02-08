@@ -4,7 +4,7 @@ public class Profile {
 
     private String url;
     private String article;
-    private int id;
+    private long id;
 
     public String exception;
 
@@ -40,11 +40,11 @@ public class Profile {
         this.article = article;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 }

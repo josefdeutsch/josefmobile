@@ -59,7 +59,7 @@ public class AppDownloadPlayerEndpoints implements DownloadPlayerEndpoints {
 
     @NotNull
     private Flowable<ArrayList<LocalCache>> getFlowableList() {
-        return dataManager.getChange(BASE_URL3 + AppConstants.ENDPOINT_1)
+        return dataManager.getEndpoints(BASE_URL3 + AppConstants.ENDPOINT_1)
                 .map(endpoint -> {
                     Gson gson = new Gson();
                     Type userListType = new TypeToken<ArrayList<LocalCache>>() {

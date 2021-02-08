@@ -78,20 +78,14 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
         private static final String TAG = "ViewHolder";
         @BindView(R.id.profile_button_container)
         RelativeLayout button_container;
-        @BindView(R.id.profile_image_container)
+        @BindView(R.id.profile_logo_container)
         FrameLayout image_container;
-        @BindView(R.id.profile_text_container)
+        @BindView(R.id.profile_arrow_container)
         FrameLayout text_container;
         @BindView(R.id.learnmore)
         Button learn_more;
-        @BindView(R.id.article)
-        TextView article;
         @BindView(R.id.vision_header)
         TextView header;
-        @BindView(R.id.animated_gif)
-        ImageView animatedGif;
-        @BindView(R.id.pointsleftright)
-        ImageView pointsLeftRight;
         @BindView(R.id.continue_action)
         Button continue_action;
 
@@ -102,28 +96,13 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
 
         private void onBindViews(int position) throws IOException {
             int last = profileList.size() - 1;
-            requestManager.load(profileList.get(position).getUrl()).into(animatedGif);
-            article.setText(profileList.get(position).getArticle());
-            article.setTag(R.id.article);
+         //   requestManager.load(profileList.get(position).getUrl()).into(animatedGif);
+            header.setText(profileList.get(position).getArticle());
+           // article.setTag(R.id.article);
 
-            if (position > 0) {
-                text_container.setVisibility(View.VISIBLE);
-                image_container.setVisibility(View.INVISIBLE);
-                header.setVisibility(View.INVISIBLE);
-                pointsLeftRight.setVisibility(View.VISIBLE);
-                button_container.setVisibility(View.INVISIBLE);
-
-                if (last == position) {
-                    button_container.setVisibility(View.VISIBLE);
-                } else {
-                    button_container.setVisibility(View.INVISIBLE);
-                }
-
+            if (last == position) {
+                button_container.setVisibility(View.VISIBLE);
             } else {
-                text_container.setVisibility(View.INVISIBLE);
-                image_container.setVisibility(View.VISIBLE);
-                header.setVisibility(View.VISIBLE);
-                pointsLeftRight.setVisibility(View.INVISIBLE);
                 button_container.setVisibility(View.INVISIBLE);
             }
         }

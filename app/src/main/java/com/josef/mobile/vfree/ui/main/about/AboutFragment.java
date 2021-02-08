@@ -6,21 +6,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.josef.mobile.R;
 import com.josef.mobile.vfree.ui.base.BaseFragment;
 import com.josef.mobile.vfree.ui.err.ErrorActivity;
 import com.josef.mobile.vfree.ui.main.about.adapters.AboutRecyclerViewAdapter;
-import com.josef.mobile.vfree.ui.main.post.PostsViewModel;
 import com.josef.mobile.vfree.utils.AppConstants;
-
 import javax.inject.Inject;
 
 import static android.content.ContentValues.TAG;
@@ -33,6 +29,12 @@ public class AboutFragment extends BaseFragment {
     private AboutViewModel viewModel;
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        viewModel = new ViewModelProvider(this, providerFactory).get(AboutViewModel.class);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_about, container, false);
@@ -42,17 +44,15 @@ public class AboutFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        viewModel = new ViewModelProvider(this, providerFactory).get(AboutViewModel.class);
-
         initRecyclerView(view);
+        // 2x times - refresh
+        subscribeObservers();
         subscribeObservers();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        viewModel.getContainers().removeObservers(getViewLifecycleOwner());
     }
 
     private void initRecyclerView(@NonNull View view) {
@@ -63,6 +63,7 @@ public class AboutFragment extends BaseFragment {
     }
 
     private void subscribeObservers() {
+        viewModel.observeEndpoints(AppConstants.ENDPOINT_2).removeObservers(getViewLifecycleOwner());
         viewModel.observeEndpoints(AppConstants.ENDPOINT_2).observe(getViewLifecycleOwner(), listResource -> {
             if (listResource != null) {
                 switch (listResource.status) {
@@ -76,6 +77,7 @@ public class AboutFragment extends BaseFragment {
                         break;
                     }
                     case ERROR: {
+                        Log.d(TAG, "subscribeObservers: "+listResource.message);
                         hideProgessbar();
                         Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getActivity(),
                                 android.R.anim.fade_in, android.R.anim.fade_out).toBundle();

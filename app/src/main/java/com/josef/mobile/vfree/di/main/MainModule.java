@@ -13,16 +13,14 @@ import com.josef.mobile.vfree.ui.main.archive.fire.AppFirebaseUpload;
 import com.josef.mobile.vfree.ui.main.archive.fire.FirebaseUpload;
 import com.josef.mobile.vfree.ui.main.archive.local.AppArchiveDatabase;
 import com.josef.mobile.vfree.ui.main.archive.local.ArchiveDatabase;
+import com.josef.mobile.vfree.ui.main.home.res.DownloadProfileEndpoints;
 import com.josef.mobile.vfree.ui.main.post.PostRecyclerAdapter;
 import com.josef.mobile.vfree.ui.main.post.remote.AppDownloadEndpoints;
 import com.josef.mobile.vfree.ui.main.post.remote.DownloadEndpoints;
 import com.josef.mobile.vfree.ui.main.home.ViewPagerAdapter;
-import com.josef.mobile.vfree.ui.main.home.res.AppResourceObserver;
-import com.josef.mobile.vfree.ui.main.home.res.ResourceObserver;
+import com.josef.mobile.vfree.ui.main.home.res.AppDownloadProfileEndpoints;
 import com.josef.mobile.vfree.ui.main.store.AppDataBaseCredentials;
 import com.josef.mobile.vfree.ui.main.store.Credentials;
-import com.josef.mobile.vfree.ui.player.remote.AppDownloadPlayerEndpoints;
-import com.josef.mobile.vfree.ui.player.remote.DownloadPlayerEndpoints;
 import com.josef.mobile.vfree.utils.UtilManager;
 
 import dagger.Module;
@@ -78,7 +76,7 @@ public class MainModule {
 
     @MainScope
     @Provides
-    static ResourceObserver provideResourceObserver(AppResourceObserver appResourceObserver) {
+    static DownloadProfileEndpoints provideResourceObserver(AppDownloadProfileEndpoints appResourceObserver) {
         return appResourceObserver;
     }
 

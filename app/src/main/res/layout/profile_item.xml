@@ -5,16 +5,6 @@
     android:layout_height="match_parent"
     android:backgroundTint="@color/colorPrimaryDark">
 
-    <ImageView
-        android:id="@+id/pointsleftright"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="128dp"
-        android:layout_marginEnd="30dp"
-        android:src="@drawable/ic_logopointssvg"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/vision_header"
@@ -34,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
-        android:backgroundTint="@color/colorPrimary"
+        android:backgroundTint="@color/white"
         app:cardCornerRadius="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -42,19 +32,22 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <FrameLayout
-            android:id="@+id/profile_image_container"
+            android:id="@+id/profile_logo_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/animated_gif"
+                android:id="@+id/logo"
                 android:layout_width="match_parent"
                 android:layout_height="256dp"
-                android:scaleType="centerCrop"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_logosvg"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -64,7 +57,7 @@
         </FrameLayout>
 
         <FrameLayout
-            android:id="@+id/profile_text_container"
+            android:id="@+id/profile_arrow_container"
             android:layout_width="match_parent"
             android:layout_height="256dp"
             android:layout_marginLeft="24dp"
@@ -74,15 +67,16 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/article"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <ImageView
+                android:id="@+id/arrow"
+                android:layout_width="192dp"
+                android:layout_height="192dp"
                 android:layout_gravity="center"
+
                 android:fontFamily="sans-serif-thin"
                 android:text="default"
-                android:textColor="#FFFFFF"
-                android:textSize="36dp"></TextView>
+                android:src="@drawable/ic_baseline_play_circle_outline_24"
+              ></ImageView>
         </FrameLayout>
 
     </androidx.cardview.widget.CardView>
@@ -100,7 +94,6 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
-
             android:id="@+id/learnmore"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
@@ -109,9 +102,7 @@
             android:text="Learn more"
             android:textColor="@color/white"
             android:textSize="16sp" />
-
         <Button
-
             android:id="@+id/continue_action"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
