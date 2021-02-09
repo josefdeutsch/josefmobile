@@ -1,5 +1,6 @@
 package com.josef.mobile.vfree.ui.player;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.LiveDataReactiveStreams;
 import androidx.lifecycle.MediatorLiveData;
@@ -30,11 +31,13 @@ public class PlayerViewModel extends BaseViewModel {
         this.endpointObserver = endpointObserver;
     }
 
-    public void authenticateWithEndpoint(@NotNull int index) {
+    public void authenticateWithEndpoint(@NotNull int index,
+                                         @NonNull String endpoint)
+    {
         if (container == null) container = new MediatorLiveData<>();
         container.setValue(Resource.loading(null));
         final LiveData<Resource<LocalCache>> source
-                = LiveDataReactiveStreams.fromPublisher(endpointObserver.observeEndpoints(index));
+                = LiveDataReactiveStreams.fromPublisher(endpointObserver.observeEndpoints(index,endpoint));
         container.setValue(Resource.loading(null));
         container.addSource(source, new Observer<Resource<LocalCache>>() {
             @Override

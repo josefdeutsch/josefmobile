@@ -1,6 +1,8 @@
 package com.josef.mobile.vfree.data.local.db;
 
 
+import androidx.annotation.NonNull;
+
 import com.josef.mobile.vfree.ui.main.archive.model.Archive;
 import com.josef.mobile.vfree.ui.main.post.model.LocalCache;
 
@@ -11,30 +13,35 @@ import io.reactivex.Single;
 
 public interface DbHelper {
 
+    @NonNull
     Flowable<List<Archive>> getAllArchives();
 
-    Single<Archive> findArchiveByName(final Archive archive);
+    @NonNull
+    Single<Archive> findArchiveByName(@NonNull final Archive archive);
 
-    void insertArchives(final Archive archive);
+    void insertArchives(@NonNull final Archive archive);
 
-    void deleteArchives(final Archive archive);
+    void deleteArchives(@NonNull final Archive archive);
 
-    void updateArchives(final Archive archive);
+    void updateArchives(@NonNull final Archive archive);
 
+    @NonNull
     Flowable<Archive> getArchive();
 
-
+    @NonNull
     Flowable<List<LocalCache>> getAllEndpoints();
 
-    Single<LocalCache> findEndpointsByName(final LocalCache endpoints);
+    @NonNull
+    Single<LocalCache> findEndpointsByName(@NonNull final LocalCache endpoints);
 
-    void insertEndpoints(final LocalCache endpoints);
+    void insertEndpoints(@NonNull final LocalCache endpoints);
 
-    void insertAllEndpoints(final List<LocalCache> endpoints);
+    void insertAllEndpoints(@NonNull final List<LocalCache> endpoints);
 
-    void deleteEndpoints(final LocalCache endpoints);
+    void deleteEndpoints(@NonNull final LocalCache endpoints);
 
-    void updateEndpoints(final LocalCache endpoints);
+    void updateEndpoints(@NonNull final LocalCache endpoints);
 
+    @NonNull
     Flowable<LocalCache> getEndpoint();
 }

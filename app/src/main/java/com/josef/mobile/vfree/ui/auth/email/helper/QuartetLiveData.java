@@ -15,7 +15,11 @@ public final class QuartetLiveData<A, B, C, D> extends MediatorLiveData<Quartet<
     public @NonNull
     D d;
 
-    public void combinedLiveData(LiveData<A> ld1, LiveData<B> ld2, LiveData<C> ld3, LiveData<D> ld4) {
+    public void combinedLiveData(@NonNull LiveData<A> ld1,
+                                 @NonNull LiveData<B> ld2,
+                                 @NonNull LiveData<C> ld3,
+                                 @NonNull LiveData<D> ld4)  {
+
             setValue(Quartet.create(a, b, c, d));
 
             addSource(ld1, a -> {
@@ -48,7 +52,10 @@ public final class QuartetLiveData<A, B, C, D> extends MediatorLiveData<Quartet<
     }
 
 
-    public void removeLiveData(LiveData<A> ld1, LiveData<B> ld2, LiveData<C> ld3, LiveData<D> ld4) {
+    public void removeLiveData(@NonNull LiveData<A> ld1,
+                               @NonNull LiveData<B> ld2,
+                               @NonNull LiveData<C> ld3,
+                               @NonNull LiveData<D> ld4) {
         removeSource(ld1);
         removeSource(ld2);
         removeSource(ld3);

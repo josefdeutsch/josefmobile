@@ -22,6 +22,7 @@ import com.josef.mobile.vfree.ui.base.BaseFragment;
 import com.josef.mobile.vfree.ui.err.ErrorActivity;
 import com.josef.mobile.vfree.ui.main.MainActivity;
 import com.josef.mobile.R;
+import com.josef.mobile.vfree.ui.player.PlayerActivity;
 import com.josef.mobile.vfree.utils.AppConstants;
 
 import javax.inject.Inject;
@@ -29,9 +30,11 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.content.ContentValues.TAG;
 import static com.josef.mobile.vfree.ui.err.ErrorActivity.ACTIVITY_KEYS;
 
-public class HomeFragment extends BaseFragment implements ViewPagerAdapter.ViewpagerAdapterOnClickListener {
+public class HomeFragment extends BaseFragment
+        implements ViewPagerAdapter.ViewpagerAdapterOnClickListener {
 
 
     private static final String TAG = "HomeFragment";
@@ -45,6 +48,7 @@ public class HomeFragment extends BaseFragment implements ViewPagerAdapter.Viewp
     TabLayout tabLayout;
 
     private HomeViewModel viewModel;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,7 +81,7 @@ public class HomeFragment extends BaseFragment implements ViewPagerAdapter.Viewp
         }).attach();
 
         subscribeObservers();
-        subscribeObservers();
+      //  subscribeObservers();
     }
 
     private void subscribeObservers() {
@@ -115,6 +119,7 @@ public class HomeFragment extends BaseFragment implements ViewPagerAdapter.Viewp
 
     @Override
     public void onItemInfoClicked() {
+        Log.d(TAG, "onItemInfoClicked: ");
         NavigationView navigationView = getActivity().findViewById(R.id.nav_view);
         Menu menu = navigationView.getMenu();
         MenuItem menuItem = menu.findItem(R.id.nav_info);
@@ -123,9 +128,25 @@ public class HomeFragment extends BaseFragment implements ViewPagerAdapter.Viewp
 
     @Override
     public void onItemContinueClicked() {
+        Log.d(TAG, "onItemContinueClicked: ");
         NavigationView navigationView = getActivity().findViewById(R.id.nav_view);
         Menu menu = navigationView.getMenu();
         MenuItem menuItem = menu.findItem(R.id.nav_posts);
         ((MainActivity) getActivity()).onNavigationItemSelected(menuItem);
+    }
+
+    @Override
+    public void onItemArrowClicked(int position) {
+        Log.d(TAG, "onItemArrowClicked: ");
+        Intent intent = new Intent(getActivity(), PlayerActivity.class);
+        intent.putExtra(AppConstants.REQUEST_INDEX, position);
+        intent.putExtra(AppConstants.REQUEST_ENDPOINT, AppConstants.ENDPOINT_3);
+        startActivityForResult(intent, AppConstants.PLAYERACTIVIY);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
     }
 }

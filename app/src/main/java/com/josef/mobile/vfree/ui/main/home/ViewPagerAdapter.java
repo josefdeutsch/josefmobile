@@ -71,6 +71,8 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
         void onItemInfoClicked();
 
         void onItemContinueClicked();
+
+        void onItemArrowClicked(int position);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -106,6 +108,12 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
                 button_container.setVisibility(View.INVISIBLE);
             }
         }
+
+        @OnClick(R.id.arrow_button)
+        public void onItemArrowClicked(View v) {
+            viewpagerAdapterOnClickListener.onItemArrowClicked(getAdapterPosition());
+        }
+
 
         @OnClick(R.id.continue_action)
         public void onItemContinueClicked(View v) {

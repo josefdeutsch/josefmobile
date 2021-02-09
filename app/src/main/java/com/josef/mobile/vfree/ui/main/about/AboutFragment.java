@@ -47,12 +47,13 @@ public class AboutFragment extends BaseFragment {
         initRecyclerView(view);
         // 2x times - refresh
         subscribeObservers();
-        subscribeObservers();
+
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+
     }
 
     private void initRecyclerView(@NonNull View view) {
@@ -93,6 +94,7 @@ public class AboutFragment extends BaseFragment {
                 }
             }
         });
+
     }
 
 }

@@ -121,6 +121,7 @@ public class PostsFragment extends BaseFragment
     public void onClick(int position) {
         Intent intent = new Intent(getActivity(), PlayerActivity.class);
         intent.putExtra(AppConstants.REQUEST_INDEX, position);
+        intent.putExtra(AppConstants.REQUEST_ENDPOINT, AppConstants.ENDPOINT_1);
         Log.d(TAG, "onClick: "+position);
         startActivityForResult(intent, AppConstants.PLAYERACTIVIY);
     }

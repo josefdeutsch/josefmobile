@@ -2,6 +2,8 @@ package com.josef.mobile.vfree.ui.auth.email;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -25,12 +27,16 @@ public final class AppEmailLogin implements EmailLogin {
     private final Context context;
 
     @Inject
-    public AppEmailLogin(Context context, FirebaseAuth firebaseAuth) {
+    public AppEmailLogin(@NonNull Context context,
+                         @NonNull FirebaseAuth firebaseAuth) {
+
         this.context = context;
         this.firebaseAuth = firebaseAuth;
     }
 
-    public Flowable<AuthResource<User>> authenticateWithEmailAccount(String email, String password) {
+    @NonNull
+    public Flowable<AuthResource<User>> authenticateWithEmailAccount(@NonNull String email,
+                                                                     @NonNull String password) {
 
         Single<User> completion = signInWithEmailAndPassword(email, password);
 
@@ -55,13 +61,19 @@ public final class AppEmailLogin implements EmailLogin {
                 .subscribeOn(Schedulers.io());
     }
 
-    private Flowable<User> concatOptionsSingles(Single<User> completion, Single<User> verification) {
+    @NonNull
+    private Flowable<User> concatOptionsSingles(@NonNull Single<User> completion,
+                                                @NonNull Single<User> verification) {
+
         return completion.flatMap(verify -> verification).toFlowable();
     }
 
-    private final User user = new User();
 
-    private Single<User> signInWithEmailAndPassword(String email, String password) {
+    private final User user = new User(); // refactor !
+
+    private Single<User> signInWithEmailAndPassword(@NonNull String email,
+                                                    @NonNull String password) {
+
         return Single.create(emitter -> firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@androidx.annotation.NonNull Task<AuthResult> task) {
@@ -75,6 +87,7 @@ public final class AppEmailLogin implements EmailLogin {
         }));
     }
 
+    @NonNull
     private Single<User> verifyIsEmailSigned() {
         return Single.create(emitter -> {
             if (firebaseAuth.getCurrentUser().isEmailVerified()) {

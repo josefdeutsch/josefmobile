@@ -19,6 +19,8 @@ package com.josef.mobile.vfree.data.local.prefs;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import androidx.annotation.NonNull;
+
 import com.josef.mobile.vfree.di.PreferenceInfo;
 
 import javax.inject.Inject;
@@ -27,26 +29,28 @@ import javax.inject.Inject;
  * Created by amitshekhar on 07/07/17.
  */
 
-public class AppPreferencesHelper implements PreferencesHelper {
+public final class AppPreferencesHelper implements PreferencesHelper {
 
     private final SharedPreferences mPrefs;
 
     @Inject
-    public AppPreferencesHelper(Context context, @PreferenceInfo String prefFileName) {
+    public AppPreferencesHelper(@NonNull Context context, @PreferenceInfo String prefFileName) {
         mPrefs = context.getSharedPreferences(prefFileName, Context.MODE_PRIVATE);
     }
 
+    @NonNull
     public String getHashMapArchiveIndicator() {
         return mPrefs.getString(ARCHIVE_INDICATOR, ARCHIVE_EMPTY);
     }
 
     @Override
-    public void setHashMapArchiveIndicator(String string) {
+    public void setHashMapArchiveIndicator(@NonNull String string) {
         mPrefs.edit().putString(ARCHIVE_INDICATOR, string).commit();
     }
 
     @Override
     public void clearHashmapIndicator() {
+
         mPrefs.edit().remove(ARCHIVE_INDICATOR).commit();
     }
 

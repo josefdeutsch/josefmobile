@@ -19,7 +19,7 @@ import io.reactivex.Flowable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
-import static com.josef.mobile.vfree.utils.AppConstants.BASE_URL3;
+import static com.josef.mobile.vfree.utils.AppConstants.BASE_URL;
 
 @Singleton
 public class AppDownloadEndpoints implements DownloadEndpoints {
@@ -35,7 +35,7 @@ public class AppDownloadEndpoints implements DownloadEndpoints {
 
     public Flowable<Resource<List<LocalCache>>> getEndpoints(String url) {
 
-        return dataManager.getEndpoints(BASE_URL3 + url)
+        return dataManager.getEndpoints(BASE_URL + url)
                 .map(endpoint -> {
                     Gson gson = new Gson();
                     Type userListType = new TypeToken<ArrayList<LocalCache>>() {

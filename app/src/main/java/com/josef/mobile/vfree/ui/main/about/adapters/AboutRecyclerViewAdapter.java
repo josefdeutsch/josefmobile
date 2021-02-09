@@ -73,6 +73,7 @@ public class AboutRecyclerViewAdapter extends RecyclerView.Adapter<AboutRecycler
 
     public void setAbouts(List<About> abouts) {
         this.abouts = abouts;
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

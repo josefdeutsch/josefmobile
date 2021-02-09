@@ -7,13 +7,13 @@ import androidx.core.util.Pair;
 
 public final class Quartet<A, B, C, D> {
 
-    public final @Nullable
+    public final
     A a;
-    public final @Nullable
+    public final
     B b;
-    public final @Nullable
+    public final
     C c;
-    public final @Nullable
+    public final
     D d;
 
 

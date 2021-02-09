@@ -2,32 +2,42 @@ package com.josef.mobile.vfree.data.firebase;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.annotations.Nullable;
+
+import java.util.Objects;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class Firedatabase implements Firebase {
+public final class Firedatabase implements Firebase {
 
     private final FirebaseDatabase database;
 
     @Inject
-    public Firedatabase(FirebaseDatabase database) {
+    public Firedatabase(@Nullable FirebaseDatabase database)
+    {
         this.database = database;
     }
 
+    @Nullable
     @Override
-    public DatabaseReference getDataBaseRefChild_User() {
-        return database.getReference("users");
+    public DatabaseReference getDataBaseRefChild_User()
+    {
+        return Objects.requireNonNull(database.getReference("users"), "db reference users must not be null" );
     }
 
+    @Nullable
     @Override
-    public DatabaseReference getDataBaseRefChild_Profile() {
-        return database.getReference("profile");
+    public DatabaseReference getDataBaseRefChild_Profile() throws NullPointerException
+    {
+        return Objects.requireNonNull(database.getReference("profile"),"db reference profile must not be null" );
     }
 
+    @Nullable
     @Override
-    public FirebaseDatabase getFirebaseDataBase() {
-        return database;
+    public FirebaseDatabase getFirebaseDataBase() throws NullPointerException
+    {
+        return Objects.requireNonNull(database,"db raw must not be null" );
     }
 }

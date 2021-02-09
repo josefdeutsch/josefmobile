@@ -13,7 +13,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class AppAdsRequest implements AdsRequest {
+public final class AppAdsRequest implements AdsRequest {
 
     @NonNull
     private final Handler mHandler = new Handler(Looper.getMainLooper());

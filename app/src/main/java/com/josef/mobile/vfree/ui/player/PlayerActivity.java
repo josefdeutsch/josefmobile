@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -26,6 +27,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.josef.mobile.vfree.ui.err.ErrorActivity.ACTIVITY_KEYS;
+import static com.josef.mobile.vfree.utils.AppConstants.REQUEST_ENDPOINT;
 import static com.josef.mobile.vfree.utils.AppConstants.REQUEST_INDEX;
 import static com.josef.mobile.vfree.utils.AppConstants.STATE_BOOLEAN_VALUE;
 import static com.josef.mobile.vfree.utils.AppConstants.STATE_RESUME_POSITION;
@@ -33,6 +35,8 @@ import static com.josef.mobile.vfree.utils.AppConstants.STATE_RESUME_WINDOW;
 
 public class PlayerActivity extends BaseActivity {
 
+
+    private static final String TAG = "PlayerActivity";
 
     @Inject
     Dialog mFullScreenDialog;
@@ -53,12 +57,16 @@ public class PlayerActivity extends BaseActivity {
     @BindView(R.id.exoplayer)
     PlayerView mPlayerView;
 
+    private PlayerViewModel viewModel;
 
     protected boolean mExoPlayerFullscreen = false;
     protected int mResumeWindow;
     protected long mResumePosition;
-    PlayerViewModel viewModel;
+
     private int index;
+    private String endpoint;
+
+
 
     @Override
     protected void onDestroy() {
@@ -71,7 +79,10 @@ public class PlayerActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
         ButterKnife.bind(this);
-        if (savedInstanceState == null) index = getIntent().getIntExtra(REQUEST_INDEX, 0);
+        if (savedInstanceState == null) {
+            index = getIntent().getIntExtra(REQUEST_INDEX, 0);
+            endpoint = getIntent().getStringExtra(REQUEST_ENDPOINT);
+        }
 
         if (savedInstanceState != null) {
             mResumeWindow = savedInstanceState.getInt(STATE_RESUME_WINDOW);
@@ -89,11 +100,13 @@ public class PlayerActivity extends BaseActivity {
         outState.putInt(STATE_RESUME_WINDOW, mResumeWindow);
         outState.putLong(STATE_RESUME_POSITION, mResumePosition);
         outState.putBoolean(STATE_BOOLEAN_VALUE, mExoPlayerFullscreen);
+        outState.putString(REQUEST_ENDPOINT, endpoint);
+        outState.putInt(REQUEST_INDEX, index);
         super.onSaveInstanceState(outState);
     }
 
     private void subscribeObserver() {
-        viewModel.authenticateWithEndpoint(index);
+        viewModel.authenticateWithEndpoint(index,endpoint);
         viewModel.observeEndpoints().observe(this, listResource -> {
             if (listResource != null) {
                 switch (listResource.status) {
@@ -103,6 +116,7 @@ public class PlayerActivity extends BaseActivity {
                     }
                     case SUCCESS: {
                         hideProgessbar();
+                        Log.d(TAG, "subscribeObserver: "+listResource.data.getUrl());
                         if (listResource.data.getUrl() != null)
                             setupMediaSource(listResource.data.getUrl());
                         break;

@@ -15,6 +15,8 @@ import com.josef.mobile.vfree.ui.auth.model.User;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -30,13 +32,16 @@ public final class AppGoogleLogin implements GoogleLogin {
     private final FirebaseAuth auth;
 
     @Inject
-    public AppGoogleLogin(FirebaseAuth auth) {
+    public AppGoogleLogin(
+            @Nullable FirebaseAuth auth)
+    {
         this.auth = auth;
     }
 
     @NotNull
-    public Flowable<AuthResource<User>> authenticateWithGoogle(Task<GoogleSignInAccount> googleSignInAccountSingle) {
-
+    public Flowable<AuthResource<User>> authenticateWithGoogle(
+            @NotNull Task<GoogleSignInAccount> googleSignInAccountSingle)
+    {
         return authenticateWithCredentials(googleSignInAccountSingle)
                 .flatMap(authCredential -> addOnFirebaseCompletionListener(authCredential))
                 .subscribeOn(Schedulers.io())
@@ -56,7 +61,9 @@ public final class AppGoogleLogin implements GoogleLogin {
     }
 
     @NotNull
-    private Single<AuthCredential> authenticateWithCredentials(Task<GoogleSignInAccount> googleSignInAccountSingle) {
+    private Single<AuthCredential> authenticateWithCredentials(
+            @NotNull Task<GoogleSignInAccount> googleSignInAccountSingle)
+    {
         return Single.just(googleSignInAccountSingle)
                 .map(task -> task.getResult(ApiException.class))
                 .map(googleSignInAccount -> {
@@ -70,7 +77,8 @@ public final class AppGoogleLogin implements GoogleLogin {
     }
 
     @NotNull
-    private Single<User> addOnFirebaseCompletionListener(AuthCredential googleAuthCredential) {
+    private Single<User> addOnFirebaseCompletionListener(
+            @NotNull AuthCredential googleAuthCredential) {
         return Single.create(emitter -> {
             auth.signInWithCredential(googleAuthCredential).addOnCompleteListener(authTask -> {
                 if (authTask.isSuccessful()) {
@@ -90,12 +98,11 @@ public final class AppGoogleLogin implements GoogleLogin {
     }
 
     @Nullable
-    private User getUser(FirebaseUser firebaseUser) {
-        if(firebaseUser == null) throw new NullPointerException("FirebaseUser is null");
-        String uid = firebaseUser.getUid();
-        String name = firebaseUser.getDisplayName();
-        String email = firebaseUser.getEmail();
-        String photoUrl = firebaseUser.getPhotoUrl().toString();
+    private User getUser(@Nullable FirebaseUser firebaseUser) {
+        String uid = Objects.requireNonNull(firebaseUser.getUid(), "fb ui must not be null" );
+        String name = Objects.requireNonNull(firebaseUser.getDisplayName(), "fb name must not be null" );
+        String email = Objects.requireNonNull(firebaseUser.getEmail(), "fb email must not be null" );
+        String photoUrl = Objects.requireNonNull(firebaseUser.getPhotoUrl(), "fb photoUrl must not be null" ).toString();
         return new User(uid, name, email, photoUrl);
     }
 }

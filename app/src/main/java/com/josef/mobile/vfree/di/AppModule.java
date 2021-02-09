@@ -10,8 +10,6 @@ import androidx.room.Room;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -50,7 +48,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
-public class AppModule {
+public final class AppModule {
 
     @Provides
     @Singleton
@@ -97,7 +95,6 @@ public class AppModule {
     }
 
 
-
     @Provides
     @Singleton
     static Endpoints provideMainApi(Retrofit retrofit) {
@@ -127,7 +124,7 @@ public class AppModule {
     @Provides
     static Retrofit provideRetrofitInstance() {
         return new Retrofit.Builder()
-                .baseUrl(AppConstants.BASE_URL3)
+                .baseUrl(AppConstants.BASE_URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(new OkHttpClient.Builder()

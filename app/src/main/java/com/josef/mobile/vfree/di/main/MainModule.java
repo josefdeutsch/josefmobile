@@ -42,7 +42,6 @@ public class MainModule {
         return new ArchiveRecyclerViewAdapter(requestManager);
     }
 
-
     @MainScope
     @Provides
     static AboutRecyclerViewAdapter provideAboutRecyclerViewAdapter(Context context) {
@@ -54,7 +53,6 @@ public class MainModule {
     static ViewPagerAdapter provideViewPagerAdapter(RequestManager requestManager, Context context) {
         return new ViewPagerAdapter(requestManager, context);
     }
-
 
     @MainScope
     @Provides
@@ -80,10 +78,6 @@ public class MainModule {
         return appResourceObserver;
     }
 
-    /** @Provides
-     @MainScope static PostRecyclerAdapter.PostRecyclerViewOnClickListener getClickListener(PostsFragment postsFragment) {
-     return postsFragment;
-     }**/
     @MainScope
     @Provides
     static Credentials provideCredentials(AppDataBaseCredentials appDataBaseCredentials) {

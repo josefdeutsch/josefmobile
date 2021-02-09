@@ -7,16 +7,15 @@ import com.google.gson.reflect.TypeToken;
 import com.josef.mobile.vfree.data.DataManager;
 import com.josef.mobile.vfree.ui.main.post.model.LocalCache;
 import com.josef.mobile.vfree.ui.main.Resource;
-import com.josef.mobile.vfree.utils.AppConstants;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import io.reactivex.Flowable;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.schedulers.Schedulers;
-
 import static android.content.ContentValues.TAG;
-import static com.josef.mobile.vfree.utils.AppConstants.BASE_URL3;
+import static com.josef.mobile.vfree.utils.AppConstants.BASE_URL;
 
 @Singleton
 public class AppDownloadPlayerEndpoints implements DownloadPlayerEndpoints {
@@ -24,16 +23,20 @@ public class AppDownloadPlayerEndpoints implements DownloadPlayerEndpoints {
     private final DataManager dataManager;
 
     @Inject
-    public AppDownloadPlayerEndpoints(@NotNull DataManager dataManager) {
+    public AppDownloadPlayerEndpoints(
+            @NotNull DataManager dataManager)
+    {
         this.dataManager = dataManager;
     }
 
     @Override
-    public Flowable<Resource<LocalCache>> observeEndpoints(@NotNull int index) {
+    public Flowable<Resource<LocalCache>> observeEndpoints(@NotNull int index,
+                                                           @NonNull String endpoint)
+    {
 
         Flowable<Integer> value = getIntegerFlowable(index);
 
-        Flowable<ArrayList<LocalCache>> list = getFlowableList();
+        Flowable<ArrayList<LocalCache>> list = getFlowableList(endpoint);
 
         return Flowable.zip(value, list, (integer, containers) -> containers.get(integer))
                 .subscribeOn(Schedulers.io())
@@ -58,13 +61,13 @@ public class AppDownloadPlayerEndpoints implements DownloadPlayerEndpoints {
     }
 
     @NotNull
-    private Flowable<ArrayList<LocalCache>> getFlowableList() {
-        return dataManager.getEndpoints(BASE_URL3 + AppConstants.ENDPOINT_1)
-                .map(endpoint -> {
+    private Flowable<ArrayList<LocalCache>> getFlowableList(@NonNull String endpoint) {
+        return dataManager.getEndpoints(BASE_URL + endpoint)
+                .map(endpoints -> {
                     Gson gson = new Gson();
                     Type userListType = new TypeToken<ArrayList<LocalCache>>() {
                     }.getType();
-                    ArrayList<LocalCache> source = gson.fromJson(endpoint.message, userListType);
+                    ArrayList<LocalCache> source = gson.fromJson(endpoints.message, userListType);
                     return source;
                 });
     }

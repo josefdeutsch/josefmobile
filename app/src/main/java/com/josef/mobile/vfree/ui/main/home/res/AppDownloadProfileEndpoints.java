@@ -5,19 +5,14 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.google.firebase.database.annotations.NotNull;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.josef.mobile.vfree.data.DataManager;
 import com.josef.mobile.vfree.ui.main.Resource;
 import com.josef.mobile.vfree.ui.main.home.model.Profile;
-import com.josef.mobile.R;
-import com.josef.mobile.vfree.ui.main.post.model.LocalCache;
-import com.josef.mobile.vfree.utils.AppConstants;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -28,7 +23,7 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 import static android.content.ContentValues.TAG;
-import static com.josef.mobile.vfree.utils.AppConstants.BASE_URL3;
+import static com.josef.mobile.vfree.utils.AppConstants.BASE_URL;
 
 @Singleton
 public class AppDownloadProfileEndpoints implements DownloadProfileEndpoints {
@@ -48,7 +43,7 @@ public class AppDownloadProfileEndpoints implements DownloadProfileEndpoints {
     @NonNull
     @Override
     public Flowable<Resource<List<Profile>>> observeEndpoints(@NonNull String url) {
-          return dataManager.getEndpoints(BASE_URL3 + url)
+          return dataManager.getEndpoints(BASE_URL + url)
                 .map(endpoint -> {
                     Gson gson = new Gson();
                     Type userListType = new TypeToken<ArrayList<Profile>>() {
