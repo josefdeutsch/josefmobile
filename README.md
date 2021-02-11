@@ -17,10 +17,14 @@ In the end, Joseph itself became a work of art and the metaphor: “The expressi
 <br />
 <br />
 <p align="center">
-<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/login.gif" width="200"/>
-<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/updown.gif" width="200"/>
-<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/rightleft.gif" width="200"/>
-<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/confirmselect.gif" width="200"/>
+<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/about.png" width="200"/>
+<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/collection.png" width="200"/>
+<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/gallery.png" width="200"/>
+<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/home.png" width="200"/>
+<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/login.png" width="200"/>
+<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/nav.png" width="200"/>
+<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/player.png" width="200"/>
+<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/splash.png" width="200"/>
 </p>
 
 <br />
