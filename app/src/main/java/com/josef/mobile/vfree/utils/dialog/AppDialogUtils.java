@@ -37,7 +37,7 @@ public final class AppDialogUtils implements DialogUtils {
         return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
     }
 
-
+    @NonNull
     @Override
     public Dialog getDialog(@NonNull Activity activity) {
         Dialog dialog = new Dialog(activity, android.R.style.Theme_Black_NoTitleBar_Fullscreen);

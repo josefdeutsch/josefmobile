@@ -56,7 +56,6 @@ public final class SplashActivity extends BaseActivity {
                 .get(SplashViewModel.class);
         viewModel.initiateInsterstitialAds(interstitialAdId);
         viewModel.initiateRetrofitClient(AppConstants.ENDPOINT_3);
-      //  viewModel.supplyAnimatedGif(animatedGif);
         Handler handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(new Runnable() {
             @Override
@@ -70,10 +69,8 @@ public final class SplashActivity extends BaseActivity {
                 finishAfterTransition();
             }
         },5000);
-
     }
 
-    //requestManager.load(profileList.get(position).getUrl()).into(animatedGif);
 
     @Override
     public void subscribeToSessionManager() {
