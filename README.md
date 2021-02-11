@@ -8,46 +8,25 @@ The way of reinterpreting an exhibition space fascinates me and has motivated me
 
 <br />
 <br />
-<br />
-<br />
 <p align="center">
-<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/about.png" width="200"/>
-<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/collection.png" width="200"/>
-<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/gallery.png" width="200"/>
-<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/home.png" width="200"/>
+<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/splash.png" width="200"/>
 <img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/login.png" width="200"/>
 <img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/nav.png" width="200"/>
+<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/home.png" width="200"/>
+<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/gallery.png" width="200"/>
+<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/collection.png" width="200"/>
+<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/about.png" width="200"/>
 <img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/player.png" width="200"/>
-<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/splash.png" width="200"/>
 </p>
 <br />
 <br />
-<br />
-<br />
+
 
 ## How's the business going? 
 Joseph is a business idea that wants to bring digital art to the smart TV. It consists of a mobile and a smart TV application. In the mobile version, you can select works of art and then sync them with your account. Download JosephTv and stream high quality art on your smart TV. Click on the link below to be referred directly to the app store. Joseph is intended for a wide range of users from different industries, since art has space in every room. Joseph becomes an adaptable design element. The constant succession of new sculptures and the associated speed create a pleasant atmosphere, ideal for bars, lobbies, hotels, but also interesting for private use. Joseph shows art in the digital space and would like to connect with your space to create a new awesome Metaphor. Controversial analogies are perfect to be part of an external backdrop that is referenced to the digital space
 
-## How did I do this
+## How did I do this?
 I use Zbrush Dynamesh to model the base mesh and OpenGl / GLSL for scenery and shaders. Basically there are no limitations as the sculpture can be bared out into infinity, but in practice it has been shown that a certain size is decisive. The sculpture is reflected over a surface that provides an inductive scale valid for each sculpture, so that the scene is given support and stability. The sculpture rotates horizontally, the pivot point is set below the mesh so that a homogeneous sequence of the fading in and fading out scene is possible. Each scenery is a live rendering consisting of 25k to 50k polygons with orthogonal normals. I have set two light sources, each of which correlates with two different shaders and is mixed in the final output. The whole scenery is in full HD
-
-
-## Libraries
-- [Android Architecture Components](https://developer.android.com/topic/libraries/architecture/) 
-    * [Room](https://developer.android.com/topic/libraries/architecture/room)
-    * [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel)
-    * [LiveData](https://developer.android.com/topic/libraries/architecture/livedata)
-    * [Workermanager](https://developer.android.com/topic/libraries/architecture/workermanager)
-    * [Espresso](https://developer.android.com/topic/libraries/architecture/espresso)
-    * [ExoPlayer](https://developer.android.com/topic/libraries/architecture/activity)
-    * [Mockito](https://developer.android.com/topic/libraries/architecture/activity)
-    * [ActivityScenario](https://developer.android.com/topic/libraries/architecture/activity)
-    * [FragmentScenario](https://developer.android.com/topic/libraries/architecture/fragment)
-     
-- [OkHttp](http://square.github.io/retrofit/) 
-- [Picasso](http://square.github.io/picasso/)
-
-
 
 ## Libraries
 - [Android Architecture Components](https://developer.android.com/topic/libraries/architecture/) 
