@@ -32,6 +32,8 @@ import com.josef.mobile.vfree.utils.AppUtilManager;
 import com.josef.mobile.vfree.utils.UtilManager;
 import com.josef.mobile.vfree.utils.common.AppCommonUtils;
 import com.josef.mobile.vfree.utils.common.CommonUtils;
+import com.josef.mobile.vfree.utils.dialog.AppDialogUtils;
+import com.josef.mobile.vfree.utils.dialog.DialogUtils;
 import com.josef.mobile.vfree.utils.net.AppNetworkUtils;
 import com.josef.mobile.vfree.utils.net.NetworkUtils;
 import com.josef.mobile.R;
@@ -110,14 +112,20 @@ public final class AppModule {
 
     @Provides
     @Singleton
-    static CommonUtils provideCommonUtil(AppCommonUtils appCommonUtils) {
-        return appCommonUtils;
+    static DialogUtils provideDialogUtil(AppDialogUtils appDialogUtils) {
+        return appDialogUtils;
     }
 
     @Provides
     @Singleton
     static NetworkUtils provideNetworkUtil(AppNetworkUtils appNetworkUtils) {
         return appNetworkUtils;
+    }
+
+    @Provides
+    @Singleton
+    static CommonUtils provideCommonUtil(AppCommonUtils commonUtils) {
+        return commonUtils;
     }
 
     @Singleton
@@ -135,16 +143,15 @@ public final class AppModule {
 
     @Provides
     @DatabaseInfo
-    String provideDatabaseName() {
+    static String provideDatabaseName() {
         return "my_db.db";
     }
 
     @Provides
     @PreferenceInfo
     static String providePreferenceName() {
-        return AppConstants.PREF_NAME;
+        return "josef_pref";
     }
-
 
 
     @Singleton
@@ -183,7 +190,6 @@ public final class AppModule {
     static AdsRequest provideRequestAd(AppAdsRequest appAdsRequest) {
         return appAdsRequest;
     }
-
 
 
     @Provides

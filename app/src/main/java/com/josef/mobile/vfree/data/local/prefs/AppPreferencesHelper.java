@@ -31,6 +31,8 @@ import javax.inject.Inject;
 
 public final class AppPreferencesHelper implements PreferencesHelper {
 
+
+    @NonNull
     private final SharedPreferences mPrefs;
 
     @Inject
@@ -50,7 +52,6 @@ public final class AppPreferencesHelper implements PreferencesHelper {
 
     @Override
     public void clearHashmapIndicator() {
-
         mPrefs.edit().remove(ARCHIVE_INDICATOR).commit();
     }
 

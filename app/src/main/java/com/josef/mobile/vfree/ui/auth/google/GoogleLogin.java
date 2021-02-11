@@ -5,9 +5,12 @@ import com.google.android.gms.tasks.Task;
 import com.josef.mobile.vfree.ui.auth.AuthResource;
 import com.josef.mobile.vfree.ui.auth.model.User;
 
+import org.jetbrains.annotations.NotNull;
+
 import io.reactivex.Flowable;
 
 public interface GoogleLogin {
 
-    Flowable<AuthResource<User>> authenticateWithGoogle(Task<GoogleSignInAccount> googleSignInAccountSingle);
+    @NotNull
+    Flowable<AuthResource<User>> authenticateWithGoogle(@NotNull Task<GoogleSignInAccount> googleSignInAccountSingle);
 }

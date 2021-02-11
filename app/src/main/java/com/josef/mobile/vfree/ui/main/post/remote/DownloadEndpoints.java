@@ -1,5 +1,7 @@
 package com.josef.mobile.vfree.ui.main.post.remote;
 
+import androidx.annotation.NonNull;
+
 import com.josef.mobile.vfree.ui.main.post.model.LocalCache;
 import com.josef.mobile.vfree.ui.main.Resource;
 
@@ -9,5 +11,6 @@ import io.reactivex.Flowable;
 
 public interface DownloadEndpoints {
 
-     Flowable<Resource<List<LocalCache>>> getEndpoints(String index);
+     @NonNull
+     Flowable<Resource<List<LocalCache>>> getEndpoints(@NonNull String index);
 }

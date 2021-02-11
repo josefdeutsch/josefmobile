@@ -99,10 +99,16 @@ public final class AppGoogleLogin implements GoogleLogin {
 
     @Nullable
     private User getUser(@Nullable FirebaseUser firebaseUser) {
-        String uid = Objects.requireNonNull(firebaseUser.getUid(), "fb ui must not be null" );
-        String name = Objects.requireNonNull(firebaseUser.getDisplayName(), "fb name must not be null" );
-        String email = Objects.requireNonNull(firebaseUser.getEmail(), "fb email must not be null" );
-        String photoUrl = Objects.requireNonNull(firebaseUser.getPhotoUrl(), "fb photoUrl must not be null" ).toString();
+
+        String uid = Objects.requireNonNull(firebaseUser.getUid(),
+                "com.josef.mobile.vfree.ui.auth.google.GoogleLogin User ui must not be null" );
+        String name = Objects.requireNonNull(firebaseUser.getDisplayName(),
+                "com.josef.mobile.vfree.ui.auth.google.GoogleLogin User name must not be null" );
+        String email = Objects.requireNonNull(firebaseUser.getEmail(),
+                "com.josef.mobile.vfree.ui.auth.google.GoogleLogin User emailGoogleLogin User must not be null" );
+        String photoUrl = Objects.requireNonNull(firebaseUser.getPhotoUrl(),
+                "com.josef.mobile.vfree.ui.auth.google.GoogleLogin User photoUrl must not be null" ).toString();
+
         return new User(uid, name, email, photoUrl);
     }
 }

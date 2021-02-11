@@ -69,8 +69,8 @@
 
             <ImageView
                 android:id="@+id/arrow_button"
-                android:layout_width="192dp"
-                android:layout_height="192dp"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
                 android:layout_gravity="center"
 
                 android:fontFamily="sans-serif-thin"

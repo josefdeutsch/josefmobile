@@ -6,8 +6,9 @@ import com.josef.mobile.vfree.ui.main.about.model.About;
 import java.util.List;
 
 import io.reactivex.Flowable;
+import io.reactivex.annotations.NonNull;
 
 public interface DownloadAboutEndpoints {
-
-    Flowable<Resource<List<About>>> getEndpoints(String index);
+    @NonNull
+    Flowable<Resource<List<About>>> getEndpoints(@NonNull String index);
 }

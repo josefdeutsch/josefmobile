@@ -23,29 +23,32 @@ import io.reactivex.rxjava3.core.SingleOnSubscribe;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class AppDataBaseCredentials implements Credentials {
+public final class AppDataBaseCredentials implements Credentials {
 
     private static final String PROFILE = "profile";
 
+    @NonNull
     private final SessionManager sessionManager;
+    @NonNull
     private final DataManager dataManager;
 
     @Inject
-    public AppDataBaseCredentials(SessionManager sessionManager,
-                                  DataManager dataManager) {
+    public AppDataBaseCredentials(@NonNull SessionManager sessionManager,
+                                  @NonNull DataManager dataManager) {
         this.sessionManager = sessionManager;
         this.dataManager = dataManager;
     }
 
-    private Observable<User> getUserObservable(MainActivity activity) {
+    @NonNull
+    private Observable<User> getUserObservable(@NonNull MainActivity activity) {
         Publisher<AuthResource<User>> userPublisher
                 = LiveDataReactiveStreams.toPublisher(activity, sessionManager.getAuthUser());
         return Observable.fromPublisher(userPublisher)
                 .map(userAuthResource -> userAuthResource.data);
     }
 
-
-    private Observable<User> getDataStoreCredentials(User user) {
+    @NonNull
+    private Observable<User> getDataStoreCredentials(@NonNull User user) {
         return Single.create(new SingleOnSubscribe<User>() {
             @Override
             public void subscribe(@NonNull SingleEmitter<User> emitter) throws Throwable {
@@ -76,7 +79,8 @@ public class AppDataBaseCredentials implements Credentials {
 
     }
 
-    public Flowable<Resource<User>> observeDataStore(MainActivity activity) {
+    @NonNull
+    public Flowable<Resource<User>> observeDataStore(@NonNull MainActivity activity) {
 
         if (sessionManager == null) return null;
         return getUserObservable(activity).

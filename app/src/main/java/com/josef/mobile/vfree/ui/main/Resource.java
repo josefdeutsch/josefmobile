@@ -4,7 +4,7 @@ package com.josef.mobile.vfree.ui.main;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public class Resource<T> {
+public final class Resource<T> {
 
     @NonNull
     public final Status status;
@@ -16,7 +16,9 @@ public class Resource<T> {
     public final String message;
 
 
-    public Resource(@NonNull Status status, @Nullable T data, @Nullable String message) {
+    public Resource(@NonNull Status status,
+                    @Nullable T data,
+                    @Nullable String message) {
         this.status = status;
         this.data = data;
         this.message = message;
@@ -26,7 +28,8 @@ public class Resource<T> {
         return new Resource<>(Status.SUCCESS, data, null);
     }
 
-    public static <T> Resource<T> error(@NonNull String msg, @Nullable T data) {
+    public static <T> Resource<T> error(@NonNull String msg,
+                                        @Nullable T data) {
         return new Resource<>(Status.ERROR, data, msg);
     }
 

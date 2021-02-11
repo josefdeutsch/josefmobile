@@ -14,16 +14,18 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class HomeViewModel extends ViewModel {
+public final class HomeViewModel extends ViewModel {
 
+    @NonNull
     private final DownloadProfileEndpoints downloadProfileEndpoints;
+    @NonNull
     private MediatorLiveData<Resource<List<Profile>>> containers;
 
     @Inject
-    public HomeViewModel(DownloadProfileEndpoints downloadProfileEndpoints) {
+    public HomeViewModel(@NonNull DownloadProfileEndpoints downloadProfileEndpoints) {
         this.downloadProfileEndpoints = downloadProfileEndpoints;
     }
-
+    @NonNull
     public LiveData<Resource<List<Profile>>> observeProfiles(@NonNull String url) {
         if (containers == null) containers = new MediatorLiveData<>();
         containers.setValue(Resource.loading(null));

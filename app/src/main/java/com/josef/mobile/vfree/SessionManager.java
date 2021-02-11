@@ -11,7 +11,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class SessionManager {
+public final class SessionManager {
 
     private static final String TAG = "DaggerExample";
     // data

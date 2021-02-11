@@ -16,6 +16,7 @@ import io.reactivex.Single;
 @Singleton
 public final class AppDbHelper implements DbHelper {
 
+    @NonNull
     private final AppDataBase mAppDatabase;
 
     @Inject

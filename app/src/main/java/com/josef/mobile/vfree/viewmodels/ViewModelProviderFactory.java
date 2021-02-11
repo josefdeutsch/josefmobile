@@ -2,23 +2,23 @@ package com.josef.mobile.vfree.viewmodels;
 
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-
 import java.util.Map;
-
 import javax.inject.Inject;
 import javax.inject.Provider;
 
-public class ViewModelProviderFactory implements ViewModelProvider.Factory {
+import io.reactivex.annotations.NonNull;
 
-    private static final String TAG = "ViewModelProviderFactor";
+public final class ViewModelProviderFactory implements ViewModelProvider.Factory {
 
+    @NonNull
     private final Map<Class<? extends ViewModel>, Provider<ViewModel>> creators;
 
     @Inject
-    public ViewModelProviderFactory(Map<Class<? extends ViewModel>, Provider<ViewModel>> creators) {
+    public ViewModelProviderFactory(@NonNull Map<Class<? extends ViewModel>, Provider<ViewModel>> creators) {
         this.creators = creators;
     }
 
+    @NonNull
     @Override
     public <T extends ViewModel> T create(Class<T> modelClass) {
         Provider<? extends ViewModel> creator = creators.get(modelClass);

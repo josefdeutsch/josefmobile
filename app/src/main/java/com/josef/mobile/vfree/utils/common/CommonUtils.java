@@ -1,32 +1,18 @@
 package com.josef.mobile.vfree.utils.common;
 
-import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 
-import com.google.gson.Gson;
+import androidx.annotation.NonNull;
 
 public interface CommonUtils {
 
-    Gson getGson();
+    @NonNull
+     int getScreenHeight(@NonNull Context context);
 
-    Dialog getDialog(Activity activity);
+    @NonNull
+     int getScreenWidth(@NonNull Context context);
 
-    void showNoInternetConnection(Activity activity);
-
-    void hideNoInternetConnection();
-
-    void showProgressbar(Activity activity);
-
-    void hideProgressbar();
-
-    boolean validateEmail(CharSequence email);
-
-    int getScreenHeight(Context context);
-
-    int getScreenWidth(Context context);
-
-    int getStatusBarHeight(Context context);
-
+    @NonNull
+     int getStatusBarHeight(@NonNull Context context);
 
 }

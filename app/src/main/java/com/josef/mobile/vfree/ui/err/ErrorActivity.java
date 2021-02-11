@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.josef.mobile.vfree.ui.auth.AuthActivity;
 import com.josef.mobile.vfree.ui.auth.option.account.SignActivity;
 import com.josef.mobile.vfree.ui.auth.option.verification.VerificationActivity;
@@ -15,9 +17,11 @@ import com.josef.mobile.R;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ErrorActivity extends BaseActivity {
+public final class ErrorActivity extends BaseActivity {
 
+    @NonNull
     public static String ACTIVITY_KEYS;
+    @NonNull
     public static String ACTIVITY_VALUE;
 
     @Override

@@ -18,4 +18,6 @@ public interface Base {
     String SIGN_ACTIVITY_NAME = "com.josef.mobile.vfree.ui.auth.option.account.SignActivity";
     String VERIFICATION_ACTIVITY_NAME = "com.josef.mobile.vfree.ui.auth.option.verification.VerificationActivity";
 
+   static String REQUEST_INDEX = "request_url";
+   static String REQUEST_ENDPOINT = "request_endpoint";
 }

@@ -6,10 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.RequestManager;
@@ -24,30 +25,33 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.ViewHolder> {
+public final class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.ViewHolder> {
 
+    @NonNull
     private final RequestManager requestManager;
-
+    @Nullable
     private List<Profile> profileList;
+    @NonNull
     private ViewpagerAdapterOnClickListener viewpagerAdapterOnClickListener;
 
-    public void setViewpagerAdapterOnClickListener(ViewpagerAdapterOnClickListener viewpagerAdapterOnClickListener) {
+    public void setViewpagerAdapterOnClickListener(@NonNull ViewpagerAdapterOnClickListener viewpagerAdapterOnClickListener) {
         this.viewpagerAdapterOnClickListener = viewpagerAdapterOnClickListener;
     }
 
-    public void setProfiles(List<Profile> profileList) {
+    public void setProfiles(@Nullable List<Profile> profileList) {
         this.profileList = profileList;
         notifyDataSetChanged();
     }
 
-    public ViewPagerAdapter(RequestManager requestManager, Context context) {
+    public ViewPagerAdapter(@NonNull RequestManager requestManager,
+                            @NonNull Context context) {
         this.requestManager = requestManager;
     }
 
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.profile_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_item, parent, false);
         return new ViewHolder(view);
     }
 
@@ -98,9 +102,9 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
 
         private void onBindViews(int position) throws IOException {
             int last = profileList.size() - 1;
-         //   requestManager.load(profileList.get(position).getUrl()).into(animatedGif);
+            //   requestManager.load(profileList.get(position).getUrl()).into(animatedGif);
             header.setText(profileList.get(position).getArticle());
-           // article.setTag(R.id.article);
+            // article.setTag(R.id.article);
 
             if (last == position) {
                 button_container.setVisibility(View.VISIBLE);

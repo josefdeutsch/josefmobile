@@ -1,21 +1,17 @@
 package com.josef.mobile.vfree.ui.main.about.remote;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.josef.mobile.vfree.data.DataManager;
 import com.josef.mobile.vfree.ui.main.Resource;
 import com.josef.mobile.vfree.ui.main.about.model.About;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
 import io.reactivex.Flowable;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
@@ -24,16 +20,15 @@ import static com.josef.mobile.vfree.utils.AppConstants.BASE_URL;
 @Singleton
 public class AppDownloadAboutEndpoints implements DownloadAboutEndpoints {
 
-    private static final String TAG = "EndpointsAboutObserverHelper";
-
-    private final DataManager dataManager;
+    @NonNull private final DataManager dataManager;
 
     @Inject
-    public AppDownloadAboutEndpoints(DataManager dataManager) {
+    public AppDownloadAboutEndpoints(@NonNull DataManager dataManager) {
         this.dataManager = dataManager;
     }
 
-    public Flowable<Resource<List<About>>> getEndpoints(String index) {
+    @NonNull
+    public Flowable<Resource<List<About>>> getEndpoints(@NonNull String index) {
 
         return dataManager.getEndpoints(BASE_URL + index)
                 .map(endpoint -> {
@@ -45,7 +40,6 @@ public class AppDownloadAboutEndpoints implements DownloadAboutEndpoints {
                 })
 
                 .onErrorReturn(throwable -> {
-                    Log.e(TAG, "apply: " + throwable.getMessage());
                     About container = new About();
                     container.setId(-1l);
                     container.setException(throwable.getMessage());

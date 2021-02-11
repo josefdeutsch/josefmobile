@@ -30,46 +30,49 @@ import io.reactivex.schedulers.Schedulers;
 @Singleton
 public class AppFirebaseUpload implements FirebaseUpload {
 
+    @NonNull
     private final DataManager dataManager;
+    @NonNull
     private final SessionManager sessionManager;
 
-    public Observable<DatabaseReference> synchronize(MainActivity mainActivity) {
+    @Inject
+    public AppFirebaseUpload(@NonNull DataManager dataManager,
+                             @NonNull SessionManager sessionManager) {
 
+        this.dataManager = dataManager;
+        this.sessionManager = sessionManager;
+    }
+
+    @NonNull
+    public Observable<DatabaseReference> synchronize(@NonNull MainActivity mainActivity) {
         if (sessionManager == null) return null;
 
         Observable<User> currentuser = getUserObservable(mainActivity);
         Observable<List<Archive>> archives = getListObservable();
 
-        return Observable.zip(currentuser, archives, new BiFunction<User, List<Archive>, DatabaseReference>() {
-            @NonNull
-            @Override
-            public DatabaseReference apply(@NonNull User user, @NonNull List<Archive> archives1) throws Exception {
-                return AppFirebaseUpload.this.upload(user, archives1);
-            }
-        })
+        return Observable.zip(currentuser, archives, (user, archives1) -> AppFirebaseUpload.this.upload(user, archives1))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+    @NonNull
     private Observable<List<Archive>> getListObservable() {
         return dataManager.getAllArchives().toObservable();
     }
 
-    private Observable<User> getUserObservable(MainActivity mainActivity) {
+    @NonNull
+    private Observable<User> getUserObservable(@NonNull MainActivity mainActivity) {
         Publisher<AuthResource<User>> userPublisher
                 = LiveDataReactiveStreams.toPublisher(mainActivity, sessionManager.getAuthUser());
         return Observable.fromPublisher(userPublisher)
                 .map(userAuthResource -> userAuthResource.data);
     }
 
-    @Inject
-    public AppFirebaseUpload(DataManager dataManager, SessionManager sessionManager) {
-        this.dataManager = dataManager;
-        this.sessionManager = sessionManager;
-    }
-
-    private DatabaseReference upload(User user, List<Archive> archives) throws JSONException {
-
+    @NonNull
+    private DatabaseReference upload(@NonNull User user,
+                                     @NonNull List<Archive> archives)
+            throws JSONException
+    {
         JSONObject jsonObject = new JSONObject();
         JSONArray googlevideos = new JSONArray();
         JSONObject data = new JSONObject();

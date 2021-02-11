@@ -4,6 +4,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.josef.mobile.vfree.ui.main.MainActivity;
 
 import io.reactivex.Observable;
+import io.reactivex.annotations.NonNull;
 
 public interface FirebaseUpload {
 
@@ -19,5 +20,6 @@ public interface FirebaseUpload {
     String VIDEO = "videos";
     String DESCRIPTION = "description";
 
-    Observable<DatabaseReference> synchronize(MainActivity mainActivity);
+    @NonNull
+    Observable<DatabaseReference> synchronize(@NonNull MainActivity mainActivity);
 }

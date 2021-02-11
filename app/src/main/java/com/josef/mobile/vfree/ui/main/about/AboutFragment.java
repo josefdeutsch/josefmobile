@@ -21,7 +21,7 @@ import javax.inject.Inject;
 
 import static android.content.ContentValues.TAG;
 
-public class AboutFragment extends BaseFragment {
+public final class AboutFragment extends BaseFragment {
 
     @Inject
     AboutRecyclerViewAdapter adapter;
@@ -44,8 +44,8 @@ public class AboutFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         initRecyclerView(view);
-        // 2x times - refresh
         subscribeObservers();
 
     }
@@ -69,10 +69,12 @@ public class AboutFragment extends BaseFragment {
             if (listResource != null) {
                 switch (listResource.status) {
                     case LOADING: {
+                        Log.d(TAG, "subscribeObservers: ");
                         showProgressbar(getActivity());
                         break;
                     }
                     case SUCCESS: {
+                        Log.d(TAG, "subscribeObservers: ");
                         adapter.setAbouts(listResource.data);
                         hideProgessbar();
                         break;

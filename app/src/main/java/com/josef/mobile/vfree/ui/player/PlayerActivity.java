@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
@@ -25,28 +26,29 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.Interceptor;
 
 import static com.josef.mobile.vfree.ui.err.ErrorActivity.ACTIVITY_KEYS;
-import static com.josef.mobile.vfree.utils.AppConstants.REQUEST_ENDPOINT;
-import static com.josef.mobile.vfree.utils.AppConstants.REQUEST_INDEX;
-import static com.josef.mobile.vfree.utils.AppConstants.STATE_BOOLEAN_VALUE;
-import static com.josef.mobile.vfree.utils.AppConstants.STATE_RESUME_POSITION;
-import static com.josef.mobile.vfree.utils.AppConstants.STATE_RESUME_WINDOW;
 
-public class PlayerActivity extends BaseActivity {
+
+public final class PlayerActivity extends BaseActivity implements PlayerService {
 
 
     private static final String TAG = "PlayerActivity";
 
+    @NonNull
     @Inject
     Dialog mFullScreenDialog;
 
+    @NonNull
     @Inject
     ViewModelProviderFactory providerFactory;
 
+    @NonNull
     @Inject
     SimpleExoPlayer mPlayer;
 
+    @NonNull
     @Inject
     ProgressiveMediaSource.Factory videoSource;
 
@@ -59,13 +61,16 @@ public class PlayerActivity extends BaseActivity {
 
     private PlayerViewModel viewModel;
 
-    protected boolean mExoPlayerFullscreen = false;
-    protected int mResumeWindow;
-    protected long mResumePosition;
-
-    private int index;
-    private String endpoint;
-
+    @NonNull
+    boolean mExoPlayerFullscreen = false;
+    @NonNull
+    int mResumeWindow;
+    @NonNull
+    long mResumePosition;
+    @NonNull
+    int index;
+    @NonNull
+    String endpoint;
 
 
     @Override
@@ -106,7 +111,7 @@ public class PlayerActivity extends BaseActivity {
     }
 
     private void subscribeObserver() {
-        viewModel.authenticateWithEndpoint(index,endpoint);
+        viewModel.authenticateWithEndpoint(index, endpoint);
         viewModel.observeEndpoints().observe(this, listResource -> {
             if (listResource != null) {
                 switch (listResource.status) {
@@ -116,7 +121,7 @@ public class PlayerActivity extends BaseActivity {
                     }
                     case SUCCESS: {
                         hideProgessbar();
-                        Log.d(TAG, "subscribeObserver: "+listResource.data.getUrl());
+                        Log.d(TAG, "subscribeObserver: " + listResource.data.getUrl());
                         if (listResource.data.getUrl() != null)
                             setupMediaSource(listResource.data.getUrl());
                         break;

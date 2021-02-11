@@ -1,43 +1,54 @@
 package com.josef.mobile.vfree.ui.main.archive.fire.model;
 
-public class Data {
+import com.google.firebase.database.annotations.Nullable;
 
-    String png;
-    String url;
-    String email;
+import java.util.Objects;
 
-    public Data(String png, String url, String email) {
+public final class Data {
+
+    @Nullable
+    private String png;
+    @Nullable
+    private String url;
+    @Nullable
+    private String email;
+
+    public Data( @Nullable String png,
+                 @Nullable String url,
+                 @Nullable String email) {
+
         this.png = png;
         this.url = url;
         this.email = email;
     }
-    public Data( String url) {
-        this.url = url;
-    }
 
+    @Nullable
     public String getPng() {
-        return png;
+        return Objects.requireNonNull(png,
+                "com.josef.mobile.vfree.ui.main.archive.fire.model.Data Data png must not be null" );
     }
 
-    public void setPng(String png) {
+    public void setPng(@Nullable String png) {
         this.png = png;
     }
 
+    @Nullable
     public String getUrl() {
-        return url;
+        return Objects.requireNonNull(url,
+                "com.josef.mobile.vfree.ui.main.archive.fire.model.Data Data url must not be null" );
     }
 
-    public void setUrl(String url) {
+    public void setUrl(@Nullable String url) {
         this.url = url;
     }
 
+    @Nullable
     public String getEmail() {
-        return email;
+        return Objects.requireNonNull(email,
+                "com.josef.mobile.vfree.ui.main.archive.fire.model.Data Data email must not be null" );
     }
 
-    public void setEmail(String email) {
+    public void setEmail(@Nullable String email) {
         this.email = email;
     }
-
-
 }

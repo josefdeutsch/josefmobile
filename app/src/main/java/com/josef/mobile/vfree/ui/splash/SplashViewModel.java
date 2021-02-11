@@ -5,6 +5,8 @@ import android.media.Image;
 import android.os.Looper;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
+
 import com.bumptech.glide.RequestManager;
 import com.josef.mobile.R;
 import com.josef.mobile.vfree.data.DataManager;
@@ -21,23 +23,27 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Action;
 import io.reactivex.schedulers.Schedulers;
 
-public class SplashViewModel extends BaseViewModel {
+import static com.josef.mobile.vfree.utils.AppConstants.BASE_URL;
 
+public final class SplashViewModel extends BaseViewModel {
+
+    @NonNull
     private final DataManager dataManager;
+    @NonNull
     private final Context context;
 
     @Inject
     public SplashViewModel(
-            DataManager dataManager,
-            RequestManager requestManager,
-            Context context
+            @NonNull DataManager dataManager,
+            @NonNull RequestManager requestManager,
+            @NonNull Context context
     ) {
         this.dataManager = dataManager;
         this.context = context;
 
     }
 
-    public void initiateInsterstitialAds(String id) {
+    public void initiateInsterstitialAds(@NonNull String id) {
         addToCompositeDisposable(
                 Completable.fromAction(() ->
                         dataManager.setInterstitialAd(id))
@@ -45,10 +51,11 @@ public class SplashViewModel extends BaseViewModel {
                         .subscribe());
     }
 
-    public void supplyAnimatedGif(ImageView view) {
-
-
-
+    public void initiateRetrofitClient(@NonNull String url) {
+        addToCompositeDisposable(
+                Completable.fromAction(() ->
+                        dataManager.getEndpoints(BASE_URL + url))
+                        .subscribeOn(AndroidSchedulers.mainThread())
+                        .subscribe());
     }
-
 }

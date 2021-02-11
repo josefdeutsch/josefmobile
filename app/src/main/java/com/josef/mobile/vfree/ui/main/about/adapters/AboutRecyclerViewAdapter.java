@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.josef.mobile.R;
@@ -18,27 +19,31 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import ru.embersoft.expandabletextview.ExpandableTextView;
 
 import static android.content.ContentValues.TAG;
 
-public class AboutRecyclerViewAdapter extends RecyclerView.Adapter<AboutRecyclerViewAdapter.ViewHolder> {
+public final class AboutRecyclerViewAdapter extends RecyclerView.Adapter<AboutRecyclerViewAdapter.ViewHolder> {
 
+    @Nullable
     private List<About> abouts;
 
+    @NonNull
     private final Context context;
 
     @Inject
-    public AboutRecyclerViewAdapter(Context context) {
+    public AboutRecyclerViewAdapter(@NonNull Context context) {
         this.context = context;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
-                                                 int viewType) {
+                                         int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.about_item,
-                parent,false);
+                parent, false);
         return new ViewHolder(view);
     }
 
@@ -67,31 +72,31 @@ public class AboutRecyclerViewAdapter extends RecyclerView.Adapter<AboutRecycler
     @Override
     public int getItemCount() {
         if (abouts == null) abouts = new ArrayList<>();
-        Log.d(TAG, "getItemCount: "+abouts.size());
+        Log.d(TAG, "getItemCount: " + abouts.size());
         return abouts.size();
     }
 
-    public void setAbouts(List<About> abouts) {
+    public void setAbouts(@Nullable List<About> abouts) {
         this.abouts = abouts;
         notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.header)
         TextView header;
+        @BindView(R.id.subheader)
         TextView subheader;
+        @BindView(R.id.subheader2)
         TextView subheader2;
+        @BindView(R.id.article)
         TextView article;
+        @BindView(R.id.desc)
         ExpandableTextView desc;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
-            header = itemView.findViewById(R.id.header);
-            subheader = itemView.findViewById(R.id.subheader);
-            subheader2 = itemView.findViewById(R.id.subheader2);
-            article = itemView.findViewById(R.id.article);
-            desc = itemView.findViewById(R.id.desc);
+            ButterKnife.bind(this, itemView);
         }
     }
 }

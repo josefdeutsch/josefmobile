@@ -9,7 +9,7 @@
         android:id="@+id/homeScreen"
         android:name="com.josef.mobile.vfree.ui.main.home.HomeFragment"
         android:label="@string/fragment_profile"
-        tools:layout="@layout/fragment_profile"></fragment>
+        tools:layout="@layout/fragment_home"></fragment>
 
     <fragment
         android:id="@+id/postScreen"

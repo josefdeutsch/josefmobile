@@ -12,6 +12,7 @@ import io.reactivex.Flowable;
 
 public interface DownloadProfileEndpoints {
 
+     @NonNull
      Flowable<Resource<List<Profile>>> observeEndpoints(@NonNull String url);
 
 }

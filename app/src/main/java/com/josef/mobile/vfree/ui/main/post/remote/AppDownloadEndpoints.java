@@ -1,39 +1,37 @@
 package com.josef.mobile.vfree.ui.main.post.remote;
 
 import android.util.Log;
-
+import androidx.annotation.NonNull;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.josef.mobile.vfree.data.DataManager;
 import com.josef.mobile.vfree.ui.main.post.model.LocalCache;
 import com.josef.mobile.vfree.ui.main.Resource;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
 import io.reactivex.Flowable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-
 import static com.josef.mobile.vfree.utils.AppConstants.BASE_URL;
 
 @Singleton
-public class AppDownloadEndpoints implements DownloadEndpoints {
+public final class AppDownloadEndpoints implements DownloadEndpoints {
 
     private static final String TAG = "EndpointsObserverHelper";
 
+    @NonNull
     private final DataManager dataManager;
 
     @Inject
-    public AppDownloadEndpoints(DataManager dataManager) {
+    public AppDownloadEndpoints(@NonNull DataManager dataManager) {
         this.dataManager = dataManager;
     }
 
-    public Flowable<Resource<List<LocalCache>>> getEndpoints(String url) {
+    @NonNull
+    public Flowable<Resource<List<LocalCache>>> getEndpoints(@NonNull String url) {
 
         return dataManager.getEndpoints(BASE_URL + url)
                 .map(endpoint -> {

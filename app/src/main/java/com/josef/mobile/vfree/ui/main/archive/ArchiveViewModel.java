@@ -23,28 +23,32 @@ import javax.inject.Inject;
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.annotations.Nullable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
-public class ArchiveViewModel extends BaseViewModel {
+public final class ArchiveViewModel extends BaseViewModel {
 
+    @NonNull
     private final FirebaseUpload firebaseUpload;
+    @NonNull
     private final ArchiveDatabase archiveDatabase;
-
+    @NonNull
     private final Context context;
-
+    @Nullable
     private MediatorLiveData<Resource<List<Archive>>> posts;
 
     @Inject
-    public ArchiveViewModel(FirebaseUpload firebaseUpload,
-                            ArchiveDatabase archiveDatabase,
-                            Context context) {
+    public ArchiveViewModel( @NonNull FirebaseUpload firebaseUpload,
+                             @NonNull ArchiveDatabase archiveDatabase,
+                             @NonNull Context context) {
 
         this.firebaseUpload = firebaseUpload;
         this.archiveDatabase = archiveDatabase;
         this.context = context;
     }
 
+    @NonNull
     public LiveData<Resource<List<Archive>>> observeArchive() {
 
         if (posts == null) posts = new MediatorLiveData<>();
@@ -62,7 +66,7 @@ public class ArchiveViewModel extends BaseViewModel {
         return posts;
     }
 
-    public void synchronize(MainActivity mainActivity) {
+    public void synchronize(@NonNull MainActivity mainActivity) {
         addToCompositeDisposable(
                 firebaseUpload.synchronize(mainActivity)
                         .subscribeWith(new DisposableObserver<DatabaseReference>() {
@@ -83,7 +87,7 @@ public class ArchiveViewModel extends BaseViewModel {
     }
 
 
-    public void deleteArchives(final Archive archive) {
+    public void deleteArchives(@NonNull final Archive archive) {
         addToCompositeDisposable(
                 Completable.fromAction(() -> archiveDatabase.deleteArchives(archive))
                         .subscribeOn(Schedulers.io())
@@ -93,7 +97,7 @@ public class ArchiveViewModel extends BaseViewModel {
 
     }
 
-    public void updateEndpoints(final Archive archive) {
+    public void updateEndpoints(@NonNull final Archive archive) {
         addToCompositeDisposable(
                 Completable.fromAction(() -> archiveDatabase.updateEndpoints(archive))
                         .subscribeOn(Schedulers.io())

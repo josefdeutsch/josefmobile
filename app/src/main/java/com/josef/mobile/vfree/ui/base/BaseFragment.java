@@ -19,17 +19,19 @@ import dagger.android.support.DaggerFragment;
 
 public abstract class BaseFragment extends DaggerFragment {
 
+    @NonNull
     @Inject
     public UtilManager utilManager;
 
+    @NonNull
     @Inject
     public DataManager dataManager;
 
+    @NonNull
     @Inject
     public ViewModelProviderFactory providerFactory;
 
-
-    public void showProgressbar(Activity activity) {
+    public void showProgressbar(@NonNull Activity activity) {
         utilManager.showProgressbar(activity);
     }
 

@@ -27,7 +27,7 @@ import butterknife.OnClick;
 
 import static com.josef.mobile.vfree.ui.err.ErrorActivity.ACTIVITY_KEYS;
 
-public class ArchiveFragment extends BaseFragment
+public final class ArchiveFragment extends BaseFragment
         implements View.OnClickListener, ArchiveRecyclerViewAdapter.OnDeleteCallBack {
 
     @Inject

@@ -3,6 +3,8 @@ package com.josef.mobile.vfree.ui.main.post;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.LiveDataReactiveStreams;
 import androidx.lifecycle.MediatorLiveData;
@@ -24,20 +26,22 @@ import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-public class PostsViewModel extends BaseViewModel {
+public final class PostsViewModel extends BaseViewModel {
 
-
+    @NonNull
     private final DataManager dataManager;
+    @NonNull
     private final UtilManager utilManager;
+    @NonNull
     private final DownloadEndpoints endpointsObserver;
-
+    @Nullable
     private MediatorLiveData<Resource<List<LocalCache>>> containers;
 
     @Inject
-    public PostsViewModel(DataManager dataManager,
-                          DownloadEndpoints endpointsObserver,
-                          UtilManager utilManager,
-                          Context context) {
+    public PostsViewModel(@NonNull DataManager dataManager,
+                          @NonNull DownloadEndpoints endpointsObserver,
+                          @NonNull UtilManager utilManager,
+                          @NonNull Context context) {
 
         this.dataManager = dataManager;
         this.endpointsObserver = endpointsObserver;
@@ -45,7 +49,7 @@ public class PostsViewModel extends BaseViewModel {
 
     }
 
-
+    @NonNull
     public LiveData<Resource<List<LocalCache>>> observeEndpoints() {
         if (containers == null) containers = new MediatorLiveData<>();
         containers.setValue(Resource.loading(null));
@@ -63,7 +67,7 @@ public class PostsViewModel extends BaseViewModel {
     }
 
 
-    public void insertArchives(final Archive archive) {
+    public void insertArchives(@NonNull final Archive archive) {
         addToCompositeDisposable(
                 Completable.fromAction(() -> dataManager.insertArchives(archive))
                         .subscribeOn(Schedulers.io())
@@ -71,7 +75,7 @@ public class PostsViewModel extends BaseViewModel {
                         .subscribe());
     }
 
-    public void deleteArchives(final Archive archive) {
+    public void deleteArchives(@NonNull final Archive archive) {
         addToCompositeDisposable(
                 Completable.fromAction(() -> dataManager.deleteArchives(archive))
                         .subscribeOn(Schedulers.io())
@@ -79,7 +83,7 @@ public class PostsViewModel extends BaseViewModel {
                         .subscribe());
     }
 
-    public void updateEndpoints(final LocalCache localCache) {
+    public void updateEndpoints(@NonNull final LocalCache localCache) {
         addToCompositeDisposable(
                 Completable.fromAction(() -> dataManager.updateEndpoints(localCache))
                         .subscribeOn(Schedulers.io())

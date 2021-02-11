@@ -22,10 +22,15 @@ import io.reactivex.Single;
 @Singleton
 public final class AppDataManager implements DataManager {
 
+    @NonNull
     private final DbHelper dbHelper;
+    @NonNull
     private final Endpoints endpoints;
+    @NonNull
     private final PreferencesHelper preferencesHelper;
+    @NonNull
     private final Firebase firebase;
+    @NonNull
     private final AdsRequest adsRequest;
 
     @Inject

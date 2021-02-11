@@ -1,5 +1,6 @@
 package com.josef.mobile.vfree.ui.auth.option.verification;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.LiveDataReactiveStreams;
 import androidx.lifecycle.MediatorLiveData;
@@ -21,16 +22,16 @@ public final class VerificationViewModel extends BaseViewModel {
     private final MediatorLiveData<Resource<User>> containers = new MediatorLiveData<>();
 
     @Inject
-    public VerificationViewModel(FirebaseAuth firebaseAuth) {
+    public VerificationViewModel(@NonNull FirebaseAuth firebaseAuth) {
         this.firebaseAuth = firebaseAuth;
     }
-
+    @NonNull
     public MediatorLiveData<Resource<User>> observeContainer() {
         return containers;
     }
 
 
-    public void sendPasswordResetEmail(String email) {
+    public void sendPasswordResetEmail(@NonNull String email) {
 
         LiveData<Resource<User>> source =
                 LiveDataReactiveStreams.fromPublisher(getFlowableResourceUser(email));
@@ -43,7 +44,8 @@ public final class VerificationViewModel extends BaseViewModel {
         });
     }
 
-    private Flowable<Resource<User>> getFlowableResourceUser(String email) {
+    @NonNull
+    private Flowable<Resource<User>> getFlowableResourceUser(@NonNull String email) {
         return addonVerificationListenerSingle(email)
                 .onErrorReturn(throwable -> {
                     User user = new User();
@@ -61,7 +63,8 @@ public final class VerificationViewModel extends BaseViewModel {
                 .subscribeOn(Schedulers.io());
     }
 
-    private Single<User> addonVerificationListenerSingle(String email) {
+    @NonNull
+    private Single<User> addonVerificationListenerSingle(@NonNull String email) {
         return Single.create(emitter -> firebaseAuth.sendPasswordResetEmail(email)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {

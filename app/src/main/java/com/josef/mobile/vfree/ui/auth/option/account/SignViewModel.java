@@ -31,17 +31,19 @@ public final class SignViewModel extends BaseViewModel {
     private final DataManager dataManager;
     private final Context context;
 
-    private static final String TAG = "SignViewModel";
-
     private final MediatorLiveData<Resource<User>> containers = new MediatorLiveData<>();
 
     @Inject
-    public SignViewModel(FirebaseAuth firebaseAuth, DataManager dataManager, Context context) {
+    public SignViewModel(@NonNull FirebaseAuth firebaseAuth,
+                         @NonNull DataManager dataManager,
+                         @NonNull Context context)
+    {
         this.firebaseAuth = firebaseAuth;
         this.dataManager = dataManager;
         this.context = context;
     }
 
+    @NonNull
     public MediatorLiveData<Resource<User>> getContainers() {
         return containers;
     }
@@ -63,10 +65,11 @@ public final class SignViewModel extends BaseViewModel {
         });
     }
 
-    private Flowable<Resource<User>> getFlowableResourceBoolean(String fName,
-                                                                String lName,
-                                                                String email,
-                                                                String password) {
+    @NonNull
+    private Flowable<Resource<User>> getFlowableResourceBoolean(@NonNull String fName,
+                                                                @NonNull String lName,
+                                                                @NonNull String email,
+                                                                @NonNull String password) {
 
          Single<User> createAccount = createAccount(email, password);
 
@@ -93,7 +96,10 @@ public final class SignViewModel extends BaseViewModel {
                 .subscribeOn(Schedulers.io());
     }
 
-    private Single<User> createAccount(String email, String password) {
+    @NonNull
+    private Single<User> createAccount(@NonNull String email,
+                                       @NonNull String password) {
+
         return Single.create(emitter -> firebaseAuth
                 .createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
@@ -106,26 +112,27 @@ public final class SignViewModel extends BaseViewModel {
                 }));
     }
 
+    @NonNull
     private Single<User> sendVerification() {
-        return Single.create(new SingleOnSubscribe<User>() {
-            @Override
-            public void subscribe(@NonNull SingleEmitter<User> emitter) throws Exception {
-                firebaseAuth.getCurrentUser().reload();
-                firebaseAuth.getCurrentUser()
-                        .sendEmailVerification()
-                        .addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                User user = new User();
-                                emitter.onSuccess(user);
-                            } else {
-                                emitter.onError(task.getException());
-                            }
-                        });
-            }
+        return Single.create(emitter -> {
+            firebaseAuth.getCurrentUser().reload();
+            firebaseAuth.getCurrentUser()
+                    .sendEmailVerification()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            User user = new User();
+                            emitter.onSuccess(user);
+                        } else {
+                            emitter.onError(task.getException());
+                        }
+                    });
         });
     }
 
-    private Single<User> createCredentials(String fName, String lName, String email) {
+    @NonNull
+    private Single<User> createCredentials(@NonNull String fName,
+                                           @NonNull String lName,
+                                           @NonNull String email) {
         return Single.create(emitter -> {
 
             DatabaseReference myRef = dataManager.getDataBaseRefChild_Profile();

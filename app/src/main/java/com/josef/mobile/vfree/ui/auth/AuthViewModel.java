@@ -13,18 +13,22 @@ import com.josef.mobile.vfree.ui.base.BaseViewModel;
 
 import javax.inject.Inject;
 
-public class AuthViewModel extends BaseViewModel {
+import io.reactivex.annotations.NonNull;
 
+public final class AuthViewModel extends BaseViewModel {
+
+    @NonNull
     private final SessionManager sessionManager;
+    @NonNull
     private final GoogleLogin googleLogin;
+    @NonNull
     private final EmailLogin emailLogin;
 
-    private static final String TAG = "AuthViewModel";
 
     @Inject
-    AuthViewModel(SessionManager sessionManager,
-                  GoogleLogin googleLogin,
-                  EmailLogin emailLogin) {
+    AuthViewModel(@NonNull SessionManager sessionManager,
+                  @NonNull GoogleLogin googleLogin,
+                  @NonNull EmailLogin emailLogin) {
         this.sessionManager = sessionManager;
         this.googleLogin = googleLogin;
         this.emailLogin = emailLogin;
@@ -34,13 +38,14 @@ public class AuthViewModel extends BaseViewModel {
         return sessionManager.getAuthUser();
     }
 
-    public void authenticateWithGoogle(Task<GoogleSignInAccount> googleSignInAccount) {
+    public void authenticateWithGoogle(@NonNull Task<GoogleSignInAccount> googleSignInAccount) {
         LiveData<AuthResource<User>> source
                 = LiveDataReactiveStreams.fromPublisher(googleLogin.authenticateWithGoogle(googleSignInAccount));
         sessionManager.observeAuthResource(source);
     }
 
-    public void authenticateWithEmail(String email, String password) {
+    public void authenticateWithEmail( @NonNull String email,
+                                       @NonNull String password) {
         LiveData<AuthResource<User>> source
                 = LiveDataReactiveStreams.fromPublisher(emailLogin.authenticateWithEmailAccount(email, password));
         sessionManager.observeAuthResource(source);

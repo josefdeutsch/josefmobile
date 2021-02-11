@@ -1,42 +1,47 @@
 package com.josef.mobile.vfree.ui.main.about;
 
-import android.content.Context;
-
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.LiveDataReactiveStreams;
 import androidx.lifecycle.MediatorLiveData;
-import androidx.lifecycle.Observer;
-
 import com.josef.mobile.vfree.data.DataManager;
 import com.josef.mobile.vfree.ui.base.BaseViewModel;
 import com.josef.mobile.vfree.ui.main.Resource;
 import com.josef.mobile.vfree.ui.main.about.model.About;
 import com.josef.mobile.vfree.ui.main.about.remote.DownloadAboutEndpoints;
-import com.josef.mobile.vfree.utils.AppConstants;
 import com.josef.mobile.vfree.utils.UtilManager;
-
 import java.util.List;
-
+import java.util.Objects;
 import javax.inject.Inject;
 
-public class AboutViewModel extends BaseViewModel {
+public final class AboutViewModel extends BaseViewModel {
 
+    @NonNull
     private final DataManager dataManager;
+
+    @NonNull
     private final UtilManager utilManager;
+
+    @NonNull
     private final DownloadAboutEndpoints endpointsObserver;
 
-    public MediatorLiveData<Resource<List<About>>> getContainers() {
-        return containers;
-    }
-
+    @Nullable
     private MediatorLiveData<Resource<List<About>>> containers;
 
+    @Nullable
+    public MediatorLiveData<Resource<List<About>>> getContainers() {
+        return Objects.requireNonNull(containers,
+                "com.josef.mobile.vfree.ui.main.about.AboutViewModel " +
+                        "MediatorLiveData containers, must not be null" );
+    }
+
+
+
     @Inject
-    public AboutViewModel(DataManager dataManager,
-                          DownloadAboutEndpoints endpointsObserver,
-                          UtilManager utilManager)
-    {
+    public AboutViewModel(@NonNull DataManager dataManager,
+                          @NonNull DownloadAboutEndpoints endpointsObserver,
+                          @NonNull UtilManager utilManager) {
 
         this.dataManager = dataManager;
         this.endpointsObserver = endpointsObserver;
@@ -44,9 +49,8 @@ public class AboutViewModel extends BaseViewModel {
 
     }
 
-
-    public LiveData<Resource<List<About>>> observeEndpoints(@NonNull String url)
-    {
+    @NonNull
+    public LiveData<Resource<List<About>>> observeEndpoints(@NonNull String url) {
         if (containers == null) containers = new MediatorLiveData<>();
         containers.setValue(Resource.loading(null));
 

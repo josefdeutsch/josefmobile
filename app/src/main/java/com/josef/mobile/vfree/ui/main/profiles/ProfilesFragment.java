@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 import com.josef.mobile.R;
 import com.josef.mobile.vfree.ui.base.BaseFragment;
 
-public class ProfilesFragment extends BaseFragment {
+public final class ProfilesFragment extends BaseFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

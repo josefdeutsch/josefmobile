@@ -6,16 +6,23 @@ import android.net.LinkProperties;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 
+import androidx.annotation.NonNull;
+
 public interface NetworkUtils {
 
+    @NonNull
     Network getActiveNetwork();
 
-    NetworkCapabilities getNetworkCapabilities(Network currentNetwork);
+    @NonNull
+    NetworkCapabilities getNetworkCapabilities(@NonNull Network currentNetwork);
 
-    LinkProperties getLinkProperties(Network currentNetwork);
+    @NonNull
+    LinkProperties getLinkProperties(@NonNull Network currentNetwork);
 
+    @NonNull
     ConnectivityManager getConnectivityManager();
 
+    @NonNull
     boolean isOnline();
 
 }

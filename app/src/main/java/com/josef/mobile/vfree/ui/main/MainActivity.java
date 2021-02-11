@@ -35,7 +35,7 @@ import com.josef.mobile.vfree.viewmodels.ViewModelProviderFactory;
 import com.josef.mobile.R;
 import javax.inject.Inject;
 
-public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, LifecycleOwner {
+public final class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, LifecycleOwner {
 
     @NonNull
     private DrawerLayout drawerLayout;

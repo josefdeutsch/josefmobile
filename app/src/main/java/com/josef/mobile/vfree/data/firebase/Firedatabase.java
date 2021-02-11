@@ -1,5 +1,7 @@
 package com.josef.mobile.vfree.data.firebase;
 
+import androidx.annotation.NonNull;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.annotations.Nullable;
@@ -12,6 +14,7 @@ import javax.inject.Singleton;
 @Singleton
 public final class Firedatabase implements Firebase {
 
+    @Nullable
     private final FirebaseDatabase database;
 
     @Inject

@@ -9,26 +9,37 @@ import androidx.lifecycle.Observer;
 import com.google.firebase.database.annotations.NotNull;
 import com.google.firebase.database.annotations.Nullable;
 import com.josef.mobile.vfree.data.DataManager;
+import com.josef.mobile.vfree.ui.auth.model.User;
 import com.josef.mobile.vfree.ui.main.post.model.LocalCache;
 import com.josef.mobile.vfree.ui.base.BaseViewModel;
 import com.josef.mobile.vfree.ui.main.Resource;
 import com.josef.mobile.vfree.ui.player.remote.DownloadPlayerEndpoints;
 
+import java.util.Objects;
+
 import javax.inject.Inject;
 
 
-public class PlayerViewModel extends BaseViewModel {
-
+public final class PlayerViewModel extends BaseViewModel {
+    @NonNull
     private final DataManager dataManager;
+    @NonNull
     private final DownloadPlayerEndpoints endpointObserver;
-
     @Nullable
     private MediatorLiveData<Resource<LocalCache>> container;
 
     @Inject
-    public PlayerViewModel(@NotNull DataManager dataManager, @NotNull DownloadPlayerEndpoints endpointObserver) {
+    public PlayerViewModel(@NotNull DataManager dataManager,
+                           @NotNull DownloadPlayerEndpoints endpointObserver) {
         this.dataManager = dataManager;
         this.endpointObserver = endpointObserver;
+    }
+
+    @Nullable
+    public MediatorLiveData<Resource<LocalCache>>getDataStoreCredentials() {
+        return Objects.requireNonNull(container,
+                "com.josef.mobile.vfree.ui.player.PlayerViewModel " +
+                        "container must not be null" );
     }
 
     public void authenticateWithEndpoint(@NotNull int index,
@@ -39,12 +50,9 @@ public class PlayerViewModel extends BaseViewModel {
         final LiveData<Resource<LocalCache>> source
                 = LiveDataReactiveStreams.fromPublisher(endpointObserver.observeEndpoints(index,endpoint));
         container.setValue(Resource.loading(null));
-        container.addSource(source, new Observer<Resource<LocalCache>>() {
-            @Override
-            public void onChanged(Resource<LocalCache> userAuthResource) {
-                container.setValue(userAuthResource);
-                container.removeSource(source);
-            }
+        container.addSource(source, userAuthResource -> {
+            container.setValue(userAuthResource);
+            container.removeSource(source);
         });
     }
 

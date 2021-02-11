@@ -26,16 +26,16 @@ import static android.content.ContentValues.TAG;
 import static com.josef.mobile.vfree.utils.AppConstants.BASE_URL;
 
 @Singleton
-public class AppDownloadProfileEndpoints implements DownloadProfileEndpoints {
+public final class AppDownloadProfileEndpoints implements DownloadProfileEndpoints {
 
+    @NonNull
     private final Context context;
+    @NonNull
     private final DataManager dataManager;
 
     @Inject
-    public AppDownloadProfileEndpoints(
-           @NonNull DataManager dataManager,
-           @NonNull Context context)
-    {
+    public AppDownloadProfileEndpoints(@NonNull DataManager dataManager,
+                                       @NonNull Context context) {
         this.dataManager = dataManager;
         this.context = context;
     }
@@ -43,7 +43,7 @@ public class AppDownloadProfileEndpoints implements DownloadProfileEndpoints {
     @NonNull
     @Override
     public Flowable<Resource<List<Profile>>> observeEndpoints(@NonNull String url) {
-          return dataManager.getEndpoints(BASE_URL + url)
+        return dataManager.getEndpoints(BASE_URL + url)
                 .map(endpoint -> {
                     Gson gson = new Gson();
                     Type userListType = new TypeToken<ArrayList<Profile>>() {

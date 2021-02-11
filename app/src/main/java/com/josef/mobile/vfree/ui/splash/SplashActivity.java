@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.bumptech.glide.RequestManager;
 import com.josef.mobile.vfree.ui.auth.AuthActivity;
 import com.josef.mobile.vfree.ui.base.BaseActivity;
+import com.josef.mobile.vfree.utils.AppConstants;
 import com.josef.mobile.vfree.viewmodels.ViewModelProviderFactory;
 import com.josef.mobile.R;
 
@@ -26,8 +27,10 @@ import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.josef.mobile.vfree.utils.AppConstants.interstitialAdId;
 
-public class SplashActivity extends BaseActivity {
+
+public final class SplashActivity extends BaseActivity {
 
 
     @Inject
@@ -39,10 +42,10 @@ public class SplashActivity extends BaseActivity {
     @BindView(R.id.animated_gif)
     ImageView animatedGif;
 
-    @NonNull private SplashViewModel viewModel;
+    @NonNull
+    private SplashViewModel viewModel;
 
-    @NonNull private static final String interstitialAdId =
-            "ca-app-pub-3940256099942544/1033173712";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +55,7 @@ public class SplashActivity extends BaseActivity {
         viewModel = new ViewModelProvider(this, providerFactory)
                 .get(SplashViewModel.class);
         viewModel.initiateInsterstitialAds(interstitialAdId);
+        viewModel.initiateRetrofitClient(AppConstants.ENDPOINT_3);
       //  viewModel.supplyAnimatedGif(animatedGif);
         Handler handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(new Runnable() {

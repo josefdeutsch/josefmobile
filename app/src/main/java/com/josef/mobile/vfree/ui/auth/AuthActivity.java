@@ -57,7 +57,7 @@ import butterknife.OnClick;
 /**
  * Demonstrate Firebase Authentication using a Google ID Token.
  */
-public class AuthActivity extends BaseActivity {
+public final class AuthActivity extends BaseActivity {
 
     public static final int RC_SIGN_OUT = 9001;
     public static final int SU_SIGN_IN = 9003;

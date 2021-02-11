@@ -2,7 +2,6 @@ package com.josef.mobile.vfree.ui.main.home;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,14 +29,13 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static android.content.ContentValues.TAG;
+import static com.josef.mobile.vfree.ui.base.Base.REQUEST_ENDPOINT;
+import static com.josef.mobile.vfree.ui.base.Base.REQUEST_INDEX;
 import static com.josef.mobile.vfree.ui.err.ErrorActivity.ACTIVITY_KEYS;
 
-public class HomeFragment extends BaseFragment
+public final  class HomeFragment extends BaseFragment
         implements ViewPagerAdapter.ViewpagerAdapterOnClickListener {
 
-
-    private static final String TAG = "HomeFragment";
     @Inject
     ViewPagerAdapter viewPagerAdapter;
 
@@ -58,7 +56,7 @@ public class HomeFragment extends BaseFragment
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, view);
         return view;
     }
@@ -81,7 +79,6 @@ public class HomeFragment extends BaseFragment
         }).attach();
 
         subscribeObservers();
-      //  subscribeObservers();
     }
 
     private void subscribeObservers() {
@@ -100,7 +97,6 @@ public class HomeFragment extends BaseFragment
                     }
                     case ERROR: {
                         hideProgessbar();
-                        Log.d(TAG, "subscribeObservers: "+listResource.message);
                         Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getActivity(),
                                 android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
 
@@ -119,7 +115,6 @@ public class HomeFragment extends BaseFragment
 
     @Override
     public void onItemInfoClicked() {
-        Log.d(TAG, "onItemInfoClicked: ");
         NavigationView navigationView = getActivity().findViewById(R.id.nav_view);
         Menu menu = navigationView.getMenu();
         MenuItem menuItem = menu.findItem(R.id.nav_info);
@@ -128,7 +123,6 @@ public class HomeFragment extends BaseFragment
 
     @Override
     public void onItemContinueClicked() {
-        Log.d(TAG, "onItemContinueClicked: ");
         NavigationView navigationView = getActivity().findViewById(R.id.nav_view);
         Menu menu = navigationView.getMenu();
         MenuItem menuItem = menu.findItem(R.id.nav_posts);
@@ -137,11 +131,10 @@ public class HomeFragment extends BaseFragment
 
     @Override
     public void onItemArrowClicked(int position) {
-        Log.d(TAG, "onItemArrowClicked: ");
         Intent intent = new Intent(getActivity(), PlayerActivity.class);
-        intent.putExtra(AppConstants.REQUEST_INDEX, position);
-        intent.putExtra(AppConstants.REQUEST_ENDPOINT, AppConstants.ENDPOINT_3);
-        startActivityForResult(intent, AppConstants.PLAYERACTIVIY);
+        intent.putExtra(REQUEST_INDEX, position);
+        intent.putExtra(REQUEST_ENDPOINT, AppConstants.ENDPOINT_3);
+        startActivity(intent);
     }
 
     @Override

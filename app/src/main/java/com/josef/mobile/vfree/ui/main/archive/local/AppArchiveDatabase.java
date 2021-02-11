@@ -12,20 +12,22 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Flowable;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 @Singleton
-public class AppArchiveDatabase implements ArchiveDatabase {
+public final class AppArchiveDatabase implements ArchiveDatabase {
 
+    @NonNull
     private final DataManager dataManager;
 
     @Inject
-    public AppArchiveDatabase(DataManager dataManager) {
+    public AppArchiveDatabase(@NonNull DataManager dataManager) {
         this.dataManager = dataManager;
     }
 
-
+    @NonNull
     public Flowable<Resource<List<Archive>>> getAllArchives() {
         return dataManager.getAllArchives()
                 .onErrorReturn(throwable -> {
@@ -48,12 +50,12 @@ public class AppArchiveDatabase implements ArchiveDatabase {
     }
 
     @Override
-    public void deleteArchives(Archive archive) {
+    public void deleteArchives(@NonNull Archive archive) {
         dataManager.deleteArchives(archive);
     }
 
     @Override
-    public void updateEndpoints(Archive archive) {
+    public void updateEndpoints(@NonNull Archive archive) {
         archive.setFlag(false);
 
         LocalCache localCache = new LocalCache(

@@ -18,7 +18,7 @@ import static android.content.ContentValues.TAG;
 import static com.josef.mobile.vfree.utils.AppConstants.BASE_URL;
 
 @Singleton
-public class AppDownloadPlayerEndpoints implements DownloadPlayerEndpoints {
+public final class AppDownloadPlayerEndpoints implements DownloadPlayerEndpoints {
 
     private final DataManager dataManager;
 

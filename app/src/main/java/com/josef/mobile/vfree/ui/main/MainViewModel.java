@@ -1,6 +1,7 @@
 package com.josef.mobile.vfree.ui.main;
 
 
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.LiveDataReactiveStreams;
 import androidx.lifecycle.MediatorLiveData;
@@ -9,27 +10,27 @@ import com.josef.mobile.vfree.ui.auth.model.User;
 import com.josef.mobile.vfree.ui.base.BaseViewModel;
 import com.josef.mobile.vfree.data.ads.OnAdsInstantiated;
 import com.josef.mobile.vfree.ui.main.store.Credentials;
+
+import java.util.Objects;
+
 import javax.inject.Inject;
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
 
-public class MainViewModel extends BaseViewModel {
+public final class MainViewModel extends BaseViewModel {
 
+    @NonNull
     private final DataManager dataManager;
+    @NonNull
     private final Credentials credentials;
-
-    private static final String TAG = "MainViewModel";
-
-    public MediatorLiveData<Resource<User>> getDataStoreCredentials() {
-        return dataStoreCredentials;
-    }
-
+    @Nullable
     private final MediatorLiveData<Resource<User>> dataStoreCredentials = new MediatorLiveData<>();
 
     @Inject
     public MainViewModel(
-            DataManager dataManager,
-            Credentials credentials
+            @NonNull DataManager dataManager,
+            @NonNull Credentials credentials
     ) {
 
         this.dataManager = dataManager;
@@ -37,8 +38,14 @@ public class MainViewModel extends BaseViewModel {
 
     }
 
+    @Nullable
+    public MediatorLiveData<Resource<User>> getDataStoreCredentials() {
+         return Objects.requireNonNull(dataStoreCredentials,
+                "com.josef.mobile.vfree.ui.main.MainViewodel " +
+                        "dataStoreCredentials must not be null" );
+    }
 
-    public void initiateInsterstitialAds(OnAdsInstantiated onAdsInstantiated) {
+    public void initiateInsterstitialAds(@NonNull OnAdsInstantiated onAdsInstantiated) {
         addToCompositeDisposable(
                 Completable.fromAction(() -> {
 
@@ -50,8 +57,9 @@ public class MainViewModel extends BaseViewModel {
                         .subscribe());
     }
 
-
-    public MediatorLiveData<Resource<User>> observeDataStoreCredentials(MainActivity mainActivity) {
+    @NonNull
+    public MediatorLiveData<Resource<User>> observeDataStoreCredentials(
+            @NonNull MainActivity mainActivity) {
 
         LiveData<Resource<User>> source =
                 LiveDataReactiveStreams.fromPublisher(credentials.observeDataStore(mainActivity));
@@ -63,8 +71,6 @@ public class MainViewModel extends BaseViewModel {
             dataStoreCredentials.removeSource(source);
         });
         return dataStoreCredentials;
-
     }
-
 
 }

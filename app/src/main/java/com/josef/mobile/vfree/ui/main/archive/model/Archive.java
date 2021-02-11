@@ -5,35 +5,43 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import io.reactivex.annotations.NonNull;
+import io.reactivex.annotations.Nullable;
 
 @Entity(tableName = "archive")
-public class Archive {
+public final class Archive {
 
+    @Nullable
     @ColumnInfo(name = "created_at")
     public String createdAt;
 
     @NonNull
     @PrimaryKey(autoGenerate = true)
     public Long id;
-
+    @Nullable
     @ColumnInfo(name = "position")
     public int position;
 
+    @Nullable
     @ColumnInfo(name = "flag")
     public boolean flag;
 
+    @Nullable
     @ColumnInfo(name = "name")
     public String name;
 
+    @Nullable
     @ColumnInfo(name = "url")
     public String url;
 
+    @Nullable
     @ColumnInfo(name = "tag")
     public String tag;
 
+    @Nullable
     @ColumnInfo(name = "png")
     public String png;
 
+    @Nullable
     @ColumnInfo(name = "updated_at")
     public String updatedAt;
 

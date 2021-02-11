@@ -8,6 +8,7 @@ import io.reactivex.annotations.NonNull;
 
 public interface DownloadPlayerEndpoints {
 
+     @NonNull
      Flowable<Resource<LocalCache>> observeEndpoints(@NonNull int index,
                                                      @NonNull String endpoints);
 

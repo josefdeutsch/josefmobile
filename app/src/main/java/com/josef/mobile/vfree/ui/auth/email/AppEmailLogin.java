@@ -23,7 +23,9 @@ import io.reactivex.schedulers.Schedulers;
 @Singleton
 public final class AppEmailLogin implements EmailLogin {
 
+    @NonNull
     private final FirebaseAuth firebaseAuth;
+    @NonNull
     private final Context context;
 
     @Inject

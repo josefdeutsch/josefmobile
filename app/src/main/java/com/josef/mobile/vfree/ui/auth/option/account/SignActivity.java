@@ -117,14 +117,6 @@ public final class SignActivity extends BaseActivity {
                 boolean isEmailValid = SignActivity.this.validateEmail(quartet.c);
                 boolean isPasswordValid = SignActivity.this.validatePassword(quartet.d);
 
-                Log.d(TAG, "onChanged: "
-                        + "firstName :" + isFirstNameValid
-                        + "lastName :" + isLastNameValid
-                        + "isEmailValid :" + isEmailValid
-                        + "isPasswordValid :" + isPasswordValid
-                );
-
-
                 if (isFirstNameValid && isLastNameValid && isEmailValid && isPasswordValid) {
                     SignActivity.this.enableSignIn();
                 } else {
@@ -253,7 +245,6 @@ public final class SignActivity extends BaseActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                Log.d(TAG, "onTextChanged: "+s);
                 authInputViewModel.verifyEmailInputs(s);
             }
 

@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.RequestManager;
@@ -22,19 +23,22 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.annotations.NonNull;
 
-public class ArchiveRecyclerViewAdapter extends RecyclerView.Adapter<ArchiveRecyclerViewAdapter.ViewHolder> {
+public final class ArchiveRecyclerViewAdapter extends RecyclerView.Adapter<ArchiveRecyclerViewAdapter.ViewHolder> {
 
+    @NonNull
     private final RequestManager requestManager;
-
+    @NonNull
     private OnDeleteCallBack mDeleteCallBack;
+    @Nullable
     private List<Archive> mValues;
 
-    public ArchiveRecyclerViewAdapter(RequestManager requestManager) {
+    public ArchiveRecyclerViewAdapter(@NonNull RequestManager requestManager) {
         this.requestManager = requestManager;
     }
 
-    public void setmDeleteCallBack(OnDeleteCallBack mDeleteCallBack) {
+    public void setmDeleteCallBack(@NonNull OnDeleteCallBack mDeleteCallBack) {
         this.mDeleteCallBack = mDeleteCallBack;
     }
 
@@ -58,7 +62,7 @@ public class ArchiveRecyclerViewAdapter extends RecyclerView.Adapter<ArchiveRecy
         holder.onBind(mValues.get(position));
     }
 
-    public void setListItems(List<Archive> arrayList) {
+    public void setListItems(@Nullable List<Archive> arrayList) {
         this.mValues = arrayList;
         notifyDataSetChanged();
     }

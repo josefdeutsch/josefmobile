@@ -28,16 +28,20 @@ import javax.inject.Inject;
 
 import static android.content.ContentValues.TAG;
 import static android.widget.NumberPicker.OnScrollListener.SCROLL_STATE_IDLE;
+import static com.josef.mobile.vfree.ui.base.Base.REQUEST_ENDPOINT;
+import static com.josef.mobile.vfree.ui.base.Base.REQUEST_INDEX;
 
 
-public class PostsFragment extends BaseFragment
+public final class PostsFragment extends BaseFragment
         implements PostRecyclerAdapter.PostRecyclerViewOnClickListener {
 
 
     @Inject
     PostRecyclerAdapter adapter;
 
+    @NonNull
     private PostsViewModel viewModel;
+    @NonNull
     private RecyclerView recyclerView;
 
     @Override
@@ -118,16 +122,17 @@ public class PostsFragment extends BaseFragment
 
 
     @Override
-    public void onClick(int position) {
+    public void onClick(@NonNull int position) {
         Intent intent = new Intent(getActivity(), PlayerActivity.class);
-        intent.putExtra(AppConstants.REQUEST_INDEX, position);
-        intent.putExtra(AppConstants.REQUEST_ENDPOINT, AppConstants.ENDPOINT_1);
+        intent.putExtra(REQUEST_INDEX, position);
+        intent.putExtra(REQUEST_ENDPOINT, AppConstants.ENDPOINT_1);
         Log.d(TAG, "onClick: "+position);
-        startActivityForResult(intent, AppConstants.PLAYERACTIVIY);
+        startActivity(intent);
     }
 
     @Override
-    public void onChecked(Boolean isChecked, LocalCache favourite) {
+    public void onChecked(@NonNull Boolean isChecked,
+                          @NonNull LocalCache favourite) {
 
         if (dataManager.getHashMapArchiveIndicator().equals(PreferencesHelper.ARCHIVE_EMPTY)) {
             Toast.makeText(getContext(), getContext().getResources()
@@ -155,7 +160,8 @@ public class PostsFragment extends BaseFragment
     }
 
     @Override
-    public void isFlagged(Boolean isChecked, LocalCache favourite) {
+    public void isFlagged(@NonNull Boolean isChecked,
+                          @NonNull LocalCache favourite) {
         if (isChecked) {
             favourite.flag = true;
             viewModel.updateEndpoints(favourite);

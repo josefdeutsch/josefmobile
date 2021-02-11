@@ -8,6 +8,7 @@ import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityOptionsCompat;
@@ -25,23 +26,26 @@ import dagger.android.support.DaggerAppCompatActivity;
 import static com.josef.mobile.vfree.ui.auth.AuthActivity.RC_SIGN_OUT;
 import static com.josef.mobile.vfree.ui.err.ErrorActivity.ACTIVITY_KEYS;
 
-public abstract class BaseActivity extends DaggerAppCompatActivity implements Base {
+public abstract class BaseActivity
+        extends DaggerAppCompatActivity
+        implements Base {
 
+    @NonNull
     @Inject
     public SessionManager sessionManager;
-
+    @NonNull
     @Inject
     public DataManager dataManager;
-
+    @NonNull
     @Inject
     public UtilManager utilManager;
-
+    @NonNull
     public AlertDialog.Builder alert;
-
+    @NonNull
     private Activity activity;
-
+    @NonNull
     private ConnectivityManager connectivityManager;
-
+    @NonNull
     private ConnectivityManager.NetworkCallback networkCallback;
 
 
@@ -52,6 +56,7 @@ public abstract class BaseActivity extends DaggerAppCompatActivity implements Ba
 
         connectivityManager = utilManager.getConnectivityManager();
         networkCallback = new ConnectivityManager.NetworkCallback() {
+
             @Override
             public void onAvailable(Network network) {
             }
@@ -80,6 +85,7 @@ public abstract class BaseActivity extends DaggerAppCompatActivity implements Ba
             }
 
         };
+
         connectivityManager.registerDefaultNetworkCallback(networkCallback);
 
         subscribeToSessionManager();
@@ -110,7 +116,7 @@ public abstract class BaseActivity extends DaggerAppCompatActivity implements Ba
         });
     }
 
-    public void showProgressbar(Activity activity) {
+    public void showProgressbar(@NonNull Activity activity) {
         utilManager.showProgressbar(activity);
     }
 
