@@ -1,96 +1,47 @@
 # Joseph - Digital art is true.
 
 ## Project Overview
-Joseph - “an app for providing art on smart TV”
-The task was to give users an interactive selection of digital works of art in the form of videos
-which can then be combined to a movie on SMART TV.
+I developed Joseph because I was looking for alternative ways to present my art. During my work I was confronted more and more with the idea of digital space. What exactly is digital space and how does it appear?
 
 ## Why this Project?
-I developed Joseph because I was looking for alternative ways to present my art.
-During my work I was confronted more and more with the idea of digital space.
-What exactly is digital space and how does it show itself?
-The way to reinterpret an exhibition space captivates me and has motivated me so much to implement and complete joseph according to my ideas.
-In the end, Joseph itself became a work of art and the metaphor: “The expression wanders through space” is the message that emanates from the heart of the matter.
+The way of reinterpreting an exhibition space fascinates me and has motivated me so much to implement and complete Joseph according to my ideas. In the end, Joseph himself became a work of art and the metaphor: "The expression travels through space" is the message that comes from the heart of the matter. To show that this can be seen by humans and thus by a work of art, we have to accept that digital art is true. The authenticity of a thing primarily determines its value and that is precisely why we have to admit it. The world is in a steady emergent process what was morally right today is where possible wrong tomorrow, but nothing like that with art, it goes timelessly through time. A solid component that can be reinterpreted over and over again. But every story is technologically influenced and if we think about it further, I am convinced that there is not only a digital work of art but also a digital space, because every thing is an instance of space.Then the willingness to authenticate a thing is the acceptance of the room itself. I built Joseph because I love that thought. Digital art is true. I'm sure the more our world emerges digitally, the more we will believe in it.
 
-<br />
-<br />
 <br />
 <br />
 <p align="center">
-<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/about.png" width="200"/>
-<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/collection.png" width="200"/>
-<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/gallery.png" width="200"/>
-<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/home.png" width="200"/>
+<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/splash.png" width="200"/>
 <img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/login.png" width="200"/>
 <img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/nav.png" width="200"/>
+<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/home.png" width="200"/>
+<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/gallery.png" width="200"/>
+<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/collection.png" width="200"/>
+<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/about.png" width="200"/>
 <img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/player.png" width="200"/>
-<img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/splash.png" width="200"/>
 </p>
-
-<br />
-<br />
 <br />
 <br />
 
-## Josephmobile 
-Josephmobile is a simple application programmed with the Android SDK.
-Figur one shows a login window for the verification of the provision of user data.
-Figure two and Figure three show the operational dynamics of the application. Whereby scrolling up and down the screen brings up different art series and swiping right and left shows different works of a series.
-The user has the option of pressing the heart button to save the desired content in order to be able to call it up on the television.
-A review window is supposed to create a remedy during the synchronization in Figure four by clarifying the selection made again.
 
+## How's the business going? 
+Joseph is a business idea that wants to bring digital art to the smart TV. It consists of a mobile and a smart TV application. In the mobile version, you can select works of art and then sync them with your account. Download JosephTv and stream high quality art on your smart TV. Click on the link below to be referred directly to the app store. Joseph is intended for a wide range of users from different industries, since art has space in every room. Joseph becomes an adaptable design element. The constant succession of new sculptures and the associated speed create a pleasant atmosphere, ideal for bars, lobbies, hotels, but also interesting for private use. Joseph shows art in the digital space and would like to connect with your space to create a new awesome Metaphor. Controversial analogies are perfect to be part of an external backdrop that is referenced to the digital space
 
-## What have I learned?
-In this project you will:
-* Firebase Database, Google Authentication
-* Usage of Workermanager in detail
-* Google Cloud Endpoints provided with Gradle
-* Test UI Components with AndroidX- Testing- Framework
+## How did I do this?
+I use Zbrush Dynamesh to model the base mesh and OpenGl / GLSL for scenery and shaders. Basically there are no limitations as the sculpture can be bared out into infinity, but in practice it has been shown that a certain size is decisive. The sculpture is reflected over a surface that provides an inductive scale valid for each sculpture, so that the scene is given support and stability. The sculpture rotates horizontally, the pivot point is set below the mesh so that a homogeneous sequence of the fading in and fading out scene is possible. Each scenery is a live rendering consisting of 25k to 50k polygons with orthogonal normals. I have set two light sources, each of which correlates with two different shaders and is mixed in the final output. The whole scenery is in full HD
 
 ## Libraries
 - [Android Architecture Components](https://developer.android.com/topic/libraries/architecture/) 
-    * [Room](https://developer.android.com/topic/libraries/architecture/room)
-    * [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel)
-    * [LiveData](https://developer.android.com/topic/libraries/architecture/livedata)
-    * [Workermanager](https://developer.android.com/topic/libraries/architecture/workermanager)
-    * [Espresso](https://developer.android.com/topic/libraries/architecture/espresso)
-    * [ExoPlayer](https://developer.android.com/topic/libraries/architecture/activity)
-    * [Mockito](https://developer.android.com/topic/libraries/architecture/activity)
-    * [ActivityScenario](https://developer.android.com/topic/libraries/architecture/activity)
-    * [FragmentScenario](https://developer.android.com/topic/libraries/architecture/fragment)
-     
-- [OkHttp](http://square.github.io/retrofit/) 
-- [Picasso](http://square.github.io/picasso/)
-
-
-## Joseph Artworks
-
-# Project Overview:
-The viewport shows a scenario of rotating sculpture on a mirror surface with variable graphic parameters.
-The sculpture was modeled with Zbrush R.8 - "Dynamesh-Feature" and then exported as an OBJ with the "Triangulated Faces" mode.
-A GLSL shader illuminates the surface that reflects an environment (environment mapping).
-Below the sculpture there is a frame buffer that correctly interpolates the object. The mirror effect should serve as a constant reference to the viewer by reflecting the sculpture.
-In order to guarantee effective accessibility of the individual parts, the scenario fades in and out.
-
-## Libraries
+- [Rx Java](http://reactivex.io/) 
+- [Dagger](https://dagger.dev/) 
+- [Appengine](https://github.com/josefdeutsch/gradle-appengine-plugin) 
 - [OpenGl4.5.0](https://www.opengl.org//) 
 - [GLSL3.6.0](https://www.khronos.org/opengl/wiki/OpenGL_Shading_Language) 
 - [LWJGL2](https://www.lwjgl.org/)
 - [JOML](https://github.com/JOML-CI/JOML)
 
-
-<br />
-<br />
-<p align="center">
-<a href=http://joseph3d.com/wp-content/uploads/2019/06/b0047.mp4><img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/b0047.gif" width="400"/></a>
-<a href=http://joseph3d.com/wp-content/uploads/2019/06/g0010.mp4><img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/g0010.gif" width="400"/></a>
-<a href=http://joseph3d.com/wp-content/uploads/2019/06/s0023.mp4><img src="https://github.com/josefdeutsch/josefmobile/blob/v2.5.1/app/src/main/res/img/s0023.gif" width="400"/></a>
-
 ## License
 Apache, see the [LICENSE](LICENSE) file.
 
 <a href="https://play.google.com/store/apps/details?id=com.owncloud.android"><img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" height="75"></a>
-
 
 ## Join development!
 
