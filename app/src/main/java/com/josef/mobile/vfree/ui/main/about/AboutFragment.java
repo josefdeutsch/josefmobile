@@ -59,6 +59,7 @@ public final class AboutFragment extends BaseFragment {
     private void initRecyclerView(@NonNull View view) {
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
+        recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
     }
@@ -69,18 +70,15 @@ public final class AboutFragment extends BaseFragment {
             if (listResource != null) {
                 switch (listResource.status) {
                     case LOADING: {
-                        Log.d(TAG, "subscribeObservers: ");
                         showProgressbar(getActivity());
                         break;
                     }
                     case SUCCESS: {
-                        Log.d(TAG, "subscribeObservers: ");
                         adapter.setAbouts(listResource.data);
                         hideProgessbar();
                         break;
                     }
                     case ERROR: {
-                        Log.d(TAG, "subscribeObservers: "+listResource.message);
                         hideProgessbar();
                         Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getActivity(),
                                 android.R.anim.fade_in, android.R.anim.fade_out).toBundle();

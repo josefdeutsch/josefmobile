@@ -2,6 +2,7 @@ package com.josef.mobile.vfree.ui.main.home;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,6 +30,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.content.ContentValues.TAG;
 import static com.josef.mobile.vfree.ui.base.Base.REQUEST_ENDPOINT;
 import static com.josef.mobile.vfree.ui.base.Base.REQUEST_INDEX;
 import static com.josef.mobile.vfree.ui.err.ErrorActivity.ACTIVITY_KEYS;
@@ -87,11 +89,13 @@ public final  class HomeFragment extends BaseFragment
             if (listResource != null) {
                 switch (listResource.status) {
                     case LOADING: {
+                        Log.d(TAG, "subscribeObservers: ");
                         showProgressbar(getActivity());
                         break;
                     }
                     case SUCCESS: {
                         viewPagerAdapter.setProfiles(listResource.data);
+                        Log.d(TAG, "subscribeObservers: ");
                         hideProgessbar();
                         break;
                     }

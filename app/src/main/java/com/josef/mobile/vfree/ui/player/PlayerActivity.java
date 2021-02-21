@@ -26,7 +26,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import okhttp3.Interceptor;
 
 import static com.josef.mobile.vfree.ui.err.ErrorActivity.ACTIVITY_KEYS;
 
@@ -68,9 +67,9 @@ public final class PlayerActivity extends BaseActivity implements PlayerService 
     @NonNull
     long mResumePosition;
     @NonNull
-    int index;
+    int mIndex;
     @NonNull
-    String endpoint;
+    String mEndpoint;
 
 
     @Override
@@ -85,14 +84,16 @@ public final class PlayerActivity extends BaseActivity implements PlayerService 
         setContentView(R.layout.activity_player);
         ButterKnife.bind(this);
         if (savedInstanceState == null) {
-            index = getIntent().getIntExtra(REQUEST_INDEX, 0);
-            endpoint = getIntent().getStringExtra(REQUEST_ENDPOINT);
+            mIndex = getIntent().getIntExtra(REQUEST_INDEX, 0);
+            mEndpoint = getIntent().getStringExtra(REQUEST_ENDPOINT);
         }
 
         if (savedInstanceState != null) {
             mResumeWindow = savedInstanceState.getInt(STATE_RESUME_WINDOW);
             mResumePosition = savedInstanceState.getLong(STATE_RESUME_POSITION);
             mExoPlayerFullscreen = savedInstanceState.getBoolean(STATE_BOOLEAN_VALUE);
+            mIndex = savedInstanceState.getInt(REQUEST_ENDPOINT);
+            mEndpoint = savedInstanceState.getString(REQUEST_INDEX);
         }
 
         viewModel = new ViewModelProvider(this, providerFactory).get(PlayerViewModel.class);
@@ -105,13 +106,13 @@ public final class PlayerActivity extends BaseActivity implements PlayerService 
         outState.putInt(STATE_RESUME_WINDOW, mResumeWindow);
         outState.putLong(STATE_RESUME_POSITION, mResumePosition);
         outState.putBoolean(STATE_BOOLEAN_VALUE, mExoPlayerFullscreen);
-        outState.putString(REQUEST_ENDPOINT, endpoint);
-        outState.putInt(REQUEST_INDEX, index);
+        outState.putString(REQUEST_ENDPOINT, mEndpoint);
+        outState.putInt(REQUEST_INDEX, mIndex);
         super.onSaveInstanceState(outState);
     }
 
     private void subscribeObserver() {
-        viewModel.authenticateWithEndpoint(index, endpoint);
+        viewModel.authenticateWithEndpoint(mIndex, mEndpoint);
         viewModel.observeEndpoints().observe(this, listResource -> {
             if (listResource != null) {
                 switch (listResource.status) {

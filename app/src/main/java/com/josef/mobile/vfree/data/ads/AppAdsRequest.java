@@ -65,7 +65,7 @@ public final class AppAdsRequest implements AdsRequest {
             @Override
             public void onAdClosed() {
                 onAdsInstantiated.onSuccess();
-                requestNewInterstitial();
+                //requestNewInterstitial();
             }
         });
     }

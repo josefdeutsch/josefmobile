@@ -244,7 +244,7 @@ public final class AuthActivity extends BaseActivity {
                     case AUTHENTICATED: {
                         hideProgessbar();
                         startActivityForResult(new Intent(AuthActivity.this, MainActivity.class), AUTH_REQ);
-                        new Handler().postDelayed(() -> utilManager.hideProgressbar(), 1000);
+                        //new Handler().postDelayed(() -> utilManager.hideProgressbar(), 1000);
 
                         break;
                     }
