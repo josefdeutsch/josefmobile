@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -104,12 +106,14 @@ public final class MainActivity extends BaseActivity implements NavigationView.O
         return super.onCreateView(parent, name, context, attrs);
     }
 
+
     private void init() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout);
         NavigationUI.setupWithNavController(navigationView, navController);
         navigationView.setNavigationItemSelectedListener(this);
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> setToolbarColor());
+
     }
 
     private void setToolbarColor() {

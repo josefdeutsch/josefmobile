@@ -8,18 +8,23 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.RequestManager;
 import com.josef.mobile.vfree.data.DataManager;
 import com.josef.mobile.vfree.ui.main.post.model.LocalCache;
 import com.josef.mobile.vfree.utils.UtilManager;
 import com.josef.mobile.R;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -85,12 +90,11 @@ public final class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_item, parent, false);
-        ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
-        layoutParams.width = utilManager.getScreenWidth(context) / 2;
-        view.setLayoutParams(layoutParams);
+        //    ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+        //    layoutParams.width = utilManager.getScreenWidth(context) / 2;
+        //    view.setLayoutParams(layoutParams);
         return new PostViewHolder(view);
     }
-
 
     @Override
     public int getItemCount() {
@@ -129,7 +133,7 @@ public final class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView
         }
 
         @Override
-        public void onCheckedChanged(@NonNull CompoundButton buttonView,@NonNull boolean isChecked) {
+        public void onCheckedChanged(@NonNull CompoundButton buttonView, @NonNull boolean isChecked) {
             postRecyclerViewOnClickListener.onChecked(isChecked, posts.get(getAdapterPosition()));
             postRecyclerViewOnClickListener.isFlagged(isChecked, posts.get(getAdapterPosition()));
         }
