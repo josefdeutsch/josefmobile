@@ -109,6 +109,6 @@ public final class AppGoogleLogin implements GoogleLogin {
         String photoUrl = Objects.requireNonNull(firebaseUser.getPhotoUrl(),
                 "com.josef.mobile.vfree.ui.auth.google.GoogleLogin User photoUrl must not be null" ).toString();
 
-        return new User(uid, name, email, photoUrl);
+        return new User(uid, name, email);
     }
 }

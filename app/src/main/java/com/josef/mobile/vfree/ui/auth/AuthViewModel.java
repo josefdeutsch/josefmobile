@@ -50,4 +50,6 @@ public final class AuthViewModel extends BaseViewModel {
                 = LiveDataReactiveStreams.fromPublisher(emailLogin.authenticateWithEmailAccount(email, password));
         sessionManager.observeAuthResource(source);
     }
+
+
 }

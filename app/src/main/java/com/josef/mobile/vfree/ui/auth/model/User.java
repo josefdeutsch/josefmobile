@@ -3,58 +3,49 @@ package com.josef.mobile.vfree.ui.auth.model;
 
 import androidx.annotation.NonNull;
 
-import com.google.gson.annotations.SerializedName;
+import com.google.firebase.database.PropertyName;
 
-import org.jetbrains.annotations.Nullable;
-import java.io.Serializable;
-import java.util.Objects;
 
-public final class User implements Serializable {
+public final class User {
 
     @NonNull
     public int id;
-    @Nullable
-    @SerializedName("uid")
+
+    @NonNull
+    @PropertyName("uid")
     public String uid;
-    @Nullable
-    @SerializedName("email")
+
+    @NonNull
+    @PropertyName("email")
     public String email;
-    @Nullable
-    @SerializedName("fname")
+
+    @NonNull
+    @PropertyName("fname")
     public String fname;
-    @Nullable
-    @SerializedName("lname")
+
+    @NonNull
+    @PropertyName("lname")
     public String lname;
-    @Nullable
-    @SerializedName("photoUrl")
+
+    @NonNull
+    @PropertyName("photoUrl")
     public String photoUrl;
 
     @NonNull
     public Throwable throwable;
 
-    public User() {
+    public User(){
+
 
     }
 
-    public User(@Nullable String uid,
-                @Nullable String email,
-                @Nullable String fname,
-                @Nullable String photoUrl)
-    {
-        this.uid = uid;
+    public User(@NonNull String email, @NonNull String fname, @NonNull String lname) {
         this.email = email;
         this.fname = fname;
-        this.photoUrl = photoUrl;
-    }
-
-    @NonNull
-    public Throwable getThrowable() {
-        return throwable;
+        this.lname = lname;
     }
 
     public int getId() {
-        Objects.requireNonNull(id,
-                "com.josef.mobile.vfree.ui.auth.model.User id must not be null");
         return id;
     }
 
@@ -62,55 +53,59 @@ public final class User implements Serializable {
         this.id = id;
     }
 
-    @Nullable
+    @NonNull
+    @PropertyName("uid")
     public String getUid() {
-        Objects.requireNonNull(uid,
-                "com.josef.mobile.vfree.ui.auth.model.User uid must not be null" );
         return uid;
     }
 
-    public void setUid(@Nullable String uid) {
+    public void setUid(@NonNull String uid) {
         this.uid = uid;
     }
 
-    @Nullable
+    @NonNull
+    @PropertyName("email")
     public String getEmail() {
-        return Objects.requireNonNull(email,
-                "com.josef.mobile.vfree.ui.auth.model.User email mmust not be null" );
+        return email;
     }
 
-    public void setEmail(@Nullable String email) {
+    public void setEmail(@NonNull String email) {
         this.email = email;
     }
 
-    @Nullable
+    @NonNull
+    @PropertyName("fname")
     public String getFname() {
-        return Objects.requireNonNull(fname,
-                "com.josef.mobile.vfree.ui.auth.model.User first name must not be null" );
+        return fname;
     }
 
-    public void setFname(@Nullable String fname) {
+    public void setFname(@NonNull String fname) {
         this.fname = fname;
     }
 
-    @Nullable
+    @NonNull
+    @PropertyName("lname")
     public String getLname() {
-        return Objects.requireNonNull(lname,
-                "com.josef.mobile.vfree.ui.auth.model.User last name must not be null" );
+        return lname;
     }
 
-    public void setLname(@Nullable String lname) {
+    public void setLname(@NonNull String lname) {
         this.lname = lname;
     }
 
-    @Nullable
+    @NonNull
+    @PropertyName("photoUrl")
     public String getPhotoUrl() {
-        return Objects.requireNonNull(photoUrl,
-                "com.josef.mobile.vfree.ui.auth.model.User photourl must not be null" );
+        return photoUrl;
     }
 
-    public void setPhotoUrl(@Nullable String photoUrl) {
+    public void setPhotoUrl(@NonNull String photoUrl) {
         this.photoUrl = photoUrl;
+    }
+
+    @NonNull
+    public Throwable getThrowable() {
+        return throwable;
     }
 
     public void setThrowable(@NonNull Throwable throwable) {

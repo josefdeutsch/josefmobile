@@ -10,6 +10,7 @@ import androidx.lifecycle.MediatorLiveData;
 import com.google.firebase.auth.FirebaseAuth;
 
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.josef.mobile.vfree.data.DataManager;
 import com.josef.mobile.vfree.ui.auth.model.User;
 import com.josef.mobile.vfree.ui.base.BaseViewModel;
@@ -24,6 +25,8 @@ import io.reactivex.SingleOnSubscribe;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.schedulers.Schedulers;
 
+import static android.content.ContentValues.TAG;
+
 
 public final class SignViewModel extends BaseViewModel {
 
@@ -36,8 +39,7 @@ public final class SignViewModel extends BaseViewModel {
     @Inject
     public SignViewModel(@NonNull FirebaseAuth firebaseAuth,
                          @NonNull DataManager dataManager,
-                         @NonNull Context context)
-    {
+                         @NonNull Context context) {
         this.firebaseAuth = firebaseAuth;
         this.dataManager = dataManager;
         this.context = context;
@@ -71,11 +73,11 @@ public final class SignViewModel extends BaseViewModel {
                                                                 @NonNull String email,
                                                                 @NonNull String password) {
 
-         Single<User> createAccount = createAccount(email, password);
+        Single<User> createAccount = createAccount(email, password);
 
-         Single<User> sendVerification = sendVerification();
+        Single<User> sendVerification = sendVerification();
 
-         Single<User> createCredentials = createCredentials(fName, lName, email);
+        Single<User> createCredentials = createCredentials(fName, lName, email);
 
         return createAccount
                 .flatMap(user -> sendVerification)
@@ -137,10 +139,16 @@ public final class SignViewModel extends BaseViewModel {
 
             DatabaseReference myRef = dataManager.getDataBaseRefChild_Profile();
 
-            User user = new User();
-            user.setFname(fName);
-            user.setLname(lName);
-            user.setEmail(email);
+            Log.d(TAG, "createCredentials: ");
+
+            User user = new User(email, fName, lName);
+
+            // user.setFname(fName);
+            // user.setLname(lName);
+            // user.setEmail(email);
+
+            Log.d(TAG, "createCredentials: " + firebaseAuth.getCurrentUser().getUid());
+            Log.d(TAG, "createCredentials: " + fName + lName + email);
 
             myRef.child(firebaseAuth.getCurrentUser().getUid()).setValue(user)
                     .addOnCompleteListener(task -> {

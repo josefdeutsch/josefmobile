@@ -80,7 +80,7 @@ public final class AppModule {
 
     @Provides
     @Singleton
-    static  FirebaseDatabase provideFiredatabase() {
+    static FirebaseDatabase provideFiredatabase() {
         return FirebaseDatabase.getInstance();
     }
 
