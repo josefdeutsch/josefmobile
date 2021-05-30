@@ -45,10 +45,10 @@
                         android:textColorHint="@color/grey_500">
 
                         <EditText
-                            android:backgroundTintMode="@color/colorPrimary"
                             android:id="@+id/email_et"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:backgroundTintMode="@color/colorPrimary"
                             android:hint="Email"
                             android:inputType="textWebEmailAddress"
                             android:maxLength="@integer/EMAIL_TEXT_LENGTH"
@@ -67,10 +67,10 @@
                         android:textColorHint="@color/grey_500">
 
                         <EditText
-                            android:backgroundTintMode="@color/colorAccent"
                             android:id="@+id/password_et"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:backgroundTintMode="@color/colorAccent"
                             android:hint="Password"
                             android:inputType="textWebPassword"
                             android:maxLength="@integer/MAX_TEXT_LENGTH"
@@ -99,6 +99,24 @@
                             android:textSize="16sp" />
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:id="@+id/forgot_ll"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <Button
+                            android:id="@+id/forgot_password_btn"
+                            style="?android:attr/borderlessButtonStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/colorPrimaryDark"
+                            android:text="Forgot Password"
+                            android:textColor="@color/cardview_light_background"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -107,29 +125,19 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:layout_marginBottom="8dp"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:paddingLeft="24dp"
                     android:paddingRight="24dp">
 
                     <Button
-                        android:id="@+id/forgot_password_btn"
-                        android:backgroundTint="@color/colorPrimaryDark"
-                        style="?android:attr/borderlessButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Forgot Password"
-                        android:textColor="@color/cardview_light_background"
-                        android:textSize="16sp" />
-
-                    <Button
-                        android:layout_height="96dp"
-                        android:layout_marginRight="64dp"
                         android:id="@+id/email_sign_up_btn"
                         style="?android:attr/borderlessButtonStyle"
                         android:layout_width="wrap_content"
+                        android:layout_height="96dp"
+                        android:layout_marginRight="64dp"
                         android:backgroundTint="@color/colorPrimaryDark"
-                        android:textColor="@color/cardview_light_background"
                         android:text="Sign Up"
+                        android:textColor="@color/cardview_light_background"
                         android:textSize="16sp" />
 
                 </LinearLayout>

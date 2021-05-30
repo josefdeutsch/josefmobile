@@ -31,6 +31,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -42,6 +43,7 @@ import com.josef.mobile.vfree.ui.auth.option.account.SignActivity;
 import com.josef.mobile.vfree.ui.auth.option.verification.VerificationActivity;
 import com.josef.mobile.vfree.ui.base.BaseActivity;
 import com.josef.mobile.vfree.ui.main.MainActivity;
+import com.josef.mobile.vfree.ui.splash.SplashActivity;
 import com.josef.mobile.vfree.utils.UtilManager;
 import com.josef.mobile.vfree.viewmodels.ViewModelProviderFactory;
 import com.josef.mobile.R;
@@ -112,6 +114,12 @@ public final class AuthActivity extends BaseActivity {
         observeFirebaseValidation();
 
         onKeyBoardEventListener();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+      //  hideProgessbar();
     }
 
     @Override
@@ -238,14 +246,16 @@ public final class AuthActivity extends BaseActivity {
             if (userAuthResource != null) {
                 switch (userAuthResource.status) {
                     case LOADING: {
-                        showProgressbar(AuthActivity.this);
+                        showAuthProgressbar(AuthActivity.this);
                         break;
                     }
                     case AUTHENTICATED: {
-                        hideProgessbar();
-                        startActivityForResult(new Intent(AuthActivity.this, MainActivity.class), AUTH_REQ);
+                        Bundle bundle = ActivityOptionsCompat
+                                .makeCustomAnimation(AuthActivity.this,
+                                        android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
+                        startActivityForResult(new Intent(AuthActivity.this, MainActivity.class), AUTH_REQ,bundle);
                         //new Handler().postDelayed(() -> utilManager.hideProgressbar(), 1000);
-
+                        finishAfterTransition();
                         break;
                     }
                     case ERROR: {

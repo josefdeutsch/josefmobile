@@ -55,7 +55,6 @@ public final class SplashActivity extends BaseActivity {
         viewModel = new ViewModelProvider(this, providerFactory)
                 .get(SplashViewModel.class);
         viewModel.initiateInsterstitialAds(interstitialAdId);
-        viewModel.initiateRetrofitClient(AppConstants.ENDPOINT_3);
         Handler handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(new Runnable() {
             @Override
@@ -68,7 +67,7 @@ public final class SplashActivity extends BaseActivity {
                         bundle);
                 finishAfterTransition();
             }
-        },5000);
+        },3000);
     }
 
 

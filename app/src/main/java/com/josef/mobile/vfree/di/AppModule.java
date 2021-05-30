@@ -32,8 +32,10 @@ import com.josef.mobile.vfree.utils.AppUtilManager;
 import com.josef.mobile.vfree.utils.UtilManager;
 import com.josef.mobile.vfree.utils.common.AppCommonUtils;
 import com.josef.mobile.vfree.utils.common.CommonUtils;
-import com.josef.mobile.vfree.utils.dialog.AppDialogUtils;
-import com.josef.mobile.vfree.utils.dialog.DialogUtils;
+import com.josef.mobile.vfree.utils.dialog.auth.AppAuthDialog;
+import com.josef.mobile.vfree.utils.dialog.auth.AuthDialog;
+import com.josef.mobile.vfree.utils.dialog.main.AppMainDialog;
+import com.josef.mobile.vfree.utils.dialog.main.MainDialog;
 import com.josef.mobile.vfree.utils.net.AppNetworkUtils;
 import com.josef.mobile.vfree.utils.net.NetworkUtils;
 import com.josef.mobile.R;
@@ -112,8 +114,14 @@ public final class AppModule {
 
     @Provides
     @Singleton
-    static DialogUtils provideDialogUtil(AppDialogUtils appDialogUtils) {
-        return appDialogUtils;
+    static MainDialog provideDialogUtil(AppMainDialog mainDialogUtils) {
+        return mainDialogUtils;
+    }
+
+    @Provides
+    @Singleton
+    static AuthDialog provideAuthDialogUtil(AppAuthDialog appAuthDialog) {
+        return appAuthDialog;
     }
 
     @Provides

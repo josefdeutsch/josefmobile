@@ -124,6 +124,14 @@ public abstract class BaseActivity
         utilManager.hideProgressbar();
     }
 
+    public void showAuthProgressbar(@NonNull Activity activity) {
+        utilManager.showAuthProgressbar(activity);
+    }
+
+    public void hideAuthProgessbar() {
+        utilManager.hideAuthProgressbar();
+    }
+
     public boolean isOnline() {
         return utilManager.isOnline();
     }

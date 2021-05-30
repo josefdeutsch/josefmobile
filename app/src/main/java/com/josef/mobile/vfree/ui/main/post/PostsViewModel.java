@@ -10,6 +10,7 @@ import androidx.lifecycle.LiveDataReactiveStreams;
 import androidx.lifecycle.MediatorLiveData;
 
 import com.josef.mobile.vfree.data.DataManager;
+import com.josef.mobile.vfree.data.ads.OnAdsInstantiated;
 import com.josef.mobile.vfree.ui.main.archive.model.Archive;
 import com.josef.mobile.vfree.ui.main.post.model.LocalCache;
 import com.josef.mobile.vfree.ui.base.BaseViewModel;
@@ -91,6 +92,17 @@ public final class PostsViewModel extends BaseViewModel {
                         .subscribe());
     }
 
+    public void initiateInsterstitialAds(@io.reactivex.rxjava3.annotations.NonNull OnAdsInstantiated onAdsInstantiated) {
+        addToCompositeDisposable(
+                Completable.fromAction(() -> {
+
+                    dataManager.getInterstitialAd().show();
+                    dataManager.setOnInterstitialInstantiated(onAdsInstantiated);
+
+                })
+                        .subscribeOn(AndroidSchedulers.mainThread())
+                        .subscribe());
+    }
 }
 
 

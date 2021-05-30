@@ -12,7 +12,8 @@ import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.josef.mobile.vfree.utils.common.CommonUtils;
-import com.josef.mobile.vfree.utils.dialog.DialogUtils;
+import com.josef.mobile.vfree.utils.dialog.auth.AuthDialog;
+import com.josef.mobile.vfree.utils.dialog.main.MainDialog;
 import com.josef.mobile.vfree.utils.net.NetworkUtils;
 
 import javax.inject.Inject;
@@ -22,7 +23,10 @@ import javax.inject.Singleton;
 public final class AppUtilManager implements UtilManager {
 
     @NonNull
-    private final DialogUtils dialogUtils;
+    private final MainDialog mainDialog;
+
+    @NonNull
+    private final AuthDialog authDialog;
 
     @NonNull
     private final NetworkUtils networkUtils;
@@ -31,11 +35,13 @@ public final class AppUtilManager implements UtilManager {
     private final CommonUtils commonUtils;
 
     @Inject
-    public AppUtilManager(@NonNull DialogUtils dialogUtils,
+    public AppUtilManager(@NonNull MainDialog mainDialog,
+                          @NonNull AuthDialog authDialog,
                           @NonNull NetworkUtils networkUtils,
-                          @NonNull CommonUtils commonUtils) {
-
-        this.dialogUtils = dialogUtils;
+                          @NonNull CommonUtils commonUtils)
+    {
+        this.mainDialog = mainDialog;
+        this.authDialog = authDialog;
         this.networkUtils = networkUtils;
         this.commonUtils = commonUtils;
     }
@@ -43,45 +49,58 @@ public final class AppUtilManager implements UtilManager {
     @NonNull
     @Override
     public Gson getGson() {
-        return dialogUtils.getGson();
+        return mainDialog.getGson();
     }
 
     @NonNull
     @Override
     public Dialog getDialog(@NonNull Activity activity) {
-        return dialogUtils.getDialog(activity);
+        return mainDialog.getDialog(activity);
     }
 
     @Override
     public void showNoInternetConnection(@NonNull Activity activity) {
-        dialogUtils.showNoInternetConnection(activity);
+        mainDialog.showNoInternetConnection(activity);
     }
 
     @Override
     public void hideNoInternetConnection() {
-        dialogUtils.hideNoInternetConnection();
-
+        mainDialog.hideNoInternetConnection();
     }
 
     @Override
     public void showProgressbar(@NonNull Activity activity) {
-        dialogUtils.showProgressbar(activity);
+        mainDialog.showProgressbar(activity);
     }
 
     @Override
     public void hideProgressbar() {
-        dialogUtils.hideProgressbar();
+        mainDialog.hideProgressbar();
     }
 
     @Override
     public boolean validateEmail(@NonNull CharSequence email) {
-        return dialogUtils.validateEmail(email);
+        return mainDialog.validateEmail(email);
+    }
+
+    @Override
+    public void showAuthProgressbar(@NonNull Activity activity) {
+        authDialog.showAuthProgressbar(activity);
+    }
+
+    @Override
+    public void hideAuthProgressbar() {
+        authDialog.hideAuthProgressbar();
+    }
+
+    @Override
+    public void resetAuthProgressbar() {
+        authDialog.resetAuthProgressbar();
     }
 
     @NonNull
     @Override
     public Network getActiveNetwork() {
-
         return networkUtils.getActiveNetwork();
     }
 

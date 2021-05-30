@@ -45,17 +45,7 @@ public final class MainViewModel extends BaseViewModel {
                         "dataStoreCredentials must not be null" );
     }
 
-    public void initiateInsterstitialAds(@NonNull OnAdsInstantiated onAdsInstantiated) {
-        addToCompositeDisposable(
-                Completable.fromAction(() -> {
 
-                    dataManager.getInterstitialAd().show();
-                    dataManager.setOnInterstitialInstantiated(onAdsInstantiated);
-
-                })
-                        .subscribeOn(AndroidSchedulers.mainThread())
-                        .subscribe());
-    }
 
     @NonNull
     public MediatorLiveData<Resource<User>> observeDataStoreCredentials(

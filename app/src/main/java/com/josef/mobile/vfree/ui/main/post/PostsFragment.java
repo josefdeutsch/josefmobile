@@ -12,10 +12,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.ads.LoadAdError;
+import com.josef.mobile.vfree.data.ads.OnAdsInstantiated;
 import com.josef.mobile.vfree.ui.err.ErrorActivity;
+import com.josef.mobile.vfree.ui.main.MainActivity;
 import com.josef.mobile.vfree.ui.main.archive.model.Archive;
 import com.josef.mobile.vfree.ui.main.post.model.LocalCache;
 import com.josef.mobile.vfree.data.local.prefs.PreferencesHelper;
@@ -67,7 +71,23 @@ public final class PostsFragment extends BaseFragment
         recyclerView = view.findViewById(R.id.recycler_view);
         adapter.setPostRecyclerViewOnClickListener(this);
         viewModel = new ViewModelProvider(this, providerFactory).get(PostsViewModel.class);
+        viewModel.initiateInsterstitialAds(new OnAdsInstantiated() {
+            @Override
+            public void onSuccess() {
 
+            }
+
+            @Override
+            public void onFailure(LoadAdError adError) {
+                Navigation.findNavController(getActivity(), R.id.nav_host_fragment)
+                        .navigate(R.id.homeScreen);
+            }
+
+            @Override
+            public void onAdClicked() {
+
+            }
+        });
         initRecyclerView();
         subscribeObservers();
 

@@ -89,13 +89,13 @@ public final  class HomeFragment extends BaseFragment
             if (listResource != null) {
                 switch (listResource.status) {
                     case LOADING: {
-                        Log.d(TAG, "subscribeObservers: ");
+                        Log.d(TAG, "subscribeObservers: HOME");
                         showProgressbar(getActivity());
                         break;
                     }
                     case SUCCESS: {
                         viewPagerAdapter.setProfiles(listResource.data);
-                        Log.d(TAG, "subscribeObservers: ");
+                        Log.d(TAG, "subscribeObservers: HOME");
                         hideProgessbar();
                         break;
                     }

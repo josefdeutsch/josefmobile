@@ -35,6 +35,7 @@ import com.josef.mobile.vfree.ui.base.BaseActivity;
 import com.josef.mobile.vfree.data.ads.OnAdsInstantiated;
 import com.josef.mobile.vfree.viewmodels.ViewModelProviderFactory;
 import com.josef.mobile.R;
+
 import javax.inject.Inject;
 
 public final class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, LifecycleOwner {
@@ -146,23 +147,6 @@ public final class MainActivity extends BaseActivity implements NavigationView.O
                 if (isValidDestination(R.id.nav_posts)) {
                     Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment)
                             .navigate(R.id.postScreen);
-                    viewModel.initiateInsterstitialAds(new OnAdsInstantiated() {
-                        @Override
-                        public void onSuccess() {
-
-                        }
-
-                        @Override
-                        public void onFailure(LoadAdError adError) {
-                            Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment)
-                                    .navigate(R.id.homeScreen);
-                        }
-
-                        @Override
-                        public void onAdClicked() {
-
-                        }
-                    });
                 }
                 break;
             }
