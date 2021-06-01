@@ -54,7 +54,7 @@ public final class SplashActivity extends BaseActivity {
         ButterKnife.bind(this);
         viewModel = new ViewModelProvider(this, providerFactory)
                 .get(SplashViewModel.class);
-        viewModel.initiateInsterstitialAds(interstitialAdId);
+       // viewModel.initiateInsterstitialAds(interstitialAdId);
         Handler handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(new Runnable() {
             @Override

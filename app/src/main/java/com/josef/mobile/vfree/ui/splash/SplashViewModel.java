@@ -43,13 +43,13 @@ public final class SplashViewModel extends BaseViewModel {
 
     }
 
-    public void initiateInsterstitialAds(@NonNull String id) {
-        addToCompositeDisposable(
-                Completable.fromAction(() ->
-                        dataManager.setInterstitialAd(id))
-                        .subscribeOn(AndroidSchedulers.mainThread())
-                        .subscribe());
-    }
+    // public void initiateInsterstitialAds(@NonNull String id) {
+    // addToCompositeDisposable(
+    //    Completable.fromAction(() ->
+    //  dataManager.setInterstitialAd(id))
+    //     .subscribeOn(AndroidSchedulers.mainThread())
+    //     .subscribe());
+    //}
 
     public void initiateRetrofitClient(@NonNull String url) {
         addToCompositeDisposable(

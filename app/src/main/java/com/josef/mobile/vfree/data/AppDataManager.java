@@ -1,7 +1,8 @@
 package com.josef.mobile.vfree.data;
 
 import androidx.annotation.NonNull;
-import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.josef.mobile.vfree.data.ads.AdsRequest;
@@ -164,16 +165,11 @@ public final class AppDataManager implements DataManager {
         preferencesHelper.clearHashmapIndicator();
     }
 
-    @NonNull
-    @Override
-    public void setInterstitialAd(@NonNull String id) {
-        adsRequest.setInterstitialAd(id);
-    }
 
     @NonNull
     @Override
-    public void setOnInterstitialInstantiated(@NonNull OnAdsInstantiated onAdsInstantiated) {
-        adsRequest.setOnInterstitialInstantiated(onAdsInstantiated);
+    public void onAdsInterstitialLoaded() {
+        adsRequest.onAdsInterstitialLoaded();
     }
 
     @NonNull

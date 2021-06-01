@@ -4,7 +4,7 @@ public final class AppConstants {
 
     public static final String BASE_URL = "https://josef-292214.appspot.com/";
 
-    public static final String interstitialAdId = "ca-app-pub-3940256099942544/1033173712";
+    public static final String interstitialAdId = "ca-app-pub-3940256099942544~3347511713";
 
     public static final String ENDPOINT_1 = "_ah/api/echo/v1/echo?n=1";
     public static final String ENDPOINT_2 = "_ah/api/echo/v1/echo?n=2";

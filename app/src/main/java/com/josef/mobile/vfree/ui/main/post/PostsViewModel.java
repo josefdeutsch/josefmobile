@@ -1,7 +1,9 @@
 package com.josef.mobile.vfree.ui.main.post;
 
 
+import android.app.Activity;
 import android.content.Context;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -90,15 +92,18 @@ public final class PostsViewModel extends BaseViewModel {
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe());
+
     }
 
-    public void initiateInsterstitialAds(@io.reactivex.rxjava3.annotations.NonNull OnAdsInstantiated onAdsInstantiated) {
+    public void initiateInsterstitialAds(@NonNull Activity activity) {
         addToCompositeDisposable(
                 Completable.fromAction(() -> {
 
-                    dataManager.getInterstitialAd().show();
-                    dataManager.setOnInterstitialInstantiated(onAdsInstantiated);
-
+                    if (dataManager.getInterstitialAd() != null) {
+                        dataManager.getInterstitialAd().show(activity);
+                    } else {
+                        Toast.makeText(activity, "Ad did not load", Toast.LENGTH_SHORT).show();
+                    }
                 })
                         .subscribeOn(AndroidSchedulers.mainThread())
                         .subscribe());
