@@ -102,7 +102,7 @@ public final class PostsViewModel extends BaseViewModel {
                     if (dataManager.getInterstitialAd() != null) {
                         dataManager.getInterstitialAd().show(activity);
                     } else {
-                        Toast.makeText(activity, "Ad did not load", Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(activity, "Ad did not load", Toast.LENGTH_SHORT).show();
                     }
                 })
                         .subscribeOn(AndroidSchedulers.mainThread())
