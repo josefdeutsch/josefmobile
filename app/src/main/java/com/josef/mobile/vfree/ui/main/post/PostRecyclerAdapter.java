@@ -1,6 +1,8 @@
 package com.josef.mobile.vfree.ui.main.post;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,6 +80,8 @@ public final class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView
 
         void onClick(@NonNull int position);
 
+        void onBuy(@NonNull LocalCache favourite);
+
         void onChecked(@NonNull Boolean isChecked,
                        @NonNull LocalCache favourite);
 
@@ -115,6 +119,9 @@ public final class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView
         @BindView(R.id.toggle)
         ToggleButton toggleButton;
 
+        @BindView(R.id.buyoption)
+        ImageView buy;
+
         PostViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -130,6 +137,11 @@ public final class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView
         @OnClick(R.id.image)
         public void onClick(View v) {
             postRecyclerViewOnClickListener.onClick(getAdapterPosition());
+        }
+
+        @OnClick(R.id.buyoption)
+        public void onClickbuy(View v) {
+            postRecyclerViewOnClickListener.onBuy(posts.get(getAdapterPosition()));
         }
 
         @Override

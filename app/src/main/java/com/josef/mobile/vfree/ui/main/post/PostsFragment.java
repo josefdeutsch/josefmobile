@@ -1,6 +1,7 @@
 package com.josef.mobile.vfree.ui.main.post;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -135,6 +136,14 @@ public final class PostsFragment extends BaseFragment
         intent.putExtra(REQUEST_ENDPOINT, AppConstants.ENDPOINT_1);
         Log.d(TAG, "onClick: "+position);
         startActivity(intent);
+    }
+
+    @Override
+    public void onBuy(@NonNull LocalCache favourite) {
+        String url = "http://www.google.com";
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        startActivity(i);
     }
 
     @Override
