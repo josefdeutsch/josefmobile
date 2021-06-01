@@ -1,28 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/CardView.Light"
+    android:elevation="0dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
-    android:orientation="vertical">
+    android:background="@color/colorPrimaryDark"
+    android:orientation="vertical"
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:paddingTop="24dp"
         >
+
 
         <TextView
             android:id="@+id/header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-condensed"
+            android:fontFamily="sans-serif"
             android:gravity="top"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
             android:text="Digital art is true"
+            android:textSize="24dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:textColor="#DE000000"
+            android:textColor="#FFFFFF"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -30,12 +37,11 @@
             android:id="@+id/subheader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-condensed-light"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
+            android:fontFamily="sans-serif-thin"
+            android:textSize="18dp"
             android:text="A summary of the Vision"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-            android:textColor="#DE000000"
+            android:textColor="#FFFFFF"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/header" />
 
@@ -44,32 +50,16 @@
             android:id="@+id/article"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingLeft="8dp"
             android:paddingTop="8dp"
-            android:paddingRight="8dp"
+            android:fontFamily="sans-serif-thin"
             android:text="text"
+            android:textSize="18dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="#DE000000"
+            android:textColor="#FFFFFF"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/subheader" />
 
-        <ru.embersoft.expandabletextview.ExpandableTextView
-            android:id="@+id/desc"
-            style="@style/TextAppearance.AppCompat.Body1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            app:etv_animationTime="20"
-            app:etv_expandLines="0"
-            app:etv_showLine="false"
-            app:etv_textContentColor="#DE000000"
-            app:etv_textContentSize="14sp"
-            app:etv_textExpand="Show more"
-            app:etv_textShrink="Show less"
-            app:etv_textStateColor="#DE000000"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/article" />
+
 
 
 

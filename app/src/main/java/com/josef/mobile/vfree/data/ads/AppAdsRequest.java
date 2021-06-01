@@ -34,6 +34,7 @@ public final class AppAdsRequest implements AdsRequest {
     private static final String AD_TEST_UNIT = "ca-app-pub-3940256099942544/1033173712";
 
     private static final String AD_SAMPLE_APP_ID = "ca-app-pub-3940256099942544~3347511713";
+
     private InterstitialAd interstitialAd;
 
     AdRequest adRequest;

@@ -56,14 +56,7 @@ public final class AboutRecyclerViewAdapter extends RecyclerView.Adapter<AboutRe
         holder.header.setText(about.getHeader());
         holder.subheader.setText(about.getSubheader());
         holder.article.setText(about.getArticle());
-        holder.desc.setText(about.getDesc());
-        holder.desc.setOnStateChangeListener(isShrink -> {
-            About contentAbout = abouts.get(position);
-            contentAbout.setShrink(isShrink);
-            abouts.set(position, contentAbout);
-        });
-        holder.desc.setText(about.getDesc());
-        holder.desc.resetState(about.isShrink());
+
 
     }
 
@@ -87,8 +80,7 @@ public final class AboutRecyclerViewAdapter extends RecyclerView.Adapter<AboutRe
         TextView subheader;
         @BindView(R.id.article)
         TextView article;
-        @BindView(R.id.desc)
-        ExpandableTextView desc;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

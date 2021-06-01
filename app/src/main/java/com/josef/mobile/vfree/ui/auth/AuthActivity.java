@@ -255,6 +255,7 @@ public final class AuthActivity extends BaseActivity {
                                         android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
                         startActivityForResult(new Intent(AuthActivity.this, MainActivity.class), AUTH_REQ,bundle);
                         //new Handler().postDelayed(() -> utilManager.hideProgressbar(), 1000);
+                        hideAuthProgessbar();
                         finishAfterTransition();
                         break;
                     }
