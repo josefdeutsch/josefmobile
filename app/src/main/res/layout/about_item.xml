@@ -16,7 +16,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:paddingTop="24dp"
+
         >
 
 
@@ -24,10 +24,10 @@
             android:id="@+id/header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
+            android:fontFamily="sans-serif-thin"
             android:gravity="top"
             android:text="Digital art is true"
-            android:textSize="24dp"
+            android:textSize="36dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             android:textColor="#FFFFFF"
             app:layout_constraintStart_toStartOf="parent"
@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-thin"
-            android:textSize="18dp"
+            android:textSize="24dp"
             android:text="A summary of the Vision"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
             android:textColor="#FFFFFF"
@@ -47,13 +47,13 @@
 
 
         <TextView
+            android:paddingTop="24dp"
             android:id="@+id/article"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingTop="8dp"
             android:fontFamily="sans-serif-thin"
             android:text="text"
-            android:textSize="18dp"
+            android:textSize="24dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="#FFFFFF"
             app:layout_constraintStart_toStartOf="parent"

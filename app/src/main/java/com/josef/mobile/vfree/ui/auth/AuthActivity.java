@@ -260,7 +260,7 @@ public final class AuthActivity extends BaseActivity {
                         break;
                     }
                     case ERROR: {
-                        hideProgessbar();
+                        hideAuthProgessbar();
                         Toast.makeText(AuthActivity.this, userAuthResource.message, Toast.LENGTH_SHORT).show();
                         break;
                     }
