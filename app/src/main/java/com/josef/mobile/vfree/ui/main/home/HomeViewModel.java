@@ -7,8 +7,8 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.josef.mobile.vfree.ui.main.Resource;
-import com.josef.mobile.vfree.ui.main.home.model.Profile;
-import com.josef.mobile.vfree.ui.main.home.res.DownloadProfileEndpoints;
+import com.josef.mobile.vfree.ui.main.home.model.Home;
+import com.josef.mobile.vfree.ui.main.home.res.DownloadHomeEndpoints;
 
 import java.util.List;
 
@@ -17,21 +17,21 @@ import javax.inject.Inject;
 public final class HomeViewModel extends ViewModel {
 
     @NonNull
-    private final DownloadProfileEndpoints downloadProfileEndpoints;
+    private final DownloadHomeEndpoints downloadHomeEndpoints;
     @NonNull
-    private MediatorLiveData<Resource<List<Profile>>> containers;
+    private MediatorLiveData<Resource<List<Home>>> containers;
 
     @Inject
-    public HomeViewModel(@NonNull DownloadProfileEndpoints downloadProfileEndpoints) {
-        this.downloadProfileEndpoints = downloadProfileEndpoints;
+    public HomeViewModel(@NonNull DownloadHomeEndpoints downloadHomeEndpoints) {
+        this.downloadHomeEndpoints = downloadHomeEndpoints;
     }
     @NonNull
-    public LiveData<Resource<List<Profile>>> observeProfiles(@NonNull String url) {
+    public LiveData<Resource<List<Home>>> observeProfiles(@NonNull String url) {
         if (containers == null) containers = new MediatorLiveData<>();
         containers.setValue(Resource.loading(null));
 
-        LiveData<Resource<List<Profile>>> source =
-                LiveDataReactiveStreams.fromPublisher(downloadProfileEndpoints.observeEndpoints(url));
+        LiveData<Resource<List<Home>>> source =
+                LiveDataReactiveStreams.fromPublisher(downloadHomeEndpoints.observeEndpoints(url));
 
         containers.setValue(Resource.loading(null));
         containers.addSource(source, profileResource -> {

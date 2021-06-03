@@ -5,6 +5,8 @@ import com.google.gson.reflect.TypeToken;
 import com.josef.mobile.vfree.data.DataManager;
 import com.josef.mobile.vfree.ui.main.Resource;
 import com.josef.mobile.vfree.ui.main.about.model.About;
+import com.josef.mobile.vfree.ui.main.post.model.LocalCache;
+import com.josef.mobile.vfree.ui.main.profiles.model.Profile;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -19,10 +21,12 @@ import io.reactivex.schedulers.Schedulers;
 
 import static com.josef.mobile.vfree.utils.AppConstants.BASE_URL;
 
-public class AppDownloadProfileEndpoints {
+public class AppDownloadProfileEndpoints implements DownloadProfileEndpoints {
 
     @NonNull
     private final DataManager dataManager;
+
+
 
     @Inject
     public AppDownloadProfileEndpoints(@NonNull DataManager dataManager) {
@@ -30,28 +34,28 @@ public class AppDownloadProfileEndpoints {
     }
 
     @NonNull
-    public Flowable<Resource<List<About>>> getEndpoints(@NonNull String index) {
+    public Flowable<Resource<List<Profile>>> getEndpoints(@NonNull String index) {
 
         return dataManager.getEndpoints(BASE_URL + index)
                 .map(endpoint -> {
                     Gson gson = new Gson();
-                    Type userListType = new TypeToken<ArrayList<About>>() {
+                    Type userListType = new TypeToken<ArrayList<Profile>>() {
                     }.getType();
-                    ArrayList<About> endpoints = gson.fromJson(endpoint.message, userListType);
+                    ArrayList<Profile> endpoints = gson.fromJson(endpoint.message, userListType);
                     return endpoints;
                 })
 
                 .onErrorReturn(throwable -> {
-                    About container = new About();
+                    Profile container = new Profile();
                     container.setId(-1l);
                     container.setException(throwable.getMessage());
 
-                    ArrayList<About> containers = new ArrayList<>();
+                    ArrayList<Profile> containers = new ArrayList<>();
                     containers.add(container);
                     return containers;
                 })
 
-                .map((Function<List<About>, Resource<List<About>>>) posts -> {
+                .map((Function<List<Profile>, Resource<List<Profile>>>) posts -> {
                     if (posts.size() > 0) {
                         if (posts.get(0).getId() == -1l) {
                             return Resource.error(posts.get(0).getException(), null);

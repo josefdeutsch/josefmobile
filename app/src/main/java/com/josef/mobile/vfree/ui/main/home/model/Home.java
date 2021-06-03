@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Objects;
 
-public final class Profile {
+public final class Home {
 
     @Nullable
     @SerializedName("url")
@@ -28,11 +28,11 @@ public final class Profile {
         this.exception = exception;
     }
 
-    public Profile() {
+    public Home() {
     }
 
-    public Profile(@Nullable String url,
-                   @Nullable String article) {
+    public Home(@Nullable String url,
+                @Nullable String article) {
         this.url = url;
         this.article = article;
     }

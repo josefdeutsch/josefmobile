@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.RequestManager;
-import com.josef.mobile.vfree.ui.main.home.model.Profile;
+import com.josef.mobile.vfree.ui.main.home.model.Home;
 import com.josef.mobile.R;
 
 import java.io.IOException;
@@ -30,7 +30,7 @@ public final class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapte
     @NonNull
     private final RequestManager requestManager;
     @Nullable
-    private List<Profile> profileList;
+    private List<Home> homeList;
     @NonNull
     private ViewpagerAdapterOnClickListener viewpagerAdapterOnClickListener;
 
@@ -38,8 +38,8 @@ public final class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapte
         this.viewpagerAdapterOnClickListener = viewpagerAdapterOnClickListener;
     }
 
-    public void setProfiles(@Nullable List<Profile> profileList) {
-        this.profileList = profileList;
+    public void setProfiles(@Nullable List<Home> homeList) {
+        this.homeList = homeList;
         notifyDataSetChanged();
     }
 
@@ -66,8 +66,8 @@ public final class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapte
 
     @Override
     public int getItemCount() {
-        if (profileList == null) profileList = new ArrayList<>();
-        return profileList.size();
+        if (homeList == null) homeList = new ArrayList<>();
+        return homeList.size();
     }
 
     interface ViewpagerAdapterOnClickListener {
@@ -101,9 +101,9 @@ public final class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapte
         }
 
         private void onBindViews(int position) throws IOException {
-            int last = profileList.size() - 1;
+            int last = homeList.size() - 1;
             //   requestManager.load(profileList.get(position).getUrl()).into(animatedGif);
-            header.setText(profileList.get(position).getArticle());
+            header.setText(homeList.get(position).getArticle());
             // article.setTag(R.id.article);
 
             if (last == position) {

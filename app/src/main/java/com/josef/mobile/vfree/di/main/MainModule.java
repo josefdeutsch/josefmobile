@@ -13,12 +13,15 @@ import com.josef.mobile.vfree.ui.main.archive.fire.AppFirebaseUpload;
 import com.josef.mobile.vfree.ui.main.archive.fire.FirebaseUpload;
 import com.josef.mobile.vfree.ui.main.archive.local.AppArchiveDatabase;
 import com.josef.mobile.vfree.ui.main.archive.local.ArchiveDatabase;
-import com.josef.mobile.vfree.ui.main.home.res.DownloadProfileEndpoints;
+import com.josef.mobile.vfree.ui.main.home.res.AppDownloadHomeEndpoints;
+import com.josef.mobile.vfree.ui.main.home.res.DownloadHomeEndpoints;
 import com.josef.mobile.vfree.ui.main.post.PostRecyclerAdapter;
 import com.josef.mobile.vfree.ui.main.post.remote.AppDownloadEndpoints;
 import com.josef.mobile.vfree.ui.main.post.remote.DownloadEndpoints;
 import com.josef.mobile.vfree.ui.main.home.ViewPagerAdapter;
-import com.josef.mobile.vfree.ui.main.home.res.AppDownloadProfileEndpoints;
+import com.josef.mobile.vfree.ui.main.profiles.adapters.ProfileRecyclerViewAdapter;
+import com.josef.mobile.vfree.ui.main.profiles.remote.AppDownloadProfileEndpoints;
+import com.josef.mobile.vfree.ui.main.profiles.remote.DownloadProfileEndpoints;
 import com.josef.mobile.vfree.ui.main.store.AppDataBaseCredentials;
 import com.josef.mobile.vfree.ui.main.store.Credentials;
 import com.josef.mobile.vfree.utils.UtilManager;
@@ -50,6 +53,12 @@ public class MainModule {
 
     @MainScope
     @Provides
+    static ProfileRecyclerViewAdapter provideProfileRecyclerViewAdapter(Context context, RequestManager requestManager) {
+        return new ProfileRecyclerViewAdapter(context, requestManager);
+    }
+
+    @MainScope
+    @Provides
     static ViewPagerAdapter provideViewPagerAdapter(RequestManager requestManager, Context context) {
         return new ViewPagerAdapter(requestManager, context);
     }
@@ -74,7 +83,7 @@ public class MainModule {
 
     @MainScope
     @Provides
-    static DownloadProfileEndpoints provideResourceObserver(AppDownloadProfileEndpoints appResourceObserver) {
+    static DownloadHomeEndpoints provideResourceObserver(AppDownloadHomeEndpoints appResourceObserver) {
         return appResourceObserver;
     }
 
@@ -89,6 +98,13 @@ public class MainModule {
     static DownloadAboutEndpoints provideAboutDownloadEndpoints(AppDownloadAboutEndpoints downloadAboutEndpoints) {
         return downloadAboutEndpoints;
     }
+
+    @MainScope
+    @Provides
+    static DownloadProfileEndpoints provideProfileDownloadEndpoints(AppDownloadProfileEndpoints downloadAboutEndpoints) {
+        return downloadAboutEndpoints;
+    }
+
 
 
 }

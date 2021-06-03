@@ -118,11 +118,11 @@ public class Echo {
             message.setMessage(Data.adAbouts);
         } else if (n == 3) {
             message.setMessage(Data.adProfiles);
+        } else if (n == 4) {
+            message.setMessage(Data.adSocialMedia);
         }
         return message;
     }
-
-
 
 
     /**
