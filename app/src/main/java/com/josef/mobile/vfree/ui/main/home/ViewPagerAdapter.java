@@ -6,11 +6,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.RequestManager;
@@ -82,16 +85,17 @@ public final class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapte
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private static final String TAG = "ViewHolder";
-        @BindView(R.id.profile_button_container)
-        RelativeLayout button_container;
-        @BindView(R.id.profile_logo_container)
-        FrameLayout image_container;
-        @BindView(R.id.profile_arrow_container)
-        FrameLayout text_container;
+
+        @BindView(R.id.profile_container)
+        ConstraintLayout image_container;
         @BindView(R.id.learnmore)
         Button learn_more;
         @BindView(R.id.vision_header)
         TextView header;
+        @BindView(R.id.vision_desc)
+        TextView desc;
+        @BindView(R.id.image)
+        ImageView image;
         @BindView(R.id.continue_action)
         Button continue_action;
 
@@ -102,20 +106,18 @@ public final class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapte
 
         private void onBindViews(int position) throws IOException {
             int last = homeList.size() - 1;
-            //   requestManager.load(profileList.get(position).getUrl()).into(animatedGif);
+            requestManager.load(homeList.get(position).getUrl()).into(image);
             header.setText(homeList.get(position).getArticle());
+            desc.setText(homeList.get(position).getDesc());
             // article.setTag(R.id.article);
 
             if (last == position) {
-                button_container.setVisibility(View.VISIBLE);
+                learn_more.setVisibility(View.VISIBLE);
+                continue_action.setVisibility(View.VISIBLE);
             } else {
-                button_container.setVisibility(View.INVISIBLE);
+                learn_more.setVisibility(View.INVISIBLE);
+                continue_action.setVisibility(View.INVISIBLE);
             }
-        }
-
-        @OnClick(R.id.arrow_button)
-        public void onItemArrowClicked(View v) {
-            viewpagerAdapterOnClickListener.onItemArrowClicked(getAdapterPosition());
         }
 
 

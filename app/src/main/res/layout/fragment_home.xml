@@ -3,14 +3,45 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark">
+    android:background="@color/colorPrimaryDark"
+   >
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="384dp"
+        android:background="@color/colorPrimary"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
 
     </androidx.viewpager2.widget.ViewPager2>
+
+    <ImageButton
+        android:id="@+id/left_nav"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_gravity="center_vertical|left"
+        android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
+        app:layout_constraintTop_toBottomOf="@+id/viewPager2"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"/>
+
+    <ImageButton
+        android:id="@+id/right_nav"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_gravity="center_vertical|right"
+        android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
+        app:layout_constraintTop_toBottomOf="@+id/viewPager2"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"/>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"

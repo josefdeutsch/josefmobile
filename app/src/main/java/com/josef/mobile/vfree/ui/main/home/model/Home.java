@@ -15,8 +15,20 @@ public final class Home {
     @SerializedName("article")
     private String article;
     @Nullable
+    @SerializedName("desc")
+    private String desc;
+    @Nullable
     @SerializedName("id")
     private long id;
+
+    @Nullable
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(@Nullable String desc) {
+        this.desc = desc;
+    }
 
     public String exception;
 
@@ -58,6 +70,7 @@ public final class Home {
     public void setArticle(@Nullable String article) {
         this.article = article;
     }
+
 
     public long getId() {
         return  Objects.requireNonNull(id,
