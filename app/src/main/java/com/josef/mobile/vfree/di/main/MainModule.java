@@ -15,6 +15,8 @@ import com.josef.mobile.vfree.ui.main.archive.local.AppArchiveDatabase;
 import com.josef.mobile.vfree.ui.main.archive.local.ArchiveDatabase;
 import com.josef.mobile.vfree.ui.main.home.res.AppDownloadHomeEndpoints;
 import com.josef.mobile.vfree.ui.main.home.res.DownloadHomeEndpoints;
+import com.josef.mobile.vfree.ui.main.impr.remote.AppDownloadImpressionEndpoints;
+import com.josef.mobile.vfree.ui.main.impr.remote.DownloadImpressionEndoints;
 import com.josef.mobile.vfree.ui.main.post.PostRecyclerAdapter;
 import com.josef.mobile.vfree.ui.main.post.remote.AppDownloadEndpoints;
 import com.josef.mobile.vfree.ui.main.post.remote.DownloadEndpoints;
@@ -105,7 +107,11 @@ public class MainModule {
         return downloadAboutEndpoints;
     }
 
-
+    @MainScope
+    @Provides
+    static DownloadImpressionEndoints provideImpressionsDownloadEndpoints(AppDownloadImpressionEndpoints downloadImpressionEndpoints){
+        return downloadImpressionEndpoints;
+    }
 
 }
 

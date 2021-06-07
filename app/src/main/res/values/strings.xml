@@ -77,5 +77,6 @@
     <string name="nav_events">Events</string>
     <string name="fragment_profiles">Profile</string>
     <string name="nav_profiles">Contact</string>
+    <string name="post_no_auction_available">No auction available</string>
 
 </resources>

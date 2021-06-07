@@ -54,6 +54,12 @@ public final class LocalCache {
     public String png;
 
     @Nullable
+    @ColumnInfo(name = "auction")
+    @SerializedName("auction")
+    public String auction;
+
+
+    @Nullable
     @ColumnInfo(name = "updated_at")
     @SerializedName("updated_at")
     public String updatedAt;
@@ -193,11 +199,17 @@ public final class LocalCache {
 
     @Nullable
     public String getUpdatedAt() {
-        return Objects.requireNonNull(updatedAt,
-                "com.josef.mobile.vfree.ui.main.post.model.LocalCache " +
-                        "updatedAt must not be null" );
+        return updatedAt;
     }
 
+    @Nullable
+    public String getAuction() {
+        return auction;
+    }
+
+    public void setAuction(@Nullable String auction) {
+        this.auction = auction;
+    }
     public void setUpdatedAt(@Nullable String updatedAt) {
         this.updatedAt = updatedAt;
     }

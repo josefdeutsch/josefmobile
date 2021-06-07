@@ -7,6 +7,7 @@ import com.josef.mobile.vfree.ui.main.MainViewModel;
 import com.josef.mobile.vfree.ui.main.about.AboutViewModel;
 import com.josef.mobile.vfree.ui.main.archive.ArchiveViewModel;
 import com.josef.mobile.vfree.ui.main.home.HomeViewModel;
+import com.josef.mobile.vfree.ui.main.impr.ImpressionsViewModel;
 import com.josef.mobile.vfree.ui.main.post.PostsViewModel;
 import com.josef.mobile.vfree.ui.main.profiles.ProfilesViewModel;
 
@@ -46,5 +47,10 @@ public abstract class MainViewModelsModule {
     @IntoMap
     @ViewModelKey(ProfilesViewModel.class)
     public abstract ViewModel bindProfilesViewModel(ProfilesViewModel viewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ImpressionsViewModel.class)
+    public abstract ViewModel bindImpressionsViewModel(ImpressionsViewModel viewModel);
 
 }

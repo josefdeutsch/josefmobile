@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -103,14 +104,14 @@ public final class PostsFragment extends BaseFragment
                     }
                     case ERROR: {
                         hideProgessbar();
-                        Log.d(TAG, "subscribeObservers: "+listResource.message.toString());
+                        Log.d(TAG, "subscribeObservers: " + listResource.message.toString());
                         Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getActivity(),
-                               android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
+                                android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
 
                         Intent intent = new Intent(getActivity(), ErrorActivity.class);
                         intent.putExtra(ErrorActivity.ACTIVITY_KEYS, getActivity().getComponentName().getClassName());
 
-                      startActivity(intent, bundle);
+                        startActivity(intent, bundle);
 
                         getActivity().finishAfterTransition();
                         break;
@@ -134,16 +135,24 @@ public final class PostsFragment extends BaseFragment
         Intent intent = new Intent(getActivity(), PlayerActivity.class);
         intent.putExtra(REQUEST_INDEX, position);
         intent.putExtra(REQUEST_ENDPOINT, AppConstants.ENDPOINT_1);
-        Log.d(TAG, "onClick: "+position);
+        Log.d(TAG, "onClick: " + position);
         startActivity(intent);
     }
 
     @Override
     public void onBuy(@NonNull LocalCache favourite) {
-        String url = "http://www.google.com";
-        Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setData(Uri.parse(url));
-        startActivity(i);
+        if (favourite.getAuction() != null) {
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(favourite.getAuction()));
+            startActivity(i);
+        } else {
+            AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+            alert.setMessage(R.string.post_no_auction_available);
+            alert.setCancelable(false);
+            alert.setNegativeButton(android.R.string.no, (dialogInterface, i) -> dialogInterface.dismiss());
+            alert.show();
+        }
+
     }
 
     @Override

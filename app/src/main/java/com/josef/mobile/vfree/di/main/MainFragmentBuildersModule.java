@@ -2,7 +2,7 @@ package com.josef.mobile.vfree.di.main;
 
 import com.josef.mobile.vfree.ui.main.about.AboutFragment;
 import com.josef.mobile.vfree.ui.main.archive.ArchiveFragment;
-import com.josef.mobile.vfree.ui.main.events.EventsFragment;
+import com.josef.mobile.vfree.ui.main.impr.ImpressionsFragment;
 import com.josef.mobile.vfree.ui.main.home.HomeFragment;
 import com.josef.mobile.vfree.ui.main.post.PostsFragment;
 import com.josef.mobile.vfree.ui.main.profiles.ProfilesFragment;
@@ -26,7 +26,7 @@ public abstract class MainFragmentBuildersModule {
     abstract AboutFragment constributeInfoFragment();
 
     @ContributesAndroidInjector
-    abstract EventsFragment constributeEventFragment();
+    abstract ImpressionsFragment constributeEventFragment();
 
     @ContributesAndroidInjector
     abstract ProfilesFragment constributeProfilesFragment();

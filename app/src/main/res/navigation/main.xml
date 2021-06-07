@@ -32,14 +32,14 @@
 
     <fragment
         android:id="@+id/eventScreen"
-        android:name="com.josef.mobile.vfree.ui.main.events.EventsFragment"
+        android:name="com.josef.mobile.vfree.ui.main.impr.ImpressionsFragment"
         android:label="@string/fragment_events"
-        tools:layout="@layout/fragment_events"></fragment>
+        tools:layout="@layout/fragment_impressions"></fragment>
 
     <fragment
         android:id="@+id/profilesScreen"
         android:name="com.josef.mobile.vfree.ui.main.profiles.ProfilesFragment"
         android:label="@string/fragment_profiles"
-        tools:layout="@layout/fragment_events"></fragment>
+        tools:layout="@layout/fragment_impressions"></fragment>
 
 </navigation>
