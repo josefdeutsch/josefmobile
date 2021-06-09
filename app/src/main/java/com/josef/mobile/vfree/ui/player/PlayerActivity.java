@@ -92,8 +92,8 @@ public final class PlayerActivity extends BaseActivity implements PlayerService 
             mResumeWindow = savedInstanceState.getInt(STATE_RESUME_WINDOW);
             mResumePosition = savedInstanceState.getLong(STATE_RESUME_POSITION);
             mExoPlayerFullscreen = savedInstanceState.getBoolean(STATE_BOOLEAN_VALUE);
-            mIndex = savedInstanceState.getInt(REQUEST_ENDPOINT);
-            mEndpoint = savedInstanceState.getString(REQUEST_INDEX);
+            mIndex = savedInstanceState.getInt(REQUEST_INDEX);
+            mEndpoint = savedInstanceState.getString(REQUEST_ENDPOINT);
         }
 
         viewModel = new ViewModelProvider(this, providerFactory).get(PlayerViewModel.class);

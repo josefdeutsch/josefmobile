@@ -132,6 +132,8 @@ public final class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView
             requestManager.load(localCache.getPng()).into(imageView);
             name.setText(localCache.getName());
             tag.setText(localCache.getTag());
+            buy.setColorFilter(context.getResources().getColor(R.color.colorPrimary,context.getTheme()));
+
         }
 
         @OnClick(R.id.image)

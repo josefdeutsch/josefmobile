@@ -14,15 +14,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.ads.AdError;
-import com.google.android.gms.ads.LoadAdError;
-import com.josef.mobile.vfree.data.ads.OnAdsInstantiated;
 import com.josef.mobile.vfree.ui.err.ErrorActivity;
-import com.josef.mobile.vfree.ui.main.MainActivity;
 import com.josef.mobile.vfree.ui.main.archive.model.Archive;
 import com.josef.mobile.vfree.ui.main.post.model.LocalCache;
 import com.josef.mobile.vfree.data.local.prefs.PreferencesHelper;
@@ -104,7 +99,6 @@ public final class PostsFragment extends BaseFragment
                     }
                     case ERROR: {
                         hideProgessbar();
-                        Log.d(TAG, "subscribeObservers: " + listResource.message.toString());
                         Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(getActivity(),
                                 android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
 
@@ -135,15 +129,14 @@ public final class PostsFragment extends BaseFragment
         Intent intent = new Intent(getActivity(), PlayerActivity.class);
         intent.putExtra(REQUEST_INDEX, position);
         intent.putExtra(REQUEST_ENDPOINT, AppConstants.ENDPOINT_1);
-        Log.d(TAG, "onClick: " + position);
         startActivity(intent);
     }
 
     @Override
     public void onBuy(@NonNull LocalCache favourite) {
-        if (favourite.getAuction() != null) {
+        if (favourite.getBuy() != null && !favourite.getBuy().isEmpty()) {
             Intent i = new Intent(Intent.ACTION_VIEW);
-            i.setData(Uri.parse(favourite.getAuction()));
+            i.setData(Uri.parse(favourite.getBuy()));
             startActivity(i);
         } else {
             AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());

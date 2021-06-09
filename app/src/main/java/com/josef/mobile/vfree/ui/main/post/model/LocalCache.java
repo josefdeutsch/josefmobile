@@ -54,9 +54,9 @@ public final class LocalCache {
     public String png;
 
     @Nullable
-    @ColumnInfo(name = "auction")
-    @SerializedName("auction")
-    public String auction;
+    @ColumnInfo(name = "buy")
+    @SerializedName("buy")
+    public String buy;
 
 
     @Nullable
@@ -203,12 +203,12 @@ public final class LocalCache {
     }
 
     @Nullable
-    public String getAuction() {
-        return auction;
+    public String getBuy() {
+        return buy;
     }
 
-    public void setAuction(@Nullable String auction) {
-        this.auction = auction;
+    public void setBuy(@Nullable String buy) {
+        this.buy = buy;
     }
     public void setUpdatedAt(@Nullable String updatedAt) {
         this.updatedAt = updatedAt;
