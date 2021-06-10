@@ -93,7 +93,9 @@ public final class PostsFragment extends BaseFragment
                         break;
                     }
                     case SUCCESS: {
-                        adapter.setPosts(listResource.data);
+                        if(listResource.data != null && !listResource.data.isEmpty()){
+                            adapter.setPosts(listResource.data);
+                        }
                         hideProgessbar();
                         break;
                     }

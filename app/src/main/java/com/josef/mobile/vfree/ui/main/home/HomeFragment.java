@@ -95,8 +95,9 @@ public final  class HomeFragment extends BaseFragment
                         break;
                     }
                     case SUCCESS: {
-                        viewPagerAdapter.setProfiles(listResource.data);
-                        Log.d(TAG, "subscribeObservers: HOME");
+                        if(listResource.data != null && !listResource.data.isEmpty()){
+                            viewPagerAdapter.setProfiles(listResource.data);
+                        }
                         hideProgessbar();
                         break;
                     }

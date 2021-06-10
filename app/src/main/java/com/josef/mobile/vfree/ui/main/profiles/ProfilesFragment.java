@@ -1,14 +1,17 @@
 package com.josef.mobile.vfree.ui.main.profiles;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -26,6 +29,8 @@ import com.josef.mobile.vfree.utils.AppConstants;
 import javax.inject.Inject;
 
 public final class ProfilesFragment extends BaseFragment implements ProfileRecyclerViewAdapter.ProfileRecyclerViewOnClickListener {
+
+    private static final String TAG = "ProfilesFragment";
 
     @Inject
     ProfileRecyclerViewAdapter adapter;
@@ -80,7 +85,9 @@ public final class ProfilesFragment extends BaseFragment implements ProfileRecyc
                         break;
                     }
                     case SUCCESS: {
-                        adapter.setAbouts(listResource.data);
+                        if(listResource.data != null && !listResource.data.isEmpty()){
+                            adapter.setAbouts(listResource.data);
+                        }
                         hideProgessbar();
                         break;
                     }
@@ -104,10 +111,24 @@ public final class ProfilesFragment extends BaseFragment implements ProfileRecyc
     }
 
     @Override
+    public void showProgressbar(@NonNull Activity activity) {
+        super.showProgressbar(activity);
+    }
+
+    @Override
     public void onClick(@NonNull Profile profile) {
-        String url = "http://www.google.com";
-        Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setData(Uri.parse(url));
-        startActivity(i);
+        Log.d(TAG, "onClick: "+profile.getUrl_content());
+        if (profile.getUrl_content() != null && !profile.getUrl_content().isEmpty()) {
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(profile.getUrl_content()));
+            startActivity(i);
+        } else {
+            AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+            alert.setMessage(R.string.profile_no_action_available);
+            alert.setCancelable(false);
+            alert.setNegativeButton(android.R.string.no, (dialogInterface, i) -> dialogInterface.dismiss());
+            alert.show();
+        }
+
     }
 }

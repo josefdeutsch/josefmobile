@@ -67,7 +67,7 @@ public final class AppAdsRequest implements AdsRequest {
         Log.d(TAG, "onAdsInterstitialLoaded: ");  
         InterstitialAd.load(
                 context,
-                AD_TEST_UNIT,
+                AD_UNIT_ID,
                 adRequest,
                 new InterstitialAdLoadCallback() {
                     @Override

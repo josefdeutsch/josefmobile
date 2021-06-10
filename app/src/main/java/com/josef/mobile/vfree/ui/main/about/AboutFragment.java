@@ -74,7 +74,9 @@ public final class AboutFragment extends BaseFragment {
                         break;
                     }
                     case SUCCESS: {
-                        adapter.setAbouts(listResource.data);
+                        if(listResource.data != null && !listResource.data.isEmpty()){
+                            adapter.setAbouts(listResource.data);
+                        }
                         hideProgessbar();
                         break;
                     }

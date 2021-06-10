@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Joseph mobile</string>
+    <string name="app_name">JosephMobile</string>
     <string name="action_settings">Settings</string>
     <string name="action_archive">Archive</string>curl \
     -F 'text=YOUR_TEXT_URL' \
@@ -8,7 +8,7 @@
 
     <string name="app_quit_remainder">Quit application?</string>
 
-    <string name="fragment_profile">About joseph</string>
+    <string name="fragment_profile">About Joseph</string>
     <string name="fragment_posts">Digital artworks</string>
     <string name="fragment_posts_added_sculpture_remainder">"Sculpture added to archive"</string>
     <string name="fragment_archive">Synchronize account</string>
@@ -66,8 +66,8 @@
     <string name="activity_auth_invalid_email">Invalid email</string>
     <string name="activity_auth_invalid_firstName">Invalid name</string>
     <string name="activity_auth_invalid_lastName">Invalid name</string>
-    <string name="fragment_tv">Joseph tv</string>
-    <string name="nav_tv_title">Joseph tv</string>
+    <string name="fragment_tv">JosephTV</string>
+    <string name="nav_tv_title">JosephTV</string>
 
 
 
@@ -78,5 +78,6 @@
     <string name="fragment_profiles">Profile</string>
     <string name="nav_profiles">Contact</string>
     <string name="post_no_auction_available">There is no auction available for this artwork..</string>
+    <string name="profile_no_action_available">There is no social media link available for this item..</string>
 
 </resources>

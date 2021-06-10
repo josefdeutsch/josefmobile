@@ -88,7 +88,9 @@ public final class ImpressionsFragment extends BaseFragment {
                         break;
                     }
                     case SUCCESS: {
-                        if (listResource.data.get(0).url != null) {
+
+
+                        if (listResource.data.get(0).url != null && !listResource.data.get(0).url.isEmpty()) {
                             webView.loadUrl(listResource.data.get(0).url);
                         }
                         ImpressionsFragment.this.hideProgessbar();

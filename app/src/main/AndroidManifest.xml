@@ -20,7 +20,7 @@
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713"/>
+            android:value="ca-app-pub-1259971437092628~9660989485"/>
 
         <activity
             android:name=".vfree.ui.err.ErrorActivity"
