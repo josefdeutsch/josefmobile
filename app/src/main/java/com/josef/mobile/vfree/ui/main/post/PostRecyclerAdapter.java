@@ -6,6 +6,8 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -122,6 +124,7 @@ public final class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView
         @BindView(R.id.buyoption)
         ImageView buy;
 
+
         PostViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -133,7 +136,6 @@ public final class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView
             name.setText(localCache.getName());
             tag.setText(localCache.getTag());
             buy.setColorFilter(context.getResources().getColor(R.color.colorPrimary,context.getTheme()));
-
         }
 
         @OnClick(R.id.image)
